@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.11.0/dist/av-min.js"></script>
+<script src="https://unpkg.com/valine@latest/dist/Valine.min.js"></script>
+<script src="https://unpkg.com/live2d-widget@latest/lib/L2Dwidget.min.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -20,6 +22,9 @@
     <link rel="stylesheet" href="css/sections/contact.css">
     <link rel="stylesheet" href="css/sections/weather.css">
     <link rel="stylesheet" href="css/sections/games.css">
+    <link rel="stylesheet" href="css/sections/live2d.css">
+    <link rel="stylesheet" href="css/sections/visit-counter.css">
+    <link rel="stylesheet" href="css/sections/comment.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/utilities.css">
 </head>
@@ -40,11 +45,11 @@
     </header>
     <nav>
         <ul>
-            <li><a href="#home" class="nav-link">首页</a></li>
+            <li><a href="#home" class="nav-link">头像</a></li>
             <li><a href="#projects" class="nav-link">项目展示</a></li>
-            <li><a href="#tutorials" class="nav-link">教程导航</a></li>
             <li><a href="#about" class="nav-link">关于我</a></li>
             <li><a href="#contact" class="nav-link">联系我</a></li>
+            <li><a href="#comments" class="nav-link">评论区</a></li>
         </ul>
     </nav>
     <main>
@@ -56,40 +61,37 @@
                             <h2 class="pixel-text">zygame1314</h2>
                             <p class="typing-effect">弃我去者，昨日之日不可留；\n乱我心者，今日之日多烦忧。</p>
                         </div>
-                        <img src="images/avatar.png" alt="我的头像" class="avatar pixelated">
+                        <a href="https://github.com/zygame1314">
+                            <img src="images/avatar.png" alt="我的头像" class="avatar pixelated">
+                        </a>
                     </div>
                 </section>
                 <section id="projects">
-                    <h2 class="pixel-text">我的项目</h2>
+                    <h2 class="pixel-text">项目展示</h2>
                     <div class="project-list">
                         <div class="project-card">
-                            <img src="images/project1.png" alt="小雅爬爬爬" class="pixelated">
+                            <a href="https://github.com/zygame1314/XiaoyaDownloader" target="_blank">
+                                <img src="images/project1.png" alt="小雅爬爬爬" class="pixelated">
+                            </a>
                             <h3>小雅爬爬爬</h3>
                             <p>"小雅爬爬爬"是专为小雅平台设计的课件下载工具。能自动抓取课程页面中的课件链接，提供直观的下载界面，实现高效的资源获取。</p>
-                            <a href="https://github.com/zygame1314/XiaoyaDownloader" class="button pixelated"
-                                target="_blank">查看详情</a>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/XiaoyaDownloader" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://zygame1314.github.io/XiaoyaDownloader/" class="button pixelated">教程</a>
+                            </div>
                         </div>
                         <div class="project-card">
-                            <img src="images/project2.png" alt="理工学堂助手" class="pixelated">
+                            <a href="https://github.com/zygame1314/LGXT-Assistant" target="_blank">
+                                <img src="images/project2.png" alt="理工学堂助手" class="pixelated">
+                            </a>
                             <h3>理工学堂助手</h3>
                             <p>理工学堂助手是一个为理工学堂平台开发的小工具，帮助用户管理课程、查看作业、收集题目并一键提交成绩。</p>
-                            <a href="https://github.com/zygame1314/LGXT-Assistant" class="button pixelated"
-                                target="_blank">查看详情</a>
-                        </div>
-                    </div>
-                </section>
-                <section id="tutorials">
-                    <h2 class="pixel-text">教程导航</h2>
-                    <div class="tutorial-list">
-                        <div class="tutorial-item">
-                            <h3>如何使用小雅爬爬爬下载课件</h3>
-                            <p>本教程将指导你如何高效使用"小雅爬爬爬"工具来下载课件资源。</p>
-                            <a href="https://zygame1314.github.io/XiaoyaDownloader/" class="button pixelated">开始教程</a>
-                        </div>
-                        <div class="tutorial-item">
-                            <h3>如何使用理工学堂助手</h3>
-                            <p>本教程将详细介绍如何使用"理工学堂助手"来快速管理课程资源。</p>
-                            <a href="https://zygame1314.github.io/LGXT-Assistant/" class="button pixelated">开始教程</a>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/LGXT-Assistant" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://zygame1314.github.io/LGXT-Assistant/" class="button pixelated">教程</a>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -107,6 +109,10 @@
                         <li>Steam: <a href="https://steamcommunity.com/profiles/76561199075833485/"
                                 target="_blank">Steam个人主页</a></li>
                     </ul>
+                </section>
+                <section id="comments">
+                    <h2 class="pixel-text">评论区</h2>
+                    <div id="vcomments"></div>
                 </section>
             </div>
             <aside class="sidebar">
@@ -134,6 +140,17 @@
                     <h2 class="pixel-text">最近在玩</h2>
                     <div class="steam-games-list"></div>
                 </section>
+                <section id="live2d-mascot">
+                    <h2 class="pixel-text">虚拟助手</h2>
+                    <div id="live2d-container">
+                        <canvas id="live2d-canvas"></canvas>
+                    </div>
+                </section>
+                <section id="visit-counter">
+                    <div class="visit-counter-content">
+                        <p id="visit-count" class="counter-style">访问次数: 0</p>
+                    </div>
+                </section>
             </aside>
         </div>
     </main>
@@ -149,7 +166,10 @@
     <script src="js/cursorTrail.js"></script>
     <script src="js/weatherWidget.js"></script>
     <script src="js/gamesFetch.js"></script>
+    <script src="js/live2d.js"></script>
     <script src="js/pongGame.js"></script>
+    <script src="js/comment.js"></script>
+    <script src="js/pageViews.js"></script>
     <script src="js/main.js"></script>
 </body>
 

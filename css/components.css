@@ -8,12 +8,24 @@
     border: 3px solid #000000;
     transition: all 0.3s ease;
     image-rendering: pixelated;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
 }
 
 .button:hover {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(255, 204, 0, 0.4);
+}
+
+.project-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.project-actions .button {
+    width: 48%;
+    text-align: center;
 }
 
 .project-list {
@@ -33,8 +45,8 @@
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(255, 204, 0, 0.6);
 }
 
 .project-card img {
@@ -55,27 +67,4 @@
 
 .project-card .button {
     margin-top: 15px;
-}
-
-.tutorial-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.tutorial-item {
-    background-color: rgba(26, 26, 26, 0.8);
-    padding: 20px;
-    border: 3px solid var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-.tutorial-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
-}
-
-.tutorial-item h3 {
-    margin-top: 0;
-    font-size: 20px;
 }

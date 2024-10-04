@@ -43,6 +43,12 @@ function initGamesFetch() {
                 this.classList.add('default-cover');
             };
 
+            gameImage.addEventListener('click', function () {
+                if (game.slug) {
+                    window.open(`https://rawg.io/games/${game.slug}`, '_blank');
+                }
+            });
+
             const gameInfo = document.createElement('div');
             gameInfo.classList.add('game-info');
 
@@ -52,18 +58,11 @@ function initGamesFetch() {
             const gameRelease = document.createElement('p');
             gameRelease.textContent = `发行日期：${game.released || '未知'}`;
 
-            const gameButton = document.createElement('a');
-            gameButton.href = game.slug ? `https://rawg.io/games/${game.slug}` : '#';
-            gameButton.target = '_blank';
-            gameButton.classList.add('button', 'pixelated');
-            gameButton.textContent = '查看详情';
-
             gameInfo.appendChild(gameTitle);
             gameInfo.appendChild(gameRelease);
 
             gameItem.appendChild(gameImage);
             gameItem.appendChild(gameInfo);
-            gameItem.appendChild(gameButton);
 
             gamesListElem.appendChild(gameItem);
         });
@@ -107,6 +106,10 @@ function initGamesFetch() {
                 this.classList.add('default-cover');
             };
             gameImage.style.imageRendering = 'crisp-edges';
+
+            gameImage.addEventListener('click', function () {
+                window.open(`https://store.steampowered.com/app/${game.appid}`, '_blank');
+            });
 
             gameItem.appendChild(gameImage);
             steamGamesListElem.appendChild(gameItem);

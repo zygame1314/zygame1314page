@@ -25,7 +25,6 @@
     .sidebar,
     .content-container,
     .project-list,
-    .tutorial-list,
     .games-list,
     .steam-games-list,
     .game-item,
@@ -38,7 +37,7 @@
     .main-content,
     .sidebar,
     .project-card,
-    .tutorial-item,
+    .project-actions .button,
     .games-list .game-item,
     .steam-games-list .game-item,
     .game-item a.button,
@@ -62,14 +61,12 @@
     }
 
     .project-list,
-    .tutorial-list,
     .games-list,
     .steam-games-list {
         gap: 15px;
     }
 
     .project-card img,
-    .tutorial-item img,
     .game-item img {
         height: auto;
     }
@@ -79,8 +76,7 @@
         margin-bottom: 10px;
     }
 
-    .project-card h3,
-    .tutorial-item h3 {
+    .project-card h3{
         font-size: 20px;
     }
 
@@ -166,6 +162,7 @@
         font-size: 14px;
     }
 
+    .project-actions .button,
     #games h2 button {
         margin-top: 10px;
     }

@@ -1,0 +1,4 @@
+#live2d-widget {
+    z-index: 9999;
+    /* 确保Live2D角色在页面的最上层 */
+}
