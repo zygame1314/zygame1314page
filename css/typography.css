@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Zpix';
+    src: url('../fonts/zpix.ttf') format('truetype');
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+    margin-top: 0;
+    text-shadow: 3px 3px 0px #000000;
+    cursor: url('../../images/cursors/kushala text select.cur'), auto;
+}
+
+.pixel-text {
+    text-shadow: 2px 2px 0 #000000, -2px -2px 0 #000000, 2px -2px 0 #000000, -2px 2px 0 #000000;
+    cursor: url('../../images/cursors/kushala text select.cur'), auto;
+}

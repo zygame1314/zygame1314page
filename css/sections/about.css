@@ -1,0 +1,5 @@
+#about {
+    background-color: rgba(26, 26, 26, 0.8);
+    padding: 35px;
+    border: 3px solid var(--primary-color);
+}
