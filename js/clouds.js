@@ -1,9 +1,9 @@
 function initClouds() {
     const cloudContainer = document.querySelector('.cloud-container');
     const cloudImages = [
-        'https://cdn.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image1.png',
-        'https://cdn.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image2.png',
-        'https://cdn.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image3.png'
+        'https://gcore.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image1.png',
+        'https://gcore.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image2.png',
+        'https://gcore.jsdelivr.net/gh/zygame1314/zygame1314page@latest/images/cloud-image3.png'
     ];
     const cloudCount = 15;
 
