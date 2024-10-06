@@ -1,0 +1,27 @@
+#weather {
+    background-color: rgba(26, 26, 26, 0.8);
+    padding: 35px;
+    border: 3px solid var(--primary-color);
+    text-align: center;
+}
+
+.weather-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weather-icon img {
+    width: 80px;
+    height: 80px;
+    image-rendering: pixelated;
+}
+
+.weather-info {
+    margin-top: 20px;
+}
+
+.weather-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
