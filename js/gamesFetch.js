@@ -34,12 +34,12 @@ function initGamesFetch() {
             if (game.background_image) {
                 gameImage.src = game.background_image;
             } else {
-                gameImage.src = 'https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.5/images/default-game-cover.png';
+                gameImage.src = 'https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/default-game-cover.png';
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                this.src = 'https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.5/images/default-game-cover.png';
+                this.src = 'https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/default-game-cover.png';
                 this.classList.add('default-cover');
             };
 
