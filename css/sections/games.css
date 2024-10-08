@@ -53,12 +53,12 @@
     object-fit: cover;
     border: 2px solid var(--primary-color);
     margin-bottom: 10px;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/Rath Link.cur'), auto;
 }
 
 .game-item .game-info {
     flex-grow: 1;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/kushala text select.cur'), auto;
 }
 
 .game-item .game-info h3 {
@@ -72,14 +72,14 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/kushala text select.cur'), auto;
 }
 
 .game-item .game-info p {
     margin: 0 0 10px 0;
     font-size: 12px;
     color: #aaa;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/kushala text select.cur'), auto;
 }
 
 .game-item a.button {
@@ -87,7 +87,7 @@
     padding: 5px 10px;
     font-size: 12px;
     white-space: nowrap;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/Rath Link.cur'), auto;
 }
 
 #games h2 {
@@ -95,7 +95,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/kushala text select.cur'), auto;
 }
 
 #games h2 button {
@@ -105,7 +105,7 @@
     cursor: pointer;
     font-size: 14px;
     font-family: 'Zpix', 'Press Start 2P', monospace;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.6/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.2.7/images/cursors/Rath Link.cur'), auto;
 }
 
 #games h2 button:hover {
