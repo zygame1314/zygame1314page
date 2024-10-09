@@ -8,7 +8,7 @@
     border: 3px solid #000000;
     transition: all 0.3s ease;
     image-rendering: pixelated;
-    cursor: url('https://gcore.jsdelivr.net/gh/zygame1314/zygame1314page@1.2.8/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://gcore.jsdelivr.net/gh/zygame1314/zygame1314page@1.2.9/images/cursors/Rath Link.cur'), auto;
 }
 
 .button:hover {
