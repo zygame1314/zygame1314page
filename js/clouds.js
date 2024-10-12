@@ -1,9 +1,9 @@
 function initClouds() {
     const cloudContainer = document.querySelector('.cloud-container');
     const cloudImages = [
-        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.1/images/cloud-image1.png',
-        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.1/images/cloud-image2.png',
-        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.1/images/cloud-image3.png'
+        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.2/images/cloud-image1.png',
+        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.2/images/cloud-image2.png',
+        'https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.2/images/cloud-image3.png'
     ];
     const cloudCount = 15;
 
