@@ -1,0 +1,62 @@
+.text-box {
+    position: fixed;
+    left: 20px;
+    bottom: 300px;
+    z-index: 1000;
+    background: radial-gradient(circle at top left, rgba(30, 30, 30, 0.9), rgba(0, 0, 0, 1));
+    color: #d4d4d4;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(0, 0, 0, 0.7);
+    font-size: 16px;
+    text-align: center;
+    font-family: 'KaiTi', serif;
+    letter-spacing: 1px;
+    max-width: 300px;
+    width: auto;
+    word-wrap: break-word;
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s;
+}
+
+.text-box::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 15px;
+    background-image: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.3/images/Dialogue_Top.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+.text-box::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 40px;
+    margin-top: 15px;
+    background-image: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.4.3/images/Dialogue_Bottom.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+.text-box.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.text-box.hide {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s;
+}
