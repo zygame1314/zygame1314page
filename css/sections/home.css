@@ -16,8 +16,3 @@
     justify-content: center;
     flex-wrap: wrap;
 }
-
-#home .text-container {
-    max-width: 60%;
-    margin-right: 20px;
-}
