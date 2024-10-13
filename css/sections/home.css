@@ -8,7 +8,10 @@
     border: 5px solid var(--primary-color);
     box-sizing: border-box;
     image-rendering: pixelated;
+    margin-left: 20px;
+    margin-right: 20px;
 }
+
 
 #home .home-content {
     display: flex;
