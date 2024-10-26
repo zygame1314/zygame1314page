@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "#vcomments textarea": "来都来了，不说点什么？",
             "#vcomments button": "点击按钮发表你的评论，要对自己的言论负责哦。",
             ".avatar": "我的头像，派克猫猫！",
-            "footer": "这是页面的页脚部分，咱也是有正经备案的！",
+            "footer": "这是页面的页脚部分，咱也是有正经备案的！。",
             ".Canvas": "没有可以思考的心智。<br>没有可以屈从的意志。<br>没有为苦难哭泣的声音。<br>生于神与虚空之手。<br>你必封印在众人梦中散布瘟疫的障目之光。<br>你是容器。<br>你是空洞骑士。"
         };
 
