@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "#projects": "这里是我目前发起的项目，也许有一天会充实起来……",
             "#about": "一首小诗，文笔不佳请见谅……",
             "#contact": "发邮件，加QQ，逛Github还是一起steam？",
-            "#weather": "当前天气情况，可能不是很准……。",
-            "#games": "最近的热门游戏，有没有戳中你的呢？",
+            "#weather": "当前天气情况，可能不是很准……",
+            "#games": "最近的热门游戏，数据来源于RAWG。",
             "#steam-games": "我最近在玩的游戏，有没有和你一样的呢？",
             "#visit-counter": "感谢每一位光临的朋友！",
+            "#donate-button-section": "人间真情展现器！",
             ".glitch-container": "欢迎来到zygame1314的个人主页！",
             ".typing-effect": "出自唐代李白的《陪侍御叔华登楼歌》。",
             "#vcomments": "评论区区域，使用了Valine评论系统。",
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "#vcomments textarea": "来都来了，不说点什么？",
             "#vcomments button": "点击按钮发表你的评论，要对自己的言论负责哦。",
             ".avatar": "我的头像，派克猫猫！",
-            "footer": "这是页面的页脚部分，咱也是有正经备案的！。",
+            "footer": "这是页面的页脚部分，咱也是有正经备案的！",
             ".Canvas": "没有可以思考的心智。<br>没有可以屈从的意志。<br>没有为苦难哭泣的声音。<br>生于神与虚空之手。<br>你必封印在众人梦中散布瘟疫的障目之光。<br>你是容器。<br>你是空洞骑士。"
         };
 

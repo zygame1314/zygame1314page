@@ -22,3 +22,7 @@ query.first().then(function (viewRecord) {
 }).catch(function (error) {
     console.error('获取访问次数出错:', error);
 });
+
+document.getElementById('visit-count').addEventListener('click', function () {
+    showNotification('经验 + 3 ♪(´▽｀)', 3, 'success');
+});

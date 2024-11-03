@@ -1,5 +1,10 @@
 :root {
     --primary-color: #ffcc00;
+    --dot-color: #fff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
     --secondary-color: #ff6600;
     --background-color: #1a1a1a;
     --text-color: #ffffff;
@@ -11,7 +16,7 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.1/images/cursors/Rath pointer.cur'), auto;
+    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.2/images/cursors/Rath pointer.cur'), auto;
     font-size: 16px;
     line-height: 1.5;
     overflow-x: hidden;
@@ -21,7 +26,7 @@ a {
     color: var(--primary-color);
     text-decoration: none;
     transition: all 0.3s ease;
-    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.1/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.2/images/cursors/Rath Link.cur'), auto;
 }
 
 a:hover {
@@ -32,5 +37,5 @@ a:hover {
 p {
     font-size: 16px;
     line-height: 1.8;
-    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.1/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.2/images/cursors/kushala text select.cur'), auto;
 }
