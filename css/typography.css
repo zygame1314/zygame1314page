@@ -9,10 +9,10 @@ h3 {
     text-align: center;
     margin-top: 0;
     text-shadow: 3px 3px 0px #000000;
-    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.2/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.3/images/cursors/kushala text select.cur'), auto;
 }
 
 .pixel-text {
     text-shadow: 2px 2px 0 #000000, -2px -2px 0 #000000, 2px -2px 0 #000000, -2px 2px 0 #000000;
-    cursor: url('https://jsd.onmicrosoft.cn/gh/zygame1314/zygame1314page@1.6.2/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.3/images/cursors/kushala text select.cur'), auto;
 }
