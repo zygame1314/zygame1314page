@@ -8,7 +8,7 @@
     border: 3px solid #000000;
     transition: all 0.3s ease;
     image-rendering: pixelated;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.3/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.4/images/cursors/Rath Link.cur'), auto;
 }
 
 .button:hover {
@@ -29,24 +29,35 @@
 }
 
 .project-list {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .project-card {
+    display: none;
     background-color: rgba(26, 26, 26, 0.8);
     width: 48%;
-    margin-bottom: 30px;
+    margin: 0 5px 30px 5px;
     padding: 25px;
     box-sizing: border-box;
     border: 3px solid var(--primary-color);
-    transition: all 0.3s ease;
+    position: relative;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(255, 204, 0, 0.6);
+.project-card.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.project-card.hide {
+    opacity: 0;
+    transform: translateX(-100%);
 }
 
 .project-card img {
@@ -57,6 +68,8 @@
 }
 
 .project-card h3 {
+    position: relative;
+    z-index: 1;
     margin: 20px 0 15px 0;
     font-size: 22px;
 }
@@ -67,4 +80,39 @@
 
 .project-card .button {
     margin-top: 15px;
+}
+
+#tetris-canvas {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #000000;
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    font-size: 16px;
+    border: 3px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    image-rendering: pixelated;
+}
+
+.pagination-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(255, 204, 0, 0.4);
+}
+
+.pagination-button.active {
+    background-color: var(--secondary-color);
 }
