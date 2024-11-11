@@ -66,7 +66,7 @@
     background: rgba(var(--primary-color-rgb), 0.05);
     border-left: 3px solid var(--primary-color);
     border-radius: 0 4px 4px 0;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.4/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.5/images/cursors/kushala text select.cur'), auto;
 }
 
 #activation-code-value {
@@ -90,7 +90,7 @@
     border: none;
     padding: 8px 16px;
     margin: 0 12px;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.4/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.5/images/cursors/Rath Link.cur'), auto;
     font-family: 'Zpix', monospace;
     font-size: 14px;
     border-radius: 3px;
