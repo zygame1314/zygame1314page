@@ -39,7 +39,7 @@
     border: none;
     font-family: 'zpix', monospace;
     font-size: 14px;
-    cursor: pointer;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.6/images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s;
 }
 

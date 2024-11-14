@@ -26,3 +26,13 @@ query.first().then(function (viewRecord) {
 document.getElementById('visit-count').addEventListener('click', function () {
     showNotification('经验 + 3 ♪(´▽｀)', 3, 'success');
 });
+
+document.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    if (scrollTop > 80) {
+        document.body.classList.add('nav-fixed');
+    } else {
+        document.body.classList.remove('nav-fixed');
+    }
+});

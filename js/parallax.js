@@ -3,7 +3,7 @@ function initParallax() {
     const pixelStars = document.querySelector('.pixel-stars');
 
     function handleScroll() {
-        const scrollPosition = window.pageYOffset;
+        const scrollPosition = window.scrollY;
         header.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
         pixelStars.style.transform = `translateY(${scrollPosition * 0.1}px)`;
     }
