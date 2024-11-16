@@ -16,7 +16,7 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    cursor: url('/zygame1314page/images/cursors/Rath pointer.cur'), auto;
+    cursor: url('images/cursors/Rath pointer.cur'), auto;
     font-size: 16px;
     line-height: 1.5;
     overflow-x: hidden;
@@ -26,7 +26,7 @@ a {
     color: var(--primary-color);
     text-decoration: none;
     transition: all 0.3s ease;
-    cursor: url('/zygame1314page/images/cursors/Rath Link.cur'), auto;
+    cursor: url('images/cursors/Rath Link.cur'), auto;
 }
 
 a:hover {
@@ -37,5 +37,5 @@ a:hover {
 p {
     font-size: 16px;
     line-height: 1.8;
-    cursor: url('/zygame1314page/images/cursors/kushala text select.cur'), auto;
+    cursor: url('images/cursors/kushala text select.cur'), auto;
 }

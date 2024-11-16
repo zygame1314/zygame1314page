@@ -34,12 +34,12 @@ function initGamesFetch() {
             if (game.background_image) {
                 gameImage.src = game.background_image;
             } else {
-                gameImage.src = '/zygame1314page/images/default-game-cover.png';
+                gameImage.src = 'images/default-game-cover.png';
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                this.src = '/zygame1314page/images/default-game-cover.png';
+                this.src = 'images/default-game-cover.png';
                 this.classList.add('default-cover');
             };
 
@@ -103,7 +103,7 @@ function initGamesFetch() {
             gameImage.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900.jpg`;
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                this.src = '/zygame1314page/images/default-game-cover.png';
+                this.src = 'images/default-game-cover.png';
                 this.classList.add('default-cover');
             };
             gameImage.style.imageRendering = 'crisp-edges';
