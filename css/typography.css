@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Zpix';
-    src: url('https://jsd.onmicrosoft.cn/gh/SolidZORO/zpix-pixel-font/dist/zpix.ttf') format('truetype');
+    src: url('../zpix.woff2') format('woff2');
 }
 
 h1,
