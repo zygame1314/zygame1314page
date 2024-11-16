@@ -264,15 +264,6 @@
     }
 }
 
-.typing-effect {
-    overflow: hidden;
-    border-right: 2px solid var(--primary-color);
-    white-space: pre-wrap;
-    margin: 0 auto;
-    letter-spacing: 0.15em;
-    display: inline-block;
-}
-
 @keyframes typing {
     from {
         width: 0
@@ -408,5 +399,43 @@
 
     100% {
         background-position: 0 100%, 0 calc(100% + 10px), 0 100%, 10px 100%;
+    }
+}
+
+@keyframes swing {
+    0% {
+        transform: rotate(2deg);
+    }
+
+    50% {
+        transform: rotate(-2deg);
+    }
+
+    100% {
+        transform: rotate(2deg);
+    }
+}
+
+@keyframes pageInRight {
+    0% {
+        opacity: 0;
+        transform: perspective(2000px) rotateY(90deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: perspective(2000px) rotateY(0deg);
+    }
+}
+
+@keyframes pageOutLeft {
+    0% {
+        opacity: 1;
+        transform: perspective(2000px) rotateY(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: perspective(2000px) rotateY(-90deg);
     }
 }

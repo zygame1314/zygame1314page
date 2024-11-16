@@ -9,6 +9,17 @@
         font-size: 1.5em;
     }
 
+    nav {
+        position: sticky;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    section {
+        scroll-margin-top: 250px;
+    }
+
     nav ul {
         flex-direction: column;
         align-items: center;
@@ -43,7 +54,7 @@
     .game-item a.button,
     #weather,
     #home .text-container {
-        width: 100%;
+        width: 90%;
     }
 
     .main-content,
@@ -165,5 +176,22 @@
     .project-actions .button,
     #games h2 button {
         margin-top: 10px;
+    }
+
+    .visit-counter-widget {
+        position: static;
+        width: 90%;
+        margin: 20px auto;
+        animation: none;
+        backdrop-filter: none;
+    }
+
+    .visit-counter-widget::before {
+        display: none;
+    }
+
+    #visit-count {
+        width: calc(100% - 20px);
+        margin: 10px;
     }
 }

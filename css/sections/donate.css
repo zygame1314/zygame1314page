@@ -21,7 +21,7 @@
     display: block;
     width: calc(100% - 30px);
     text-align: center;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.6/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.7/images/cursors/Rath Link.cur'), auto;
     border-radius: 3px;
 }
 
@@ -142,7 +142,7 @@
     top: 10px;
     font-size: 28px;
     font-weight: bold;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.6/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.7/images/cursors/Rath Link.cur'), auto;
     transition: transform 0.2s ease, color 0.2s ease;
     text-shadow:
         1px 1px 0 #000,

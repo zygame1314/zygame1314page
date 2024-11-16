@@ -490,23 +490,34 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (pageNumber - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
+        const animations = [];
+
         projectCards.forEach((card, index) => {
             if (index >= startIndex && index < endIndex) {
-                card.style.display = 'block';
-                void card.offsetWidth;
-                card.classList.remove('hide');
-                card.classList.add('show');
+            card.style.display = 'block';
+            card.classList.remove('hide');
+            card.classList.add('show');
+
+            animations.push(new Promise(resolve => {
+                card.addEventListener('animationend', resolve, { once: true });
+            }));
             } else {
-                if (card.classList.contains('show')) {
-                    card.classList.remove('show');
-                    card.classList.add('hide');
-                    card.addEventListener('transitionend', function onTransitionEnd() {
-                        card.style.display = 'none';
-                        card.classList.remove('hide');
-                        card.removeEventListener('transitionend', onTransitionEnd);
-                    }, { once: true });
-                }
+            if (card.classList.contains('show')) {
+                card.classList.remove('show');
+                card.classList.add('hide');
+
+                animations.push(new Promise(resolve => {
+                card.addEventListener('animationend', () => {
+                    card.style.display = 'none';
+                    card.classList.remove('hide');
+                    resolve();
+                }, { once: true });
+                }));
             }
+            }
+        });
+
+        Promise.all(animations).then(() => {
         });
     }
 

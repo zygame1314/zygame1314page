@@ -1,100 +1,120 @@
 function initPongGame() {
-    var canvas = document.getElementById('pongGame');
-    var context = canvas.getContext('2d');
+    const canvas = document.getElementById('pongGame');
+    const ctx = canvas.getContext('2d');
 
-    function resizeCanvas() {
+    const config = {
+        paddleWidth: 8,
+        paddleHeight: 80,
+        ballSize: 6,
+        speed: 2,
+        paddleSpeed: 3,
+        paddleSmoothing: 0.05,
+        paddleMaxSpeed: 5
+    };
+
+    let ball = {
+        x: 0,
+        y: 0,
+        dx: config.speed,
+        dy: config.speed
+    };
+
+    let paddle = {
+        left: 0,
+        right: 0
+    };
+
+    function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        paddle.left = canvas.height / 2;
+        paddle.right = canvas.height / 2;
     }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    var paddleWidth = 10;
-    var paddleHeight = 100;
-    var ballRadius = 8;
-
-    var leftPaddleY = (canvas.height - paddleHeight) / 2;
-    var rightPaddleY = (canvas.height - paddleHeight) / 2;
-
-    var ballX = canvas.width / 2;
-    var ballY = canvas.height / 2;
-    var ballSpeedX = 1.5;
-    var ballSpeedY = 1.5;
-
-    document.addEventListener('mousemove', function (e) {
-        var mouseY = e.clientY;
-
-        leftPaddleY = mouseY - paddleHeight / 2;
-        rightPaddleY = mouseY - paddleHeight / 2;
-
-        clampPaddlePosition();
-    });
-
-    document.addEventListener('touchmove', function (e) {
-        var touch = e.touches[0];
-        var touchY = touch.clientY;
-
-        leftPaddleY = touchY - paddleHeight / 2;
-        rightPaddleY = touchY - paddleHeight / 2;
-
-        clampPaddlePosition();
-    });
-
-    function clampPaddlePosition() {
-        if (leftPaddleY < 0) {
-            leftPaddleY = 0;
-            rightPaddleY = 0;
+    function predictBallPosition(side) {
+        let steps;
+        if (side === 'left') {
+            steps = (config.paddleWidth - ball.x) / ball.dx;
+        } else {
+            steps = (canvas.width - config.paddleWidth - ball.x) / ball.dx;
         }
-        if (leftPaddleY + paddleHeight > canvas.height) {
-            leftPaddleY = canvas.height - paddleHeight;
-            rightPaddleY = canvas.height - paddleHeight;
+        return ball.y + ball.dy * steps;
+    }
+
+    function updatePaddles() {
+        let targetLeft = paddle.left;
+        if (ball.dx < 0) {
+            targetLeft = predictBallPosition('left');
+        }
+
+        let targetRight = paddle.right;
+        if (ball.dx > 0) {
+            targetRight = predictBallPosition('right');
+        }
+
+        let leftDelta = (targetLeft - paddle.left) * config.paddleSmoothing;
+        let rightDelta = (targetRight - paddle.right) * config.paddleSmoothing;
+
+        leftDelta = Math.max(-config.paddleMaxSpeed, Math.min(config.paddleMaxSpeed, leftDelta));
+        rightDelta = Math.max(-config.paddleMaxSpeed, Math.min(config.paddleMaxSpeed, rightDelta));
+
+        paddle.left += leftDelta;
+        paddle.right += rightDelta;
+
+        paddle.left = Math.max(config.paddleHeight / 2, Math.min(canvas.height - config.paddleHeight / 2, paddle.left));
+        paddle.right = Math.max(config.paddleHeight / 2, Math.min(canvas.height - config.paddleHeight / 2, paddle.right));
+    }
+
+    function updateBall() {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        if (ball.y < 0 || ball.y > canvas.height) ball.dy *= -1;
+
+        if (ball.x < config.paddleWidth &&
+            ball.y > paddle.left - config.paddleHeight / 2 &&
+            ball.y < paddle.left + config.paddleHeight / 2) {
+            ball.dx *= -1;
+        }
+
+        if (ball.x > canvas.width - config.paddleWidth &&
+            ball.y > paddle.right - config.paddleHeight / 2 &&
+            ball.y < paddle.right + config.paddleHeight / 2) {
+            ball.dx *= -1;
+        }
+
+        if (ball.x < 0 || ball.x > canvas.width) {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.dx = config.speed * (Math.random() > 0.5 ? 1 : -1);
+            ball.dy = config.speed * (Math.random() > 0.5 ? 1 : -1);
         }
     }
 
     function draw() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(26, 26, 26, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        context.fillStyle = "rgba(255, 255, 255, 0.5)";
-        context.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
-        context.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+        ctx.fillStyle = 'rgba(255, 204, 0, 0.5)';
+        ctx.fillRect(0, paddle.left - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
+        ctx.fillRect(canvas.width - config.paddleWidth, paddle.right - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
 
-        context.beginPath();
-        context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2, true);
-        context.fill();
-
-        ballX += ballSpeedX;
-        ballY += ballSpeedY;
-
-        if (ballY < ballRadius || ballY > canvas.height - ballRadius) {
-            ballSpeedY = -ballSpeedY;
-        }
-
-        if (ballX - ballRadius < paddleWidth) {
-            if (ballY > leftPaddleY && ballY < leftPaddleY + paddleHeight) {
-                ballSpeedX = -ballSpeedX;
-            } else {
-                resetBall();
-            }
-        }
-
-        if (ballX + ballRadius > canvas.width - paddleWidth) {
-            if (ballY > rightPaddleY && ballY < rightPaddleY + paddleHeight) {
-                ballSpeedX = -ballSpeedX;
-            } else {
-                resetBall();
-            }
-        }
-
-        requestAnimationFrame(draw);
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.arc(ball.x, ball.y, config.ballSize, 0, Math.PI * 2);
+        ctx.fill();
     }
 
-    function resetBall() {
-        ballX = canvas.width / 2;
-        ballY = canvas.height / 2;
-        ballSpeedX = -ballSpeedX;
-        ballSpeedY = 3;
+    function gameLoop() {
+        updatePaddles();
+        updateBall();
+        draw();
+        requestAnimationFrame(gameLoop);
     }
 
-    draw();
+    window.addEventListener('resize', resize);
+    resize();
+    gameLoop();
 }
