@@ -70,7 +70,7 @@
     background: rgba(var(--primary-color-rgb), 0.05);
     border-left: 3px solid var(--primary-color);
     border-radius: 0 4px 4px 0;
-    cursor: url('images/cursors/kushala text select.cur'), auto;
+    cursor: url('../../images/cursors/kushala text select.cur'), auto;
     width: 100%;
     margin: 10px 0;
 }
@@ -96,7 +96,7 @@
     border: none;
     padding: 8px 16px;
     margin: 0 12px;
-    cursor: url('images/cursors/Rath Link.cur'), auto;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
     font-family: 'Zpix', monospace;
     font-size: 14px;
     border-radius: 3px;

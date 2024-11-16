@@ -1,9 +1,9 @@
 function initClouds() {
     const cloudContainer = document.querySelector('.cloud-container');
     const cloudImages = [
-        'images/cloud-image1.png',
-        'images/cloud-image2.png',
-        'images/cloud-image3.png'
+        '../images/cloud-image1.png',
+        '../images/cloud-image2.png',
+        '../images/cloud-image3.png'
     ];
     const cloudCount = 15;
 
