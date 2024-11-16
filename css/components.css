@@ -8,7 +8,7 @@
     border: 3px solid #000000;
     transition: all 0.3s ease;
     image-rendering: pixelated;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.7/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.8/images/cursors/Rath Link.cur'), auto;
 }
 
 .button:hover {
@@ -112,7 +112,7 @@
     text-decoration: none;
     font-size: 16px;
     border: 3px solid #000000;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.7/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.8/images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
     image-rendering: pixelated;
 }

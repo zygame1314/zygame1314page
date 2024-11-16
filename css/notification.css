@@ -47,7 +47,7 @@
     right: 15px;
     color: #fff;
     font-size: 20px;
-    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.7/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://cdn.jsdmirror.com/gh/zygame1314/zygame1314page@1.6.8/images/cursors/Rath Link.cur'), auto;
     text-shadow: 1px 1px 0 #000, -1px -1px 0 var(--primary-color);
     transition: color 0.3s ease;
 }
