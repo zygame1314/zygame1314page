@@ -17,7 +17,7 @@
     }
 
     section {
-        scroll-margin-top: 250px;
+        scroll-margin-top: 300px;
     }
 
     nav ul {
@@ -193,5 +193,40 @@
     #visit-count {
         width: calc(100% - 20px);
         margin: 10px;
+    }
+
+    .milestone-timeline::before {
+        left: 50px;
+    }
+
+    .milestone {
+        padding-left: 20px;
+    }
+
+    .milestone-dot {
+        left: 8px;
+    }
+
+    .milestone-content {
+        margin-left: 30px;
+        width: calc(100% - 100px);
+        padding: 12px;
+    }
+
+    .milestone-content h3 {
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .milestone:hover .milestone-content h3 {
+        white-space: normal;
+        overflow: visible;
+    }
+
+    .milestone-content::before {
+        left: -33px;
+        width: 30px;
     }
 }

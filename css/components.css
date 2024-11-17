@@ -51,6 +51,8 @@
     border: 3px solid var(--primary-color);
     position: relative;
     transform-origin: left center;
+    opacity: 1;
+    visibility: visible;
     transition: all 0.3s ease;
     backface-visibility: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -62,12 +64,10 @@
     border-color: var(--secondary-color);
 }
 
-.project-card.show {
-    animation: pageInRight 0.6s ease-out forwards;
-}
-
-.project-card.hide {
-    animation: pageOutLeft 0.6s ease-in forwards;
+.project-card.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
 }
 
 .project-card img {

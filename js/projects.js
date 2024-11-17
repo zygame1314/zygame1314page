@@ -1,18 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    function initHoverEffects() {
-        const cards = document.querySelectorAll('.project-card, .tutorial-item');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'scale(1.05)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'scale(1)';
-            });
-        });
-    }
-
-    initHoverEffects();
-
     const canvas = document.getElementById('tetris-canvas');
     const context = canvas.getContext('2d');
 
@@ -490,34 +476,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (pageNumber - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
-        const animations = [];
-
         projectCards.forEach((card, index) => {
             if (index >= startIndex && index < endIndex) {
-            card.style.display = 'block';
-            card.classList.remove('hide');
-            card.classList.add('show');
-
-            animations.push(new Promise(resolve => {
-                card.addEventListener('animationend', resolve, { once: true });
-            }));
+                card.style.display = 'block';
+                setTimeout(() => {
+                    card.classList.remove('hidden');
+                }, 50);
             } else {
-            if (card.classList.contains('show')) {
-                card.classList.remove('show');
-                card.classList.add('hide');
-
-                animations.push(new Promise(resolve => {
-                card.addEventListener('animationend', () => {
+                card.classList.add('hidden');
+                setTimeout(() => {
                     card.style.display = 'none';
-                    card.classList.remove('hide');
-                    resolve();
-                }, { once: true });
-                }));
+                }, 300);
             }
-            }
-        });
-
-        Promise.all(animations).then(() => {
         });
     }
 
