@@ -171,26 +171,69 @@
 .modal-content .qr-codes {
     display: flex;
     justify-content: center;
+    gap: 30px;
     margin-top: 20px;
 }
 
 .modal-content .qr-code {
-    margin: 0 20px;
     text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.modal-content .qr-code:first-child {
+    background-color: rgba(7, 193, 96, 0.1);
+    border: 3px solid var(--wechat-color);
+}
+
+.modal-content .qr-code:first-child img {
+    border-color: var(--wechat-color);
+}
+
+.modal-content .qr-code:first-child p {
+    color: var(--wechat-color);
+    text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 var(--wechat-color);
+}
+
+.modal-content .qr-code:last-child {
+    background-color: rgba(22, 119, 255, 0.1);
+    border: 3px solid var(--alipay-color);
+}
+
+.modal-content .qr-code:last-child img {
+    border-color: var(--alipay-color);
+}
+
+.modal-content .qr-code:last-child p {
+    color: var(--alipay-color);
+    text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 var(--alipay-color);
 }
 
 .modal-content .qr-code img {
     width: 150px;
     height: 150px;
-    border: 3px solid var(--primary-color);
+    border: 3px solid;
     image-rendering: pixelated;
+    background-color: white;
+    padding: 5px;
 }
 
 .modal-content .qr-code p {
     margin-top: 10px;
     font-size: 18px;
     font-family: 'Zpix', monospace;
-    text-shadow:
-        1px 1px 0 #000,
-        -1px -1px 0 var(--primary-color);
+}
+
+.modal-content .qr-code:hover {
+    transform: translateY(-5px);
+}
+
+.modal-content .qr-code i {
+    font-size: 20px;
+    margin-right: 5px;
 }

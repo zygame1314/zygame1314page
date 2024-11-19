@@ -13,6 +13,7 @@
     <meta name="description" content="这里是zygame1314的个人主页">
     <meta name="keywords" content="博客, 开发者, 项目, 游戏, 像素风">
     <link rel="icon" href="images/web-icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -52,12 +53,12 @@
     </header>
     <nav>
         <ul>
-            <li><a href="#home" class="nav-link">头像</a></li>
-            <li><a href="#dev-journey" class="nav-link">开发历程</a></li>
-            <li><a href="#projects" class="nav-link">项目展示</a></li>
-            <li><a href="#about" class="nav-link">关于我</a></li>
-            <li><a href="#contact" class="nav-link">联系我</a></li>
-            <li><a href="#comments" class="nav-link">评论区</a></li>
+            <li><a href="#home" class="nav-link"><i class="fas fa-user"></i> 头像</a></li>
+            <li><a href="#projects" class="nav-link"><i class="fas fa-code"></i> 项目展示</a></li>
+            <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> 关于我</a></li>
+            <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> 联系我</a></li>
+            <li><a href="#dev-journey" class="nav-link"><i class="fas fa-history"></i> 开发历程</a></li>
+            <li><a href="#comments" class="nav-link"><i class="fas fa-comments"></i> 评论区</a></li>
         </ul>
     </nav>
     <div class="visit-counter-widget">
@@ -68,8 +69,8 @@
                     每四小时刷新一次
                 </p>
                 <p class="warning-message">
-                <div class="warning-header">
-                    ⚠️ 重要提示
+                <div class="warning-header highlight">
+                    <i class="fas fa-exclamation-triangle highlight"></i> 重要提示
                 </div>
                 <div class="warning-content">
                     小雅答答答已开源，旧版加密版本可能无法激活，建议<strong class="highlight-action">删除</strong>后<strong
@@ -78,7 +79,7 @@
                 <div class="warning-action">
                     <a href="https://greasyfork.org/zh-CN/scripts/517280-%E5%B0%8F%E9%9B%85%E7%AD%94%E7%AD%94%E7%AD%94"
                         target="_blank">
-                        👉 点击此处安装最新版本
+                        <i class="fas fa-hand-point-right"></i> 点击此处安装最新版本
                     </a>
                 </div>
                 </p>
@@ -111,6 +112,111 @@
                             <img src="images/avatar.png" alt="我的头像" class="avatar pixelated">
                         </a>
                     </div>
+                </section>
+                <section id="projects">
+                    <div class="notice-area pixel-border">
+                        <h3 class="pixel-text notice-title">
+                            <i class="fas fa-bullhorn"></i> 公告
+                        </h3>
+                        <div class="notice-content">
+                            <p class="warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span class="highlight">篡改猴最新版本</span>需要开启<span class="highlight">浏览器扩展的开发者模式</span>！
+                            </p>
+                            <p class="steps">
+                                <i class="fas fa-clipboard-list"></i>
+                                请按以下步骤操作：
+                            </p>
+                            <p class="step">
+                                <i class="fas fa-angle-right"></i>
+                                <span class="step-number">1.</span> 打开<span class="highlight">浏览器扩展管理页面</span>
+                            </p>
+                            <p class="step">
+                                <i class="fas fa-angle-right"></i>
+                                <span class="step-number">2.</span> 找到并开启<span class="highlight">开发者模式</span>
+                            </p>
+                            <p class="step">
+                                <i class="fas fa-angle-right"></i>
+                                <span class="step-number">3.</span> <span class="highlight">重启浏览器</span>以确保设置生效
+                            </p>
+                        </div>
+                    </div>
+                    <h2 class="pixel-text">项目展示</h2>
+                    <div class="project-list">
+                        <div class="project-card">
+                            <a href="https://github.com/zygame1314/XiaoyaDownloader" target="_blank">
+                                <img src="images/project1.png" alt="小雅爬爬爬" class="pixelated">
+                            </a>
+                            <h3>小雅爬爬爬</h3>
+                            <p>"小雅爬爬爬"是专为小雅平台设计的课件下载工具。能自动抓取课程页面中的课件链接，提供直观的下载界面，实现高效的资源获取。</p>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/XiaoyaDownloader" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://zygame1314.github.io/XiaoyaDownloader/" class="button pixelated">教程</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <a href="https://github.com/zygame1314/LGXT-Assistant" target="_blank">
+                                <img src="images/project2.png" alt="理工学堂助手" class="pixelated">
+                            </a>
+                            <h3>理工学堂助手</h3>
+                            <p>理工学堂助手是一个为理工学堂平台开发的小工具，帮助用户管理课程、查看作业、收集题目并一键提交成绩。</p>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/LGXT-Assistant" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://zygame1314.github.io/LGXT-Assistant/" class="button pixelated">教程</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <a href="https://github.com/zygame1314/XiaoyaAnswer" target="_blank">
+                                <img src="images/project3.png" alt="小雅答答答" class="pixelated">
+                            </a>
+                            <h3>小雅答答答</h3>
+                            <p>"小雅答答答"是一个专为小雅平台设计的答题工具，能够获取作业的预设答案，并自动识别填写作业中的问题。该工具不仅支持多种题型的自动答题，还提供了编辑和导出功能，帮助用户高效完成学习任务，进一步提升学习效率。
+                            </p>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/XiaoyaAnswer" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://greasyfork.org/zh-CN/scripts/517280-%E5%B0%8F%E9%9B%85%E7%AD%94%E7%AD%94%E7%AD%94"
+                                    class="button pixelated">获取</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <a href="https://github.com/zygame1314/XiaoYaEasyTasks" target="_blank">
+                                <img src="images/project4.png" alt="小雅答答答" class="pixelated">
+                            </a>
+                            <h3>小雅做做做</h3>
+                            <p>"小雅做做做"是一个专为小雅平台设计的任务管理工具，提供课程任务的状态跟踪和便捷提交功能，能帮助用户更有效地完成线上学习任务。</p>
+                            <div class="project-actions">
+                                <a href="https://github.com/zygame1314/XiaoYaEasyTasks" class="button pixelated"
+                                    target="_blank">查看详情</a>
+                                <a href="https://greasyfork.org/zh-CN/scripts/516837-%E5%B0%8F%E9%9B%85%E5%81%9A%E5%81%9A%E5%81%9A"
+                                    class="button pixelated">获取</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <h3>敬请期待</h3>
+                            <canvas id="tetris-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="pagination"></div>
+                </section>
+                <section id="about">
+                    <h2 class="pixel-text">关于我</h2>
+                    <p>张弛万象浮云外，艺展千秋浩瀚中。</p>
+                </section>
+                <section id="contact">
+                    <h2 class="pixel-text">联系我</h2>
+                    <p>若有共鸣，愿与君畅谈：</p>
+                    <ul>
+                        <li>QQ: 1364612205</li>
+                        <li>WeChat: We1364612205</li>
+                        <li>QQGroup: 790187356</li>
+                        <li>Email: <a href="mailto:zygame1314@gmail.com">zygame1314@gmail.com</a></li>
+                        <li>GitHub: <a href="https://github.com/zygame1314" target="_blank">zygame1314</a></li>
+                        <li>Steam: <a href="https://steamcommunity.com/profiles/76561199075833485/"
+                                target="_blank">Steam个人主页</a></li>
+                    </ul>
                 </section>
                 <section id="dev-journey">
                     <h2 class="pixel-text">开发历程</h2>
@@ -251,6 +357,27 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="milestone">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-content">
+                                <span class="date">2024.11.19</span>
+                                <h3>🎨 优化页面细节</h3>
+                                <p class="milestone-description">
+                                    为了提升用户体验，今天对页面进行了一些细节优化。主要是调整了布局的平衡性，并在适当的位置添加了 Font Awesome
+                                    图标，让界面更加生动直观。小小的改变往往能带来意想不到的提升，看着焕然一新的页面，感觉特别充实。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="milestone">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-content">
+                                <span class="date">2024.11.20</span>
+                                <h3>🌤️ 完善天气系统</h3>
+                                <p class="milestone-description">
+                                    为了提供更准确的天气信息，我为天气系统加入了双重定位机制。现在可以通过IP地址定位或GPS卫星定位两种方式来获取用户位置，让天气预报更加精准可靠
+                                </p>
+                            </div>
+                        </div>
                         <div class="milestone future-milestone">
                             <div class="milestone-dot"></div>
                             <div class="milestone-content">
@@ -259,83 +386,6 @@
                             </div>
                         </div>
                     </div>
-                </section>
-                <section id="projects">
-                    <h2 class="pixel-text">项目展示</h2>
-                    <div class="project-list">
-                        <div class="project-card">
-                            <a href="https://github.com/zygame1314/XiaoyaDownloader" target="_blank">
-                                <img src="images/project1.png" alt="小雅爬爬爬" class="pixelated">
-                            </a>
-                            <h3>小雅爬爬爬</h3>
-                            <p>"小雅爬爬爬"是专为小雅平台设计的课件下载工具。能自动抓取课程页面中的课件链接，提供直观的下载界面，实现高效的资源获取。</p>
-                            <div class="project-actions">
-                                <a href="https://github.com/zygame1314/XiaoyaDownloader" class="button pixelated"
-                                    target="_blank">查看详情</a>
-                                <a href="https://zygame1314.github.io/XiaoyaDownloader/" class="button pixelated">教程</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <a href="https://github.com/zygame1314/LGXT-Assistant" target="_blank">
-                                <img src="images/project2.png" alt="理工学堂助手" class="pixelated">
-                            </a>
-                            <h3>理工学堂助手</h3>
-                            <p>理工学堂助手是一个为理工学堂平台开发的小工具，帮助用户管理课程、查看作业、收集题目并一键提交成绩。</p>
-                            <div class="project-actions">
-                                <a href="https://github.com/zygame1314/LGXT-Assistant" class="button pixelated"
-                                    target="_blank">查看详情</a>
-                                <a href="https://zygame1314.github.io/LGXT-Assistant/" class="button pixelated">教程</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <a href="https://github.com/zygame1314/XiaoyaAnswer" target="_blank">
-                                <img src="images/project3.png" alt="小雅答答答" class="pixelated">
-                            </a>
-                            <h3>小雅答答答</h3>
-                            <p>"小雅答答答"是一个专为小雅平台设计的答题工具，能够获取作业的预设答案，并自动识别填写作业中的问题。该工具不仅支持多种题型的自动答题，还提供了编辑和导出功能，帮助用户高效完成学习任务，进一步提升学习效率。
-                            </p>
-                            <div class="project-actions">
-                                <a href="https://github.com/zygame1314/XiaoyaAnswer" class="button pixelated"
-                                    target="_blank">查看详情</a>
-                                <a href="https://greasyfork.org/zh-CN/scripts/517280-%E5%B0%8F%E9%9B%85%E7%AD%94%E7%AD%94%E7%AD%94"
-                                    class="button pixelated">获取</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <a href="https://github.com/zygame1314/XiaoYaEasyTasks" target="_blank">
-                                <img src="images/project4.png" alt="小雅答答答" class="pixelated">
-                            </a>
-                            <h3>小雅做做做</h3>
-                            <p>"小雅做做做"是一个专为小雅平台设计的任务管理工具，提供课程任务的状态跟踪和便捷提交功能，能帮助用户更有效地完成线上学习任务。</p>
-                            <div class="project-actions">
-                                <a href="https://github.com/zygame1314/XiaoYaEasyTasks" class="button pixelated"
-                                    target="_blank">查看详情</a>
-                                <a href="https://greasyfork.org/zh-CN/scripts/516837-%E5%B0%8F%E9%9B%85%E5%81%9A%E5%81%9A%E5%81%9A"
-                                    class="button pixelated">获取</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <h3>敬请期待</h3>
-                            <canvas id="tetris-canvas"></canvas>
-                        </div>
-                    </div>
-                    <div class="pagination"></div>
-                </section>
-                <section id="about">
-                    <h2 class="pixel-text">关于我</h2>
-                    <p>张弛万象浮云外，艺展千秋浩瀚中。</p>
-                </section>
-                <section id="contact">
-                    <h2 class="pixel-text">联系我</h2>
-                    <p>若有共鸣，愿与君畅谈：</p>
-                    <ul>
-                        <li>Email: zygame1314@gmail.com</li>
-                        <li>QQ: 1364612205</li>
-                        <li>QQGroup: 790187356</li>
-                        <li>GitHub: <a href="https://github.com/zygame1314" target="_blank">zygame1314</a></li>
-                        <li>Steam: <a href="https://steamcommunity.com/profiles/76561199075833485/"
-                                target="_blank">Steam个人主页</a></li>
-                    </ul>
                 </section>
                 <section id="comments">
                     <h2 class="pixel-text">评论区</h2>
@@ -380,11 +430,11 @@
                 <div class="qr-codes">
                     <div class="qr-code">
                         <img src="images/wechat-qr-code.png" alt="微信支付二维码" class="pixelated">
-                        <p>微信支付</p>
+                        <p><i class="fab fa-weixin"></i> 微信支付</p>
                     </div>
                     <div class="qr-code">
                         <img src="images/alipay-qr-code.png" alt="支付宝二维码" class="pixelated">
-                        <p>支付宝</p>
+                        <p><i class="fab fa-alipay"></i> 支付宝</p>
                     </div>
                 </div>
             </div>
@@ -393,10 +443,43 @@
         <div class="Canvas" style="position: fixed; left: 10px; bottom: 10px; z-index: 1" id="L2dCanvas"></div>
     </main>
     <footer>
-        <p>本网站由 <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img
-                    src="images/又拍云_logo5.png" alt="又拍云" style="height: 30px; vertical-align: middle;"></a> 提供 CDN
-            加速</p>
-        <p>&copy; 2024 zygame1314 - 版权所有 | <a href="https://beian.miit.gov.cn" target="_blank">陇ICP备2024013799号</a></p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="social-links">
+                    <a href="#contact" class="social-icon" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#contact" class="social-icon scroll-to">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="#contact" class="social-icon scroll-to">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p class="copyright">
+                    <i class="far fa-copyright"></i> 2024 zygame1314 - 版权所有
+                </p>
+                <p class="beian">
+                    <a href="https://beian.miit.gov.cn" target="_blank">
+                        <i class="fas fa-shield-alt"></i> 陇ICP备2024013799号
+                    </a>
+                    <a href="https://icp.gov.moe/?keyword=20244884" target="_blank">
+                        <i class="fas fa-heart"></i> 萌ICP备20244884号
+                    </a>
+                </p>
+            </div>
+            <div class="footer-section">
+                <p class="cdn-support">
+                    <i class="fas fa-cloud"></i> 本网站由
+                    <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">
+                        <img src="images/又拍云_logo5.png" alt="又拍云" style="height: 30px; vertical-align: middle;">
+                    </a>
+                    提供 CDN 加速/云存储服务
+                </p>
+            </div>
+        </div>
     </footer>
 
     <script src="js/avInit.js"></script>
@@ -408,10 +491,10 @@
     <script src="js/clouds.js"></script>
     <script src="js/cursorTrail.js"></script>
     <script src="js/timeline.js"></script>
-    <script src="js/weatherWidget.js"></script>
     <script src="js/gamesFetch.js"></script>
     <script src="js/pongGame.js"></script>
     <script src="js/comment.js"></script>
+    <script src="js/weatherWidget.js"></script>
     <script src="js/pageViews.js"></script>
     <script src="js/fetchCode.js"></script>
     <script src="js/donate.js"></script>

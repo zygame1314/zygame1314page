@@ -17,6 +17,75 @@
     box-shadow: 0 2px 5px rgba(255, 204, 0, 0.4);
 }
 
+.notice-area {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 1.5rem;
+    border: 3px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.notice-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.notice-title i {
+    color: var(--secondary-color);
+}
+
+.notice-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-left: 3px solid var(--primary-color);
+}
+
+.notice-content p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+    display: block;
+}
+
+.notice-content i {
+    color: var(--secondary-color);
+    margin-right: 0.75rem;
+    width: 1.25rem;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.notice-content p>span:not(.highlight) {
+    white-space: nowrap;
+}
+
+.warning i {
+    color: #ffc107;
+}
+
+.step-number {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.highlight {
+    padding: 0 0.25rem;
+    color: var(--secondary-color);
+    font-weight: bold;
+    display: inline;
+}
+
+.notice-area:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 204, 0, 0.15);
+    border-color: var(--secondary-color);
+}
+
 .project-actions {
     display: flex;
     justify-content: center;

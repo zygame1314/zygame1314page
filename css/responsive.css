@@ -9,6 +9,18 @@
         font-size: 1.5em;
     }
 
+    .project-card h3 {
+        font-size: 20px;
+    }
+
+    .game-item .game-info h3 {
+        font-size: 16px;
+    }
+
+    .glitch {
+        font-size: 28px;
+    }
+
     nav {
         position: sticky;
         width: 100%;
@@ -16,21 +28,24 @@
         left: 0;
     }
 
-    section {
-        scroll-margin-top: 300px;
-    }
-
     nav ul {
-        flex-direction: column;
-        align-items: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
     }
 
     nav ul li {
-        margin: 10px 0;
+        margin: 5px 0;
+        width: calc(33.33% - 10px);
+        min-width: 100px;
+        text-align: center;
     }
 
     nav ul li a {
-        font-size: 16px;
+        font-size: 14px;
+        display: block;
     }
 
     .sidebar,
@@ -39,7 +54,8 @@
     .games-list,
     .steam-games-list,
     .game-item,
-    #games h2 {
+    #games h2,
+    .weather-widget {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -53,7 +69,8 @@
     .steam-games-list .game-item,
     .game-item a.button,
     #weather,
-    #home .text-container {
+    #home .text-container,
+    .visit-counter-widget {
         width: 90%;
     }
 
@@ -77,6 +94,10 @@
         gap: 15px;
     }
 
+    .social-links {
+        gap: 20px;
+    }
+
     .project-card img,
     .game-item img {
         height: auto;
@@ -87,19 +108,14 @@
         margin-bottom: 10px;
     }
 
-    .project-card h3 {
-        font-size: 20px;
+    #home .avatar {
+        width: 120px;
+        height: 120px;
     }
 
-    .game-item .game-info h3 {
-        font-size: 16px;
-    }
-
-    .game-item .game-info,
-    .typing-effect {
-        align-items: center;
-        text-align: center;
-        font-size: 14px;
+    .weather-icon img {
+        width: 60px;
+        height: 60px;
     }
 
     .button {
@@ -118,32 +134,13 @@
         text-overflow: ellipsis;
     }
 
-    #home .avatar {
-        width: 120px;
-        height: 120px;
-    }
-
-    .glitch {
-        font-size: 28px;
-    }
-
-    .typing-effect {
-        letter-spacing: 0.1em;
-    }
-
     #weather {
         margin-top: 20px;
     }
 
     .weather-widget {
         flex-direction: row;
-        align-items: center;
         justify-content: center;
-    }
-
-    .weather-icon img {
-        width: 60px;
-        height: 60px;
     }
 
     .weather-info {
@@ -152,16 +149,38 @@
         text-align: left;
     }
 
-    footer p {
+    footer {
+        padding: 10px 0;
+    }
+
+    .footer-content {
+        padding: 0 15px;
+    }
+
+    .social-icon {
+        font-size: 20px;
+    }
+
+    .beian a {
+        display: block;
+        margin: 10px auto;
+        width: fit-content;
+    }
+
+    .cdn-support {
+        flex-direction: column;
+        text-align: center;
         font-size: 12px;
+        gap: 10px;
+    }
+
+    section {
+        scroll-margin-top: 300px;
+        margin-bottom: 50px;
     }
 
     header {
         padding: 50px 0;
-    }
-
-    section {
-        margin-bottom: 50px;
     }
 
     #about,
@@ -173,14 +192,8 @@
         font-size: 14px;
     }
 
-    .project-actions .button,
-    #games h2 button {
-        margin-top: 10px;
-    }
-
     .visit-counter-widget {
         position: static;
-        width: 90%;
         margin: 20px auto;
         animation: none;
         backdrop-filter: none;
@@ -228,5 +241,24 @@
     .milestone-content::before {
         left: -33px;
         width: 30px;
+    }
+
+    .notice-content {
+        padding: 0.75rem;
+    }
+
+    .notice-content p {
+        margin: 0.5rem 0;
+    }
+
+    .game-item .game-info,
+    .typing-effect {
+        align-items: center;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .typing-effect {
+        letter-spacing: 0.1em;
     }
 }

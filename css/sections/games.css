@@ -58,6 +58,10 @@
 
 .game-item .game-info {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     cursor: url('../../images/cursors/kushala text select.cur'), auto;
 }
 
