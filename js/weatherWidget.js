@@ -25,41 +25,77 @@ function initWeatherWidget() {
     }
 
     function getLocation() {
-        const geoLocationPromise = new Promise((resolve, reject) => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        resolve({
-                            ...position,
-                            source: 'GPS'
-                        });
-                    },
-                    reject,
-                    {
-                        enableHighAccuracy: false,
-                        timeout: 3000,
-                        maximumAge: 300000
+        // 先尝试GPS定位
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    position.source = 'GPS';
+                    try {
+                        const address = await getLocationDetails(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        );
+
+                        let locationText = '未知位置';
+                        if (address) {
+                            const state = address.state || '';
+                            const city = address.city || address.town || address.village || '';
+                            locationText = state + (city ? city : '');
+                        }
+
+                        showNotification(`✨ 已通过浏览器精准定位~ <br>在：${locationText}`, 4, 'success');
+                        showPosition(position);
+                    } catch (error) {
+                        console.error('GPS定位详情获取失败，尝试IP定位', error);
+                        fallbackToIP();
                     }
-                );
-            } else {
-                reject(new Error('浏览器不支持地理位置'));
-            }
-        });
-
-        const ipLocationPromise = getLocationByIP();
-
-        Promise.race([geoLocationPromise, ipLocationPromise])
-            .then(position => {
-                let message = '';
-                if (position.source === 'GPS') {
-                    message = `✨ 已通过浏览器精准定位~ <br>坐标：${position.coords.latitude.toFixed(2)}°, ${position.coords.longitude.toFixed(2)}°`;
-                } else {
-                    message = `🌏 通过IP悄悄定位到你啦~ <br>大致在：${position.coords.latitude.toFixed(2)}°, ${position.coords.longitude.toFixed(2)}°`;
+                },
+                (error) => {
+                    console.log('GPS定位失败，尝试IP定位', error);
+                    fallbackToIP();
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 3000,
+                    maximumAge: 300000
                 }
-                showNotification(message, 4, 'success');
-                showPosition(position);
-            })
-            .catch(error => showError(error));
+            );
+        } else {
+            fallbackToIP();
+        }
+    }
+
+    async function fallbackToIP() {
+        try {
+            const position = await getLocationByIP();
+            const address = await getLocationDetails(
+                position.coords.latitude,
+                position.coords.longitude
+            );
+
+            let locationText = '未知位置';
+            if (address) {
+                const state = address.state || '';
+                const city = address.city || address.town || address.village || '';
+                locationText = state + (city ? city : '');
+            }
+
+            showNotification(`📍 GPS定位未能成功，已通过IP定位到你的大致位置~ <br>似乎在：${locationText}`, 4, 'info');
+            showPosition(position);
+        } catch (error) {
+            showError(error);
+        }
+    }
+
+    async function getLocationDetails(lat, lon) {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+            const data = await response.json();
+            return data.address;
+        } catch (error) {
+            console.error('获取地理位置详情失败', error);
+            return null;
+        }
     }
 
     function showPosition(position) {

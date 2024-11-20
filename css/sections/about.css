@@ -4,3 +4,44 @@
     border: 3px solid var(--primary-color);
     text-align: center;
 }
+
+#about p {
+    font-size: 18px;
+    line-height: 2;
+    margin: 15px auto;
+    padding: 10px;
+    position: relative;
+    color: var(--primary-color);
+    text-shadow:
+        2px 2px 0 var(--background-color),
+        -1px -1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    max-width: 300px;
+}
+
+#about p:hover {
+    transform: translateY(-2px);
+    color: var(--secondary-color);
+}
+
+#about p::before,
+#about p::after {
+    content: '★';
+    color: var(--primary-color);
+    position: absolute;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+#about p::before {
+    left: -20px;
+}
+
+#about p::after {
+    right: -20px;
+}
+
+#about p:hover::before,
+#about p:hover::after {
+    opacity: 1;
+}

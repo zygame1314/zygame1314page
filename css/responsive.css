@@ -175,7 +175,7 @@
     }
 
     section {
-        scroll-margin-top: 300px;
+        scroll-margin-top: 150px;
         margin-bottom: 50px;
     }
 
@@ -260,5 +260,20 @@
 
     .typing-effect {
         letter-spacing: 0.1em;
+    }
+
+    .modal-content .qr-codes {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .modal-content .qr-code img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
     }
 }
