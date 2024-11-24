@@ -1,13 +1,36 @@
+function getDeviceFingerprint() {
+    const screenInfo = `${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`;
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const language = navigator.language;
+    const platform = navigator.platform;
+
+    return `${screenInfo}-${timeZone}-${language}-${platform}`;
+}
+
+function generateActivationCode() {
+    const deviceInfo = getDeviceFingerprint();
+    const timestamp = Math.floor(Date.now() / (1000 * 3600 * 4));
+    const raw = deviceInfo + timestamp;
+
+    let hash = 0;
+    for (let i = 0; i < raw.length; i++) {
+        const char = raw.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+
+    const code = Math.abs(hash).toString(36).toUpperCase().slice(0, 8);
+    return code;
+}
+
 function fetchActivationCode() {
-    AV.Cloud.run('getCurrentActivationCode')
-        .then(function (result) {
-            const activationCode = result.code;
-            document.getElementById('activation-code-value').textContent = activationCode;
-        })
-        .catch(function (error) {
-            console.error('Failed to fetch activation code:', error);
-            document.getElementById('activation-code-value').textContent = '获取失败';
-        });
+    try {
+        const activationCode = generateActivationCode();
+        document.getElementById('activation-code-value').textContent = activationCode;
+    } catch (error) {
+        console.error('生成激活码失败:', error);
+        document.getElementById('activation-code-value').textContent = '获取失败';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -28,10 +28,27 @@ function initWeatherWidget() {
         // 先尝试GPS定位
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+                async (position) => {
                     position.source = 'GPS';
-                    showNotification(`✨ 已通过浏览器精准定位~`, 4, 'success');
-                    showPosition(position);
+                    try {
+                        const address = await getLocationDetails(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        );
+
+                        let locationText = '未知位置';
+                        if (address) {
+                            const state = address.state || '';
+                            const city = address.city || address.town || address.village || '';
+                            locationText = state + (city ? city : '');
+                        }
+
+                        showNotification(`✨ 已通过浏览器精准定位~ <br>在：${locationText}`, 4, 'success');
+                        showPosition(position);
+                    } catch (error) {
+                        console.error('GPS定位详情获取失败，尝试IP定位', error);
+                        fallbackToIP();
+                    }
                 },
                 (error) => {
                     console.log('GPS定位失败，尝试IP定位', error);
@@ -51,10 +68,33 @@ function initWeatherWidget() {
     async function fallbackToIP() {
         try {
             const position = await getLocationByIP();
-            showNotification(`📍 GPS定位未能成功，已通过IP定位到你的大致位置~`, 4, 'info');
+            const address = await getLocationDetails(
+                position.coords.latitude,
+                position.coords.longitude
+            );
+
+            let locationText = '未知位置';
+            if (address) {
+                const state = address.state || '';
+                const city = address.city || address.town || address.village || '';
+                locationText = state + (city ? city : '');
+            }
+
+            showNotification(`📍 GPS定位未能成功，已通过IP定位到你的大致位置~ <br>似乎在：${locationText}`, 4, 'info');
             showPosition(position);
         } catch (error) {
             showError(error);
+        }
+    }
+
+    async function getLocationDetails(lat, lon) {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+            const data = await response.json();
+            return data.address;
+        } catch (error) {
+            console.error('获取地理位置详情失败', error);
+            return null;
         }
     }
 
