@@ -28,6 +28,22 @@
     transition: transform 0.5s ease-out;
 }
 
+.rain-drop {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 2px;
+    height: 10px;
+    pointer-events: none;
+}
+
+.snow-flake {
+    position: absolute;
+    background-color: #fff;
+    width: 4px;
+    height: 4px;
+    pointer-events: none;
+}
+
 .cursor-trail {
     position: fixed;
     top: 0;

@@ -26,6 +26,149 @@
     }
 }
 
+.haze-particle {
+    position: absolute;
+    background-color: rgba(169, 169, 169, 0.3);
+    border-radius: 50%;
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+@keyframes mistFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20px, -10px);
+    }
+}
+
+@keyframes smokeRise {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(30px, -100px) scale(1.5);
+    }
+}
+
+@keyframes hazeFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    50% {
+        transform: translate(40px, -20px) rotate(5deg);
+    }
+}
+
+@keyframes dustWhirl {
+    0% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    100% {
+        transform: translate(50px, -30px) rotate(360deg);
+    }
+}
+
+@keyframes fogRoll {
+    0% {
+        transform: translate(-20px, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(20px, -10px) scale(1.1);
+    }
+
+    100% {
+        transform: translate(-20px, 0) scale(1);
+    }
+}
+
+@keyframes sandDrift {
+    0% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    100% {
+        transform: translate(100px, 20px) rotate(720deg);
+    }
+}
+
+@keyframes ashFall {
+    0% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes rainfall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes splash {
+    0% {
+        transform: translate(0, 0) scale(0.1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: var(--splash-direction) scale(1);
+        opacity: 0;
+    }
+}
+
+.splash-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: var(--current-opacity);
+    }
+
+    85% {
+        opacity: var(--current-opacity);
+    }
+
+    100% {
+        transform: translateY(100vh) translateX(20px);
+        opacity: 0;
+    }
+}
+
+@keyframes snowDrift {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
 .glitch-container {
     position: relative;
 }

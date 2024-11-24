@@ -4,7 +4,7 @@
 <script src="https://npm.onmicrosoft.cn/valine@1.5.2/dist/Valine.min.js"></script>
 <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
 <script src="https://cdn.jsdmirror.com/npm/pixi.js@4.6.1/dist/pixi.min.js"></script>
-<script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.2/live2dv3.min.js"></script>
+<script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/live2dv3.min.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@
     </div>
     <header>
         <div class="glitch-container">
-            <h1 class="glitch" data-text="欢迎来到zygame1314的个人主页">欢迎来到zygame1314的个人主页</h1>
+            <h1 class="glitch" data-text="欢迎来到zygame1314的主页">欢迎来到zygame1314的主页</h1>
         </div>
     </header>
     <nav>
@@ -66,8 +66,12 @@
             <div class="card-front">
                 <p id="activation-code" class="activation-code-style">
                     某激活码：<span id="activation-code-value">获取中...</span><br>
-                    每四小时刷新一次
+                    每四小时重新生成一次
                 </p>
+                <div class="button-container">
+                    <button id="refresh-activation-code" class="button-style">刷新</button>
+                    <button id="copy-activation-code" class="button-style">复制</button>
+                </div>
                 <p class="warning-message">
                 <div class="warning-header highlight">
                     <i class="fas fa-exclamation-triangle highlight"></i> 重要提示
@@ -83,10 +87,6 @@
                     </a>
                 </div>
                 </p>
-                <div class="button-container">
-                    <button id="refresh-activation-code" class="button-style">刷新</button>
-                    <button id="copy-activation-code" class="button-style">复制</button>
-                </div>
                 <div class="button-container">
                     <button id="flip-card" class="button-style flip-button">访问次数</button>
                 </div>
@@ -379,6 +379,16 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="milestone">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-content">
+                                <span class="date">2024.11.24</span>
+                                <h3>🔑 优化激活码系统</h3>
+                                <p class="milestone-description">
+                                    今天对激活码生成机制进行了重大改进，将其改为离线生成模式。现在每个设备都能获得独一无二的激活码，不仅提高了安全性，也让验证更加便捷。
+                                </p>
+                            </div>
+                        </div>
                         <div class="milestone future-milestone">
                             <div class="milestone-dot"></div>
                             <div class="milestone-content">
@@ -496,6 +506,7 @@
     <script src="js/pongGame.js"></script>
     <script src="js/comment.js"></script>
     <script src="js/weatherWidget.js"></script>
+    <script src="js/weather-effects.js"></script>
     <script src="js/pageViews.js"></script>
     <script src="js/fetchCode.js"></script>
     <script src="js/donate.js"></script>

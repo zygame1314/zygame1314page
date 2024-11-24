@@ -405,3 +405,11 @@
 .card-back {
     transform: rotateY(180deg);
 }
+
+.visit-counter-widget.flipped .card-front {
+    pointer-events: none;
+}
+
+.visit-counter-widget:not(.flipped) .card-back {
+    pointer-events: none;
+}
