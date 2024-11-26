@@ -1,7 +1,9 @@
 .pixel-stars {
-    position: absolute;
+    position: fixed;
     width: 100%;
-    height: 100%;
+    height: 120vh;
+    top: 0;
+    left: 0;
     background-image:
         radial-gradient(1px 1px at 20px 30px, #fff, rgba(0, 0, 0, 0)),
         radial-gradient(1px 1px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
@@ -12,6 +14,7 @@
     background-repeat: repeat;
     background-size: 200px 200px;
     animation: twinkle 5s infinite;
+    z-index: -1;
 }
 
 @keyframes twinkle {
@@ -414,6 +417,34 @@
 
     to {
         width: 100%
+    }
+}
+
+@keyframes pixel-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes pixel-shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-2px);
+    }
+
+    75% {
+        transform: translateX(2px);
     }
 }
 

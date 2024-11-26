@@ -47,4 +47,55 @@ document.addEventListener('DOMContentLoaded', function () {
             closeModal();
         }
     });
+
+    function updateDayTip() {
+        const dayTip = document.getElementById('day-tip');
+        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const date = String(today.getDate()).padStart(2, '0');
+        const dateString = `${year}-${month}-${date}`;
+
+        const daysUntilThursday = (4 - dayOfWeek + 7) % 7;
+
+        const moodEmojis = {
+            0: ['🎉', '🍗', '🎊', '💖'],
+            1: ['😴', '💤', '🥱', '😪'],
+            2: ['🌱', '🌿', '🍀', '🌺'],
+            3: ['⏰', '📅', '🗓️', '✨'],
+            4: ['🙏', '✌️', '🤞', '💫'],
+            5: ['🎵', '🎶', '🎼', '🎸'],
+            6: ['📚', '☕', '💻', '🎮'],
+        };
+
+        const randomEmoji = arr => arr[Math.floor(Math.random() * arr.length)];
+        const todayMood = moodEmojis[daysUntilThursday];
+
+        if (dayOfWeek === 4) {
+            const phrases = [
+                '今天是疯狂星期四！冲鸭！',
+                '去KFC整点薯条吗朋友！',
+                '今天是肯德基疯狂星期四！'
+            ];
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            dayTip.innerHTML = `${randomEmoji(todayMood)} ${dateString} ${randomPhrase}`;
+            dayTip.classList.add('thursday');
+            dayTip.style.color = '#e4393c';
+        } else {
+            const waitingPhrases = [
+                `距v我50还有${daysUntilThursday}天！`,
+                `${daysUntilThursday}天后又是疯狂星期四！`,
+            ];
+            const randomWaitPhrase = waitingPhrases[Math.floor(Math.random() * waitingPhrases.length)];
+            dayTip.innerHTML = `${randomEmoji(todayMood)} ${dateString} 星期${days[dayOfWeek]}<br>${randomWaitPhrase}`;
+            dayTip.classList.remove('thursday');
+        }
+    }
+
+    updateDayTip();
+
+    setInterval(updateDayTip, 60000);
 });
