@@ -6,78 +6,30 @@ function initWeatherWidget() {
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
     weatherIconElem.src = defaultIconURL;
 
-    async function getHighAccuracyPosition() {
-        return new Promise((resolve, reject) => {
-            if (!navigator.geolocation) {
-                reject(new Error('浏览器不支持定位'));
-                return;
-            }
-
-            const options = {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 30000
-            };
-
-            navigator.geolocation.getCurrentPosition(resolve, reject, options);
-        });
-    }
-
-    async function getBestLocation(retryCount = 2) {
-        showNotification('📍 正在获取精确位置...', 2, 'info');
-        try {
-            const position = await getHighAccuracyPosition();
-            showNotification('✨ 已完成高精度定位', 2, 'success');
-            return position;
-        } catch (error) {
-            console.log('高精度定位失败，尝试普通定位', error);
-            try {
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(
-                        resolve,
-                        reject,
-                        {
-                            enableHighAccuracy: false,
-                            timeout: 5000,
-                            maximumAge: 300000
-                        }
-                    );
-                });
-                showNotification('✨ 已完成普通精度定位', 2, 'success');
-                return position;
-            } catch (error) {
-                if (retryCount > 0) {
-                    console.log(`定位失败，剩余重试次数: ${retryCount}`);
-                    return getBestLocation(retryCount - 1);
-                }
-                console.log('所有定位方式失败，使用IP定位');
-                return getLocationByIP();
-            }
-        }
-    }
-
     async function getLocationByIP() {
+        showNotification('📍 正在获取位置...', 2, 'info');
         try {
             const response = await fetch('https://ipapi.co/json/');
             const data = await response.json();
+            showNotification('✨ 已完成定位', 2, 'success');
             return {
                 coords: {
                     latitude: data.latitude,
                     longitude: data.longitude
-                },
-                source: 'IP'
+                }
             };
         } catch (error) {
+            console.error('IP定位失败', error);
             throw error;
         }
     }
 
     function getLocation() {
-        getBestLocation()
+        getLocationByIP()
             .then(showPosition)
             .catch(error => {
-                console.error('所有定位方式均失败', error);
-                showError(error);
+                console.error('定位失败', error);
+                temperatureElem.textContent = "获取位置失败";
             });
     }
 
@@ -86,23 +38,6 @@ function initWeatherWidget() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         fetchWeatherData(lat, lon);
-    }
-
-    function showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                temperatureElem.textContent = "定位未授权";
-                break;
-            case error.POSITION_UNAVAILABLE:
-                temperatureElem.textContent = "无法获取位置";
-                break;
-            case error.TIMEOUT:
-                temperatureElem.textContent = "定位超时";
-                break;
-            case error.UNKNOWN_ERROR:
-                temperatureElem.textContent = "未知错误";
-                break;
-        }
     }
 
     function fetchWeatherData(lat, lon) {
