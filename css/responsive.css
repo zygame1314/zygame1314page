@@ -48,11 +48,63 @@
         display: block;
     }
 
+    #weather {
+        padding: 15px;
+        margin: 0 10px;
+    }
+
+    .weather-main {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .weather-main,
+    .weather-primary,
+    .weather-item,
+    .weather-item p {
+        text-align: center;
+    }
+
+    .weather-icon img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .weather-primary .temperature {
+        font-size: 2em;
+    }
+
+    .weather-primary .description {
+        font-size: 1.1em;
+    }
+
+    .weather-details {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 10px 0;
+    }
+
+    .weather-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 8px;
+        min-height: 70px;
+    }
+
+    .weather-item .label {
+        font-size: 0.8em;
+        margin-bottom: 4px;
+    }
+
+    .weather-item p {
+        font-size: 0.9em;
+    }
+
     .sidebar,
     .content-container,
     .project-list,
     .games-list,
-    .steam-games-list,
     .game-item,
     #games h2,
     .weather-widget {
@@ -66,9 +118,7 @@
     .project-card,
     .project-actions .button,
     .games-list .game-item,
-    .steam-games-list .game-item,
     .game-item a.button,
-    #weather,
     #home .text-container,
     .visit-counter-widget {
         width: 90%;
@@ -83,14 +133,12 @@
     .project-card,
     .tutorial-item,
     .games-list .game-item,
-    .steam-games-list .game-item,
     #home .text-container {
         margin-bottom: 20px;
     }
 
     .project-list,
-    .games-list,
-    .steam-games-list {
+    .games-list {
         gap: 15px;
     }
 
