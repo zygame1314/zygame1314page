@@ -1,5 +1,5 @@
 AV.init({
-    appId: 'cj8zZ6A5m4PGXeo4ZbXMiYjQ-MdYXbMMI',
-    appKey: 'lRmp8XNj4rN1zewkdBMVT9pr',
-    serverURLs: 'https://api.zygame1314.site'
+    appId: 'jZKMV4DSlNi3Hro9bkFPDGja-gzGzoHsz',
+    appKey: 'e3Su0yTx9QXt6IqLs8lXq1Hr',
+    serverURLs: 'https://pageapi.zygame1314.site'
 });
