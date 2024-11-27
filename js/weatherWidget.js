@@ -9,15 +9,19 @@ function initWeatherWidget() {
     async function getLocationByIP() {
         showNotification('📍 正在获取位置...', 2, 'info');
         try {
-            const response = await fetch('https://ipapi.co/json/');
+            const response = await fetch('http://ip-api.com/json/?lang=zh-CN');
             const data = await response.json();
-            showNotification('✨ 已完成定位', 2, 'success');
-            return {
-                coords: {
-                    latitude: data.latitude,
-                    longitude: data.longitude
-                }
-            };
+            if (data.status === 'success') {
+                showNotification('✨ 已完成定位', 2, 'success');
+                return {
+                    coords: {
+                        latitude: data.lat,
+                        longitude: data.lon
+                    }
+                };
+            } else {
+                throw new Error('IP定位失败');
+            }
         } catch (error) {
             console.error('IP定位失败', error);
             throw error;
