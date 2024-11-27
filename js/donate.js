@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
             dayTip.innerHTML = `${randomEmoji(todayMood)} ${dateString} ${randomPhrase}`;
             dayTip.classList.add('thursday');
-            dayTip.style.color = '#e4393c';
+            dayTip.style.color = '#FFD700';
         } else {
             const waitingPhrases = [
                 `距v我50还有${daysUntilThursday}天！`,
