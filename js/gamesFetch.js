@@ -53,15 +53,36 @@ function initGamesFetch() {
             const gameTitle = document.createElement('h3');
             gameTitle.textContent = game.name || '未知游戏';
 
-            const gameRelease = document.createElement('p');
-            gameRelease.textContent = `发行日期：${game.released || '未知'}`;
+            const priceInfo = document.createElement('p');
+            if (game.discounted) {
+                const originalPrice = (game.original_price / 100).toFixed(2);
+                const finalPrice = (game.final_price / 100).toFixed(2);
+                priceInfo.innerHTML = `
+                    <span class="original-price">¥${originalPrice}</span>
+                    <span class="discount">-${game.discount_percent}%</span>
+                    <span class="final-price">¥${finalPrice}</span>
+                `;
+            } else {
+                const price = (game.original_price / 100).toFixed(2);
+                priceInfo.textContent = `¥${price}`;
+            }
 
-            const gameRating = document.createElement('p');
-            gameRating.textContent = `评分：${game.rating || '暂无评分'}`;
+            const platformInfo = document.createElement('p');
+            const platforms = [];
+            if (game.windows_available) platforms.push('Windows');
+            if (game.mac_available) platforms.push('Mac');
+            if (game.linux_available) platforms.push('Linux');
+            platformInfo.textContent = `支持平台: ${platforms.join(', ')}`;
+
+            if (game.controller_support) {
+                const controllerInfo = document.createElement('p');
+                controllerInfo.textContent = `支持手柄: ${game.controller_support === 'full' ? '完全支持' : '部分支持'}`;
+                gameInfo.appendChild(controllerInfo);
+            }
 
             gameInfo.appendChild(gameTitle);
-            gameInfo.appendChild(gameRelease);
-            gameInfo.appendChild(gameRating);
+            gameInfo.appendChild(priceInfo);
+            gameInfo.appendChild(platformInfo);
 
             gameItem.appendChild(gameImage);
             gameItem.appendChild(gameInfo);
