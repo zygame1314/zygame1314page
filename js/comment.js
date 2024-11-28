@@ -26,7 +26,3 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-setTimeout(() => {
-    document.querySelector('.wl-nick')?.setAttribute('placeholder', '昵称/QQ');
-}, 1000);

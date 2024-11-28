@@ -123,11 +123,12 @@
     .project-actions .button,
     .games-list .game-item,
     .game-item a.button,
-    #weather,
     #home .text-container {
         width: 100%;
     }
 
+    #weather,
+    #donate-button-section,
     .visit-counter-widget {
         width: 90%;
     }
@@ -152,6 +153,7 @@
     .project-list,
     .games-list {
         gap: 15px;
+        overflow-x: hidden;
     }
 
     .social-links {
