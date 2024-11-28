@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "#about": "一行诗韵承载梦想，一段代码编织未来；漫漫旅途记录成长，人生如诗静待绽放……",
             "#contact": "发邮件，加QQ，逛Github还是一起steam？",
             "#weather": "当前天气情况，数据来源于OpenWeatherMap。",
-            "#games": "最近的热门游戏，数据来源于RAWG。",
+            "#games": "最近的热门游戏，数据来源于Steam。",
             "#steam-games": "我最近在玩的游戏，有没有和你一样的呢？",
             ".visit-counter-widget": "点击翻转卡片，查看更多信息~",
             "#donate-button-section": "如果你喜欢我的项目，可以考虑捐赠支持一下~",
