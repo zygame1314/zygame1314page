@@ -121,6 +121,22 @@
     background-color: #2a2a2a;
 }
 
+.game-info .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 8px;
+}
+
+.game-info .discount {
+    color: #a4d007;
+    margin-right: 8px;
+}
+
+.game-info .final-price {
+    color: #fff;
+    font-weight: bold;
+}
+
 .steam-games-list {
     display: flex;
     flex-wrap: wrap;
