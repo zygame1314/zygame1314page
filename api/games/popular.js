@@ -28,7 +28,13 @@ export default async function handler(req, res) {
 
         const parsedData = JSON.parse(data);
 
-        const popularGames = parsedData.featured_win
+        const uniqueGames = Array.from(
+            new Map(
+                parsedData.featured_win.map(game => [game.id, game])
+            ).values()
+        );
+
+        const popularGames = uniqueGames
             .slice(0, gamesPerPage)
             .map(game => ({
                 id: game.id,
