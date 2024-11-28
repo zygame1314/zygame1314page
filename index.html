@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <script src="https://cdn.jsdmirror.com/npm/leancloud-storage@latest/dist/av-min.js"></script>
-<script src="https://npm.onmicrosoft.cn/valine@1.5.2/dist/Valine.min.js"></script>
 <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
 <script src="https://cdn.jsdmirror.com/npm/pixi.js@4.6.1/dist/pixi.min.js"></script>
 <script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/live2dv3.min.js"></script>
@@ -92,7 +91,9 @@
                 </div>
             </div>
             <div class="card-back">
-                <p id="visit-count" class="counter-style">访问次数: 0</p>
+                <p id="visit-count">
+                    访问次数: <span class="waline-pageview-count">0</span>
+                </p>
                 <div class="button-container">
                     <button id="flip-back" class="button-style">激活码</button>
                 </div>
@@ -404,7 +405,7 @@
                 </section>
                 <section id="comments">
                     <h2 class="pixel-text">评论区</h2>
-                    <div id="vcomments"></div>
+                    <div id="waline"></div>
                 </section>
             </div>
             <aside class="sidebar">
@@ -526,7 +527,6 @@
         </div>
     </footer>
 
-    <script src="js/avInit.js"></script>
     <script src="js/showNotification.js"></script>
     <script src="js/smoothScroll.js"></script>
     <script src="js/typingEffect.js"></script>
@@ -537,7 +537,6 @@
     <script src="js/timeline.js"></script>
     <script src="js/gamesFetch.js"></script>
     <script src="js/pongGame.js"></script>
-    <script src="js/comment.js"></script>
     <script src="js/weatherWidget.js"></script>
     <script src="js/weather-effects.js"></script>
     <script src="js/pageViews.js"></script>
@@ -546,6 +545,7 @@
     <script src="js/live2dTextBox.js"></script>
     <script src="js/detectDevTools.js"></script>
     <script src="js/main.js"></script>
+    <script type="module" src="js/comment.js"></script>
 </body>
 
 </html>

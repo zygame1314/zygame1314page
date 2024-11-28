@@ -48,9 +48,13 @@
         display: block;
     }
 
+    main {
+        padding: 0;
+    }
+
     #weather {
         padding: 15px;
-        margin: 0 10px;
+        margin: 0;
     }
 
     .weather-main {
@@ -119,7 +123,11 @@
     .project-actions .button,
     .games-list .game-item,
     .game-item a.button,
-    #home .text-container,
+    #weather,
+    #home .text-container {
+        width: 100%;
+    }
+
     .visit-counter-widget {
         width: 90%;
     }
@@ -135,6 +143,10 @@
     .games-list .game-item,
     #home .text-container {
         margin-bottom: 20px;
+    }
+
+    .project-card {
+        margin: 0%;
     }
 
     .project-list,
@@ -223,6 +235,7 @@
     }
 
     section {
+        padding: 15px;
         scroll-margin-top: 150px;
         margin-bottom: 50px;
     }

@@ -1,4 +1,5 @@
 function initWeatherWidget() {
+    const API_BASE = 'https://zygame1314.site';
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
@@ -7,7 +8,9 @@ function initWeatherWidget() {
     async function getLocationByIP() {
         showNotification('📍 正在获取位置...', 2, 'info');
         try {
-            const location = await AV.Cloud.run('getLocationByIP');
+            const response = await fetch(`${API_BASE}/location`);
+            if (!response.ok) throw new Error('Location API error');
+            const location = await response.json();
             showNotification('✨ 已完成定位', 2, 'success');
             return {
                 city: location.city || '武汉市'
@@ -27,19 +30,18 @@ function initWeatherWidget() {
             });
     }
 
-    function getCityWeather(location) {
+    async function getCityWeather(location) {
         console.log('准备请求天气数据', location);
-        AV.Cloud.run('getWeather', {
-            city: location.city
-        })
-            .then(data => {
-                console.log('获取天气数据成功', data);
-                updateWeatherWidget(data);
-            })
-            .catch(error => {
-                console.error('获取天气数据失败', error);
-                temperatureElem.textContent = "获取天气失败";
-            });
+        try {
+            const response = await fetch(`${API_BASE}/weather?city=${encodeURIComponent(location.city)}`);
+            if (!response.ok) throw new Error('Weather API error');
+            const data = await response.json();
+            console.log('获取天气数据成功', data);
+            updateWeatherWidget(data);
+        } catch (error) {
+            console.error('获取天气数据失败', error);
+            temperatureElem.textContent = "获取天气失败";
+        }
     }
 
     function updateWeatherWidget(data) {

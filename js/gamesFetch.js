@@ -1,21 +1,24 @@
 function initGamesFetch() {
     const gamesListElem = document.querySelector('.games-list');
     const refreshButton = document.getElementById('refreshGames');
+    const API_BASE = 'https://zygame1314.site';
 
-    function fetchPopularGames() {
+    async function fetchPopularGames() {
         gamesListElem.innerHTML = '<p>加载中...</p>';
 
-        AV.Cloud.run('fetchPopularGames')
-            .then(data => {
-                const filteredGames = data.results.filter(game => {
-                    return game && Array.isArray(game.tags) && !game.tags.some(tag => tag && tag.slug === 'nsfw');
-                });
-                displayGames(filteredGames);
-            })
-            .catch(error => {
-                console.error('无法获取游戏数据：', error);
-                gamesListElem.innerHTML = "<p>游戏数据暂时不可用，请稍后再试。</p>";
+        try {
+            const response = await fetch(`${API_BASE}/games/popular`);
+            if (!response.ok) throw new Error('API请求失败');
+            const data = await response.json();
+
+            const filteredGames = data.results.filter(game => {
+                return game && Array.isArray(game.tags) && !game.tags.some(tag => tag && tag.slug === 'nsfw');
             });
+            displayGames(filteredGames);
+        } catch (error) {
+            console.error('无法获取游戏数据：', error);
+            gamesListElem.innerHTML = "<p>游戏数据暂时不可用，请稍后再试。</p>";
+        }
     }
 
     function displayGames(games) {
@@ -75,15 +78,17 @@ function initGamesFetch() {
         fetchPopularGames();
     });
 
-    function fetchRecentlyPlayedGames() {
-        AV.Cloud.run('getRecentlyPlayedGames')
-            .then(data => {
-                displaySteamGames(data.response.games);
-            })
-            .catch(error => {
-                console.error('无法获取最近的 Steam 游戏数据：', error);
-                document.querySelector('.steam-games-list').innerHTML = "<p>无法加载最近的 Steam 游戏数据，请稍后再试。</p>";
-            });
+    async function fetchRecentlyPlayedGames() {
+        try {
+            const response = await fetch(`${API_BASE}/games/recent-games`);
+            if (!response.ok) throw new Error('Steam API请求失败');
+            const data = await response.json();
+            displaySteamGames(data.response.games);
+        } catch (error) {
+            console.error('无法获取最近的 Steam 游戏数据：', error);
+            document.querySelector('.steam-games-list').innerHTML =
+                "<p>无法加载最近的 Steam 游戏数据，请稍后再试。</p>";
+        }
     }
 
     function displaySteamGames(games) {
