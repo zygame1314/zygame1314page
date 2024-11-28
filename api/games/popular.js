@@ -1,5 +1,4 @@
 import https from 'https';
-import querystring from 'querystring';
 
 export default async function handler(req, res) {
     if (req.method === 'OPTIONS') {
@@ -7,24 +6,10 @@ export default async function handler(req, res) {
     }
 
     const gamesPerPage = 5;
-    const currentDate = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-
-    const formatDate = (date) => date.toISOString().split('T')[0];
-
-    const params = querystring.stringify({
-        key: process.env.RAWG_API_KEY,
-        dates: `${formatDate(thirtyDaysAgo)},${formatDate(currentDate)}`,
-        ordering: '-added',
-        page_size: gamesPerPage
-    });
-
-    const requestUrl = `https://api.rawg.io/api/games?${params}`;
 
     try {
         const data = await new Promise((resolve, reject) => {
-            https.get(requestUrl, (resp) => {
+            https.get('https://store.steampowered.com/api/featured', (resp) => {
                 let data = '';
 
                 resp.on('data', (chunk) => {
@@ -32,25 +17,34 @@ export default async function handler(req, res) {
                 });
 
                 resp.on('end', () => {
-                    if (resp.statusCode >= 200 && resp.statusCode < 300) {
+                    if (resp.statusCode === 200) {
                         resolve(data);
                     } else {
-                        reject(new Error(`RAWG API Error: ${resp.statusCode}`));
+                        reject(new Error(`Steam API Error: ${resp.statusCode}`));
                     }
                 });
             }).on('error', reject);
         });
 
         const parsedData = JSON.parse(data);
+
+        const popularGames = parsedData.featured_win.slice(0, gamesPerPage).map(game => ({
+            id: game.id,
+            name: game.name,
+            background_image: game.large_capsule_image,
+            released: game.release_date,
+            rating: game.review_score
+        }));
+
         res.status(200).json({
-            results: parsedData.results.slice(0, 5),
-            count: 5
+            results: popularGames,
+            count: popularGames.length
         });
 
     } catch (error) {
-        console.error('RAWG API Error:', error);
+        console.error('Steam API Error:', error);
         res.status(500).json({
-            error: 'Failed to fetch popular games',
+            error: 'Failed to fetch popular Steam games',
             message: error.message
         });
     }
