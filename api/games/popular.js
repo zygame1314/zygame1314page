@@ -29,15 +29,19 @@ export default async function handler(req, res) {
         const parsedData = JSON.parse(data);
 
         const popularGames = parsedData.featured_win
-            .filter(game => game.available_regions?.includes('CN'))
             .slice(0, gamesPerPage)
             .map(game => ({
                 id: game.id,
                 name: game.name,
                 background_image: game.large_capsule_image,
-                released: game.release_date,
-                rating: game.review_score,
-                price_overview: game.price_overview
+                discounted: game.discounted,
+                discount_percent: game.discount_percent,
+                original_price: game.original_price,
+                final_price: game.final_price,
+                windows_available: game.windows_available,
+                mac_available: game.mac_available,
+                linux_available: game.linux_available,
+                controller_support: game.controller_support
             }));
 
         res.status(200).json({
