@@ -5,7 +5,7 @@
             "headers": [
                 {
                     "key": "Access-Control-Allow-Origin",
-                    "value": "https://zygame1314.site"
+                    "value": "(https://zygame1314.site|http://127.0.0.1:5500)"
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
