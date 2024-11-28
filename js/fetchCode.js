@@ -2,6 +2,7 @@ function getDeviceFingerprint() {
     const screenInfo = `${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`;
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const language = navigator.language;
+    const platform = navigator.platform;
 
     return `${screenInfo}-${timeZone}-${language}-${platform}`;
 }
