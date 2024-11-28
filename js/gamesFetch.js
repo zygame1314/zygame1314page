@@ -10,11 +10,7 @@ function initGamesFetch() {
             const response = await fetch(`${API_BASE}/games/popular`);
             if (!response.ok) throw new Error('API请求失败');
             const data = await response.json();
-
-            const filteredGames = data.results.filter(game => {
-                return game && Array.isArray(game.tags) && !game.tags.some(tag => tag && tag.slug === 'nsfw');
-            });
-            displayGames(filteredGames);
+            displayGames(data.results);
         } catch (error) {
             console.error('无法获取游戏数据：', error);
             gamesListElem.innerHTML = "<p>游戏数据暂时不可用，请稍后再试。</p>";
@@ -23,10 +19,11 @@ function initGamesFetch() {
 
     function displayGames(games) {
         gamesListElem.innerHTML = '';
-        if (games.length === 0) {
-            gamesListElem.innerHTML = '<p>本月暂无新游戏发售或无法获取游戏数据。</p>';
+        if (!games || games.length === 0) {
+            gamesListElem.innerHTML = '<p>暂无热门游戏数据。</p>';
             return;
         }
+
         games.forEach(game => {
             if (!game) return;
 
@@ -47,9 +44,7 @@ function initGamesFetch() {
             };
 
             gameImage.addEventListener('click', function () {
-                if (game.slug) {
-                    window.open(`https://rawg.io/games/${game.slug}`, '_blank');
-                }
+                window.open(`https://store.steampowered.com/app/${game.id}`, '_blank');
             });
 
             const gameInfo = document.createElement('div');
@@ -61,8 +56,12 @@ function initGamesFetch() {
             const gameRelease = document.createElement('p');
             gameRelease.textContent = `发行日期：${game.released || '未知'}`;
 
+            const gameRating = document.createElement('p');
+            gameRating.textContent = `评分：${game.rating || '暂无评分'}`;
+
             gameInfo.appendChild(gameTitle);
             gameInfo.appendChild(gameRelease);
+            gameInfo.appendChild(gameRating);
 
             gameItem.appendChild(gameImage);
             gameItem.appendChild(gameInfo);
