@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
     try {
         const data = await new Promise((resolve, reject) => {
-            https.get('https://store.steampowered.com/api/featured', (resp) => {
+            https.get('https://store.steampowered.com/api/featured?cc=cn&l=schinese', (resp) => {
                 let data = '';
 
                 resp.on('data', (chunk) => {
@@ -28,13 +28,17 @@ export default async function handler(req, res) {
 
         const parsedData = JSON.parse(data);
 
-        const popularGames = parsedData.featured_win.slice(0, gamesPerPage).map(game => ({
-            id: game.id,
-            name: game.name,
-            background_image: game.large_capsule_image,
-            released: game.release_date,
-            rating: game.review_score
-        }));
+        const popularGames = parsedData.featured_win
+            .filter(game => game.available_regions?.includes('CN'))
+            .slice(0, gamesPerPage)
+            .map(game => ({
+                id: game.id,
+                name: game.name,
+                background_image: game.large_capsule_image,
+                released: game.release_date,
+                rating: game.review_score,
+                price_overview: game.price_overview
+            }));
 
         res.status(200).json({
             results: popularGames,
@@ -44,7 +48,7 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Steam API Error:', error);
         res.status(500).json({
-            error: 'Failed to fetch popular Steam games',
+            error: '获取热门游戏失败',
             message: error.message
         });
     }
