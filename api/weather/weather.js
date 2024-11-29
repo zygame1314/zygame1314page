@@ -6,11 +6,16 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    try {
-        console.log('原始请求URL:', req.url);
-        console.log('请求参数:', req.query);
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: '方法不允许' });
+    }
 
-        const { lat, lon } = req.query;
+    try {
+        const { lat, lon } = req.body;
+
+        if (!lat || !lon) {
+            throw new Error('缺少经纬度参数');
+        }
 
         const latitude = parseFloat(lat);
         const longitude = parseFloat(lon);
