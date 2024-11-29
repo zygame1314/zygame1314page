@@ -8,7 +8,7 @@ function initWeatherWidget() {
     async function getLocationByIP() {
         showNotification('📍 正在获取位置...', 2, 'info');
         try {
-            const response = await fetch(`${API_BASE}/location`);
+            const response = await fetch(`${API_BASE}/weather/location`);
             if (!response.ok) throw new Error('Location API error');
             const location = await response.json();
             showNotification('✨ 已完成定位', 2, 'success');
@@ -33,7 +33,7 @@ function initWeatherWidget() {
     async function getCityWeather(location) {
         console.log('准备请求天气数据', location);
         try {
-            const response = await fetch(`${API_BASE}/weather?city=${encodeURIComponent(location.city)}`);
+            const response = await fetch(`${API_BASE}/weather/weather?city=${encodeURIComponent(location.city)}`);
             if (!response.ok) throw new Error('Weather API error');
             const data = await response.json();
             console.log('获取天气数据成功', data);
