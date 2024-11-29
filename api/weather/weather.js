@@ -7,33 +7,15 @@ export default async function handler(req, res) {
     }
 
     try {
-        const clientIP = req.headers['x-real-ip'];
-        const apiUrl = `https://restapi.amap.com/v3/ip?ip=${clientIP}&key=${process.env.AMAP_KEY}`;
+        const { lat, lon } = req.query;
 
-        const location = await new Promise((resolve, reject) => {
-            https.get(apiUrl, (response) => {
-                let data = '';
-                response.on('data', (chunk) => data += chunk);
-                response.on('end', () => {
-                    try {
-                        const parsedData = JSON.parse(data);
-                        if (!parsedData || typeof parsedData !== 'object') {
-                            reject(new Error('无效的位置 API 响应'));
-                            return;
-                        }
-                        resolve({
-                            city: parsedData.city,
-                            province: parsedData.province
-                        });
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-            }).on('error', reject);
-        });
+        if (!lat || !lon) {
+            throw new Error('缺少经纬度参数');
+        }
 
         const params = querystring.stringify({
-            q: location.city,
+            lat,
+            lon,
             appid: process.env.WEATHER_API_KEY,
             units: 'metric',
             lang: 'zh_cn'
@@ -53,12 +35,37 @@ export default async function handler(req, res) {
             }).on('error', reject);
         });
 
+        const reverseGeocodingParams = querystring.stringify({
+            lat,
+            lon,
+            key: process.env.AMAP_KEY
+        });
+
+        const location = await new Promise((resolve, reject) => {
+            https.get(`https://restapi.amap.com/v3/geocode/regeo?${reverseGeocodingParams}`, (response) => {
+                let data = '';
+                response.on('data', (chunk) => data += chunk);
+                response.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(data);
+                        if (!parsedData || typeof parsedData !== 'object') {
+                            reject(new Error('无效的位置 API 响应'));
+                            return;
+                        }
+                        resolve({
+                            city: parsedData.regeocode?.addressComponent?.city || '未知城市',
+                            province: parsedData.regeocode?.addressComponent?.province || '未知省份'
+                        });
+                    } catch (e) {
+                        reject(e);
+                    }
+                });
+            }).on('error', reject);
+        });
+
         res.status(200).json({
             location,
-            weather: {
-                ...weatherData,
-                name: location.city
-            }
+            weather: weatherData
         });
 
     } catch (error) {
