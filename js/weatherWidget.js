@@ -5,10 +5,29 @@ function initWeatherWidget() {
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
     weatherIconElem.src = defaultIconURL;
 
+    function getCurrentPosition() {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('浏览器不支持地理定位'));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                position => resolve(position),
+                error => reject(error),
+                { enableHighAccuracy: true }
+            );
+        });
+    }
+
     async function getWeatherData() {
-        showNotification('📍 正在获取天气信息...', 2, 'info');
+        showNotification('📍 正在获取位置信息...', 2, 'info');
         try {
-            const response = await fetch(`${API_BASE}/weather/weather`);
+            const position = await getCurrentPosition();
+            const { latitude, longitude } = position.coords;
+
+            showNotification('🌍 正在获取天气信息...', 2, 'info');
+            const response = await fetch(`${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`);
             if (!response.ok) throw new Error('Weather API error');
             const data = await response.json();
             showNotification('✨ 已获取天气信息', 2, 'success');
