@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const defaultLocation = {
         status: '1',
         rectangle: '116.4074,39.9042,116.4074,39.9042',
-        city: '北京市',
+        city: '北京',
         province: '北京市'
     };
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         const location = {
             lat: 39.9042,
             lon: 116.4074,
-            city: '北京市',
+            city: '北京',
             province: '北京市'
         };
 
@@ -55,11 +55,17 @@ export default async function handler(req, res) {
                 location.lon = parseFloat(coords[0]);
             }
         }
-        if (locationData.city) location.city = locationData.city;
-        if (locationData.province) location.province = locationData.province;
+
+        if (locationData.city) {
+            location.city = locationData.city.replace(/市$/, '');
+        }
+        if (locationData.province) {
+            location.province = locationData.province;
+        }
 
         const params = querystring.stringify({
-            q: location.city,
+            lat: location.lat,
+            lon: location.lon,
             appid: process.env.WEATHER_API_KEY,
             units: 'metric',
             lang: 'zh_cn'
