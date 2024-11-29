@@ -63,28 +63,9 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('API 错误:', error);
-        res.status(200).json({
-            location: {
-                city: 'XX市',
-                province: 'XX市'
-            },
-            weather: {
-                name: 'XX市',
-                main: {
-                    temp: 0,
-                    feels_like: 0,
-                    humidity: 0,
-                    pressure: 1013
-                },
-                weather: [{
-                    id: 800,
-                    description: 'XXXXXX',
-                    icon: '01d'
-                }],
-                wind: {
-                    speed: 0
-                }
-            }
+        res.status(500).json({
+            error: '获取数据失败',
+            message: error.message
         });
     }
 }
