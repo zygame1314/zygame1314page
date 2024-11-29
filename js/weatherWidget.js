@@ -27,17 +27,7 @@ function initWeatherWidget() {
             const { latitude, longitude } = position.coords;
 
             showNotification('🌍 正在获取天气信息...', 2, 'info');
-            const response = await fetch(`${API_BASE}/weather/weather`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    lat: latitude,
-                    lon: longitude
-                })
-            });
-
+            const response = await fetch(`${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`);
             if (!response.ok) throw new Error('Weather API error');
             const data = await response.json();
             showNotification('✨ 已获取天气信息', 2, 'success');
