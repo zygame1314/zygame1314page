@@ -6,6 +6,13 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
+    const defaultLocation = {
+        status: '1',
+        rectangle: '116.4074,39.9042,116.4074,39.9042',
+        city: '北京市',
+        province: '北京市'
+    };
+
     try {
         const clientIP = req.headers['x-real-ip'];
         const locationData = await new Promise((resolve, reject) => {
@@ -17,36 +24,39 @@ export default async function handler(req, res) {
                 response.on('end', () => {
                     try {
                         const parsedData = JSON.parse(data);
-                        if (!parsedData || typeof parsedData !== 'object' || parsedData.status === '0') {
-                            resolve({
-                                status: '1',
-                                rectangle: '116.4074,39.9042,116.4074,39.9042',
-                                city: '北京市',
-                                province: '北京市'
-                            });
+                        if (!parsedData ||
+                            typeof parsedData !== 'object' ||
+                            parsedData.status === '0' ||
+                            Array.isArray(parsedData) ||
+                            !parsedData.rectangle ||
+                            !parsedData.city) {
+                            resolve(defaultLocation);
                             return;
                         }
                         resolve(parsedData);
                     } catch (e) {
-                        reject(e);
+                        resolve(defaultLocation);
                     }
                 });
-            }).on('error', (err) => {
-                resolve({
-                    status: '1',
-                    rectangle: '116.4074,39.9042,116.4074,39.9042',
-                    city: '北京市',
-                    province: '北京市'
-                });
-            });
+            }).on('error', () => resolve(defaultLocation));
         });
 
         const location = {
-            lat: parseFloat(locationData.rectangle?.split(',')[1]) || 39.9042,
-            lon: parseFloat(locationData.rectangle?.split(',')[0]) || 116.4074,
-            city: locationData.city || '北京市',
-            province: locationData.province || '北京市'
+            lat: 39.9042,
+            lon: 116.4074,
+            city: '北京市',
+            province: '北京市'
         };
+
+        if (locationData.rectangle && typeof locationData.rectangle === 'string') {
+            const coords = locationData.rectangle.split(',');
+            if (coords.length >= 2) {
+                location.lat = parseFloat(coords[1]);
+                location.lon = parseFloat(coords[0]);
+            }
+        }
+        if (locationData.city) location.city = locationData.city;
+        if (locationData.province) location.province = locationData.province;
 
         const params = querystring.stringify({
             q: location.city,
