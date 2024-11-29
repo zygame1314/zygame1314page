@@ -8,9 +8,9 @@ export default async function handler(req, res) {
 
     try {
         const clientIP = req.headers['x-real-ip'];
-        const locationData = await new Promise((resolve, reject) => {
-            const apiUrl = `https://restapi.amap.com/v3/ip?ip=${clientIP}&key=${process.env.AMAP_KEY}`;
+        const apiUrl = `https://restapi.amap.com/v3/ip?ip=${clientIP}&key=${process.env.AMAP_KEY}`;
 
+        const location = await new Promise((resolve, reject) => {
             https.get(apiUrl, (response) => {
                 let data = '';
                 response.on('data', (chunk) => data += chunk);
@@ -21,7 +21,10 @@ export default async function handler(req, res) {
                             reject(new Error('无效的位置 API 响应'));
                             return;
                         }
-                        resolve(parsedData);
+                        resolve({
+                            city: parsedData.city,
+                            province: parsedData.province
+                        });
                     } catch (e) {
                         reject(e);
                     }
@@ -61,10 +64,27 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('API 错误:', error);
         res.status(200).json({
-            lat: 39.9042,
-            lon: 116.4074,
-            city: '北京市',
-            province: '北京市'
+            location: {
+                city: 'XX市',
+                province: 'XX市'
+            },
+            weather: {
+                name: 'XX市',
+                main: {
+                    temp: 0,
+                    feels_like: 0,
+                    humidity: 0,
+                    pressure: 1013
+                },
+                weather: [{
+                    id: 800,
+                    description: 'XXXXXX',
+                    icon: '01d'
+                }],
+                wind: {
+                    speed: 0
+                }
+            }
         });
     }
 }
