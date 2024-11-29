@@ -8,7 +8,7 @@ function initWeatherWidget() {
     async function getWeatherData() {
         showNotification('📍 正在获取天气信息...', 2, 'info');
         try {
-            const response = await fetch(`${API_BASE}/weather`);
+            const response = await fetch(`${API_BASE}/weather/weather`);
             if (!response.ok) throw new Error('Weather API error');
             const data = await response.json();
             showNotification('✨ 已获取天气信息', 2, 'success');
