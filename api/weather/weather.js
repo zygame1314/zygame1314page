@@ -7,15 +7,25 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log('原始请求URL:', req.url);
+        console.log('请求参数:', req.query);
+
         const { lat, lon } = req.query;
 
-        if (!lat || !lon) {
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lon);
+
+        if (isNaN(latitude) || isNaN(longitude)) {
+            throw new Error('经纬度参数格式无效');
+        }
+
+        if (!latitude || !longitude) {
             throw new Error('缺少经纬度参数');
         }
 
         const params = querystring.stringify({
-            lat,
-            lon,
+            lat: latitude,
+            lon: longitude,
             appid: process.env.WEATHER_API_KEY,
             units: 'metric',
             lang: 'zh_cn'
