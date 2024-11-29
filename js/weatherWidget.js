@@ -5,42 +5,17 @@ function initWeatherWidget() {
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
     weatherIconElem.src = defaultIconURL;
 
-    async function getLocationByIP() {
-        showNotification('📍 正在获取位置...', 2, 'info');
+    async function getWeatherData() {
+        showNotification('📍 正在获取天气信息...', 2, 'info');
         try {
-            const response = await fetch(`${API_BASE}/weather/location`);
-            if (!response.ok) throw new Error('Location API error');
-            const location = await response.json();
-            showNotification('✨ 已完成定位', 2, 'success');
-            return {
-                city: location.city || '武汉市'
-            };
-        } catch (error) {
-            console.error('IP定位失败', error);
-            throw error;
-        }
-    }
-
-    function getLocation() {
-        getLocationByIP()
-            .then(getCityWeather)
-            .catch(error => {
-                console.error('定位失败', error);
-                temperatureElem.textContent = "获取位置失败";
-            });
-    }
-
-    async function getCityWeather(location) {
-        console.log('准备请求天气数据', location);
-        try {
-            const response = await fetch(`${API_BASE}/weather/weather?city=${encodeURIComponent(location.city)}`);
+            const response = await fetch(`${API_BASE}/weather`);
             if (!response.ok) throw new Error('Weather API error');
             const data = await response.json();
-            console.log('获取天气数据成功', data);
-            updateWeatherWidget(data);
+            showNotification('✨ 已获取天气信息', 2, 'success');
+            return data;
         } catch (error) {
             console.error('获取天气数据失败', error);
-            temperatureElem.textContent = "获取天气失败";
+            throw error;
         }
     }
 
@@ -56,26 +31,29 @@ function initWeatherWidget() {
         const sunriseElem = document.querySelector('.sunrise');
         const sunsetElem = document.querySelector('.sunset');
 
-        const temp = Math.round(data.main.temp);
-        const feelsLike = Math.round(data.main.feels_like);
-        const description = data.weather[0].description;
-        const iconCode = data.weather[0].icon;
+        const weatherData = data.weather;
+        const locationData = data.location;
+
+        const temp = Math.round(weatherData.main.temp);
+        const feelsLike = Math.round(weatherData.main.feels_like);
+        const description = weatherData.weather[0].description;
+        const iconCode = weatherData.weather[0].icon;
         const iconURL = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-        const humidity = data.main.humidity;
-        const windSpeed = Math.round(data.wind.speed * 3.6);
-        const pressure = data.main.pressure;
-        const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString('zh-CN', {
+        const humidity = weatherData.main.humidity;
+        const windSpeed = Math.round(weatherData.wind.speed * 3.6);
+        const pressure = weatherData.main.pressure;
+        const sunrise = new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString('zh-CN', {
             hour: '2-digit',
             minute: '2-digit'
         });
-        const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString('zh-CN', {
+        const sunset = new Date(weatherData.sys.sunset * 1000).toLocaleTimeString('zh-CN', {
             hour: '2-digit',
             minute: '2-digit'
         });
 
         temperatureElem.textContent = `${temp}°C`;
         descriptionElem.textContent = description;
-        locationElem.textContent = data.name || '未知城市';
+        locationElem.textContent = `${locationData.city}`;
         weatherIconElem.src = iconURL;
         feelsLikeElem.textContent = `${feelsLike}°C`;
         humidityElem.textContent = `${humidity}%`;
@@ -84,7 +62,7 @@ function initWeatherWidget() {
         sunriseElem.textContent = sunrise;
         sunsetElem.textContent = sunset;
 
-        const weatherClass = getWeatherClass(data.weather[0].id);
+        const weatherClass = getWeatherClass(weatherData.weather[0].id);
         document.querySelector('.weather-widget').className = `weather-widget ${weatherClass}`;
     }
 
@@ -99,5 +77,12 @@ function initWeatherWidget() {
         return '';
     }
 
-    getLocation();
+    getWeatherData()
+        .then(data => {
+            updateWeatherWidget(data);
+        })
+        .catch(error => {
+            console.error('获取天气信息失败', error);
+            temperatureElem.textContent = "获取天气失败";
+        });
 }
