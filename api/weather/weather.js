@@ -35,38 +35,14 @@ export default async function handler(req, res) {
             }).on('error', reject);
         });
 
-        const reverseGeocodingParams = querystring.stringify({
-            lat,
-            lon,
-            key: process.env.AMAP_KEY
-        });
+        const responseData = {
+            weather: weatherData,
+            location: {
+                city: weatherData.name
+            }
+        };
 
-        const location = await new Promise((resolve, reject) => {
-            https.get(`https://restapi.amap.com/v3/geocode/regeo?${reverseGeocodingParams}`, (response) => {
-                let data = '';
-                response.on('data', (chunk) => data += chunk);
-                response.on('end', () => {
-                    try {
-                        const parsedData = JSON.parse(data);
-                        if (!parsedData || typeof parsedData !== 'object') {
-                            reject(new Error('无效的位置 API 响应'));
-                            return;
-                        }
-                        resolve({
-                            city: parsedData.regeocode?.addressComponent?.city || '未知城市',
-                            province: parsedData.regeocode?.addressComponent?.province || '未知省份'
-                        });
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-            }).on('error', reject);
-        });
-
-        res.status(200).json({
-            location,
-            weather: weatherData
-        });
+        res.status(200).json(responseData);
 
     } catch (error) {
         console.error('API 错误:', error);
