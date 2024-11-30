@@ -13,7 +13,7 @@
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "/api/$1",
+            "dest": "/api/$1.js",
             "headers": {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -24,8 +24,15 @@
             "handle": "filesystem"
         },
         {
-            "src": "/(css|js|images)/(.*)",
-            "dest": "/$1/$2",
+            "src": "/css/(.*)",
+            "dest": "/css/$1.css",
+            "headers": {
+                "cache-control": "public,max-age=31536000,immutable"
+            }
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/js/$1.js",
             "headers": {
                 "cache-control": "public,max-age=31536000,immutable"
             }
