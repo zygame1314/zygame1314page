@@ -16,9 +16,32 @@ document.addEventListener('scroll', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    updateCardHeight();
+    const nav = document.querySelector('nav');
+    const widget = document.querySelector('.visit-counter-widget');
+    const navHeight = nav.offsetHeight;
+    const BUFFER_SPACE = 70; // 增加缓冲空间
+
+    function updateWidgetPosition() {
+        const navRect = nav.getBoundingClientRect();
+        const scrollY = window.scrollY;
+
+        if (navRect.top <= 0) {
+            // 当 nav 固定时，将 widget 移动到 nav 下方更远的位置
+            widget.style.top = (navHeight + BUFFER_SPACE) + 'px';
+        } else {
+            // 初始位置设置得更高一些
+            const initialPosition = 50;
+            widget.style.top = initialPosition + 'px';
+        }
+    }
+
+    window.addEventListener('scroll', function () {
+        requestAnimationFrame(updateWidgetPosition);
+    });
+    updateWidgetPosition();
 
     window.addEventListener('load', updateCardHeight);
+    updateCardHeight();
 });
 
 function updateCardHeight() {

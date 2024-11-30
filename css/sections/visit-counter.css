@@ -346,10 +346,6 @@
     transition: all 0.3s ease;
 }
 
-.nav-fixed .visit-counter-widget {
-    top: 130px;
-}
-
 .visit-counter-widget::before {
     content: '';
     position: absolute;

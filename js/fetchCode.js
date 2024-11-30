@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.getElementById('refresh-activation-code').addEventListener('click', function () {
-    showNotification('激活码已刷新', 5, 'warning');
+    showNotification('激活码已刷新', 2, 'warning');
     fetchActivationCode();
 });
 
@@ -48,14 +48,14 @@ document.getElementById('copy-activation-code').addEventListener('click', functi
     if (activationCodeValue !== '获取中...' && activationCodeValue !== '获取失败') {
         navigator.clipboard.writeText(activationCodeValue)
             .then(() => {
-                showNotification('激活码已复制到剪贴板', 5, 'success');
+                showNotification('激活码已复制到剪贴板', 2, 'success');
             })
             .catch(err => {
                 console.error('复制激活码失败:', 'error');
-                showNotification('复制失败，请重试', 5, 'error');
+                showNotification('复制失败，请重试', 2, 'error');
             });
     } else {
-        showNotification('当前激活码不可用', 5, 'error');
+        showNotification('当前激活码不可用', 2, 'error');
     }
 });
 
