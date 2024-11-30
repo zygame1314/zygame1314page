@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "index.html",
+            "src": "**/*.{html,htm,css,js,jsx,ts,tsx,jpg,jpeg,png,gif,svg,ico,webp,mp3,mp4,wav,pdf,txt,json,xml,woff,woff2,ttf,eot}",
             "use": "@vercel/static"
         },
         {
@@ -19,38 +19,6 @@
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             }
-        },
-        {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/css/(.*)",
-            "dest": "/css/$1.css",
-            "headers": {
-                "cache-control": "public,max-age=31536000,immutable"
-            }
-        },
-        {
-            "src": "/js/(.*)",
-            "dest": "/js/$1.js",
-            "headers": {
-                "cache-control": "public,max-age=31536000,immutable"
-            }
-        },
-        {
-            "src": "/.*",
-            "headers": {
-                "X-Frame-Options": "DENY",
-                "X-Content-Type-Options": "nosniff",
-                "Referrer-Policy": "strict-origin-when-cross-origin",
-                "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
-                "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
-            },
-            "continue": true
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
         }
     ]
 }
