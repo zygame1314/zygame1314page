@@ -13,8 +13,21 @@ function initWeatherWidget() {
             }
 
             navigator.geolocation.getCurrentPosition(
-                position => resolve(position),
-                error => reject(error),
+                position => {
+                    resolve(position);
+                },
+                error => {
+                    if (error.code === error.PERMISSION_DENIED) {
+                        showNotification('🙈 咱也不知道你在哪儿呢~要不打开定位告诉我？', 4, 'warning');
+                        reject(new Error('地理位置权限被拒绝'));
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        showNotification('📡 定位信号不好，要不换个地方试试？', 4, 'error');
+                        reject(error);
+                    } else {
+                        showNotification('⏰ 定位超时了，要不再试一次？', 4, 'error');
+                        reject(error);
+                    }
+                },
                 { enableHighAccuracy: true }
             );
         });
