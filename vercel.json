@@ -12,6 +12,18 @@
     ],
     "routes": [
         {
+            "src": "/css/(.*)",
+            "dest": "/css/$1"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/js/$1"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "/images/$1"
+        },
+        {
             "src": "/api/(.*)",
             "dest": "/api/$1.js",
             "headers": {
@@ -25,8 +37,7 @@
             "dest": "/",
             "headers": {
                 "Cache-Control": "s-maxage=1, stale-while-revalidate"
-            },
-            "continue": true
+            }
         }
     ]
 }
