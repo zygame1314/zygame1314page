@@ -22,7 +22,11 @@
         },
         {
             "src": "/article/(.*)",
-            "dest": "/"
+            "dest": "/",
+            "headers": {
+                "Cache-Control": "s-maxage=1, stale-while-revalidate"
+            },
+            "continue": true
         }
     ]
 }
