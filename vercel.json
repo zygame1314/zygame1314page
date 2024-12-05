@@ -21,12 +21,8 @@
             }
         },
         {
-            "src": "/article/(?!css|js|images)(.*)",
-            "dest": "/"
-        },
-        {
-            "src": "/(css|js|images)/(.*)",
-            "dest": "/$1/$2"
+            "src": "/article/(.*)",
+            "dest": "../index.html"
         }
     ]
 }
