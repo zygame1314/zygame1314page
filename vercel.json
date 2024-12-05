@@ -21,11 +21,27 @@
             }
         },
         {
-            "src": "/article/(?!(?:css|js|images)/)(.*)",
+            "src": "/css/(.*)",
+            "dest": "/css/$1"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/js/$1"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "/images/$1"
+        },
+        {
+            "src": "/articles/(.*)",
+            "dest": "/articles/$1"
+        },
+        {
+            "src": "/article/(.*)",
             "dest": "/index.html"
         },
         {
-            "src": "/(articles|images|css|js|.*\\.(?:js|css|jpg|jpeg|png|gif|ico|json|woff2))$",
+            "src": "/(.*\\.(js|css|jpg|jpeg|png|gif|ico|json|woff2))$",
             "dest": "/$1"
         },
         {
