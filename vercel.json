@@ -21,23 +21,15 @@
             }
         },
         {
-            "src": "^/css/(.*)",
-            "dest": "/css/$1"
+            "src": "/(?:css|js|images|articles)/.*",
+            "dest": "/$0"
         },
         {
-            "src": "^/js/(.*)",
-            "dest": "/js/$1"
+            "src": "/article/.*\\.(css|js|jpg|jpeg|png|gif|ico|woff2)$",
+            "dest": "/$0"
         },
         {
-            "src": "^/images/(.*)",
-            "dest": "/images/$1"
-        },
-        {
-            "src": "^/articles/(.*)",
-            "dest": "/articles/$1"
-        },
-        {
-            "src": "^/article/(?!css/|js/|images/|articles/)(.*)",
+            "src": "/article/(.*)",
             "dest": "/index.html"
         },
         {
