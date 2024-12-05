@@ -21,12 +21,12 @@
             }
         },
         {
-            "src": "/",
+            "src": "^/article$",
             "dest": "/"
         },
         {
-            "src": "/article",
-            "dest": "/"
+            "src": "/(.*)",
+            "dest": "/$1"
         }
     ]
 }
