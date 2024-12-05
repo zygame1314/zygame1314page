@@ -135,7 +135,7 @@
 }
 
 .filter-tag {
-    cursor: pointer;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
     padding: 4px 12px;
     background: rgba(26, 26, 26, 0.9);
     border: 1px solid var(--primary-color);
@@ -190,7 +190,7 @@
     color: var(--primary-color);
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
-    cursor: pointer;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
     font-family: Zpix;
     font-size: 1rem;
     position: relative;

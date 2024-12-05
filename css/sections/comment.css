@@ -27,7 +27,7 @@
     border-radius: 4px;
     padding: 8px 16px;
     font-size: 14px;
-    cursor: pointer;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
     font-family: 'Zpix';
     transition: all 0.3s ease;
 }
@@ -67,7 +67,7 @@
 
 .wl-like,
 .wl-reply {
-    cursor: pointer;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
     transition: all 0.3s;
 }
 
