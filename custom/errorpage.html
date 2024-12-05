@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面迷路了 - 玩个小游戏？</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/typography.css">
+    <link rel="stylesheet" href="../css/errorpage.css">
+</head>
+
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">哎呀...页面好像迷路了</div>
+        <div class="error-message">玩个贪吃蛇冷静一下？</div>
+    </div>
+
+    <div class="game-container">
+        <div class="score">分数: <span id="scoreValue">0</span></div>
+        <canvas id="gameCanvas" width="300" height="300"></canvas>
+        <div class="controls">
+            使用方向键或WASD控制蛇的移动
+        </div>
+        <div class="touch-controls">
+            <div class="touch-row">
+                <button class="touch-btn invisible"></button>
+                <button class="touch-btn" onclick="handleTouch('up')">↑</button>
+                <button class="touch-btn invisible"></button>
+            </div>
+            <div class="touch-row">
+                <button class="touch-btn" onclick="handleTouch('left')">←</button>
+                <button class="touch-btn invisible"></button>
+                <button class="touch-btn" onclick="handleTouch('right')">→</button>
+            </div>
+            <div class="touch-row">
+                <button class="touch-btn invisible"></button>
+                <button class="touch-btn" onclick="handleTouch('down')">↓</button>
+                <button class="touch-btn invisible"></button>
+            </div>
+        </div>
+    </div>
+
+    <a href="/" class="home-button">返回主页</a>
+
+    <script src="../js/errorpage.js"></script>
+</body>
+
+</html>
