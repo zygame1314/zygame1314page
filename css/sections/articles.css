@@ -42,10 +42,11 @@
             calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
-    height: 300px;
+    max-height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
 }
 
 .article-card:hover {
@@ -135,7 +136,8 @@
 }
 
 .filter-tag {
-    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    ;
     padding: 4px 12px;
     background: rgba(26, 26, 26, 0.9);
     border: 1px solid var(--primary-color);
@@ -162,12 +164,15 @@
 }
 
 .article-meta {
-    font-size: 0.9rem;
-    color: var(--text-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
     margin-bottom: 1rem;
     border-left: 2px solid var(--primary-color);
-    padding-left: 0.5rem;
     background: rgba(255, 204, 0, 0.05);
+    color: var(--text-color);
 }
 
 .loading-indicator {
@@ -190,7 +195,8 @@
     color: var(--primary-color);
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
-    cursor: url('../../images/cursors/Rath Link.cur'), auto;;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    ;
     font-family: Zpix;
     font-size: 1rem;
     position: relative;
