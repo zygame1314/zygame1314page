@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "#weather": "当前天气情况，数据来源于OpenWeatherMap。",
             "#games": "最近的热门游戏，数据来源于Steam。",
             "#steam-games": "我最近在玩的游戏，有没有和你一样的呢？",
-            ".visit-counter-widget": "点击翻转卡片，查看更多信息~",
+            "#articles": "记录了我的一些技术文章，欢迎阅读！",
             "#donate-button-section": "如果你喜欢我的项目，可以考虑捐赠支持一下~",
             ".glitch-container": "欢迎来到zygame1314的个人主页！",
             ".typing-effect": "出自唐代李白的《陪侍御叔华登楼歌》。",
