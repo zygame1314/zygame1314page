@@ -25,11 +25,15 @@
             "dest": "/$0"
         },
         {
+            "src": "^/articles/(.*\\.html)$",
+            "dest": "/articles/$1"
+        },
+        {
             "src": "^/articles/.*",
             "dest": "/articles/$0"
         },
         {
-            "src": "^/article/.*",
+            "src": "^/article/(?!articles/).*",
             "dest": "/index.html"
         },
         {
