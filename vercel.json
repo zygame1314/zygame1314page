@@ -22,11 +22,7 @@
         },
         {
             "src": "/article/([^/]+)",
-            "dest": "/"
-        },
-        {
-            "src": "/articles/content/([^/]+)",
-            "dest": "/articles/content/$1.html"
+            "dest": "/?article=$1"
         }
     ]
 }
