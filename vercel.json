@@ -19,25 +19,6 @@
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             }
-        },
-        {
-            "src": "^/articles/.*",
-            "continue": true
-        },
-        {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/article/(.*)",
-            "dest": "/index.html"
-        },
-        {
-            "src": "/(.*)\\.(.+)",
-            "dest": "/$1.$2"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
         }
     ]
 }
