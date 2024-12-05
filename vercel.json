@@ -22,7 +22,7 @@
         },
         {
             "src": "/article/(.*)",
-            "dest": "../index.html"
+            "dest": "https://zygame1314.site/"
         }
     ]
 }
