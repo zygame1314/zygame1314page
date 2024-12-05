@@ -21,7 +21,11 @@
             }
         },
         {
-            "src": "/article/(.*)",
+            "src": "/(articles|images|css|js|.*\\.(?:js|css|jpg|jpeg|png|gif|ico|json|woff2))$",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*)",
             "dest": "/index.html"
         }
     ]
