@@ -21,12 +21,12 @@
             }
         },
         {
-            "src": "/article/(.*)",
-            "dest": "/",
-            "headers": {
-                "Cache-Control": "s-maxage=1, stale-while-revalidate"
-            },
-            "continue": true
+            "src": "/article/(?!css|js|images)(.*)",
+            "dest": "/"
+        },
+        {
+            "src": "/(css|js|images)/(.*)",
+            "dest": "/$1/$2"
         }
     ]
 }
