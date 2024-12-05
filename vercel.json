@@ -22,6 +22,20 @@
         },
         {
             "src": "/article/(.*)",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "Referer",
+                    "value": "^$"
+                }
+            ],
+            "status": 307,
+            "headers": {
+                "Location": "/"
+            }
+        },
+        {
+            "src": "/article/(.*)",
             "dest": "/"
         }
     ]
