@@ -21,11 +21,19 @@
             }
         },
         {
+            "src": "^/articles/.*",
+            "continue": true
+        },
+        {
+            "handle": "filesystem"
+        },
+        {
             "src": "/article/(.*)",
             "dest": "/index.html"
         },
         {
-            "handle": "filesystem"
+            "src": "/(.*)\\.(.+)",
+            "dest": "/$1.$2"
         },
         {
             "src": "/(.*)",
