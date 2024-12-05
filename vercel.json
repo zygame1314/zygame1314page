@@ -21,12 +21,8 @@
             }
         },
         {
-            "src": "^/article$",
-            "dest": "/"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
+            "src": "/article/([^/]+)",
+            "dest": "/articles/content/$1.html"
         }
     ]
 }
