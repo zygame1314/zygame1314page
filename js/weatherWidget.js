@@ -51,6 +51,8 @@ function initWeatherWidget() {
         }
     }
 
+    const weatherEffects = new WeatherEffects();
+
     function updateWeatherWidget(data) {
         const temperatureElem = document.querySelector('.temperature');
         const descriptionElem = document.querySelector('.description');
@@ -93,6 +95,11 @@ function initWeatherWidget() {
         pressureElem.textContent = `${pressure}hPa`;
         sunriseElem.textContent = sunrise;
         sunsetElem.textContent = sunset;
+
+        const weatherId = weatherData.weather[0].id;
+        weatherEffects.setWeatherEffect(weatherId).catch(error => {
+            console.error('设置天气效果失败:', error);
+        });
 
         const weatherClass = getWeatherClass(weatherData.weather[0].id);
         document.querySelector('.weather-widget').className = `weather-widget ${weatherClass}`;

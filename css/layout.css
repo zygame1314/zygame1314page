@@ -203,12 +203,12 @@ footer::after {
 }
 
 .main-content {
-    width: 70%;
+    max-width: 650px;
     margin-right: 20px;
 }
 
 .sidebar {
-    width: 35%;
+    max-width: 350px;
 }
 
 ::-webkit-scrollbar {

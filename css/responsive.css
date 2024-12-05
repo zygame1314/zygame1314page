@@ -123,13 +123,19 @@
     .project-actions .button,
     .games-list .game-item,
     .game-item a.button,
-    #home .text-container {
-        width: 100%;
-    }
-
     #weather,
     #donate-button-section,
+    #home .text-container {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sidebar {
+        max-width: 650px;
+    }
+
     .visit-counter-widget {
+        max-width: 650px;
         width: 90%;
     }
 
@@ -338,5 +344,9 @@
     .modal-content {
         width: 90%;
         padding: 15px;
+    }
+
+    .article-thumbnail {
+        width: 100%;
     }
 }

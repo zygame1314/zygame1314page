@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "**/*.{html,htm,css,js,jsx,ts,tsx,jpg,jpeg,png,gif,svg,ico,webp,mp3,mp4,wav,pdf,txt,json,xml,woff,woff2,ttf,eot}",
+            "src": "**/*.{html,htm,css,js,jsx,ts,tsx,jpg,jpeg,png,gif,svg,ico,webp,mp3,mp4,wav,pdf,txt,json,xml,woff,woff2,ttf,eot,cur}",
             "use": "@vercel/static"
         },
         {
@@ -19,6 +19,10 @@
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             }
+        },
+        {
+            "src": "/article/(.*)",
+            "dest": "/"
         }
     ]
 }

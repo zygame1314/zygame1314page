@@ -142,7 +142,8 @@
 
 .project-card img {
     width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: cover;
     border: 3px solid var(--primary-color);
     image-rendering: pixelated;
 }
@@ -156,6 +157,12 @@
 
 .project-card p {
     font-size: 16px;
+    height: 120px;
+    margin: 10px 0;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
 }
 
 .project-card .button {
@@ -178,9 +185,12 @@
     background-color: var(--primary-color);
     color: #000000;
     padding: 8px 12px;
+    width: 40px;
     margin: 0 5px;
+    text-align: center; 
     text-decoration: none;
     font-size: 16px;
+    font-family: Zpix;
     border: 3px solid #000000;
     cursor: url('../images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
@@ -195,4 +205,22 @@
 
 .pagination-button.active {
     background-color: var(--secondary-color);
+}
+
+.project-card p::-webkit-scrollbar {
+    width: 5px;
+}
+
+.project-card p::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+.project-card p::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+.project-card p::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }

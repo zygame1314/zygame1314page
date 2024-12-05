@@ -1,0 +1,28 @@
+[
+    {
+        "id": "vercel-config",
+        "title": "Vercel配置教程",
+        "date": "2024-12-02",
+        "excerpt": "如何配置vercel.json文件实现项目部署...",
+        "thumbnail": "../images/vercel.png",
+        "contentUrl": "/articles/content/vercel-config.html",
+        "tags": [
+            "部署",
+            "Vercel",
+            "配置"
+        ]
+    },
+    {
+        "id": "upyun-source-config",
+        "title": "又拍云回源配置指南",
+        "date": "2024-12-05",
+        "excerpt": "详细介绍又拍云CDN的回源配置参数设置及最佳实践...",
+        "thumbnail": "../images/又拍云_logo5.png",
+        "contentUrl": "/articles/content/upyun-source-config.html",
+        "tags": [
+            "CDN",
+            "又拍云",
+            "配置"
+        ]
+    }
+]

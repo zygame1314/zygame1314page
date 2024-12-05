@@ -738,3 +738,85 @@
         transform: translateY(-50%) rotate(360deg);
     }
 }
+
+@keyframes loading-dots {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cardClick {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+@keyframes scanlines-reverse {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(100%);
+        visibility: hidden;
+    }
+}
+
+@keyframes scanlines {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px #ff6600;
+    }
+
+    50% {
+        box-shadow: 0 0 20px #ff6600, 0 0 30px #ffcc00;
+    }
+}
