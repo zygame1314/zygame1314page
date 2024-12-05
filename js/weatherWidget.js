@@ -1,5 +1,5 @@
 function initWeatherWidget() {
-    const API_BASE = 'https://zygame1314page.vercel.app/api';
+    const API_BASE = 'https://zygame1314.site/api';
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
