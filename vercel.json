@@ -21,20 +21,11 @@
             }
         },
         {
-            "src": "^/(css|js|images)/.*",
-            "dest": "/$0"
-        },
-        {
-            "src": "^/articles/(.*\\.html)$",
-            "dest": "/articles/$1"
-        },
-        {
-            "src": "^/articles/.*",
-            "dest": "/articles/$0"
-        },
-        {
-            "src": "^/article/(?!articles/).*",
+            "src": "/article/(.*)",
             "dest": "/index.html"
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
