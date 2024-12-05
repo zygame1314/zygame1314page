@@ -21,7 +21,11 @@
             }
         },
         {
-            "src": "/article/(.*)",
+            "src": "/",
+            "dest": "/"
+        },
+        {
+            "src": "/article",
             "dest": "/"
         }
     ]
