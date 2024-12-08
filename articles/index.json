@@ -24,5 +24,18 @@
             "又拍云",
             "配置"
         ]
+    },
+    {
+        "id": "activation-code-mechanism",
+        "title": "浅谈本网站的激活码生成机制",
+        "date": "2024-12-08",
+        "excerpt": "详细介绍本站激活码的生成原理...",
+        "thumbnail": "../images/security.png",
+        "contentUrl": "/articles/content/activation-code-mechanism.html",
+        "tags": [
+            "安全",
+            "激活码",
+            "设计"
+        ]
     }
 ]
