@@ -17,7 +17,9 @@
             "headers": {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type"
+                "Access-Control-Allow-Headers": "Content-Type",
+                "X-Real-IP": "43.230.89.163,43.230.89.164,43.230.89.165,43.230.89.166,43.230.89.167",
+                "X-Forwarded-For": "43.230.89.163,43.230.89.164,43.230.89.165,43.230.89.166,43.230.89.167"
             }
         },
         {
