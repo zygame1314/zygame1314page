@@ -1,5 +1,5 @@
 function initWeatherWidget() {
-    const API_BASE = 'https://zygame1314.site/api';
+    const API_BASE = 'https://zygame1314.site';
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
@@ -41,12 +41,18 @@ function initWeatherWidget() {
 
             showNotification('🌍 正在获取天气信息...', 2, 'info');
             const response = await fetch(`${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`);
-            if (!response.ok) throw new Error('Weather API error');
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || '天气 API 错误');
+            }
+
             const data = await response.json();
             showNotification('✨ 已获取天气信息', 2, 'success');
             return data;
         } catch (error) {
-            console.error('获取天气数据失败', error);
+            console.error('获取天气数据失败:', error);
+            showNotification('❌ ' + error.message, 4, 'error');
             throw error;
         }
     }
