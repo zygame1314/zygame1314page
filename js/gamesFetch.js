@@ -125,11 +125,14 @@ function initGamesFetch() {
             gameItem.classList.add('game-item');
 
             const gameImage = document.createElement('img');
-            gameImage.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900.jpg`;
+            gameImage.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900_schinese.jpg`;
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                this.src = '../images/default-game-cover.png';
-                this.classList.add('default-cover');
+                this.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900.jpg`;
+                this.onerror = function () {
+                    this.src = '../images/default-game-cover.png';
+                    this.classList.add('default-cover');
+                };
             };
             gameImage.style.imageRendering = 'crisp-edges';
 

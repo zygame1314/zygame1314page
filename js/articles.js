@@ -34,7 +34,7 @@ class ArticlesManager {
         window.addEventListener('popstate', async (event) => {
             const path = window.location.pathname;
             this.transitionMask.classList.add('active');
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 600));
 
             if (path === '/') {
                 const tocContainer = document.querySelector('.article-toc');
@@ -282,7 +282,7 @@ class ArticlesManager {
         articleNav.style.display = 'block';
 
         this.transitionMask.classList.add('active');
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 600));
 
         if (!fromHistory) {
             const articlePath = article.contentUrl.replace('/articles/content/', '').replace('.html', '');
@@ -388,7 +388,7 @@ class ArticlesManager {
 
         articleSection.querySelector('.back-btn').addEventListener('click', async () => {
             this.transitionMask.classList.add('active');
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 600));
 
             const tocContainer = document.querySelector('.article-toc');
             if (tocContainer) {

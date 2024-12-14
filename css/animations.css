@@ -767,31 +767,47 @@
     }
 }
 
-@keyframes scanlines-reverse {
+@keyframes pixelate-in {
     0% {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 0;
         visibility: visible;
+        transform: scale(0.1);
+        background-size: 2px 2px;
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+        background-size: 16px 16px;
     }
 
     100% {
-        opacity: 0;
-        transform: translateY(100%);
-        visibility: hidden;
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+        background-size: 8px 8px;
     }
 }
 
-@keyframes scanlines {
+@keyframes pixelate-out {
     0% {
-        opacity: 0;
-        transform: translateY(-100%);
+        opacity: 1;
         visibility: visible;
+        transform: scale(1);
+        background-size: 8px 8px;
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+        background-size: 16px 16px;
     }
 
     100% {
-        opacity: 1;
-        transform: translateY(0);
-        visibility: visible;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.1);
+        background-size: 2px 2px;
     }
 }
 
@@ -818,5 +834,25 @@
 
     50% {
         box-shadow: 0 0 20px #ff6600, 0 0 30px #ffcc00;
+    }
+}
+
+@keyframes moveStripes {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 0;
+    }
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-10px);
     }
 }

@@ -13,6 +13,7 @@
     <meta name="keywords" content="博客, 开发者, 项目, 游戏, 像素风">
     <link rel="icon" href="/images/web-icon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.onmicrosoft.cn/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/typography.css">
     <link rel="stylesheet" href="/css/layout.css">
@@ -37,6 +38,14 @@
 </head>
 
 <body>
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-text">准备启动...</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="pongGame"></canvas>
     <div id="notification-container"></div>
 
@@ -226,203 +235,7 @@
                 </section>
                 <section id="dev-journey">
                     <h2 class="pixel-text">开发历程</h2>
-                    <div class="milestone-timeline">
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024年初</span>
-                                <h3>⛰️ 出山</h3>
-                                <p class="milestone-description">
-                                    回首往事，高中时代那份对编程的热忱至今难忘。虽然大学选择了师范专业，看似与梦想渐行渐远，但内心深处那团火焰从未熄灭。终于在升入大三下前的寒假，下定决心要重拾梦想。或许正是这份执着，让我在短短几个月内完成了从零起步到开发出实用工具的蜕变。如今看着自己的作品能帮助同学们提高学习效率，内心充满了欣慰。只要心中有梦，永远都不晚。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.02.28</span>
-                                <h3>🚀 "小雅爬爬爬"初版发布</h3>
-                                <p class="milestone-description">
-                                    那时看到许多同学在课程学习中下载资源的困扰，深感共鸣。经过一段时间的思考与开发，终于完成了这个自动化工具。虽然第一版功能还比较简单，但当看到它能帮助同学们节省时间时，那种欣慰感难以言表。取名"爬爬爬"，一是形象地描述它的功能，二来也暗含着些许玩笑意味。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.07.19</span>
-                                <h3>🏠 建立"小雅爬爬爬"Github仓库</h3>
-                                <p class="milestone-description">
-                                    记得那天，看着代码散落在各处的文件夹里，突然意识到是时候让它们有个正式的"家"了。在Github上建立仓库的过程中，不禁莞尔一笑 -
-                                    这个小工具终于要"成家立业"了。虽说开源之路充满挑战，但想到未来可能会有志同道合的朋友一起改进它，就觉得这一步走得很值得。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.08.05</span>
-                                <h3>📚 "小雅爬爬爬"教程页面发布</h3>
-                                <p class="milestone-description">
-                                    某天收到好几条询问使用方法的消息，我才意识到光有好工具还不够 -
-                                    得让大家知道怎么用才行。于是花了一个周末的时间，把使用教程写成了一个网页。说实话，写文档比写代码还难，不过看到后来收到的反馈，那份成就感也是满满的。也许这就是程序员成长的必经之路吧
-                                    - 从"能用就行"到"要让别人也会用"。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.09.18</span>
-                                <h3>🛠️ "理工学堂助手"初版发布</h3>
-                                <p class="milestone-description">
-                                    在开发小雅爬爬爬的过程中，意外结识了一位来自其他学校的朋友。听闻他们在理工学堂平台上也遇到了类似的困扰，便决定接下这个挑战。虽说是完全不同的平台，但技术的本质是相通的。经过一段时间的摸索，终于将自动提交作业、导出题库等功能实现了出来。这次经历让我深感，技术的价值不在于它的复杂程度，而在于能否真正解决用户的痛点。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.09.29</span>
-                                <h3>📖 "理工学堂助手"教程页面发布</h3>
-                                <p class="milestone-description">
-                                    之前小雅爬爬爬的教程获得了不错的反响，这让我意识到一个优秀的工具不仅要好用，更要让用户能轻松上手。于是决定为理工学堂助手也打造一个详尽的教程页面。花费了几天时间，反复修改文字措辞，优化页面布局，力求让每个功能的说明都清晰易懂。看着最后成品，不禁想起那句"授人以鱼不如授人以渔"，希望这份教程能真正帮助到需要的人。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.10.06</span>
-                                <h3>🌟 个人主页上线</h3>
-                                <p class="milestone-description">
-                                    还记得那时浏览他人的技术博客时，总是羡慕那份记录与分享的情怀。随着自己的项目越来越多，也希望能有一个属于自己的数字花园，记录技术成长的点点滴滴。花了近一个月的时间，从设计到开发，终于将这个承载梦想的空间建立起来。虽说过程中遇到不少挑战，但每一行代码都倾注了对技术的热爱。现在看着这个集项目展示、访问统计等功能于一体的主页，仿佛看到了曾经那个为建个人网站而憧憬的自己。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.10.12</span>
-                                <h3>🏛️ 域名通过ICP备案</h3>
-                                <p class="milestone-description">
-                                    每个正式的网站都该有自己的"身份证"。当完成ICP备案的那一刻，感觉网站终于有了一个正式的"家"。这不仅仅是一串备案号，更是对用户负责的态度。虽说备案过程繁琐，需要准备各种材料、反复修改，但想到这是让网站更正规、更可信的必经之路，一切都值得。毕竟，成长总需要经历一些"必要的麻烦"，这大概就是从个人项目走向正式网站的转折点吧。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.10.13</span>
-                                <h3>🧩 "理工学堂助手"油猴脚本发布</h3>
-                                <p class="milestone-description">
-                                    在与JavaScript打交道的过程中，逐渐发现自己对脚本开发颇有心得。恰逢之前那位朋友提议开发浏览器端版本，这个想法让我茅塞顿开。经过反复推敲与测试，终于将理工学堂助手移植成了油猴脚本。看着代码在浏览器中流畅运行的那一刻，不禁感慨技术的魅力
-                                    - 同样的功能，不同的实现方式，却能带来更便捷的使用体验。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.08</span>
-                                <h3>💬 QQ群"小雅聊聊聊"建立</h3>
-                                <p class="milestone-description">
-                                    某天发布更新后，一位热心的同学提醒我要谨慎行事，原来年级水群里也有"第三只眼"在默默关注。思虑再三，决定开辟一片属于我们的天地。于是，"小雅聊聊聊"应运而生。群虽小，但温暖如家，在这里，我们可以无拘无束地探讨学习方法，分享使用心得。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.11</span>
-                                <h3>📋 "小雅做做做"初版发布</h3>
-                                <p class="milestone-description">
-                                    在开发过程中，渐渐发现同学们不仅需要下载功能，更需要一个能便捷管理任务的工具。于是萌生了开发"小雅做做做"的想法。经过反复打磨，终于将任务管理、批量提交等功能融为一体。这个工具的诞生，让我深刻体会到
-                                    - 真正的技术创新往往源于对用户需求的深入理解。看着它能帮助同学们节省时间，让繁琐的任务变得井然有序，这大概就是开发者最大的欣慰吧。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.14</span>
-                                <h3>📝 "小雅答答答"初版发布</h3>
-                                <p class="milestone-description">
-                                    随着其他工具的逐步完善，越来越多同学反馈希望有一个更智能的答题助手。经过一段时间的技术攻关，终于将自动答题、答案管理等功能完美实现。看着系统能准确识别题目类型，精准填写答案的那一刻，仿佛看到了技术与学习完美融合的画面。这个工具的诞生，不仅是技术上的突破，更是对如何让学习变得更高效的一次深刻思考。科技的终极目标，不就是为了让人们能将更多时间用在更有价值的思考上吗？
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.17</span>
-                                <h3>☁️ 加入"又拍云联盟"</h3>
-                                <p class="milestone-description">
-                                    GitHub
-                                    Pages搭配jsDelivr的方案虽说免费，但总是不够稳定，看着加载缓慢的页面和偶尔失联的资源，心里不是滋味。最近偶然了解到又拍云联盟，这不正是我需要的吗？虽然设置CDN时费了一番周折，但当看到网站响应速度肉眼可见地提升时，感觉一切都值了。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.19</span>
-                                <h3>🎨 优化页面细节</h3>
-                                <p class="milestone-description">
-                                    为了提升用户体验，今天对页面进行了一些细节优化。主要是调整了布局的平衡性，并在适当的位置添加了 Font Awesome
-                                    图标，让界面更加生动直观。小小的改变往往能带来意想不到的提升，看着焕然一新的页面，感觉特别充实。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.24</span>
-                                <h3>🔑 优化激活码系统</h3>
-                                <p class="milestone-description">
-                                    今天对激活码生成机制进行了重大改进，将其改为离线生成模式。现在每个设备都能获得独一无二的激活码，不仅提高了安全性，也让验证更加便捷。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.11.28</span>
-                                <h3>⚡ 大规模后端升级</h3>
-                                <p class="milestone-description">
-                                    对我这个前端开发者来说，后端一直是个陌生的领域。但这次不得不面对——网站需要一个可靠的后端支持。经过反复研究和尝试，最终选择了Vercel这个神奇的平台。从部署到运维，每一步都是全新的学习。虽然踩了不少坑，但看到网站性能显著提升，评论系统流畅运行，一切付出都值得了。这次经历让我深刻体会到：永远不要给自己设限，敢于尝试新事物往往能带来意想不到的收获。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.12.05</span>
-                                <h3>📝 终于开始写博客啦</h3>
-                                <p class="milestone-description">
-                                    一直想记录些技术心得和开发历程，但总是找各种理由推脱。今天终于下定决心要开始写点东西了，虽然更新频率可能不会太高，但能留下一些文字总比什么都不写要好。希望通过写作能梳理自己的思路，也许还能帮助到遇到类似问题的朋友。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">2024.12.14</span>
-                                <h3>🛕 寻找真正的大善人</h3>
-                                <p class="milestone-description">
-                                    Vercel确实是个好平台，但它家的防火墙太较真了——把普通的CDN请求当成了DDoS攻击（扎心）。最终，我投奔了传说中的"大善人"
-                                    Cloudflare。不得不说，大善人给的确实多啊，暂时不用担心被当成不法分子了。有时候换个地方，生活质量立马就不一样了，感谢大善人收留~
-                                </p>
-                            </div>
-                        </div>
-                        <div class="milestone future-milestone">
-                            <div class="milestone-dot"></div>
-                            <div class="milestone-content">
-                                <span class="date">???</span>
-                                <h3>✨ 此后夜阑，静待新篇……</h3>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="milestone-timeline"></div>
                 </section>
                 <section id="comments">
                     <h2 class="pixel-text">评论区</h2>
@@ -548,6 +361,7 @@
         </div>
     </footer>
 
+    <script src="/js/loading.js"></script>
     <script src="/js/titleSwitcher.js"></script>
     <script src="/js/live2d.js"></script>
     <script src="/js/showNotification.js"></script>

@@ -17,6 +17,7 @@
 │  ├─ effects.css
 │  ├─ errorpage.css
 │  ├─ layout.css
+│  ├─ loading.css
 │  ├─ notification.css
 │  ├─ responsive.css
 │  ├─ sections
@@ -35,6 +36,8 @@
 │  └─ utilities.css
 ├─ custom
 │  └─ errorpage.html
+├─ data
+│  └─ timeline.json
 ├─ functions
 │  ├─ games
 │  │  ├─ popular.js
@@ -89,6 +92,7 @@
 │  ├─ gamesFetch.js
 │  ├─ live2d.js
 │  ├─ live2dTextBox.js
+│  ├─ loading.js
 │  ├─ main.js
 │  ├─ pageViews.js
 │  ├─ parallax.js
@@ -101,7 +105,6 @@
 │  ├─ typingEffect.js
 │  ├─ weather-effects.js
 │  └─ weatherWidget.js
-├─ README.md
 └─ zpix.woff2
 
 ```
