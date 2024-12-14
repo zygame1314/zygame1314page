@@ -37,5 +37,18 @@
             "激活码",
             "设计"
         ]
+    },
+    {
+        "id": "xiaoyadecrypt",
+        "title": "小雅平台课件URL解密机制分析",
+        "date": "2024-12-14",
+        "excerpt": "解析小雅平台课件资源URL的加密原理及解密方法...",
+        "thumbnail": "../images/decrypt.png",
+        "contentUrl": "/articles/content/xiaoyadecrypt.html",
+        "tags": [
+            "解密",
+            "小雅平台",
+            "分析"
+        ]
     }
 ]

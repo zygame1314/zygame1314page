@@ -34,12 +34,10 @@ function initWeatherWidget() {
     }
 
     async function getWeatherData() {
-        showNotification('📍 正在获取位置信息...', 2, 'info');
         try {
             const position = await getCurrentPosition();
             const { latitude, longitude } = position.coords;
 
-            showNotification('🌍 正在获取天气信息...', 2, 'info');
             const response = await fetch(`${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`);
 
             if (!response.ok) {
@@ -48,11 +46,9 @@ function initWeatherWidget() {
             }
 
             const data = await response.json();
-            showNotification('✨ 已获取天气信息', 2, 'success');
             return data;
         } catch (error) {
             console.error('获取天气数据失败:', error);
-            showNotification('❌ ' + error.message, 4, 'error');
             throw error;
         }
     }

@@ -62,7 +62,7 @@ class ArticlesManager {
                     });
 
                     window.handleHomeView();
-                    this.renderArticles(false); 
+                    this.renderArticles(false);
                     this.initWaline();
                 }
             } else if (path.startsWith('/article/')) {
@@ -200,7 +200,7 @@ class ArticlesManager {
         } catch (error) {
             console.error('加载文章列表失败:', error);
             this.articles = [];
-            showNotification('加载文章列表失败，请稍后重试', 'error');
+            showNotification('加载文章列表失败，请稍后重试', 2, 'error');
         }
     }
 
@@ -275,6 +275,14 @@ class ArticlesManager {
         });
     }
 
+    isArticleOutdated(articleDate) {
+        const now = new Date();
+        const articleTime = new Date(articleDate);
+        const monthsDiff = (now.getFullYear() - articleTime.getFullYear()) * 12 +
+            (now.getMonth() - articleTime.getMonth());
+        return monthsDiff >= 6;
+    }
+
     async showArticle(article, fromHistory = false) {
         const mainNav = document.querySelector('nav:not(#article-nav)');
         const articleNav = document.getElementById('article-nav');
@@ -330,6 +338,10 @@ class ArticlesManager {
             const articleContent = articleSection.querySelector('.article-content');
             articleContent.innerHTML = content;
 
+            if (this.isArticleOutdated(article.date)) {
+                showNotification('这文章有些年头了，内容可能不太新鲜哦~ 😊', 5, 'info');
+            }
+
             const tocContainer = document.createElement('div');
             tocContainer.className = 'article-toc';
             tocContainer.innerHTML = `
@@ -377,7 +389,7 @@ class ArticlesManager {
             this.initWaline();
         } catch (error) {
             console.error('加载文章失败:', error);
-            showNotification('文章加载失败，请稍后重试', 'error');
+            showNotification('文章加载失败，请稍后重试', 2, 'error');
         }
 
         this.transitionMask.classList.remove('active');

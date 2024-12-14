@@ -84,6 +84,101 @@
     left: -1.5rem;
 }
 
+.article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: #2a2a2a;
+    border: 2px solid #ff6600;
+}
+
+.article-content th {
+    background: #1a1a1a;
+    color: #ffcc00;
+    font-weight: bold;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #ff6600;
+    font-family: 'Zpix', monospace;
+}
+
+.article-content td {
+    padding: 0.8rem 1rem;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 102, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.article-content tr:hover td {
+    background-color: rgba(255, 102, 0, 0.1);
+    color: #ffcc00;
+}
+
+.article-content tr:last-child td {
+    border-bottom: none;
+}
+
+.secure-table {
+    position: relative;
+    filter: blur(4px);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.secure-table:hover {
+    filter: blur(0);
+}
+
+.secure-table:hover::before {
+    opacity: 0;
+}
+
+.secure-table td,
+.secure-table th {
+    transition: all 0.3s ease;
+}
+
+.article-content code.secure-code {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(23, 162, 184, 0.5);
+    background: rgba(42, 42, 42, 0.9);
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 0.2em 0.4em 0.2em 2em;
+    border-radius: 4px;
+    cursor: url('../images/cursors/jag help select.cur'), auto;
+}
+
+.article-content code.secure-code::selection {
+    background: transparent;
+    color: transparent;
+}
+
+.article-content code.secure-code::-moz-selection {
+    background: transparent;
+    color: transparent;
+}
+
+.article-content code.secure-code:hover {
+    color: #17a2b8;
+    text-shadow: none;
+}
+
+.article-content code.secure-code:hover::before {
+    opacity: 0;
+}
+
+.article-content pre code.secure-code {
+    border-left: 3px solid #ff6600;
+    padding-left: 1em;
+    display: block;
+    margin: 0.5em 0;
+}
+
 .article-intro {
     font-size: 1.2rem;
     color: #17a2b8;
@@ -145,7 +240,8 @@
     border-left: none;
     width: 40px;
     height: 80px;
-    cursor: url('../images/cursors/Rath Link.cur'), auto;;
+    cursor: url('../images/cursors/Rath Link.cur'), auto;
+    ;
     border-radius: 0 12px 12px 0;
     display: flex;
     align-items: center;

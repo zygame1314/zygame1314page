@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>小雅课件URL解密机制逆向分析详解</title>
+</head>
+
+<body>
+    <main class="article-content">
+        <div class="article-body">
+            <h1>小雅答答答URL解密机制逆向分析详解</h1>
+
+            <h2>一、逆向分析流程</h2>
+
+            <h3>1. 定位解密调用</h3>
+            <div class="analysis-box">
+                <p>通过浏览器开发者工具观察到资源加载过程中的调用堆栈：</p>
+                <pre><code>
+// 调用堆栈追踪
+(匿名) @ vendor-10-1m3jNn.js:138
+N @ vendor-10-1m3jNn.js:138
+(匿名) @ index-jPnMhD.js:118
+enhancedFetch @ index-jPnMhD.js:118
+xyApiGet @ index-jPnMhD.js:118
+getDiskFileUrlBS @ index-jPnMhD.js:297
+                </code></pre>
+            </div>
+
+            <h3>2. 定位核心函数</h3>
+            <div class="code-analysis">
+                <p>找到文件URL获取函数：</p>
+                <pre><code>
+// 文件URL获取函数
+const getDiskFileUrlBS = async ({quote_id: J, filename: ae, need_clear: se}) => {
+    const oe = {
+        encryption_status: 1
+    };
+    ae || (oe.filename = ae);
+    const re = urlJoin(runtimeEnvParams.outerResourceUrl, "cloud/file_url", J)
+    const ie = await xyApiGet(re, oe);
+    // 关键：解密处理
+    return ie != null && ie.success && se === !0 && (ie.data.clear_url = decryptByDES(ie.data.url)),
+    clearAudioTranscodeUrl(ie),
+    ie
+}
+                </code></pre>
+            </div>
+
+            <h3>3. 解密函数分析</h3>
+            <div class="decrypt-analysis">
+                <p>发现核心解密函数：</p>
+                <pre><code class="secure-code">
+// DES解密函数
+function decryptByDES(J) {
+    try {
+        // 从配置获取key和vector
+        const ae = CryptoJS$1.enc.Utf8.parse(activeBackendSetting.office365.key)
+        const se = CryptoJS$1.enc.Utf8.parse(activeBackendSetting.office365.vector)
+        // Base64 URL安全字符还原
+        const oe = J.replace(/_/g, "+").replace(/\*/g, "/").replace(/-/g, "=");
+        // DES-CBC解密
+        return CryptoJS$1.DES.decrypt({
+            ciphertext: CryptoJS$1.enc.Base64.parse(oe)
+        }, ae, {
+            iv: se,
+            mode: CryptoJS$1.mode.CBC,
+            padding: CryptoJS$1.pad.Pkcs7
+        }).toString(CryptoJS$1.enc.Utf8)
+    } catch (ae) {
+        console.error(ae)
+    }
+    return J
+}
+                </code></pre>
+            </div>
+
+            <h3>4. 环境配置分析</h3>
+            <div class="config-analysis">
+                <p>搜索配置信息发现不同环境的参数：</p>
+                <pre><code class="secure-code">
+// 后端配置信息
+const backendSetting = {
+    develop: {  // 开发环境
+        envTag: "dev",
+        office365: {
+            origin: "https://vip.ow365.cn",
+            account: "29357",
+            key: "59894985",    // 开发环境密钥
+            vector: "29393376"  // 开发环境向量
+        }
+    },
+    production: {  // 生产环境
+        envTag: "prd",
+        office365: {
+            origin: "https://vip.ow365.cn",
+            account: "29353",
+            key: "94374647",    // 生产环境密钥
+            vector: "99526255"  // 生产环境向量
+        }
+    }
+}
+                </code></pre>
+            </div>
+
+            <h2>二、解密过程详解</h2>
+            <h3>1. 密钥和向量</h3>
+            <pre><code class="secure-code">
+// 生产环境的关键参数
+const key = "94374647";    // 8位密钥
+const vector = "99526255"; // 8位初始化向量
+            </code></pre>
+
+            <div class="explanation-box">
+                <h4>💡 为什么是8位？</h4>
+                <p>DES算法要求密钥长度为64位（8字节），每个字符占用1字节，所以使用8位字符串。</p>
+            </div>
+
+            <h3>2. Base64字符还原</h3>
+            <pre><code>
+const base64Str = encryptedUrl
+    .replace(/_/g, '+')
+    .replace(/\*/g, '/')
+    .replace(/-/g, '=');
+            </code></pre>
+
+            <div class="explanation-box">
+                <h4>🔄 字符替换说明：</h4>
+                <ul>
+                    <li>_ 替换回 + （URL安全字符）</li>
+                    <li>* 替换回 / （URL安全字符）</li>
+                    <li>- 替换回 = （填充字符）</li>
+                </ul>
+            </div>
+
+            <h3>3. 创建解密器</h3>
+            <pre><code>
+const keyUtf8 = window.CryptoJS.enc.Utf8.parse(key);
+const ivUtf8 = window.CryptoJS.enc.Utf8.parse(vector);
+            </code></pre>
+
+            <div class="explanation-box">
+                <h4>🔐 解密器参数：</h4>
+                <p>将字符串形式的密钥和向量转换为UTF-8编码的字节数组，这是CryptoJS库要求的格式。</p>
+            </div>
+
+            <h3>4. 执行解密</h3>
+            <pre><code>
+const decrypted = window.CryptoJS.DES.decrypt({
+    ciphertext: window.CryptoJS.enc.Base64.parse(base64Str)
+}, keyUtf8, {
+    iv: ivUtf8,
+    mode: window.CryptoJS.mode.CBC,
+    padding: window.CryptoJS.pad.Pkcs7
+});
+            </code></pre>
+
+            <h2>三、破解要点提示</h2>
+            <div class="usage-tips">
+                <h3>🔍 关键点分析：</h3>
+                <ul>
+                    <li>解密函数位于vendor-*.js中，通常经过混淆</li>
+                    <li>关键词搜索: DES、decrypt、CryptoJS等</li>
+                    <li>配置信息通常在独立的config文件中</li>
+                    <li>注意区分开发环境和生产环境的参数</li>
+                </ul>
+
+                <h3>🛠️ 逆向工具建议：</h3>
+                <ul>
+                    <li>Chrome/Edge DevTools - 调试和跟踪调用栈（如果逆向不复杂，一般使用这个就足够了）</li>
+                    <li>Fiddler/Charles - 抓包分析请求</li>
+                    <li>JavaScript Beautifier - 反混淆代码</li>
+                    <li>VSCode - 搜索关键字和正则匹配</li>
+                </ul>
+            </div>
+
+            <h2>四、常见问题解答</h2>
+            <div class="faq-section">
+                <h3>Q1：如何定位解密函数？</h3>
+                <p>技巧：</p>
+                <ul>
+                    <li>下载资源时设置断点</li>
+                    <li>查看Network面板中的JS文件</li>
+                    <li>搜索crypto、decrypt等关键词</li>
+                    <li>分析初始化配置中的参数</li>
+                </ul>
+
+                <h3>Q2：找不到配置参数怎么办？</h3>
+                <p>尝试以下方法：</p>
+                <ul>
+                    <li>搜索office365、key、vector等关键词</li>
+                    <li>查看webpack打包后的config文件</li>
+                    <li>分析localStorage和sessionStorage</li>
+                    <li>检查初始化请求的响应数据</li>
+                </ul>
+
+                <h3>Q3：URL格式异常如何处理？</h3>
+                <p>分析以下几点：</p>
+                <ul>
+                    <li>是否使用了URL安全的Base64编码</li>
+                    <li>检查特殊字符的替换规则(_,*,-)</li>
+                    <li>验证Base64解码后的数据长度</li>
+                    <li>确认填充字符(=)的处理方式</li>
+                </ul>
+            </div>
+
+            <h2>五、环境差异说明</h2>
+            <div class="env-diff">
+                <h3>不同环境的配置差异：</h3>
+                <table class="secure-table">
+                    <tr>
+                        <th>环境</th>
+                        <th>密钥</th>
+                        <th>向量</th>
+                        <th>账号</th>
+                    </tr>
+                    <tr>
+                        <td>开发环境</td>
+                        <td>59894985</td>
+                        <td>29393376</td>
+                        <td>29357</td>
+                    </tr>
+                    <tr>
+                        <td>生产环境</td>
+                        <td>94374647</td>
+                        <td>99526255</td>
+                        <td>29353</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="article-footer">
+                <p>特别说明：本文仅用于学习交流，请勿滥用或传播解密后的URL。不同环境的参数仅供参考，实际使用时请以当前环境配置为准。</p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
