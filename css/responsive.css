@@ -117,6 +117,10 @@
         align-items: center;
     }
 
+    #live2d-settings {
+        display: none;
+    }
+
     .main-content,
     .sidebar,
     .project-card,

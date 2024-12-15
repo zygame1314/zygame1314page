@@ -347,27 +347,24 @@ class ArticlesManager {
             const tocContainer = document.createElement('div');
             tocContainer.className = 'article-toc';
             tocContainer.innerHTML = `
-                <div class="toc-toggle">
-                    <i class="fas fa-chevron-left"></i>
-                </div>
+                <button class="pin-btn" title="固定目录">
+                    <i class="fas fa-thumbtack"></i>
+                </button>
+                <div class="toc-preview"></div>
                 <h3>目录</h3>
                 <ul></ul>
             `;
-            document.body.appendChild(tocContainer);
 
-            const tocToggle = tocContainer.querySelector('.toc-toggle');
-            tocToggle.addEventListener('click', () => {
-                tocContainer.classList.toggle('collapsed');
-                localStorage.setItem('tocCollapsed', tocContainer.classList.contains('collapsed'));
+            const pinBtn = tocContainer.querySelector('.pin-btn');
+            pinBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                tocContainer.classList.toggle('pinned');
             });
-
-            const isCollapsed = localStorage.getItem('tocCollapsed') === 'true';
-            if (isCollapsed) {
-                tocContainer.classList.add('collapsed');
-            }
 
             const headers = articleContent.querySelectorAll('h2, h3, h4');
             const tocList = tocContainer.querySelector('ul');
+            const tocPreview = tocContainer.querySelector('.toc-preview');
+            document.body.appendChild(tocContainer);
 
             headers.forEach((header, index) => {
                 header.id = `heading-${index}`;
@@ -386,7 +383,53 @@ class ArticlesManager {
 
                 li.appendChild(a);
                 tocList.appendChild(li);
+
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.dataset.level = header.tagName.toLowerCase();
+                previewItem.dataset.title = header.textContent;
+
+                tocPreview.appendChild(previewItem);
             });
+
+            const updateActivePreview = () => {
+                const SCROLL_OFFSET = 80;
+                const PREDICTION_OFFSET = 30;
+
+                const headerPositions = Array.from(headers).map(header => ({
+                    top: header.getBoundingClientRect().top,
+                    bottom: header.getBoundingClientRect().bottom,
+                    header: header
+                }));
+
+                let activeHeader = null;
+                let minDistance = Infinity;
+
+                headerPositions.forEach(pos => {
+                    const predictedTop = pos.top - PREDICTION_OFFSET;
+                    const distance = Math.abs(predictedTop - SCROLL_OFFSET);
+
+                    if (distance < minDistance && predictedTop <= SCROLL_OFFSET) {
+                        minDistance = distance;
+                        activeHeader = pos.header;
+                    }
+                });
+
+                headers.forEach((header, index) => {
+                    const previewItem = tocPreview.children[index];
+                    const tocItem = tocList.children[index];
+
+                    if (header === activeHeader) {
+                        previewItem.classList.add('active');
+                        tocItem.classList.add('active-heading');
+                    } else {
+                        previewItem.classList.remove('active');
+                        tocItem.classList.remove('active-heading');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', updateActivePreview);
 
             this.initWaline();
         } catch (error) {
@@ -401,6 +444,7 @@ class ArticlesManager {
         }, 500);
 
         articleSection.querySelector('.back-btn').addEventListener('click', async () => {
+            window.removeEventListener('scroll', updateActivePreview);
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
 
@@ -435,5 +479,5 @@ class ArticlesManager {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new ArticlesManager();
+    window.articlesManager = new ArticlesManager();
 });

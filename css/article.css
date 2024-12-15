@@ -211,9 +211,9 @@
 
 .article-toc {
     position: fixed;
-    left: 20px;
+    left: -340px;
     top: 80px;
-    width: 280px;
+    width: 300px;
     max-height: 80vh;
     background: #1a1a1a;
     border: 4px solid #ff6600;
@@ -222,50 +222,56 @@
     font-size: 0.9rem;
     z-index: 1001;
     box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
-    transform: perspective(1000px) rotateY(0deg);
-    transition: transform 0.3s, left 0.5s ease;
+    transition: left 0.3s ease;
 }
 
-.article-toc.collapsed {
-    left: -320px;
-}
-
-.toc-toggle {
-    position: absolute;
-    right: -44px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #1a1a1a;
-    border: 4px solid #ff6600;
-    border-left: none;
-    width: 40px;
-    height: 80px;
-    cursor: url('../images/cursors/Rath Link.cur'), auto;
-    ;
-    border-radius: 0 12px 12px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.article-toc .active-heading {
     color: #ffcc00;
-    font-size: 1.2rem;
-    transition: background-color 0.3s;
+    background: rgba(255, 102, 0, 0.15);
 }
 
-.toc-toggle:hover {
-    background-color: #2a2a2a;
+.article-toc .toc-h2.active-heading {
+    border-left-color: #ffcc00;
 }
 
-.toc-toggle i {
-    transition: transform 0.5s ease;
+.article-toc .toc-h3.active-heading {
+    border-left-color: #ffc107;
 }
 
-.article-toc.collapsed .toc-toggle i {
-    transform: rotate(180deg);
+.article-toc .toc-h4.active-heading {
+    border-left-color: #17a2b8;
 }
 
-.article-toc.collapsed .toc-toggle:hover::after {
+.article-toc.pinned {
+    left: 20px;
+}
+
+.article-toc.pinned .toc-preview {
+    display: none;
+}
+
+.pin-btn {
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: none;
+    color: #ff6600;
+    cursor: url('../images/cursors/Rathian\ and\ Rathalos\ Alternate\ select.cur'), auto;
+    opacity: 0.6;
+    transition: all 0.3s;
+}
+
+.pin-btn:hover {
     opacity: 1;
-    visibility: visible;
+    transform: scale(1.1);
+}
+
+.article-toc.pinned .pin-btn {
+    color: #ffcc00;
+    opacity: 1;
 }
 
 .article-toc h3 {
@@ -309,10 +315,6 @@
     border-radius: 8px;
     overflow-y: auto;
     transition: opacity 0.3s;
-}
-
-.article-toc.collapsed ul {
-    opacity: 0;
 }
 
 .article-toc ul::-webkit-scrollbar {
@@ -430,4 +432,87 @@
     border-radius: 50%;
     box-shadow: 0 0 10px #ff6600;
     animation: glow 2s infinite;
+}
+
+.article-toc .toc-preview {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 15px 4px;
+    background: #2a2a2a;
+    border: 2px solid #ff6600;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.article-toc:hover {
+    left: 20px;
+}
+
+.article-toc:hover .toc-preview {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preview-item {
+    height: 4px;
+    border-radius: 1px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.preview-item[data-level="h2"] {
+    width: 16px;
+    background: #ff6600;
+}
+
+.preview-item[data-level="h3"] {
+    width: 12px;
+    background: #ffcc00;
+    margin-left: 6px;
+}
+
+.preview-item[data-level="h4"] {
+    width: 8px;
+    background: #17a2b8;
+    margin-left: 12px;
+}
+
+.preview-item:hover {
+    filter: brightness(1.2);
+}
+
+.preview-item.active {
+    filter: brightness(1.5);
+    box-shadow: 0 0 5px currentColor;
+}
+
+.preview-item::before {
+    content: attr(data-title);
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1a1a1a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #ffffff;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 1003;
+}
+
+.preview-item:hover::before {
+    opacity: 1;
+    visibility: visible;
 }

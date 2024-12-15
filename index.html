@@ -4,6 +4,7 @@
 <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
 <script src="https://cdn.jsdmirror.com/npm/pixi.js@4.6.1/dist/pixi.min.js"></script>
 <script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/live2dv3.min.js"></script>
+<script src="https://cdn.jsdmirror.com/npm/d3@7"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -28,6 +29,8 @@
     <link rel="stylesheet" href="/css/sections/contact.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
     <link rel="stylesheet" href="/css/sections/games.css">
+    <link rel="stylesheet" href="/css/sections/article-network.css">
+    <link rel="stylesheet" href="/css/sections/live2d-settings.css">
     <link rel="stylesheet" href="/css/sections/visit-counter.css">
     <link rel="stylesheet" href="/css/sections/donate.css">
     <link rel="stylesheet" href="/css/sections/comment.css">
@@ -295,6 +298,31 @@
                     <h2 class="pixel-text">最近在玩</h2>
                     <div class="steam-games-list"></div>
                 </section>
+                <section id="article-network">
+                    <h2 class="pixel-text">文章网络</h2>
+                    <div class="network-container">
+                        <canvas id="networkCanvas"></canvas>
+                    </div>
+                </section>
+                <section id="live2d-settings">
+                    <h2 class="pixel-text">Live2D 设置</h2>
+                    <div class="settings-container">
+                        <div class="setting-item">
+                            <label for="live2d-display">显示模型</label>
+                            <label class="switch">
+                                <input type="checkbox" id="live2d-display" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="text-box-display">显示对话框</label>
+                            <label class="switch">
+                                <input type="checkbox" id="text-box-display" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
                 <section id="donate-button-section">
                     <button id="donate-button" class="button-style">💖 打赏支持</button>
                     <div id="day-tip" class="day-tip"></div>
@@ -376,6 +404,8 @@
     <script src="/js/gamesFetch.js"></script>
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
+    <script type="module" src="/js/article-network.js"></script>
+    <script src="/js/live2dSettings.js"></script>
     <script src="/js/weather-effects.js"></script>
     <script src="/js/pageViews.js"></script>
     <script src="/js/fetchCode.js"></script>

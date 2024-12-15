@@ -7,9 +7,9 @@
         "thumbnail": "../images/vercel.png",
         "contentUrl": "/articles/content/vercel-config.html",
         "tags": [
+            "技术配置",
             "部署",
-            "Vercel",
-            "配置"
+            "系统设计"
         ]
     },
     {
@@ -20,9 +20,9 @@
         "thumbnail": "../images/又拍云_logo5.png",
         "contentUrl": "/articles/content/upyun-source-config.html",
         "tags": [
-            "CDN",
-            "又拍云",
-            "配置"
+            "技术配置",
+            "系统设计",
+            "网络服务"
         ]
     },
     {
@@ -33,9 +33,9 @@
         "thumbnail": "../images/security.png",
         "contentUrl": "/articles/content/activation-code-mechanism.html",
         "tags": [
-            "安全",
-            "激活码",
-            "设计"
+            "系统设计",
+            "安全机制",
+            "技术分析"
         ]
     },
     {
@@ -46,9 +46,9 @@
         "thumbnail": "../images/decrypt.png",
         "contentUrl": "/articles/content/xiaoyadecrypt.html",
         "tags": [
-            "解密",
-            "小雅平台",
-            "分析"
+            "安全机制",
+            "技术分析",
+            "系统设计"
         ]
     }
 ]

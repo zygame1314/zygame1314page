@@ -1,0 +1,15 @@
+.network-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background: #1d1d1d;
+}
+
+#networkCanvas {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    -webkit-font-smoothing: none;
+}
