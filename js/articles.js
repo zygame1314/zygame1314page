@@ -392,7 +392,7 @@ class ArticlesManager {
                 tocPreview.appendChild(previewItem);
             });
 
-            const updateActivePreview = () => {
+            this.updateActivePreview = () => {
                 const SCROLL_OFFSET = 80;
                 const PREDICTION_OFFSET = 30;
 
@@ -429,7 +429,7 @@ class ArticlesManager {
                 });
             };
 
-            window.addEventListener('scroll', updateActivePreview);
+            window.addEventListener('scroll', this.updateActivePreview);
 
             this.initWaline();
         } catch (error) {
@@ -444,7 +444,10 @@ class ArticlesManager {
         }, 500);
 
         articleSection.querySelector('.back-btn').addEventListener('click', async () => {
-            window.removeEventListener('scroll', updateActivePreview);
+            if (this.updateActivePreview) {
+                window.removeEventListener('scroll', this.updateActivePreview);
+            }
+
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
 
