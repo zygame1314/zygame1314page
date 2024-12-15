@@ -1,4 +1,3 @@
-const PageView = AV.Object.extend('PageViews');
 const pageUrl = window.location.pathname;
 
 document.getElementById('visit-count').addEventListener('click', function () {
