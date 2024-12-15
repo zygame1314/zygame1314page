@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    window.loadingComplete = new Promise((resolve) => {
+        window.resolveLoading = resolve;
+    });
     const loadingScreen = document.querySelector('.loading-screen');
     const progressFill = document.querySelector('.progress-fill');
     const loadingText = document.querySelector('.loading-text');
@@ -98,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadingScreen.classList.add('fade-out');
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
+                        window.resolveLoading();
                     }, 500);
                 }, finalDelay);
             }

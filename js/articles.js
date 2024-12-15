@@ -17,6 +17,8 @@ class ArticlesManager {
         this.initTransitionEffect();
         this.init();
         const handleInitialPath = async () => {
+            await window.loadingComplete;
+
             const path = window.location.pathname;
             if (path.startsWith('/article/')) {
                 await this.loadArticles();
