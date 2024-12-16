@@ -159,9 +159,9 @@ const decrypted = window.CryptoJS.DES.decrypt({
             <div class="usage-tips">
                 <h3>🔍 关键点分析：</h3>
                 <ul>
-                    <li>解密函数位于vendor-*.js中，通常经过混淆</li>
+                    <li>解密函数位于index-jPnMhD.js中，混淆不明显</li>
                     <li>关键词搜索: DES、decrypt、CryptoJS等</li>
-                    <li>配置信息通常在独立的config文件中</li>
+                    <li>配置信息硬编码在了index-jPnMhD.js中</li>
                     <li>注意区分开发环境和生产环境的参数</li>
                 </ul>
 
@@ -189,7 +189,6 @@ const decrypted = window.CryptoJS.DES.decrypt({
                 <p>尝试以下方法：</p>
                 <ul>
                     <li>搜索office365、key、vector等关键词</li>
-                    <li>查看webpack打包后的config文件</li>
                     <li>分析localStorage和sessionStorage</li>
                     <li>检查初始化请求的响应数据</li>
                 </ul>
