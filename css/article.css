@@ -341,15 +341,16 @@
     content: "►";
     color: #ff6600;
     position: absolute;
-    top: 20%;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
     opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s;
 }
 
 .article-toc li:hover::before {
     opacity: 1;
-    transform: translateX(3px);
+    transform: translateY(-50%) translateX(3px);
 }
 
 .article-toc a {
