@@ -6,6 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function setupTextHover() {
+        const textBoxEnabled = localStorage.getItem('textBoxDisplay') !== 'false';
+        if (!textBoxEnabled) {
+            removeTextHover();
+            return;
+        }
+
         const textMap = {
             "#home": "欢迎来到我的主页！不问来人，不问出处，放松就好！",
             "#projects": "这里是我目前发起的项目，也许有一天会充实起来……",

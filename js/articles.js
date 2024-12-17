@@ -286,6 +286,10 @@ class ArticlesManager {
     }
 
     async showArticle(article, fromHistory = false) {
+        const existingToc = document.querySelector('.article-toc');
+        if (existingToc) {
+            existingToc.remove();
+        }
         const mainNav = document.querySelector('nav:not(#article-nav)');
         const articleNav = document.getElementById('article-nav');
         mainNav.style.display = 'none';
@@ -342,6 +346,11 @@ class ArticlesManager {
 
             if (this.isArticleOutdated(article.date)) {
                 showNotification('这文章有些年头了，内容可能不太新鲜哦~ 😊', 5, 'info');
+            }
+
+            const oldToc = document.querySelector('.article-toc');
+            if (oldToc) {
+                oldToc.remove();
             }
 
             const tocContainer = document.createElement('div');
@@ -451,6 +460,9 @@ class ArticlesManager {
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
 
+            const allArticleDetails = document.querySelectorAll('#article-detail');
+            allArticleDetails.forEach(detail => detail.remove());
+
             const tocContainer = document.querySelector('.article-toc');
             if (tocContainer) {
                 tocContainer.remove();
@@ -462,7 +474,9 @@ class ArticlesManager {
             articleNav.style.display = 'none';
 
             history.pushState(null, '', '/');
-            articleSection.remove();
+
+            const mainContent = document.querySelector('.main-content');
+            const sections = mainContent.children;
             Array.from(sections).forEach(section => {
                 if (section.id !== 'comments') {
                     section.style.display = '';
@@ -470,6 +484,8 @@ class ArticlesManager {
             });
 
             window.handleHomeView();
+            this.currentIndex = 0;
+            this.renderArticles(false);
             this.initWaline();
 
             this.transitionMask.classList.remove('active');

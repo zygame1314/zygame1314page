@@ -342,7 +342,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform-origin: top right;
     animation: swing 3s ease-in-out infinite;
-    z-index: 9999;
+    z-index: 999;
     transition: all 0.3s ease;
 }
 
