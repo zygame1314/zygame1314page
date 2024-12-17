@@ -3,6 +3,9 @@
     height: 300px;
     position: relative;
     background: #1d1d1d;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 #networkCanvas {
@@ -12,4 +15,9 @@
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     -webkit-font-smoothing: none;
+    transition: transform 0.3s ease;
+}
+
+#networkCanvas:hover {
+    transform: scale(1.02);
 }
