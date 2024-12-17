@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "#weather": "当前天气情况，数据来源于OpenWeatherMap。",
             "#games": "最近的热门游戏，数据来源于Steam。",
             "#steam-games": "我最近在玩的游戏，有没有和你一样的呢？",
+            "#live2d-settings": "在这里可以调整Live2D模型的设置，按照你的喜好来吧！",
+            "#article-network": "这是一个展示文章之间关联的网络图，通过它可以发现更多相关内容~",
             "#articles": "记录了我的一些技术文章，欢迎阅读！",
             "#donate-button-section": "如果你喜欢我的项目，可以考虑捐赠支持一下~",
             ".glitch-container": "欢迎来到zygame1314的个人主页！",

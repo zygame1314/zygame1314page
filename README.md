@@ -7,7 +7,8 @@
 │  ├─ content
 │  │  ├─ activation-code-mechanism.html
 │  │  ├─ upyun-source-config.html
-│  │  └─ vercel-config.html
+│  │  ├─ vercel-config.html
+│  │  └─ xiaoyadecrypt.html
 │  └─ index.json
 ├─ css
 │  ├─ animations.css
@@ -22,12 +23,14 @@
 │  ├─ responsive.css
 │  ├─ sections
 │  │  ├─ about.css
+│  │  ├─ article-network.css
 │  │  ├─ articles.css
 │  │  ├─ comment.css
 │  │  ├─ contact.css
 │  │  ├─ donate.css
 │  │  ├─ games.css
 │  │  ├─ home.css
+│  │  ├─ live2d-settings.css
 │  │  ├─ textbox.css
 │  │  ├─ timeline.css
 │  │  ├─ visit-counter.css
@@ -66,6 +69,7 @@
 │  │  ├─ Rathian and Rathalos Alternate select.cur
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
+│  ├─ decrypt.png
 │  ├─ default-game-cover.png
 │  ├─ Dialogue_Bottom.png
 │  ├─ Dialogue_Top.png
@@ -81,6 +85,7 @@
 │  └─ 又拍云_logo5.png
 ├─ index.html
 ├─ js
+│  ├─ article-network.js
 │  ├─ articles.js
 │  ├─ clouds.js
 │  ├─ comment.js
@@ -91,6 +96,7 @@
 │  ├─ fetchCode.js
 │  ├─ gamesFetch.js
 │  ├─ live2d.js
+│  ├─ live2dSettings.js
 │  ├─ live2dTextBox.js
 │  ├─ loading.js
 │  ├─ main.js

@@ -128,6 +128,7 @@
     .games-list .game-item,
     .game-item a.button,
     #weather,
+    #article-network,
     #donate-button-section,
     #home .text-container {
         width: 100%;
