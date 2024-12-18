@@ -23,12 +23,13 @@
     border: 3px solid var(--primary-color);
     transition: all 0.3s ease;
     margin-bottom: 1.5rem;
+    overflow: hidden;
 }
 
 .notice-title {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.75rem;
     color: var(--primary-color);
     font-size: 1.25rem;
     margin-bottom: 1rem;
@@ -38,16 +39,67 @@
     color: var(--secondary-color);
 }
 
+.notice-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notice-controls button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.notice-controls button:hover {
+    background: rgba(255, 204, 0, 0.1);
+    color: var(--secondary-color);
+}
+
+.notice-page {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    min-width: 3rem;
+    text-align: center;
+}
+
+.notice-content-wrapper {
+    position: relative;
+    overflow: hidden;
+    min-height: 150px;
+}
+
 .notice-content {
     background: rgba(255, 255, 255, 0.05);
     padding: 1rem;
     border-left: 3px solid var(--primary-color);
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+}
+
+.notice-content.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
 }
 
 .notice-content p {
     margin: 0.75rem 0;
     line-height: 1.6;
-    display: block;
+    opacity: inherit;
+    visibility: inherit;
 }
 
 .notice-content i {
@@ -187,7 +239,7 @@
     padding: 8px 12px;
     width: 40px;
     margin: 0 5px;
-    text-align: center; 
+    text-align: center;
     text-decoration: none;
     font-size: 16px;
     font-family: Zpix;
@@ -212,7 +264,7 @@
 }
 
 .project-card p::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 3px;
 }
 
