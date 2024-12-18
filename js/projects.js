@@ -439,6 +439,49 @@ document.addEventListener('DOMContentLoaded', function () {
     playerReset();
     update();
 
+    function initNoticeControls() {
+        const wrapper = document.querySelector('.notice-content-wrapper');
+        const notices = document.querySelectorAll('.notice-content');
+        const prevBtn = document.querySelector('.notice-prev');
+        const nextBtn = document.querySelector('.notice-next');
+        const pageText = document.querySelector('.notice-page');
+        let currentPage = 0;
+
+        function updatePageNumber() {
+            pageText.textContent = `${currentPage + 1}/${notices.length}`;
+        }
+
+        function showPage(index) {
+            const notices = document.querySelectorAll('.notice-content');
+            notices.forEach((notice, i) => {
+                if (i === index) {
+                    notice.classList.add('active');
+                    notice.style.transform = 'translateX(0)';
+                } else {
+                    notice.classList.remove('active');
+                    notice.style.transform = i < index ? 'translateX(-100%)' : 'translateX(100%)';
+                }
+            });
+            currentPage = index;
+            updatePageNumber();
+        }
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                showPage(currentPage - 1);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < notices.length - 1) {
+                showPage(currentPage + 1);
+            }
+        });
+
+        updatePageNumber();
+    }
+
+    initNoticeControls();
+
     function initPagination() {
         const itemsPerPage = 4;
         const projectList = document.querySelector('.project-list');
