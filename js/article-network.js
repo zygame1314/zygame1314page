@@ -761,17 +761,17 @@ class ArticleNetwork {
             const x = (touch.clientX - rect.left - this.offset.x) / this.scale;
             const y = (touch.clientY - rect.top - this.offset.y) / this.scale;
 
-            this.hoveredNode = this.nodes.find(node => {
+            this.touchStartNode = this.nodes.find(node => {
                 const dx = x - node.x;
                 const dy = y - node.y;
                 return Math.sqrt(dx * dx + dy * dy) < node.radius * 2;
             });
 
-            if (this.hoveredNode) {
+            if (this.touchStartNode) {
                 this.isDragging = true;
-                this.selectedNode = this.hoveredNode;
+                this.selectedNode = this.touchStartNode;
                 this.touchStartTime = Date.now();
-                this.dragStartPosition = { x, y };
+                this.dragStartPosition = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
             } else {
                 this.isDraggingCanvas = true;
                 this.lastTouchPosition = {
@@ -826,6 +826,17 @@ class ArticleNetwork {
             const touch = event.touches[0];
             const rect = canvas.getBoundingClientRect();
 
+            const x = (touch.clientX - rect.left - this.offset.x) / this.scale;
+            const y = (touch.clientY - rect.top - this.offset.y) / this.scale;
+
+            if (!this.isDragging && !this.isDraggingCanvas) {
+                this.hoveredNode = this.nodes.find(node => {
+                    const dx = x - node.x;
+                    const dy = y - node.y;
+                    return Math.sqrt(dx * dx + dy * dy) < node.radius * 2;
+                });
+            }
+
             if (this.isDraggingCanvas && this.lastTouchPosition) {
                 const dx = touch.clientX - this.lastTouchPosition.x;
                 const dy = touch.clientY - this.lastTouchPosition.y;
@@ -840,11 +851,12 @@ class ArticleNetwork {
 
                 this.draw();
             } else if (this.isDragging && this.selectedNode) {
-                const x = (touch.clientX - rect.left - this.offset.x) / this.scale;
-                const y = (touch.clientY - rect.top - this.offset.y) / this.scale;
+                const dragX = (touch.clientX - rect.left - this.offset.x) / this.scale;
+                const dragY = (touch.clientY - rect.top - this.offset.y) / this.scale;
 
-                this.selectedNode.fx = x;
-                this.selectedNode.fy = y;
+                this.selectedNode.fx = dragX;
+                this.selectedNode.fy = dragY;
+                this.hoveredNode = this.selectedNode;
                 this.simulation.alpha(0.3).restart();
                 this.draw();
             }
@@ -856,8 +868,17 @@ class ArticleNetwork {
         this.drawTimeout = setTimeout(() => this.draw(), 16);
     }
 
-    handleTouchEnd() {
+    handleTouchEnd(event) {
+        if (this.touchStartNode &&
+            Date.now() - this.touchStartTime < 300 &&
+            Math.abs(event.changedTouches[0].clientX - (this.dragStartPosition.x + this.activeCanvas.getBoundingClientRect().left)) < 10 &&
+            Math.abs(event.changedTouches[0].clientY - (this.dragStartPosition.y + this.activeCanvas.getBoundingClientRect().top)) < 10) {
+            this.handleNodeClick(this.touchStartNode);
+        }
+
         this.resetDragState();
+        this.touchStartNode = null;
+        this.hoveredNode = null;
         this.draw();
     }
 

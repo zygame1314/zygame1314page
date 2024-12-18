@@ -14,6 +14,8 @@ class ArticlesManager {
         this.loading = false;
         this.allLoaded = false;
         this.selectedTags = new Set();
+        this.sidebar = document.querySelector('.sidebar');
+        this.mainContent = document.querySelector('.main-content');
         this.initTransitionEffect();
         this.init();
         const handleInitialPath = async () => {
@@ -47,6 +49,11 @@ class ArticlesManager {
                 const articleNav = document.getElementById('article-nav');
                 mainNav.style.display = 'block';
                 articleNav.style.display = 'none';
+
+                this.sidebar.style.display = '';
+                this.mainContent.style.width = '';
+                this.mainContent.style.maxWidth = '';
+                this.mainContent.style.margin = '';
 
                 const articleSection = document.getElementById('article-detail');
                 if (articleSection) {
@@ -306,6 +313,14 @@ class ArticlesManager {
         window.handleArticleView();
 
         const mainContent = document.querySelector('.main-content');
+        const sidebar = document.querySelector('.sidebar');
+
+        sidebar.style.display = 'none';
+
+        mainContent.style.width = '100%';
+        mainContent.style.maxWidth = '1200px';
+        mainContent.style.margin = '0 auto';
+
         const articleSection = document.createElement('section');
         articleSection.id = 'article-detail';
         articleSection.innerHTML = `
@@ -482,6 +497,11 @@ class ArticlesManager {
                     section.style.display = '';
                 }
             });
+
+            sidebar.style.display = '';
+            mainContent.style.width = '';
+            mainContent.style.maxWidth = '';
+            mainContent.style.margin = '';
 
             window.handleHomeView();
             this.currentIndex = 0;
