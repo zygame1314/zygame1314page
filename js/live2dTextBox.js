@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "#steam-games": "我最近在玩的游戏，有没有和你一样的呢？",
             "#live2d-settings": "在这里可以调整Live2D模型的设置，按照你的喜好来吧！",
             "#article-network": "这是一个展示文章之间关联的网络图，通过它可以发现更多相关内容~",
-            "#articles": "记录了我的一些技术文章，欢迎阅读！",
+            "#articles": "这里是我的文章分享，包含各类主题，欢迎阅读！",
             "#donate-button-section": "如果你喜欢我的项目，可以考虑捐赠支持一下~",
             ".glitch-container": "欢迎来到zygame1314的个人主页！",
             ".typing-effect": "出自唐代李白的《陪侍御叔华登楼歌》。",
