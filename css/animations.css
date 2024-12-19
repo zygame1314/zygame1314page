@@ -460,6 +460,20 @@
     }
 }
 
+@keyframes pixelate {
+    0% {
+        filter: brightness(100%);
+    }
+
+    50% {
+        filter: brightness(130%);
+    }
+
+    100% {
+        filter: brightness(100%);
+    }
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
