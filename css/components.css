@@ -80,6 +80,7 @@
     border-left: 3px solid var(--primary-color);
     transition: all 0.3s ease-in-out;
     position: absolute;
+    box-sizing: border-box;
     width: 100%;
     left: 0;
     top: 0;
