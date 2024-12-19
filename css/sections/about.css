@@ -125,13 +125,10 @@
 }
 
 #about .interests {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 20px 0;
-    padding: 8px;
-    image-rendering: pixelated;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
 }
 
 #about .interest-tag {
