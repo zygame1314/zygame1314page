@@ -21,20 +21,48 @@ export async function onRequest(context) {
     }).toString();
 
     try {
-        const response = await fetch(
+        const recentGamesResponse = await fetch(
             `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?${params}`
         );
 
-        if (!response.ok) {
-            throw new Error(`Steam API Error: ${response.status}`);
+        if (!recentGamesResponse.ok) {
+            throw new Error(`Steam API Error: ${recentGamesResponse.status}`);
         }
 
-        const data = await response.json();
+        const recentGamesData = await recentGamesResponse.json();
+        const games = recentGamesData.response.games || [];
 
-        return new Response(JSON.stringify(data), {
+        const gamesWithDetails = await Promise.all(games.map(async game => {
+            const appDetailsParams = new URLSearchParams({
+                appids: game.appid,
+                l: 'schinese'
+            }).toString();
+
+            try {
+                const detailsResponse = await fetch(
+                    `https://store.steampowered.com/api/appdetails?${appDetailsParams}`
+                );
+                const detailsData = await detailsResponse.json();
+
+                if (detailsData[game.appid].success) {
+                    return {
+                        ...game,
+                        name: detailsData[game.appid].data.name,
+                        chinese_name: detailsData[game.appid].data.name
+                    };
+                }
+            } catch (error) {
+                console.error(`Failed to fetch details for game ${game.appid}:`, error);
+            }
+            return game;
+        }));
+
+        recentGamesData.response.games = gamesWithDetails;
+
+        return new Response(JSON.stringify(recentGamesData), {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
             }
         });
 

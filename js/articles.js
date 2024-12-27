@@ -9,6 +9,8 @@ if (!document.querySelector('link[href*="@waline"]')) {
 class ArticlesManager {
     constructor() {
         this.articles = [];
+        this.searchQuery = '';
+        this.searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
         this.batchSize = 6;
         this.currentIndex = 0;
         this.loading = false;
@@ -17,6 +19,8 @@ class ArticlesManager {
         this.sidebar = document.querySelector('.sidebar');
         this.mainContent = document.querySelector('.main-content');
         this.initTransitionEffect();
+        this.setupSearchListener();
+        this.updateSearchHistory();
         this.init();
         const handleInitialPath = async () => {
             await window.loadingComplete;
@@ -98,6 +102,198 @@ class ArticlesManager {
                 behavior: 'smooth'
             });
         });
+    }
+
+    setupSearchListener() {
+        const searchInput = document.getElementById('article-search');
+        const searchButton = document.querySelector('.search-button');
+        const suggestions = document.querySelector('.search-suggestions');
+        const grid = document.querySelector('.articles-grid');
+
+        searchInput.addEventListener('input', (e) => {
+            this.showSuggestions(e.target.value);
+        });
+
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value) {
+                this.showSuggestions(searchInput.value);
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-input-wrapper')) {
+                suggestions.style.display = 'none';
+            }
+        });
+
+        const handleSearch = () => {
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            this.searchQuery = query.toLowerCase();
+            this.addToHistory(query);
+            this.currentIndex = 0;
+            this.renderArticles();
+
+            suggestions.style.display = 'none';
+
+            if (this.searchQuery) {
+                setTimeout(() => {
+                    const firstMatch = grid.querySelector('.highlight-text');
+                    if (firstMatch) {
+                        const card = firstMatch.closest('.article-card');
+                        card.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        card.classList.add('search-highlight');
+                        setTimeout(() => {
+                            card.classList.remove('search-highlight');
+                        }, 2000);
+                    }
+                }, 100);
+            }
+        };
+
+        searchButton.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+        document.querySelector('.clear-history').addEventListener('click', () => {
+            this.searchHistory = [];
+            localStorage.setItem('searchHistory', '[]');
+            this.updateSearchHistory();
+        });
+    }
+
+    showSuggestions(query) {
+        if (!query) {
+            document.querySelector('.search-suggestions').style.display = 'none';
+            return;
+        }
+
+        const suggestions = this.articles
+            .filter(article =>
+                article.title.toLowerCase().includes(query.toLowerCase()) ||
+                article.excerpt.toLowerCase().includes(query.toLowerCase())
+            )
+            .slice(0, 5);
+
+        const container = document.querySelector('.search-suggestions');
+        container.innerHTML = '';
+
+        if (suggestions.length > 0) {
+            suggestions.forEach(article => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = article.title;
+                div.addEventListener('click', () => {
+                    document.getElementById('article-search').value = article.title;
+                    container.style.display = 'none';
+                    this.searchQuery = article.title.toLowerCase();
+                    this.addToHistory(article.title);
+                    this.currentIndex = 0;
+                    this.renderArticles();
+                });
+                container.appendChild(div);
+            });
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    addToHistory(query) {
+        if (!this.searchHistory.includes(query)) {
+            this.searchHistory.unshift(query);
+            if (this.searchHistory.length > 5) {
+                this.searchHistory.pop();
+            }
+            localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+            this.updateSearchHistory(true);
+        }
+    }
+
+    updateSearchHistory(isNewAdd = false) {
+        const container = document.querySelector('.history-tags');
+
+        if (isNewAdd) {
+            const tag = document.createElement('span');
+            tag.className = 'history-tag';
+            tag.textContent = this.searchHistory[0];
+            tag.style.opacity = '0';
+
+            tag.addEventListener('click', () => {
+                document.getElementById('article-search').value = this.searchHistory[0];
+                this.searchQuery = this.searchHistory[0].toLowerCase();
+                this.currentIndex = 0;
+                this.renderArticles();
+            });
+
+            if (container.firstChild) {
+                container.insertBefore(tag, container.firstChild);
+            } else {
+                container.appendChild(tag);
+            }
+
+            requestAnimationFrame(() => {
+                tag.style.opacity = '1';
+            });
+        } else {
+            const tags = container.querySelectorAll('.history-tag');
+            const animationPromises = [];
+
+            tags.forEach(tag => {
+                tag.classList.add('removing');
+                const promise = new Promise(resolve => {
+                    tag.addEventListener('animationend', () => {
+                        resolve();
+                    });
+                });
+                animationPromises.push(promise);
+            });
+
+            Promise.all(animationPromises).then(() => {
+                container.innerHTML = '';
+                this.searchHistory.forEach(query => {
+                    const tag = document.createElement('span');
+                    tag.className = 'history-tag';
+                    tag.textContent = query;
+                    tag.addEventListener('click', () => {
+                        document.getElementById('article-search').value = query;
+                        this.searchQuery = query.toLowerCase();
+                        this.currentIndex = 0;
+                        this.renderArticles();
+                    });
+                    container.appendChild(tag);
+                });
+            });
+        }
+    }
+
+    getFilteredArticles() {
+        let filtered = this.articles;
+
+        if (this.searchQuery) {
+            filtered = filtered.filter(article =>
+                article.title.toLowerCase().includes(this.searchQuery) ||
+                article.excerpt.toLowerCase().includes(this.searchQuery)
+            );
+        }
+
+        if (this.selectedTags.size > 0) {
+            filtered = filtered.filter(article => {
+                if (!article.tags) return false;
+                return Array.from(this.selectedTags).every(tag =>
+                    article.tags.includes(tag)
+                );
+            });
+        }
+
+        return filtered;
     }
 
     initTransitionEffect() {
@@ -236,6 +432,12 @@ class ArticlesManager {
         const card = document.createElement('div');
         card.className = 'article-card';
 
+        const highlightText = (text) => {
+            if (!this.searchQuery) return text;
+            const regex = new RegExp(`(${this.searchQuery})`, 'gi');
+            return text.replace(regex, '<span class="highlight-text">$1</span>');
+        };
+
         const tagsHtml = article.tags ?
             `<div class="article-tags">
                 ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
@@ -243,12 +445,12 @@ class ArticlesManager {
 
         card.innerHTML = `
             <img src="${article.thumbnail}" alt="${article.title}" class="article-thumbnail pixelated">
-            <h3 class="article-title">${article.title}</h3>
+            <h3 class="article-title">${highlightText(article.title)}</h3>
             <div class="article-meta">
                 <i class="far fa-calendar-alt"></i> ${article.date}
                 ${tagsHtml}
             </div>
-            <p class="article-excerpt">${article.excerpt}</p>
+            <p class="article-excerpt">${highlightText(article.excerpt)}</p>
         `;
         card.addEventListener('click', () => {
             this.showArticle(article);

@@ -927,3 +927,55 @@
         transform: scale(0.95);
     }
 }
+
+@keyframes highlight-pulse {
+    0% {
+        border-color: var(--primary-color);
+    }
+
+    50% {
+        border-color: #ff9900;
+    }
+
+    100% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes highlight-flash {
+    0% {
+        background-color: rgba(255, 204, 0, 0.2);
+    }
+
+    50% {
+        background-color: rgba(255, 204, 0, 0.4);
+    }
+
+    100% {
+        background-color: rgba(255, 204, 0, 0.2);
+    }
+}
+
+@keyframes tag-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes tag-exit {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}

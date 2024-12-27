@@ -246,6 +246,27 @@
                 </section>
                 <section id="articles">
                     <h2 class="pixel-text">文章专栏</h2>
+                    <div class="search-wrapper">
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="article-search" placeholder="搜索文章..." class="search-input">
+                                <div class="search-suggestions"></div>
+                            </div>
+                            <button class="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="search-history">
+                            <div class="history-header">
+                                <span>搜索历史</span>
+                                <button class="clear-history">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <div class="history-tags"></div>
+                        </div>
+                    </div>
                     <div class="tags-filter"></div>
                     <div class="articles-grid"></div>
                     <div class="loading-indicator" style="display:none">
@@ -287,7 +308,7 @@
                             <span class="interest-tag">前端开发</span>
                             <span class="interest-tag">胡乱折腾</span>
                             <span class="interest-tag">像素艺术</span>
-                            <span class="interest-tag">代码洁癖</span>    
+                            <span class="interest-tag">代码洁癖</span>
                             <span class="interest-tag">预备教师</span>
                         </div>
                     </div>

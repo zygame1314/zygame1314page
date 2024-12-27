@@ -140,6 +140,33 @@ function initGamesFetch() {
                 window.open(`https://store.steampowered.com/app/${game.appid}`, '_blank');
             });
 
+            gameItem.dataset.playtime = game.playtime_2weeks || 0;
+            gameItem.dataset.gameName = game.name;
+
+            if (game.playtime_2weeks > 0) {
+                gameItem.classList.add('recently-played');
+            }
+
+            gameItem.addEventListener("mouseenter", function () {
+                const gameName = this.dataset.gameName;
+                const playtime = parseInt(this.dataset.playtime || 0);
+
+                let message = '';
+                if (playtime === 0) {
+                    message = `诶~${gameName}都快长草了，主人是不是把它遗忘在角落了？`;
+                } else if (playtime < 60) {
+                    message = `就玩了${playtime}分钟的${gameName}？看来主人最近很忙呢~`;
+                } else if (playtime < 600) {
+                    const hours = Math.floor(playtime / 60);
+                    message = `今天又看到主人玩了${hours}小时的${gameName}，真好~`;
+                } else {
+                    const hours = Math.floor(playtime / 60);
+                    message = `哎呀！${gameName}都玩了${hours}小时了！主人该不会是成瘾了吧...`;
+                }
+
+                showLive2dNotification(message, 2000);
+            });
+
             gameItem.appendChild(gameImage);
             steamGamesListElem.appendChild(gameItem);
         });

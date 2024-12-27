@@ -1,5 +1,4 @@
 #articles {
-    height: 500px;
     overflow: visible;
     display: flex;
     flex-direction: column;
@@ -10,9 +9,11 @@
     image-rendering: pixelated;
     position: relative;
     overflow-y: auto;
+    max-height: 300px;
     flex: 1;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) rgba(26, 26, 26, 0.9);
+    border-bottom: 2px solid rgba(255, 204, 0, 0.2);
 }
 
 .articles-grid::before {
@@ -288,4 +289,182 @@
 .empty-message p {
     font-size: 1.1rem;
     opacity: 0.8;
+}
+
+.search-wrapper {
+    padding: 1rem 1.5rem;
+    background: rgba(26, 26, 26, 0.7);
+    border: 2px solid var(--primary-color);
+    margin: 1rem;
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    position: relative;
+    max-width: 100%;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    pointer-events: none;
+    animation: blink 1s steps(2) infinite;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 2.5rem;
+    background: rgba(26, 26, 26, 0.9);
+    border: 2px solid var(--primary-color);
+    box-sizing: border-box;
+    color: var(--text-color);
+    font-family: Zpix;
+    font-size: 0.9rem;
+    outline: none;
+    clip-path: polygon(0 4px, 4px 0,
+            calc(100% - 4px) 0, 100% 4px,
+            100% calc(100% - 4px), calc(100% - 4px) 100%,
+            4px 100%, 0 calc(100% - 4px));
+    transition: all 0.15s steps(3);
+    cursor: url('../../images/cursors/kushala text select.cur'), auto;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 0 2px var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 26, 0.95);
+    border: 2px solid var(--primary-color);
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 100;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 0.5rem 1rem;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+    transition: all 0.15s steps(2);
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 204, 0, 0.1);
+    transform: translateX(4px);
+}
+
+.search-history {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 2px dashed rgba(255, 204, 0, 0.2);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-size: 0.8rem;
+}
+
+.clear-history {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    padding: 4px;
+    transition: all 0.15s steps(2);
+}
+
+.clear-history:hover {
+    transform: scale(1.1);
+}
+
+.history-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    transition: height 0.3s steps(3);
+}
+
+.history-tag {
+    padding: 2px 8px;
+    background: rgba(26, 26, 26, 0.9);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    clip-path: polygon(0 2px, 2px 0,
+            calc(100% - 2px) 0, 100% 2px,
+            100% calc(100% - 2px), calc(100% - 2px) 100%,
+            2px 100%, 0 calc(100% - 2px));
+    transition: all 0.15s steps(2);
+    animation: tag-enter 0.3s steps(3);
+    transform-origin: center;
+}
+
+.history-tag.removing {
+    animation: tag-exit 0.3s steps(3) forwards;
+}
+
+.history-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0 var(--primary-color);
+}
+
+.search-button {
+    padding: 0.5rem 1rem;
+    background: rgba(26, 26, 26, 0.9);
+    border: 2px solid var(--primary-color);
+    flex-shrink: 0;
+    color: var(--primary-color);
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    font-family: Zpix;
+    box-shadow: 4px 4px 0 var(--primary-color);
+    transition: all 0.15s steps(3);
+    clip-path: polygon(0 4px, 4px 0,
+            calc(100% - 4px) 0, 100% 4px,
+            100% calc(100% - 4px), calc(100% - 4px) 100%,
+            4px 100%, 0 calc(100% - 4px));
+}
+
+.search-container:hover .search-input,
+.search-container:hover .search-button {
+    transform: translateY(-2px);
+}
+
+.search-button:hover {
+    box-shadow: 4px 6px 0 var(--primary-color);
+}
+
+.search-button:active {
+    transform: translateY(0);
+    box-shadow: 4px 4px 0 var(--primary-color);
+}
+
+.highlight-text {
+    background-color: rgba(255, 204, 0, 0.2);
+    padding: 0 2px;
+    position: relative;
+    animation: highlight-flash 0.5s steps(2);
 }
