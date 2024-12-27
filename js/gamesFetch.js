@@ -80,6 +80,38 @@ function initGamesFetch() {
                 gameInfo.appendChild(controllerInfo);
             }
 
+            gameItem.addEventListener("mouseenter", function () {
+                let message = '';
+                const price = game.final_price / 100;
+
+                if (game.discounted) {
+                    const discount = game.discount_percent;
+                    if (discount >= 75) {
+                        message = `哇！${game.name}居然打${discount}%的折扣！这也太划算了吧！`;
+                    } else if (discount >= 50) {
+                        message = `${game.name}现在半价呢，要不要考虑下？`;
+                    } else {
+                        message = `${game.name}打折了呢，优惠${discount}%，感兴趣吗？`;
+                    }
+                } else {
+                    if (price <= 30) {
+                        message = `${game.name}这么便宜！很适合体验一下呢~`;
+                    } else if (price <= 100) {
+                        message = `${game.name}价格适中，可以试试哦！`;
+                    } else if (price <= 200) {
+                        message = `${game.name}不便宜呢，不过品质应该有保证吧（大概）~`;
+                    } else {
+                        message = `${game.name}...好贵的样子，但可能是超级大作！`;
+                    }
+                }
+
+                if (game.controller_support) {
+                    message += ' 还支持手柄游玩呢！';
+                }
+
+                showLive2dNotification(message, 3000);
+            });
+
             gameInfo.appendChild(gameTitle);
             gameInfo.appendChild(priceInfo);
             gameInfo.appendChild(platformInfo);
