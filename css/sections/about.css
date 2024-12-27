@@ -2,7 +2,6 @@
     background-color: rgba(26, 26, 26, 0.9);
     padding: 40px;
     border: 4px solid var(--primary-color);
-    border-radius: 12px;
     position: relative;
 }
 
