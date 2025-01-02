@@ -70,15 +70,19 @@
 
 .notice-content-wrapper {
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     min-height: 150px;
+    max-height: 300px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
 }
 
 .notice-content {
     background: rgba(255, 255, 255, 0.05);
     padding: 1rem;
     border-left: 3px solid var(--primary-color);
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     position: absolute;
     box-sizing: border-box;
     width: 100%;
@@ -89,11 +93,43 @@
     transform: translateX(100%);
 }
 
+.notice-content .notice-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.notice-content .notice-header i {
+    color: var(--secondary-color);
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+.notice-content .notice-header h4 {
+    color: var(--secondary-color);
+    margin: 0;
+    font-size: 1.2em;
+}
+
 .notice-content.active {
     position: relative;
     opacity: 1;
     visibility: visible;
     transform: translateX(0);
+}
+
+.notice-content.exit-left {
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.notice-content.exit-right {
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
 }
 
 .notice-content p {
@@ -117,7 +153,23 @@
 }
 
 .warning i {
-    color: #ffc107;
+    color: var(--primary-color);
+}
+
+.info i {
+    color: var(--info-color);
+}
+
+.tip i {
+    color: var(--success-color);
+}
+
+.step i {
+    color: var(--secondary-color);
+}
+
+.steps i {
+    color: var(--secondary-color);
 }
 
 .step-number {
@@ -125,6 +177,35 @@
     font-weight: bold;
     margin-right: 0.5rem;
     display: inline-block;
+}
+
+.notice-content .info-description,
+.notice-content .warning-description,
+.notice-content .tip-description,
+.notice-content .step-description {
+    margin: 0.5rem 0 1rem 2rem;
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.4;
+    border-left: 2px solid var(--primary-color);
+    padding-left: 1rem;
+}
+
+.notice-content .info-description {
+    border-left-color: var(--info-color);
+}
+
+.notice-content .warning-description {
+    border-left-color: var(--primary-color);
+}
+
+.notice-content .tip-description {
+    border-left-color: var(--success-color);
+}
+
+.notice-content .step-description {
+    border-left-color: var(--secondary-color);
 }
 
 .highlight {

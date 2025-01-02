@@ -40,6 +40,7 @@
 ├─ custom
 │  └─ errorpage.html
 ├─ data
+│  ├─ notices.json
 │  └─ timeline.json
 ├─ functions
 │  ├─ games
@@ -100,6 +101,7 @@
 │  ├─ live2dTextBox.js
 │  ├─ loading.js
 │  ├─ main.js
+│  ├─ notice.js
 │  ├─ pageViews.js
 │  ├─ parallax.js
 │  ├─ pongGame.js
