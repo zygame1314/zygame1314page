@@ -1,8 +1,8 @@
-import { init } from 'https://npm.onmicrosoft.cn/@waline/client@v3/dist/waline.js';
+import { init } from 'https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.js';
 
 if (!document.querySelector('link[href*="@waline"]')) {
     document.head.insertAdjacentHTML('beforeend',
-        '<link rel="stylesheet" href="https://npm.onmicrosoft.cn/@waline/client@v3/dist/waline.css">'
+        '<link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.css">'
     );
 }
 
