@@ -12,24 +12,35 @@ function initWeatherWidget() {
                 return;
             }
 
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    resolve(position);
-                },
-                error => {
-                    if (error.code === error.PERMISSION_DENIED) {
-                        showNotification('🙈 咱也不知道你在哪儿呢~要不打开定位告诉我？', 4, 'warning');
-                        reject(new Error('地理位置权限被拒绝'));
-                    } else if (error.code === error.POSITION_UNAVAILABLE) {
-                        showNotification('📡 定位信号不好，要不换个地方试试？', 4, 'error');
-                        reject(error);
-                    } else {
-                        showNotification('⏰ 定位超时了，要不再试一次？', 4, 'error');
-                        reject(error);
-                    }
-                },
-                { enableHighAccuracy: true }
-            );
+            const options = {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000
+            };
+
+            const saveAndResolve = (position) => {
+                localStorage.setItem('lastKnownPosition', JSON.stringify(position));
+                resolve(position);
+            };
+
+            const handleError = (error) => {
+                const lastPosition = localStorage.getItem('lastKnownPosition');
+                if (lastPosition) {
+                    showNotification('📍 使用上次保存的位置信息', 4, 'info');
+                    return resolve(JSON.parse(lastPosition));
+                }
+
+                const messages = {
+                    [error.PERMISSION_DENIED]: '🙈 需要位置权限才能获取天气信息',
+                    [error.POSITION_UNAVAILABLE]: '📡 无法获取位置信息',
+                    [error.TIMEOUT]: '⏰ 获取位置信息超时'
+                };
+
+                showNotification(messages[error.code] || '获取位置失败', 4, 'error');
+                reject(error);
+            };
+
+            navigator.geolocation.getCurrentPosition(saveAndResolve, handleError, options);
         });
     }
 

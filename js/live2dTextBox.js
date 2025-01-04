@@ -82,11 +82,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const weatherWidget = document.querySelector('.weather-widget');
         if (weatherWidget) {
             weatherWidget.addEventListener("mouseenter", async function () {
+                const temperature = document.querySelector('.temperature')?.textContent;
+                const description = document.querySelector('.description')?.textContent;
+
+                if (!temperature || !description || temperature.trim() === '' || description.trim() === '') {
+                    showLive2dNotification("天气数据还在路上~稍后再来看看吧!", 2000);
+                    return;
+                }
+
                 const weatherClass = Array.from(weatherWidget.classList)
                     .find(cls => cls.startsWith('weather-') && cls !== 'weather-widget');
-
-                const temperature = document.querySelector('.temperature').textContent;
-                const description = document.querySelector('.description').textContent;
 
                 let weatherType = '';
                 if (weatherClass) {
