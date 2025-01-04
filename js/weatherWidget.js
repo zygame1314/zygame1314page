@@ -5,42 +5,95 @@ function initWeatherWidget() {
     const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
     weatherIconElem.src = defaultIconURL;
 
-    function getCurrentPosition() {
-        return new Promise((resolve, reject) => {
-            if (!navigator.geolocation) {
-                reject(new Error('浏览器不支持地理定位'));
-                return;
+    async function getLocationByIP() {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+            const response = await fetch('https://ipwho.is', {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error('无法获取位置信息');
             }
 
-            const options = {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 10000
-            };
-
-            const saveAndResolve = (position) => {
-                localStorage.setItem('lastKnownPosition', JSON.stringify(position));
-                resolve(position);
-            };
-
-            const handleError = (error) => {
-                const lastPosition = localStorage.getItem('lastKnownPosition');
-                if (lastPosition) {
-                    showNotification('📍 使用上次保存的位置信息', 4, 'info');
-                    return resolve(JSON.parse(lastPosition));
+            return {
+                coords: {
+                    latitude: parseFloat(data.latitude) || 39.9042,
+                    longitude: parseFloat(data.longitude) || 116.4074
                 }
+            };
+        } catch (error) {
+            console.error('IP定位失败:', error);
+            throw error;
+        }
+    }
 
-                const messages = {
-                    [error.PERMISSION_DENIED]: '🙈 需要位置权限才能获取天气信息',
-                    [error.POSITION_UNAVAILABLE]: '📡 无法获取位置信息',
-                    [error.TIMEOUT]: '⏰ 获取位置信息超时'
+    function getCurrentPosition() {
+        return new Promise(async (resolve, reject) => {
+            const cachedPosition = localStorage.getItem('lastKnownPosition');
+            const cacheTime = localStorage.getItem('positionTimestamp');
+            const CACHE_DURATION = 30 * 60 * 1000;
+
+            if (cachedPosition && cacheTime) {
+                const age = Date.now() - parseInt(cacheTime);
+                if (age < CACHE_DURATION) {
+                    return resolve(JSON.parse(cachedPosition));
+                }
+            }
+
+            if (navigator.geolocation) {
+                const options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
                 };
 
-                showNotification(messages[error.code] || '获取位置失败', 4, 'error');
-                reject(error);
-            };
+                const savePosition = (position) => {
+                    localStorage.setItem('lastKnownPosition', JSON.stringify(position));
+                    localStorage.setItem('positionTimestamp', Date.now().toString());
+                    resolve(position);
+                };
 
-            navigator.geolocation.getCurrentPosition(saveAndResolve, handleError, options);
+                try {
+                    navigator.geolocation.getCurrentPosition(
+                        savePosition,
+                        async (error) => {
+                            console.warn('浏览器定位失败，尝试IP定位:', error);
+                            try {
+                                const ipPosition = await getLocationByIP();
+                                savePosition(ipPosition);
+                            } catch (ipError) {
+                                if (cachedPosition) {
+                                    showNotification('📍 使用上次保存的位置信息', 4, 'info');
+                                    resolve(JSON.parse(cachedPosition));
+                                } else {
+                                    resolve({
+                                        coords: {
+                                            latitude: 39.9042,
+                                            longitude: 116.4074
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        options
+                    );
+                } catch (error) {
+                    reject(error);
+                }
+            } else {
+                try {
+                    const ipPosition = await getLocationByIP();
+                    savePosition(ipPosition);
+                } catch (error) {
+                    reject(error);
+                }
+            }
         });
     }
 
