@@ -84,9 +84,13 @@ function initGamesFetch() {
                 let message = '';
                 const price = game.final_price / 100;
 
-                if (game.discounted) {
+                if (price === 0) {
+                    message = `${game.name}是免费游戏哦！快来玩玩看吧~`;
+                } else if (game.discounted) {
                     const discount = game.discount_percent;
-                    if (discount >= 75) {
+                    if (discount === 100) {
+                        message = `太好了！${game.name}现在免费送！赶快领取吧！`;
+                    } else if (discount >= 75) {
                         message = `哇！${game.name}居然打${discount}%的折扣！这也太划算了吧！`;
                     } else if (discount >= 50) {
                         message = `${game.name}现在半价呢，要不要考虑下？`;
@@ -187,13 +191,13 @@ function initGamesFetch() {
                 if (playtime === 0) {
                     message = `诶~${gameName}都快长草了，主人是不是把它遗忘在角落了？`;
                 } else if (playtime < 60) {
-                    message = `就玩了${playtime}分钟的${gameName}？看来主人最近很忙呢~`;
+                    message = `最近就玩了${playtime}分钟的${gameName}？看来主人最近很忙呢~`;
                 } else if (playtime < 600) {
                     const hours = Math.floor(playtime / 60);
-                    message = `今天又看到主人玩了${hours}小时的${gameName}，真好~`;
+                    message = `${gameName}最近玩了${hours}小时呢，主人似乎挺投入的嘛！`;
                 } else {
                     const hours = Math.floor(playtime / 60);
-                    message = `哎呀！${gameName}都玩了${hours}小时了！主人该不会是成瘾了吧...`;
+                    message = `${gameName}最近已经玩了${hours}小时了！看得出来主人真的很喜欢这个游戏呢~`;
                 }
 
                 showLive2dNotification(message, 2000);
