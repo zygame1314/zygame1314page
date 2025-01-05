@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/css/sections/contact.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
     <link rel="stylesheet" href="/css/sections/games.css">
+    <link rel="stylesheet" href="/css/sections/steam-status.css">
     <link rel="stylesheet" href="/css/sections/article-network.css">
     <link rel="stylesheet" href="/css/sections/live2d-settings.css">
     <link rel="stylesheet" href="/css/sections/visit-counter.css">
@@ -343,6 +344,18 @@
                     <h2 class="pixel-text">最近在玩</h2>
                     <div class="steam-games-list"></div>
                 </section>
+                <section id="steam-status">
+                    <h2 class="pixel-text">Steam状态</h2>
+                    <div class="steam-status-widget">
+                        <div class="steam-user-info">
+                            <img src="" alt="Steam Avatar" class="steam-avatar pixelated">
+                            <div class="steam-user-details">
+                                <p class="steam-username"></p>
+                                <p class="steam-status"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section id="article-network">
                     <h2 class="pixel-text">文章网络</h2>
                     <div class="network-container">
@@ -454,6 +467,7 @@
     <script src="/js/timeline.js"></script>
     <script type="module" src="/js/articles.js"></script>
     <script src="/js/gamesFetch.js"></script>
+    <script src="/js/steamStatus.js"></script>
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
     <script type="module" src="/js/article-network.js"></script>

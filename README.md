@@ -31,6 +31,7 @@
 │  │  ├─ games.css
 │  │  ├─ home.css
 │  │  ├─ live2d-settings.css
+│  │  ├─ steam-status.css
 │  │  ├─ textbox.css
 │  │  ├─ timeline.css
 │  │  ├─ visit-counter.css
@@ -45,7 +46,8 @@
 ├─ functions
 │  ├─ games
 │  │  ├─ popular.js
-│  │  └─ recent-games.js
+│  │  ├─ recent-games.js
+│  │  └─ status.js
 │  └─ weather
 │     └─ weather.js
 ├─ images
@@ -108,6 +110,7 @@
 │  ├─ projects.js
 │  ├─ showNotification.js
 │  ├─ smoothScroll.js
+│  ├─ steamStatus.js
 │  ├─ timeline.js
 │  ├─ titleSwitcher.js
 │  ├─ typingEffect.js
