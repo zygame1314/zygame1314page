@@ -14,7 +14,7 @@ export async function onRequest(context) {
 
     try {
         const response = await fetch(
-            'https://store.steampowered.com/api/featured?cc=cn&l=schinese'
+            'https://store.steampowered.com/api/featuredcategories?cc=cn&l=schinese'
         );
 
         if (!response.ok) {
@@ -23,23 +23,19 @@ export async function onRequest(context) {
 
         const data = await response.json();
 
-        const uniqueGames = Array.from(
-            new Map(
-                data.featured_win.map(game => [game.id, game])
-            ).values()
-        );
+        const topSellers = data.top_sellers?.items || [];
 
-        const popularGames = uniqueGames
+        const popularGames = topSellers
             .slice(0, gamesPerPage)
             .map(game => ({
                 id: game.id,
                 name: game.name,
                 background_image: game.large_capsule_image,
-                discounted: game.discounted,
+                discounted: game.discount_percent > 0,
                 discount_percent: game.discount_percent,
                 original_price: game.original_price,
                 final_price: game.final_price,
-                windows_available: game.windows_available,
+                windows_available: true,
                 mac_available: game.mac_available,
                 linux_available: game.linux_available,
                 controller_support: game.controller_support
