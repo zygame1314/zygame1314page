@@ -16,7 +16,8 @@ export async function onRequest(context) {
     const params = new URLSearchParams({
         key: steamAPIKey,
         steamids: steamID,
-        format: 'json'
+        format: 'json',
+        l: 'schinese'
     }).toString();
 
     try {
