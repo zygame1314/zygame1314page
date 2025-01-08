@@ -175,29 +175,89 @@ class ArticlesManager {
             return;
         }
 
-        const suggestions = this.articles
-            .filter(article =>
-                article.title.toLowerCase().includes(query.toLowerCase()) ||
-                article.excerpt.toLowerCase().includes(query.toLowerCase())
-            )
+        const searchResults = this.articles.map(article => {
+            const titleMatch = article.title.toLowerCase().includes(query.toLowerCase());
+            const excerptMatch = article.excerpt.toLowerCase().includes(query.toLowerCase());
+            const tagMatches = article.tags ? article.tags.filter(tag =>
+                tag.toLowerCase().includes(query.toLowerCase())
+            ) : [];
+
+            return {
+                article,
+                matchTypes: [
+                    ...(titleMatch ? ['title'] : []),
+                    ...(excerptMatch ? ['excerpt'] : []),
+                    ...(tagMatches.length > 0 ? ['tag'] : [])
+                ],
+                matchedTags: tagMatches,
+                matchScore: (titleMatch ? 3 : 0) + (excerptMatch ? 2 : 0) + (tagMatches.length > 0 ? 1 : 0)
+            };
+        })
+            .filter(result => result.matchTypes.length > 0)
+            .sort((a, b) => b.matchScore - a.matchScore)
             .slice(0, 5);
 
         const container = document.querySelector('.search-suggestions');
         container.innerHTML = '';
 
-        if (suggestions.length > 0) {
-            suggestions.forEach(article => {
+        if (searchResults.length > 0) {
+            searchResults.forEach(({ article, matchTypes, matchedTags }) => {
                 const div = document.createElement('div');
                 div.className = 'suggestion-item';
-                div.textContent = article.title;
+
+                const icon = document.createElement('i');
+                icon.className = matchTypes[0] === 'title' ? 'fas fa-heading' :
+                    matchTypes[0] === 'tag' ? 'fas fa-tag' :
+                        'fas fa-align-left';
+
+                const content = document.createElement('div');
+                content.className = 'suggestion-content';
+
+                const title = document.createElement('div');
+                title.className = 'suggestion-title';
+                title.textContent = article.title;
+
+                const subtitle = document.createElement('div');
+                subtitle.className = 'suggestion-subtitle';
+
+                if (matchedTags.length > 0) {
+                    subtitle.innerHTML = `<i class="fas fa-tag"></i> ${matchedTags.join(', ')}`;
+                }
+
+                content.appendChild(title);
+                if (matchedTags.length > 0) {
+                    content.appendChild(subtitle);
+                }
+
+                div.appendChild(icon);
+                div.appendChild(content);
+
                 div.addEventListener('click', () => {
-                    document.getElementById('article-search').value = article.title;
+                    const searchInput = document.getElementById('article-search');
+                    searchInput.value = article.title;
                     container.style.display = 'none';
                     this.searchQuery = article.title.toLowerCase();
                     this.addToHistory(article.title);
                     this.currentIndex = 0;
                     this.renderArticles();
+
+                    setTimeout(() => {
+                        const grid = document.querySelector('.articles-grid');
+                        const firstMatch = grid.querySelector('.highlight-text');
+                        if (firstMatch) {
+                            const card = firstMatch.closest('.article-card');
+                            card.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                            card.classList.add('search-highlight');
+                            setTimeout(() => {
+                                card.classList.remove('search-highlight');
+                            }, 2000);
+                        }
+                    }, 100);
                 });
+
                 container.appendChild(div);
             });
             container.style.display = 'block';

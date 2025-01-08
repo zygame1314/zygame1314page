@@ -75,13 +75,32 @@
 .article-content li {
     margin: 0.5rem 0;
     position: relative;
+    color: #ffffff;
 }
 
-.article-content ul li::before {
+.article-content ul > li::before {
     content: "►";
     color: #ff6600;
     position: absolute;
     left: -1.5rem;
+}
+
+.article-content ol {
+    counter-reset: item;
+}
+
+.article-content ol > li::before {
+    content: counter(item) ".";
+    counter-increment: item;
+    color: #ff6600;
+    position: absolute;
+    left: -1.5rem;
+    font-weight: bold;
+}
+
+.article-content ol ol,
+.article-content ol ul {
+    counter-reset: item;
 }
 
 .article-content table {
