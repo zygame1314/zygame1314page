@@ -10,6 +10,10 @@
             "技术配置",
             "部署",
             "系统设计"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "GPT4o"
         ]
     },
     {
@@ -23,6 +27,9 @@
             "技术配置",
             "系统设计",
             "网络服务"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet"
         ]
     },
     {
@@ -62,6 +69,10 @@
             "游戏开发",
             "技术分析",
             "Unity"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "Gemini Experimental 1206"
         ]
     }
 ]

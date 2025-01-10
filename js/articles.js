@@ -501,7 +501,18 @@ class ArticlesManager {
         const tagsHtml = article.tags ?
             `<div class="article-tags">
                 ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-             </div>` : '';
+                </div>` : '';
+
+        const aiAssistantsHtml = article.aiAssistants ? `
+            <div class="ai-assistant-tags">
+                ${article.aiAssistants.map(assistant => `
+                    <span class="ai-assistant-tag">
+                        <i class="fas fa-robot"></i>
+                        ${assistant}
+                    </span>
+                `).join('')}
+            </div>
+        ` : '';
 
         card.innerHTML = `
             <img src="${article.thumbnail}" alt="${article.title}" class="article-thumbnail pixelated">
@@ -510,6 +521,7 @@ class ArticlesManager {
                 <i class="far fa-calendar-alt"></i> ${article.date}
                 ${tagsHtml}
             </div>
+            ${aiAssistantsHtml}
             <p class="article-excerpt">${highlightText(article.excerpt)}</p>
         `;
         card.addEventListener('click', () => {
@@ -598,7 +610,31 @@ class ArticlesManager {
                             ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>` : ''
             }
-                </div>
+                </div>      
+                ${article.aiAssistants ?
+                `<div class="ai-edit-notice">
+                    <div class="ai-notice-header">
+                        <i class="fas fa-robot"></i> AI辅助创作
+                    </div>
+                    <div class="ai-assistant-tags">
+                        本文由以下AI模型参与编辑：
+                        ${article.aiAssistants.map(assistant => `
+                            <span class="ai-assistant-tag">
+                                <i class="fas fa-robot"></i>
+                                ${assistant}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>` :
+                `<div class="ai-edit-notice">
+                    <div class="ai-notice-header">
+                        <i class="fas fa-pen-fancy"></i> 原创内容
+                    </div>
+                    <div class="ai-assistant-tags">
+                        本文为作者原创内容
+                    </div>
+                </div>`
+            }
             </div>
             <div class="article-content">
                 加载中...

@@ -128,6 +128,48 @@
     box-shadow: 2px 2px 0 var(--primary-color);
 }
 
+.ai-assistant-tags {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.ai-assistant-tag {
+    padding: 2px 8px;
+    background: rgba(26, 26, 26, 0.9);
+    border: 1px solid var(--info-color);
+    font-size: 0.8rem;
+    color: var(--info-color);
+    clip-path: polygon(0 4px, 4px 0,
+            calc(100% - 4px) 0, 100% 4px,
+            100% calc(100% - 4px), calc(100% - 4px) 100%,
+            4px 100%, 0 calc(100% - 4px));
+    transition: all 0.15s steps(2);
+}
+
+.ai-assistant-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0 var(--info-color);
+}
+
+.ai-edit-notice {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 150, 255, 0.05);
+    border-left: 3px solid #0096ff;
+}
+
+.ai-notice-header {
+    color: #0096ff;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.ai-notice-header i {
+    margin-right: 0.5rem;
+}
+
 .tags-filter {
     padding: 1rem 1.5rem;
     display: flex;
