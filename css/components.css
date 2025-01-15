@@ -243,6 +243,7 @@
     flex-wrap: wrap;
     justify-content: center;
     overflow: hidden;
+    min-height: 600px;
 }
 
 .project-card {
@@ -253,10 +254,11 @@
     padding: 25px;
     box-sizing: border-box;
     border: 3px solid var(--primary-color);
-    position: relative;
+    position: absolute;
     transform-origin: left center;
-    opacity: 1;
-    visibility: visible;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
     transition: all 0.3s ease;
     backface-visibility: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -268,10 +270,17 @@
     border-color: var(--secondary-color);
 }
 
-.project-card.hidden {
+.project-card.exiting {
     opacity: 0;
-    visibility: hidden;
+    visibility: visible;
     transform: translateY(20px);
+}
+
+.project-card.visible {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .project-card img {

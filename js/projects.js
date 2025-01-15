@@ -519,19 +519,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (pageNumber - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
-        projectCards.forEach((card, index) => {
-            if (index >= startIndex && index < endIndex) {
-                card.style.display = 'block';
-                setTimeout(() => {
-                    card.classList.remove('hidden');
-                }, 50);
-            } else {
-                card.classList.add('hidden');
-                setTimeout(() => {
-                    card.style.display = 'none';
-                }, 300);
+        projectCards.forEach(card => {
+            if (card.classList.contains('visible')) {
+                card.classList.add('exiting');
+                card.classList.remove('visible');
             }
         });
+
+        setTimeout(() => {
+            projectCards.forEach(card => {
+                card.classList.remove('exiting');
+                card.style.display = 'none';
+            });
+
+            projectCards.forEach((card, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    card.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        card.classList.add('visible');
+                    });
+                }
+            });
+        }, 300);
     }
 
     initPagination();
