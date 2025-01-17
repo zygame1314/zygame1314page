@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let notificationTimer = null;
 
     function isMobileDevice() {
-        return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+        return window.innerWidth < 1200 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
     }
 
     window.showLive2dNotification = function (text, duration = 1000) {
