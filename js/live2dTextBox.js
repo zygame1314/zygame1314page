@@ -2,9 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const textBox = document.getElementById("live2d-text-box");
     let notificationTimer = null;
 
-    function isMobileDevice() {
-        return window.innerWidth < 1200 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
-    }
 
     window.showLive2dNotification = function (text, duration = 1000) {
         if (notificationTimer) {
@@ -145,22 +142,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function removeTextHover() {
-        textBox.style.display = "none";
-    }
-
-    if (!isMobileDevice()) {
-        setupTextHover();
-    } else {
-        removeTextHover();
-    }
-
-    window.addEventListener("resize", function () {
-        if (isMobileDevice()) {
-            removeTextHover();
-        } else {
-            textBox.style.display = "";
-            setupTextHover();
-        }
-    });
+    setupTextHover();
 });

@@ -13,7 +13,7 @@
     flex: 1;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) rgba(26, 26, 26, 0.9);
-    border-bottom: 2px solid rgba(255, 204, 0, 0.2);
+    border-bottom: 2px solid var(--theme-bg);
 }
 
 .articles-grid::before {
@@ -175,12 +175,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    border-bottom: 2px solid rgba(255, 204, 0, 0.2);
+    border-bottom: 2px solid var(--theme-bg);
 }
 
 .filter-tag {
     cursor: url('../../images/cursors/Rath Link.cur'), auto;
-    ;
     padding: 4px 12px;
     background: rgba(26, 26, 26, 0.9);
     border: 1px solid var(--primary-color);
@@ -214,7 +213,7 @@
     padding: 0.75rem;
     margin-bottom: 1rem;
     border-left: 2px solid var(--primary-color);
-    background: rgba(255, 204, 0, 0.05);
+    background: var(--theme-bg);
     color: var(--text-color);
 }
 
@@ -418,8 +417,7 @@
 }
 
 .suggestion-item:hover {
-    background: rgba(255, 204, 0, 0.1);
-    transform: translateX(4px);
+    background: var(--theme-bg);
 }
 
 .suggestion-item i {
@@ -450,7 +448,7 @@
 .search-history {
     margin-top: 1rem;
     padding-top: 0.5rem;
-    border-top: 2px dashed rgba(255, 204, 0, 0.2);
+    border-top: 2px dashed var(--theme-bg);
 }
 
 .history-header {
@@ -538,7 +536,7 @@
 }
 
 .highlight-text {
-    background-color: rgba(255, 204, 0, 0.2);
+    background-color: var(--theme-bg);
     padding: 0 2px;
     position: relative;
     animation: highlight-flash 0.5s steps(2);

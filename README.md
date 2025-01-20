@@ -94,6 +94,7 @@
 │  ├─ articles.js
 │  ├─ clouds.js
 │  ├─ comment.js
+│  ├─ contact.js
 │  ├─ cursorTrail.js
 │  ├─ detectDevTools.js
 │  ├─ donate.js
@@ -110,6 +111,7 @@
 │  ├─ parallax.js
 │  ├─ pongGame.js
 │  ├─ projects.js
+│  ├─ seasonTheme.js
 │  ├─ showNotification.js
 │  ├─ smoothScroll.js
 │  ├─ steamStatus.js

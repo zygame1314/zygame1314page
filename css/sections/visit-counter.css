@@ -76,18 +76,18 @@
 }
 
 #activation-code-value {
-    color: var(--highlight-color, #ffcc00);
+    color: var(--primary-color);
     font-weight: bold;
     font-size: 18px;
-    background-color: rgba(255, 204, 0, 0.2);
+    background-color: var(--theme-bg);
     padding: 2px 6px;
     border-radius: 3px;
     box-shadow:
         1px 1px 0 rgba(0, 0, 0, 0.3),
-        -1px -1px 0 rgba(255, 204, 0, 0.4);
+        -1px -1px 0 var(--secondary-color);
     text-shadow:
-        1px 1px 0 #000,
-        -1px -1px 0 rgba(255, 204, 0, 0.4);
+        1px 1px 0 rgba(0, 0, 0, 0.5),
+        -1px -1px 0 var(--secondary-color);
 }
 
 .warning-message {
@@ -188,7 +188,7 @@
     font-family: 'Zpix', monospace;
     font-size: 16px;
     color: #000;
-    background: #FFD700;
+    background: var(--secondary-color);
     padding: 12px 20px;
     border: 3px solid #000;
     image-rendering: pixelated;
@@ -198,7 +198,7 @@
     transition: none;
     box-shadow:
         4px 4px 0 #000,
-        inset -3px -3px 0 #FFA500,
+        inset -3px -3px 0 var(--primary-color),
         inset 3px 3px 0 #FFF;
     animation: pixel-flash 1s steps(2) infinite;
 }
@@ -226,7 +226,7 @@
     transform: translate(2px, 2px);
     box-shadow:
         2px 2px 0 #000,
-        inset -3px -3px 0 #FFA500,
+        inset -3px -3px 0 var(--primary-color),
         inset 3px 3px 0 #FFF;
 }
 
@@ -236,7 +236,7 @@
     right: 105%;
     top: 50%;
     transform: translateY(-50%);
-    color: #FFD700;
+    color: var(--primary-color);
     text-shadow: 2px 2px 0 #000;
     animation: pixel-arrow 0.5s steps(1) infinite;
 }

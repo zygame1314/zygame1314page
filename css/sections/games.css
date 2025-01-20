@@ -23,14 +23,14 @@
 }
 
 .games-list::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 204, 0, 0.8);
+    background-color: var(--primary-color);
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: padding-box;
 }
 
 .games-list::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 204, 0, 1);
+    background-color: var(--secondary-color);
 }
 
 .game-item {
@@ -44,7 +44,7 @@
 
 .game-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 3px 10px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 3px 10px var(--secondary-color);
 }
 
 .game-item img {
@@ -153,7 +153,7 @@
 
 .steam-games-list .game-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 3px 10px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 3px 10px var(--secondary-color);
 }
 
 .steam-games-list .game-item img {

@@ -14,7 +14,7 @@
 .button:hover {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 2px 5px var(--secondary-color);
 }
 
 .notice-area {
@@ -57,7 +57,7 @@
 }
 
 .notice-controls button:hover {
-    background: rgba(255, 204, 0, 0.1);
+    background: var(--theme-bg);
     color: var(--secondary-color);
 }
 
@@ -153,7 +153,7 @@
 }
 
 .warning i {
-    color: var(--primary-color);
+    color: var(--warning-color);
 }
 
 .info i {
@@ -165,11 +165,11 @@
 }
 
 .step i {
-    color: var(--secondary-color);
+    color: var(--info-color);
 }
 
 .steps i {
-    color: var(--secondary-color);
+    color: var(--info-color);
 }
 
 .step-number {
@@ -217,7 +217,7 @@
 
 .notice-area:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 204, 0, 0.15);
+    box-shadow: 0 4px 12px var(--secondary-color);
     border-color: var(--secondary-color);
 }
 
@@ -343,7 +343,7 @@
 .pagination-button:hover {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 2px 5px var(--secondary-color);
 }
 
 .pagination-button.active {

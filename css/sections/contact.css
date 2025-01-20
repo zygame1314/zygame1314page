@@ -26,20 +26,54 @@
 }
 
 #contact ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
     padding: 10px;
     border: 2px solid transparent;
     transition: all 0.3s ease-out;
     position: relative;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+.copy-button {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    margin-left: 10px;
+    font-family: 'zpix', monospace;
+    cursor: url('../../images/cursors/Rath Link.cur'), auto;
+    transition: all 0.3s ease;
+    font-size: 0.8em;
+    border-radius: 4px;
+}
+
+.copy-button:hover {
+    background: var(--primary-color);
+    color: var(--theme-bg);
+    transform: scale(1.05);
+}
+
+.copy-button.copied {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
 #contact ul li:hover {
     transform: translateX(10px);
     border-color: var(--primary-color);
-    background-color: rgba(255, 204, 0, 0.1);
+    background-color: var(--theme-bg);
     white-space: normal;
 }
 

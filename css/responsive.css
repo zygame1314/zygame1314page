@@ -9,6 +9,11 @@
         font-size: 1.5em;
     }
 
+    #L2dCanvas,
+    #live2d-text-box {
+        display: none;
+    }
+
     .project-card h3 {
         font-size: 20px;
     }

@@ -113,7 +113,7 @@
 
 .milestone:hover .milestone-content {
     transform: translateX(5px);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+    box-shadow: 0 0 15px var(--theme-bg);
     border-color: var(--secondary-color);
 }
 
@@ -163,5 +163,5 @@
 .future-milestone:hover .milestone-content {
     background-color: rgba(0, 0, 0, 0.7);
     border-style: dashed;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+    box-shadow: 0 0 20px var(--theme-bg);
 }

@@ -630,7 +630,7 @@
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4);
+        box-shadow: 0 0 0 0 var(--theme-bg);
     }
 
     70% {
@@ -718,7 +718,7 @@
     }
 
     50% {
-        border-color: #FFA500;
+        border-color: var(--primary-color);
     }
 }
 
@@ -860,11 +860,11 @@
 
     0%,
     100% {
-        box-shadow: 0 0 10px #ff6600;
+        box-shadow: 0 0 10px var(--primary-color);
     }
 
     50% {
-        box-shadow: 0 0 20px #ff6600, 0 0 30px #ffcc00;
+        box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--secondary-color);
     }
 }
 
@@ -934,7 +934,7 @@
     }
 
     50% {
-        border-color: #ff9900;
+        border-color: var(--primary-color);
     }
 
     100% {

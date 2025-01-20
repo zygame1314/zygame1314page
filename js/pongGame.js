@@ -97,7 +97,8 @@ function initPongGame() {
         ctx.fillStyle = 'rgba(26, 26, 26, 0.2)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = 'rgba(255, 204, 0, 0.5)';
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+        ctx.fillStyle = `${primaryColor}80`;
         ctx.fillRect(0, paddle.left - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
         ctx.fillRect(canvas.width - config.paddleWidth, paddle.right - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
 
