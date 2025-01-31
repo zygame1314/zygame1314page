@@ -551,6 +551,7 @@ class ArticlesManager {
             pageview: true,
             comment: true,
             search: false,
+            reaction: false,
             locale: {
                 placeholder: '说点什么……',
                 sofa: '快来发表你的评论吧~',
