@@ -42,6 +42,17 @@
 ├─ custom
 │  └─ errorpage.html
 ├─ data
+│  ├─ live2d
+│  │  └─ knight
+│  │     ├─ knight.1024
+│  │     │  └─ texture_00.png
+│  │     ├─ knight.cdi3.json
+│  │     ├─ knight.cmo3
+│  │     ├─ knight.moc3
+│  │     ├─ knight.model3.json
+│  │     ├─ knight.physics3.json
+│  │     ├─ knight.psd
+│  │     └─ maxresdefault.jpg
 │  ├─ notices.json
 │  ├─ projects.json
 │  └─ timeline.json

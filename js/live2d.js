@@ -1,7 +1,7 @@
 window.onload = async () => {
     const viewer = new l2dViewer({
         el: document.getElementById('L2dCanvas'),
-        basePath: 'https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/assets',
+        basePath: '/data/live2d',
         modelName: 'knight',
         width: 300,
         height: 300,
