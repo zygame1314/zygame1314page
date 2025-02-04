@@ -78,7 +78,7 @@
     {
         "id": "deepseek-server-recovery",
         "title": "DeepSeek 炸服自救指南",
-        "date": "2025-01-15",
+        "date": "2025-02-04",
         "excerpt": "详细介绍DeepSeek官方平替API...",
         "thumbnail": "../images/deepseek.png",
         "contentUrl": "/articles/content/deepseek-server-recovery.html",
