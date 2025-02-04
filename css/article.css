@@ -78,7 +78,7 @@
     color: #ffffff;
 }
 
-.article-content ul > li::before {
+.article-content ul>li::before {
     content: "►";
     color: var(--primary-color);
     position: absolute;
@@ -89,7 +89,7 @@
     counter-reset: item;
 }
 
-.article-content ol > li::before {
+.article-content ol>li::before {
     content: counter(item) ".";
     counter-increment: item;
     color: var(--primary-color);
@@ -109,6 +109,9 @@
     margin: 1rem 0;
     background: #2a2a2a;
     border: 2px solid var(--primary-color);
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .article-content th {
