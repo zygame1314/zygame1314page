@@ -74,5 +74,23 @@
             "Claude 3.5 Sonnet",
             "Gemini Experimental 1206"
         ]
+    },
+    {
+        "id": "deepseek-server-recovery",
+        "title": "DeepSeek 炸服自救指南",
+        "date": "2025-01-15",
+        "excerpt": "详细介绍DeepSeek官方平替API...",
+        "thumbnail": "../images/deepseek.png",
+        "contentUrl": "/articles/content/deepseek-server-recovery.html",
+        "tags": [
+            "技术配置",
+            "系统维护",
+            "部署"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "DeepSeek R1",
+            "Gemini Experimental 1206"
+        ]
     }
 ]

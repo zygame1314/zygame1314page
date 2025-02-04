@@ -6,6 +6,7 @@
 ├─ articles
 │  ├─ content
 │  │  ├─ activation-code-mechanism.html
+│  │  ├─ deepseek-server-recovery.html
 │  │  ├─ unity-mosaic-removal.html
 │  │  ├─ upyun-source-config.html
 │  │  ├─ vercel-config.html
@@ -86,6 +87,7 @@
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
 │  ├─ decrypt.png
+│  ├─ deepseek.png
 │  ├─ default-game-cover.png
 │  ├─ Dialogue_Bottom.png
 │  ├─ Dialogue_Top.png

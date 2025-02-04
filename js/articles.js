@@ -580,6 +580,11 @@ class ArticlesManager {
         this.transitionMask.classList.add('active');
         await new Promise(resolve => setTimeout(resolve, 600));
 
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
         if (!fromHistory) {
             const articlePath = article.contentUrl.replace('/articles/content/', '').replace('.html', '');
             history.pushState({ articleId: articlePath }, '', `/article/${articlePath}`);
