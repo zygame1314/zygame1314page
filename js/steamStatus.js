@@ -29,8 +29,8 @@ function initSteamStatus() {
 
             if (player.gameextrainfo) {
                 if (player.personastate === STEAM_STATUS.SNOOZE) {
-                    statusText = '游戏中打盹';
-                    statusClass = 'in-game-snooze';
+                    statusText = '挂机中';
+                    statusClass = 'in-game-away';
                 } else {
                     statusText = '正在游戏';
                     statusClass = 'in-game';
@@ -92,8 +92,8 @@ function initSteamStatus() {
             statusWidget.addEventListener("mouseenter", function () {
                 let message = '';
                 if (player.gameextrainfo) {
-                    if (player.personastate === STEAM_STATUS.SNOOZE) {
-                        message = `主人在游戏中打盹呢，要去叫醒他吗？`;
+                    if (player.personastate === STEAM_STATUS.AWAY) {
+                        message = `主人在挂机呢，可能临时离开了~`;
                     } else {
                         message = `主人正在玩${player.gameextrainfo}呢！`;
                     }

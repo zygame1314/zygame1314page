@@ -119,11 +119,11 @@
     box-shadow: 0 0 5px #90ba3c;
 }
 
-.steam-status.in-game-snooze {
+.steam-status.in-game-away {
     color: #ff7f50;
 }
 
-.steam-status.in-game-snooze::before {
+.steam-status.in-game-away::before {
     background: #ff7f50;
     box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
 }
@@ -185,7 +185,7 @@
 .steam-status.in-game::before,
 .steam-status.looking-to-play::before,
 .steam-status.trading::before,
-.steam-status.in-game-snooze::before {
+.steam-status.in-game-away::before {
     animation: pulse 2s infinite;
 }
 
@@ -216,12 +216,12 @@
     border-color: #90ba3c;
 }
 
-.steam-status-widget.in-game-snooze {
+.steam-status-widget.in-game-away {
     background: rgba(255, 127, 80, 0.2);
     border-color: #ff7f50;
 }
 
-.steam-status-widget.in-game-snooze .steam-avatar {
+.steam-status-widget.in-game-away .steam-avatar {
     border-color: #ff7f50;
 }
 
