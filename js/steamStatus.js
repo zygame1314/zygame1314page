@@ -28,7 +28,7 @@ function initSteamStatus() {
             let statusClass = '';
 
             if (player.gameextrainfo) {
-                if (player.personastate === STEAM_STATUS.SNOOZE) {
+                if (player.personastate === STEAM_STATUS.AWAY) {
                     statusText = '挂机中';
                     statusClass = 'in-game-away';
                 } else {
