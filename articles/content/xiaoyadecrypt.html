@@ -16,7 +16,7 @@
             <h3>1. 定位解密调用</h3>
             <div class="analysis-box">
                 <p>通过浏览器开发者工具观察到资源加载过程中的调用堆栈：</p>
-                <pre><code>
+                <pre><code class="language-javascript">
 // 调用堆栈追踪
 (匿名) @ vendor-10-1m3jNn.js:138
 N @ vendor-10-1m3jNn.js:138
@@ -30,7 +30,7 @@ getDiskFileUrlBS @ index-jPnMhD.js:297
             <h3>2. 定位核心函数</h3>
             <div class="code-analysis">
                 <p>找到文件URL获取函数：</p>
-                <pre><code>
+                <pre><code class="language-javascript">
 // 文件URL获取函数
 const getDiskFileUrlBS = async ({quote_id: J, filename: ae, need_clear: se}) => {
     const oe = {
@@ -50,7 +50,7 @@ const getDiskFileUrlBS = async ({quote_id: J, filename: ae, need_clear: se}) => 
             <h3>3. 解密函数分析</h3>
             <div class="decrypt-analysis">
                 <p>发现核心解密函数：</p>
-                <pre><code class="secure-code">
+                <pre><code class="secure-code language-javascript">
 // DES解密函数
 function decryptByDES(J) {
     try {
@@ -78,7 +78,7 @@ function decryptByDES(J) {
             <h3>4. 环境配置分析</h3>
             <div class="config-analysis">
                 <p>搜索配置信息发现不同环境的参数：</p>
-                <pre><code class="secure-code">
+                <pre><code class="secure-code language-javascript">
 // 后端配置信息
 const backendSetting = {
     develop: {  // 开发环境
@@ -105,7 +105,7 @@ const backendSetting = {
 
             <h2>二、解密过程详解</h2>
             <h3>1. 密钥和向量</h3>
-            <pre><code class="secure-code">
+            <pre><code class="secure-code language-javascript">
 // 生产环境的关键参数
 const key = "94374647";    // 8位密钥
 const vector = "99526255"; // 8位初始化向量
@@ -117,7 +117,7 @@ const vector = "99526255"; // 8位初始化向量
             </div>
 
             <h3>2. Base64字符还原</h3>
-            <pre><code>
+            <pre><code class="language-javascript">
 const base64Str = encryptedUrl
     .replace(/_/g, '+')
     .replace(/\*/g, '/')
@@ -134,7 +134,7 @@ const base64Str = encryptedUrl
             </div>
 
             <h3>3. 创建解密器</h3>
-            <pre><code>
+            <pre><code class="language-javascript">
 const keyUtf8 = window.CryptoJS.enc.Utf8.parse(key);
 const ivUtf8 = window.CryptoJS.enc.Utf8.parse(vector);
             </code></pre>
@@ -145,7 +145,7 @@ const ivUtf8 = window.CryptoJS.enc.Utf8.parse(vector);
             </div>
 
             <h3>4. 执行解密</h3>
-            <pre><code>
+            <pre><code class="language-javascript">
 const decrypted = window.CryptoJS.DES.decrypt({
     ciphertext: window.CryptoJS.enc.Base64.parse(base64Str)
 }, keyUtf8, {
@@ -206,26 +206,28 @@ const decrypted = window.CryptoJS.DES.decrypt({
             <h2>五、环境差异说明</h2>
             <div class="env-diff">
                 <h3>不同环境的配置差异：</h3>
-                <table class="secure-table">
-                    <tr>
-                        <th>环境</th>
-                        <th>密钥</th>
-                        <th>向量</th>
-                        <th>账号</th>
-                    </tr>
-                    <tr>
-                        <td>开发环境</td>
-                        <td>59894985</td>
-                        <td>29393376</td>
-                        <td>29357</td>
-                    </tr>
-                    <tr>
-                        <td>生产环境</td>
-                        <td>94374647</td>
-                        <td>99526255</td>
-                        <td>29353</td>
-                    </tr>
-                </table>
+                <div class="table-container">
+                    <table class="secure-table">
+                        <tr>
+                            <th>环境</th>
+                            <th>密钥</th>
+                            <th>向量</th>
+                            <th>账号</th>
+                        </tr>
+                        <tr>
+                            <td>开发环境</td>
+                            <td>59894985</td>
+                            <td>29393376</td>
+                            <td>29357</td>
+                        </tr>
+                        <tr>
+                            <td>生产环境</td>
+                            <td>94374647</td>
+                            <td>99526255</td>
+                            <td>29353</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             <div class="article-footer">

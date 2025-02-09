@@ -28,10 +28,43 @@
             <h3>Azure：免费量大，冲就完事</h3>
             <p class="explanation-box">Azure 是微软家的云服务平台，财大气粗，提供的 DeepSeek API 免费额度非常慷慨（至少没扣我钱）。用起来稍微有点门槛，需要一些学习成本。<br><a
                     href="https://ai.azure.com" target="_blank">点此了解</a></p>
-            <p class="article-tips">另外，Azure 的 DeepSeek API 有时候会有点“傲娇”，经常不自动推理，需要你在 prompt
-                上下点功夫。这里分享一个亲测有效的提示词模板，可以有效解决这个问题（<a href="https://linux.do/t/topic/404941/7" target="_blank">感谢
-                    Linux.do 社区的分享</a>）：</p>
-            <pre><code class="language-yaml"># 角色定义
+            <p class="article-tips">另外，Azure 的 DeepSeek API 有时候会有点“正确”，经常不自动推理，需要你在 prompt
+                上下点功夫。这里分享几个亲测有效的提示词模板，可以有效解决这个问题（感谢
+                <strong>Linux.do 社区</strong><a href="https://linux.do/t/topic/417566" target="_blank">R1 不思考 解决方案</a>和<a
+                    href="https://linux.do/t/topic/407614" target="_blank">尽量让你的 deepseek r1 api 思考</a>两个帖子的分享）：
+            </p>
+            <pre><code class="language-yaml">
+##################
+## 简单模板 
+##################
+Initiate your response with "&lt;think&gt;\n嗯" at the beginning of every output.
+
+##################
+## 基础模板
+##################
+
+# 角色定义
+role: "AI Assistant (DeepSeek-R1-Enhanced)"
+author: "DeepSeek"
+description: >
+  通用型智能助手，通过结构化思考流程提供可靠服务，
+  知识截止2023年12月，不处理实时信息。
+# 输出规范
+output_schema:
+  thinking_section:  # 强制思考段落
+    required: true
+    tags: "&lt;think&gt;\n嗯{content}&lt;/think&gt;"
+    content_rules:
+      - 使用Markdown格式
+      - 内容有效性验证:
+          rules:
+            - rule: "non_empty"  # 非空验证规则
+
+##################
+## 完整模板
+##################
+
+# 角色定义
 role: "AI Assistant (DeepSeek-R1-Enhanced)"
 author: "DeepSeek"
 description: >
@@ -51,14 +84,14 @@ interaction_rules:
 output_schema:
   thinking_section:  # 强制思考段落
     required: true
-    tags: "<think>{content}</think>"
+    tags: "&lt;think&gt;{content}&lt;/think&gt;"
     content_rules:
       - 使用Markdown列表格式
       - 包含至少2个验证步骤
       - 标注潜在不确定性
       - 复杂概念使用类比解释
 </code></pre>
-            <p class="usage-tips">把这个提示词加到你的请求里，Azure 的 DeepSeek API 就会乖乖地开始推理了。这个模板主要定义了 AI
+            <p class="usage-tips">把这些提示词加到你的请求里，Azure 的 DeepSeek API 就会乖乖地开始推理了。从简单到复杂的模板都有，可以根据需要选择。这些模板主要定义了 AI
                 助手的角色、交互规则和输出规范，强制它进行结构化思考，从而提高推理的准确性和可靠性。</p>
             <ul>
                 <li><strong>优点</strong>：免费额度大，稳定可靠。</li>
@@ -72,6 +105,7 @@ output_schema:
             <p class="article-tips">GitHub Models 的速率限制分为不同的等级，DeepSeek API 属于 "High"
                 等级，具体限制如下表所示<strong>（截至2025.02.04，我们劳苦大众看
                     Copilot Free 等级就好了）</strong>：</p>
+            <div class="table-container"></div>
             <table>
                 <thead>
                     <tr>
@@ -278,50 +312,52 @@ output_schema:
                     </tr>
                 </tbody>
             </table>
-            <ul>
-                <li><strong>优点</strong>：免费，简单易用。</li>
-                <li><strong>缺点</strong>：每日调用次数有限(50次/天)，适合轻度使用。</li>
-            </ul>
+        </div>
+        <ul>
+            <li><strong>优点</strong>：免费，简单易用。</li>
+            <li><strong>缺点</strong>：每日调用次数有限(50次/天)，适合轻度使用。</li>
+        </ul>
 
-            <h3>硅基流动：付费但实惠，性价比之选</h3>
-            <p class="explanation-box">硅基流动是一个国内的 AI 平台，提供了 DeepSeek API 的付费服务。虽然要花钱，但是价格真的很良心，可以说是性价比之选了！
-                <br><a href="https://siliconflow.cn" target="_blank">点此了解</a>
-            </p>
-            <p class="article-tips">硅基流动的 DeepSeek API 定价策略非常友好。满血版 DeepSeek 模型的价格为：</p>
-            <ul>
-                <li><strong>输入</strong>：￥4 / M Tokens</li>
-                <li><strong>输出</strong>：￥16 / M Tokens</li>
-            </ul>
-            <p>如果你觉得满血版还是有点小贵，还可以选择蒸馏版的 <code>deepseek-ai/DeepSeek-R1-Distill-Llama-70B</code>，价格更实惠：</p>
-            <ul>
-                <li><strong>价格</strong>：￥4.13 / M Tokens (输入输出同价)</li>
-            </ul>
-            <p>这个价格在国内的 AI 平台中可以说是相当有竞争力了，而且硅基流动的服务也比较稳定，国内访问速度也很快，非常适合需要长期稳定使用 DeepSeek API 的用户。</p>
-            <ul>
-                <li><strong>优点</strong>：价格实惠，稳定可靠，国内访问速度快。</li>
-                <li><strong>缺点</strong>：需要付费，不介意的同学可以冲。</li>
-            </ul>
+        <h3>硅基流动：付费但实惠，性价比之选</h3>
+        <p class="explanation-box">硅基流动是一个国内的 AI 平台，提供了 DeepSeek API 的付费服务。虽然要花钱，但是价格真的很良心，可以说是性价比之选了！
+            <br><a href="https://siliconflow.cn" target="_blank">点此了解</a>
+        </p>
+        <p class="article-tips">硅基流动的 DeepSeek API 定价策略非常友好。满血版 DeepSeek 模型的价格为：</p>
+        <ul>
+            <li><strong>输入</strong>：￥4 / M Tokens</li>
+            <li><strong>输出</strong>：￥16 / M Tokens</li>
+        </ul>
+        <p>如果你觉得满血版还是有点小贵，还可以选择蒸馏版的 <code>deepseek-ai/DeepSeek-R1-Distill-Llama-70B</code>，价格更实惠：</p>
+        <ul>
+            <li><strong>价格</strong>：￥4.13 / M Tokens (输入输出同价)</li>
+        </ul>
+        <p>这个价格在国内的 AI 平台中可以说是相当有竞争力了，而且硅基流动的服务也比较稳定，国内访问速度也很快，非常适合需要长期稳定使用 DeepSeek API 的用户。</p>
+        <ul>
+            <li><strong>优点</strong>：价格实惠，稳定可靠，国内访问速度快。</li>
+            <li><strong>缺点</strong>：需要付费，不介意的同学可以冲。</li>
+        </ul>
 
-            <h3>阿里百炼：偶尔抽风，但免费额度诱人</h3>
-            <p class="explanation-box">阿里百炼是阿里云推出的 AI 平台，也提供了 DeepSeek API。它的特点是 180 天内每个模型有 10,000,000 token
-                的免费额度，非常诱人！不过偶尔会抽风，稳定性还有待提高。另外你也可以试试他们自家的通义大模型。<br><a href="https://www.aliyun.com/product/bailian"
-                    target="_blank">点此了解</a></p>
-            <ul>
-                <li><strong>优点</strong>：免费额度非常大，相当于半年内阿里云上所有模型随便用了，还要啥自行车。</li>
-                <li><strong>缺点</strong>：偶尔不稳定，像极了爱情，哪怕是自家的通义也偶尔崩一下。</li>
-            </ul>
-            <p class="article-tips">阿里百炼的稳定性问题，很可能是因为它的 API 底层还是依赖于 DeepSeek 官方或其他渠道。所以，当 DeepSeek 官方 API
-                出现波动时，阿里百炼也难免会受到影响。这就好比“覆巢之下，焉有完卵”，当上游不稳定时，下游也很难独善其身。当然这只是猜测，具体原因还需要阿里云官方来解释。</p>
+        <h3>阿里百炼：偶尔抽风，但免费额度诱人</h3>
+        <p class="explanation-box">阿里百炼是阿里云推出的 AI 平台，也提供了 DeepSeek API。它的特点是 180 天内每个模型有 10,000,000 token
+            的免费额度，非常诱人！不过偶尔会抽风，稳定性还有待提高。另外你也可以试试他们自家的通义大模型。<br><a href="https://www.aliyun.com/product/bailian"
+                target="_blank">点此了解</a></p>
+        <ul>
+            <li><strong>优点</strong>：免费额度非常大，相当于半年内阿里云上所有模型随便用了，还要啥自行车。</li>
+            <li><strong>缺点</strong>：偶尔不稳定，像极了爱情，哪怕是自家的通义也偶尔崩一下。</li>
+        </ul>
+        <p class="article-tips">阿里百炼的稳定性问题，很可能是因为它的 API 底层还是依赖于 DeepSeek 官方或其他渠道。所以，当 DeepSeek 官方 API
+            出现波动时，阿里百炼也难免会受到影响。这就好比“覆巢之下，焉有完卵”，当上游不稳定时，下游也很难独善其身。当然这只是猜测，具体原因还需要阿里云官方来解释。</p>
 
-            <h3>Groq：蒸馏过的 DeepSeek，人工智障但真香</h3>
-            <p class="explanation-box">
-                Groq 是一个专门提供 AI 推理服务的平台，他们提供了一个经过蒸馏的 DeepSeek
-                模型：<code>deepseek-r1-distill-llama-70b</code>。这个模型推理速度非常快，但是，我个人体验下来感觉有点“人工智障”，可能不太适合复杂的任务。<br><a
-                    href="https://groq.com" target="_blank">点此了解</a>
-            </p>
-            <p class="article-tips">虽然 Groq 上的 DeepSeek 表现得有点差强人意，但是人家是真的慷慨！以下是 Groq
-                平台上其他模型的速率限制<strong>（截至2025.02.04）</strong>，虽然没有列出
-                DeepSeek，但我们可以推测它应该和 <code>llama-3.3-70b-versatile</code> 处于同一等级，毕竟都是 70B 左右的模型。</p>
+        <h3>Groq：蒸馏过的 DeepSeek，人工智障但真香</h3>
+        <p class="explanation-box">
+            Groq 是一个专门提供 AI 推理服务的平台，他们提供了一个经过蒸馏的 DeepSeek
+            模型：<code>deepseek-r1-distill-llama-70b</code>。这个模型推理速度非常快，但是，我个人体验下来感觉有点“人工智障”，可能不太适合复杂的任务。<br><a
+                href="https://groq.com" target="_blank">点此了解</a>
+        </p>
+        <p class="article-tips">虽然 Groq 上的 DeepSeek 表现得有点差强人意，但是人家是真的慷慨！以下是 Groq
+            平台上其他模型的速率限制<strong>（截至2025.02.04）</strong>，虽然没有列出
+            DeepSeek，但我们可以推测它应该和 <code>llama-3.3-70b-versatile</code> 处于同一等级，毕竟都是 70B 左右的模型。</p>
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -472,22 +508,23 @@ output_schema:
                     </tr>
                 </tbody>
             </table>
-            <p>可以看到，即使是 70B 级别的模型，Groq 也提供了每天 100,000 个 Tokens 的免费额度，可以说是相当慷慨了。所以，如果你追求的是速度，而且可以忍受它偶尔的“智障”，那 Groq
-                绝对是一个值得尝试的选择！</p>
-            <ul>
-                <li><strong>优点</strong>：免费量大（预计每天 10 万 Tokens），推理速度极快。</li>
-                <li><strong>缺点</strong>：模型能力有限，有时候会给出一些令人匪夷所思的回答。</li>
-            </ul>
+        </div>
+        <p>可以看到，即使是 70B 级别的模型，Groq 也提供了每天 100,000 个 Tokens 的免费额度，可以说是相当慷慨了。所以，如果你追求的是速度，而且可以忍受它偶尔的“智障”，那 Groq
+            绝对是一个值得尝试的选择！</p>
+        <ul>
+            <li><strong>优点</strong>：免费量大（预计每天 10 万 Tokens），推理速度极快。</li>
+            <li><strong>缺点</strong>：模型能力有限，有时候会给出一些令人匪夷所思的回答。</li>
+        </ul>
 
-            <h2 class="faq-section">常见问题</h2>
-            <h3>Q：这些 API 的安全性如何？</h3>
-            <p>A：各家在数据加密这块确实下血本了（毕竟谁都不想当行业冥灯💡）<br>但铁子们注意了——你要是敢把 API key 硬!编!码!进前端，除非家里有点小矿，否则原地破产。</p>
+        <h2 class="faq-section">常见问题</h2>
+        <h3>Q：这些 API 的安全性如何？</h3>
+        <p>A：各家在数据加密这块确实下血本了（毕竟谁都不想当行业冥灯💡）<br>但铁子们注意了——你要是敢把 API key 硬!编!码!进前端，除非家里有点小矿，否则原地破产。</p>
 
-            <h3>Q：哪个渠道的 DeepSeek API 最好用？</h3>
-            <p>A：那必须强推Azure啊！<br>学生党直接白嫖微软的100刀羊毛，相当于自带一年份的「AI能量饮料」畅饮卡，边写作业边调API还能顺便把云计算学分修了（？），这波四舍五入等于微软倒贴钱求你学习，这不得连夜注册把学生认证冲到包浆？
-            </p>
+        <h3>Q：哪个渠道的 DeepSeek API 最好用？</h3>
+        <p>A：那必须强推Azure啊！<br>学生党直接白嫖微软的100刀羊毛，相当于自带一年份的「AI能量饮料」畅饮卡，边写作业边调API还能顺便把云计算学分修了（？），这波四舍五入等于微软倒贴钱求你学习，这不得连夜注册把学生认证冲到包浆？
+        </p>
 
-            <p class="article-footer">已亲测，薅完Azure羊毛的同学们，欢迎来评论区对暗号~</p>
+        <p class="article-footer">已亲测，薅完Azure羊毛的同学们，欢迎来评论区对暗号~</p>
         </div>
     </main>
 </body>

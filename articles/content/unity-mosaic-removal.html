@@ -47,7 +47,7 @@
                 </li>
             </ol>
             <p>找到的 Shader 文件内容大致如下：</p>
-            <pre><code class="language-glsl">
+            <pre><code class="language-json">
 //////////////////////////////////////////
 //
 // NOTE: This is *not* a valid shader file
@@ -114,7 +114,7 @@ Shader "FX/Censor" {
             <p>找到所有类似 <code>0 float val = 15</code> 的代码行，将 <code>15</code> 改为
                 <code>0</code>。也就是把所有的<code>0 float val = 15</code>替换成<code>0 float val = 0</code>。修改后大致如下：
             </p>
-            <pre><code class="language-glsl">
+            <pre><code class="language-yaml">
 0 SerializedShaderState m_State
            1 string m_Name = ""
            0 SerializedShaderRTBlendState rtBlend0

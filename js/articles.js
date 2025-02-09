@@ -663,6 +663,38 @@ class ArticlesManager {
             const articleContent = articleSection.querySelector('.article-content');
             articleContent.innerHTML = content;
 
+            const codeBlocks = articleContent.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                const language = block.className.replace('language-', '');
+                if (language) {
+                    block.classList.add(`hljs`);
+                    hljs.highlightElement(block);
+                }
+                if (!block.classList.contains('secure-code')) {
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'copy-button';
+                    copyButton.innerHTML = '<i class="far fa-copy"></i> 复制';
+
+                    copyButton.addEventListener('click', async () => {
+                        const code = block.textContent;
+                        try {
+                            await navigator.clipboard.writeText(code);
+                            copyButton.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                            copyButton.classList.add('copied');
+                            setTimeout(() => {
+                                copyButton.innerHTML = '<i class="far fa-copy"></i> 复制';
+                                copyButton.classList.remove('copied');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('复制失败:', err);
+                            showNotification('复制失败，请重试', 2, 'error');
+                        }
+                    });
+
+                    block.parentElement.appendChild(copyButton);
+                }
+            });
+
             if (this.isArticleOutdated(article.date)) {
                 showNotification('这文章有些年头了，内容可能不太新鲜哦~ 😊', 5, 'info');
             }
