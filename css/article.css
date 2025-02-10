@@ -48,10 +48,73 @@
     position: relative;
     background: #282c34;
     border-radius: 6px;
-    padding: 1rem;
+    padding: 2rem;
     margin: 1rem 0;
     overflow-x: auto;
     cursor: url('../images/cursors/kushala text select.cur'), auto;
+}
+
+.language-label {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background: var(--primary-color);
+    border: 2px solid #ffffff;
+    box-shadow:
+        3px 3px 0 rgba(0, 0, 0, 0.8),
+        0 0 0 2px var(--primary-color),
+        inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+        inset -2px -2px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 0;
+    color: #ffffff;
+    font-family: 'zpix';
+    font-size: 0.8rem;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+    cursor: url('../images/cursors/Tobi Handwriting.cur'), auto;
+    opacity: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    image-rendering: pixelated;
+    transform-origin: center;
+}
+
+.article-content pre:hover .language-label {
+    opacity: 1;
+    transform: translateX(-2px) translateY(-2px);
+    box-shadow:
+        5px 5px 0 rgba(0, 0, 0, 0.8),
+        0 0 0 2px var(--primary-color),
+        inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+        inset -2px -2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.language-label:hover {
+    opacity: 1 !important;
+    transform: translateX(-1px) translateY(-1px) !important;
+    filter: brightness(1.2);
+    box-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.8),
+        0 0 0 2px var(--primary-color),
+        inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+        inset -2px -2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.language-label i {
+    font-size: 1rem;
+    transform: scale(1.2);
+}
+
+.language-label:hover::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    animation: pixelGlow 2s steps(2) infinite;
+    pointer-events: none;
 }
 
 .copy-button {
@@ -63,7 +126,7 @@
     border: none;
     border-radius: 4px;
     color: #ffffff;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     font-size: 0.8rem;
     cursor: url('../images/cursors/Rath Link.cur'), auto;
     opacity: 0;
@@ -91,7 +154,7 @@
 }
 
 .article-content code {
-    font-family: 'Fira Code', 'Zpix';
+    font-family: 'zpix';
     font-size: 0.9em;
 }
 
@@ -212,7 +275,7 @@
     padding: 1rem;
     text-align: left;
     border-bottom: 2px solid var(--primary-color);
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
 }
 
 .article-content td {
@@ -391,7 +454,7 @@
     padding: 0.5rem;
     border: none;
     text-align: center;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     text-shadow: 2px 2px 0 var(--primary-color);
     position: relative;
 }

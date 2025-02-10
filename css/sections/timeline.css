@@ -79,7 +79,7 @@
 }
 
 .milestone-content .date {
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     color: var(--primary-color);
     font-size: 14px;
     display: inline-block;
@@ -127,7 +127,7 @@
     font-size: 14px;
     line-height: 1.5;
     color: #ccc;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;

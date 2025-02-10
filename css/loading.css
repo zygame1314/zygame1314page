@@ -21,7 +21,7 @@
 }
 
 .loading-text {
-    font-family: 'zpix', monospace;
+    font-family: 'zpix';
     font-size: clamp(16px, 4vw, 24px);
     margin-bottom: 20px;
     text-shadow: 2px 2px var(--primary-color);

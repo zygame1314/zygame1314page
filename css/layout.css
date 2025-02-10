@@ -152,7 +152,7 @@ footer::after {
 .beian {
     font-size: 14px;
     margin: 8px 0;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     text-shadow:
         1px 1px 0 var(--background-color),
         -1px -1px 0 var(--background-color);

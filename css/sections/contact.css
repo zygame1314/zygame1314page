@@ -51,7 +51,7 @@
     color: var(--primary-color);
     padding: 4px 8px;
     margin-left: 10px;
-    font-family: 'zpix', monospace;
+    font-family: 'zpix';
     cursor: url('../../images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
     font-size: 0.8em;

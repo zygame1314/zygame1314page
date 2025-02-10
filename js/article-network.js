@@ -510,7 +510,7 @@ class ArticleNetwork {
                     node === this.hoveredNode) {
 
                     const fontSize = node.type === 'tag' ? 10 : 14;
-                    ctx.font = `${fontSize}px "Zpix"`;
+                    ctx.font = `${fontSize}px "zpix"`;
                     ctx.textAlign = 'center';
 
                     if (node.type === 'article') {

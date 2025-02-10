@@ -13,7 +13,7 @@
     padding: 20px;
     margin-bottom: 15px;
     border: 3px solid var(--primary-color);
-    font-family: 'Zpix', 'Press Start 2P', cursive;
+    font-family: 'zpix';
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);

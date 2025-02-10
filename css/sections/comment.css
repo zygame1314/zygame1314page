@@ -10,7 +10,7 @@
     --waline-disable-color: #ffffff;
     --waline-disable-bg-color: var(--error-color);
     --waline-code-bg-color: #282c34;
-    font-family: 'Zpix';
+    font-family: 'zpix';
 }
 
 .wl-panel {
@@ -28,7 +28,7 @@
     padding: 8px 16px;
     font-size: 14px;
     cursor: url('../../images/cursors/Rath Link.cur'), auto;;
-    font-family: 'Zpix';
+    font-family: 'zpix';
     transition: all 0.3s ease;
 }
 

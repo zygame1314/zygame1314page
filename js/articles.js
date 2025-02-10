@@ -22,23 +22,6 @@ class ArticlesManager {
         this.setupSearchListener();
         this.updateSearchHistory();
         this.init();
-        const handleInitialPath = async () => {
-            await window.loadingComplete;
-
-            const path = window.location.pathname;
-            if (path.startsWith('/article/')) {
-                await this.loadArticles();
-                const articleId = path.replace('/article/', '');
-                const article = this.articles.find(a =>
-                    a.contentUrl.replace('/articles/content/', '').replace('.html', '') === articleId
-                );
-                if (article) {
-                    await this.showArticle(article, true);
-                }
-            }
-        };
-
-        handleInitialPath();
         window.addEventListener('popstate', async (event) => {
             const path = window.location.pathname;
             this.transitionMask.classList.add('active');
@@ -449,10 +432,35 @@ class ArticlesManager {
     }
 
     async init() {
-        await this.loadArticles();
-        this.renderTagsFilter();
-        this.renderArticles();
-        this.setupScrollListener();
+        const path = window.location.pathname;
+
+        if (path.startsWith('/article/')) {
+            await this.loadArticles();
+            const articleId = path.replace('/article/', '');
+            const article = this.articles.find(a =>
+                a.contentUrl.replace('/articles/content/', '').replace('.html', '') === articleId
+            );
+
+            if (article) {
+                this.sidebar.style.display = 'none';
+                const mainContent = document.querySelector('.main-content');
+                mainContent.style.width = '100%';
+                mainContent.style.maxWidth = '1200px';
+                mainContent.style.margin = '0 auto';
+
+                const mainNav = document.querySelector('nav:not(#article-nav)');
+                const articleNav = document.getElementById('article-nav');
+                mainNav.style.display = 'none';
+                articleNav.style.display = 'block';
+
+                await this.showArticle(article, true, true);
+            }
+        } else {
+            await this.loadArticles();
+            this.renderTagsFilter();
+            this.renderArticles();
+            this.setupScrollListener();
+        }
     }
 
     async loadArticles() {
@@ -567,7 +575,20 @@ class ArticlesManager {
         return monthsDiff >= 6;
     }
 
-    async showArticle(article, fromHistory = false) {
+    async loadLanguage(language) {
+        if (!hljs.getLanguage(language)) {
+            try {
+                await import(`https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/languages/${language}.min.js`);
+                return true;
+            } catch (error) {
+                console.warn(`语言包 ${language} 加载失败:`, error);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    async showArticle(article, fromHistory = false, directAccess = false) {
         const existingToc = document.querySelector('.article-toc');
         if (existingToc) {
             existingToc.remove();
@@ -577,12 +598,14 @@ class ArticlesManager {
         mainNav.style.display = 'none';
         articleNav.style.display = 'block';
 
-        this.transitionMask.classList.add('active');
-        await new Promise(resolve => setTimeout(resolve, 600));
+        if (!directAccess) {
+            this.transitionMask.classList.add('active');
+            await new Promise(resolve => setTimeout(resolve, 600));
+        }
 
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: directAccess ? 'auto' : 'smooth'
         });
 
         if (!fromHistory) {
@@ -664,12 +687,67 @@ class ArticlesManager {
             articleContent.innerHTML = content;
 
             const codeBlocks = articleContent.querySelectorAll('pre code');
-            codeBlocks.forEach(block => {
-                const language = block.className.replace('language-', '');
-                if (language) {
-                    block.classList.add(`hljs`);
-                    hljs.highlightElement(block);
+            for (const block of codeBlocks) {
+                const languageClass = Array.from(block.classList)
+                    .find(cls => cls.startsWith('language-'));
+
+                if (languageClass) {
+                    const language = languageClass.replace('language-', '');
+                    const languageLabel = document.createElement('div');
+                    languageLabel.className = 'language-label';
+
+                    const icon = document.createElement('i');
+                    switch (language) {
+                        case 'html':
+                            icon.className = 'fab fa-html5';
+                            break;
+                        case 'css':
+                            icon.className = 'fab fa-css3-alt';
+                            break;
+                        case 'javascript':
+                        case 'js':
+                            icon.className = 'fab fa-js';
+                            break;
+                        case 'python':
+                            icon.className = 'fab fa-python';
+                            break;
+                        case 'java':
+                            icon.className = 'fab fa-java';
+                            break;
+                        case 'json':
+                        case 'yaml':
+                        case 'yml':
+                            icon.className = 'fas fa-cog';
+                            break;
+                        case 'markdown':
+                        case 'md':
+                            icon.className = 'fab fa-markdown';
+                            break;
+                        case 'plaintext':
+                            icon.className = 'fas fa-align-left';
+                            break;
+                        default:
+                            icon.className = 'fas fa-code';
+                    }
+
+                    languageLabel.appendChild(icon);
+                    const text = document.createElement('span');
+                    text.textContent = language === 'plaintext' ? '纯文本' : language;
+                    languageLabel.appendChild(text);
+
+                    block.parentElement.appendChild(languageLabel);
+
+                    if (language !== 'plaintext') {
+                        block.innerHTML = `<div class="code-loading">正在加载 ${language} 语言支持...</div>` + block.innerHTML;
+                        const loaded = await this.loadLanguage(language);
+                        block.querySelector('.code-loading')?.remove();
+                        if (loaded) {
+                            block.classList.add('hljs');
+                            hljs.highlightElement(block);
+                        }
+                    }
                 }
+
                 if (!block.classList.contains('secure-code')) {
                     const copyButton = document.createElement('button');
                     copyButton.className = 'copy-button';
@@ -693,7 +771,7 @@ class ArticlesManager {
 
                     block.parentElement.appendChild(copyButton);
                 }
-            });
+            }
 
             if (this.isArticleOutdated(article.date)) {
                 showNotification('这文章有些年头了，内容可能不太新鲜哦~ 😊', 5, 'info');
@@ -797,11 +875,13 @@ class ArticlesManager {
             showNotification('文章加载失败，请稍后重试', 2, 'error');
         }
 
-        this.transitionMask.classList.remove('active');
-        this.transitionMask.classList.add('reverse');
-        setTimeout(() => {
-            this.transitionMask.classList.remove('reverse');
-        }, 500);
+        if (!directAccess) {
+            this.transitionMask.classList.remove('active');
+            this.transitionMask.classList.add('reverse');
+            setTimeout(() => {
+                this.transitionMask.classList.remove('reverse');
+            }, 500);
+        }
 
         articleSection.querySelector('.back-btn').addEventListener('click', async () => {
             if (this.updateActivePreview) {

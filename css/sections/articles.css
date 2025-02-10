@@ -239,7 +239,7 @@
     margin-bottom: 1rem;
     cursor: url('../../images/cursors/Rath Link.cur'), auto;
     ;
-    font-family: Zpix;
+    font-family: zpix;
     font-size: 1rem;
     position: relative;
     box-shadow: 4px 4px 0 var(--primary-color);
@@ -370,7 +370,7 @@
     border: 2px solid var(--primary-color);
     box-sizing: border-box;
     color: var(--text-color);
-    font-family: Zpix;
+    font-family: zpix;
     font-size: 0.9rem;
     outline: none;
     clip-path: polygon(0 4px, 4px 0,
@@ -512,7 +512,7 @@
     flex-shrink: 0;
     color: var(--primary-color);
     cursor: url('../../images/cursors/Rath Link.cur'), auto;
-    font-family: Zpix;
+    font-family: zpix;
     box-shadow: 4px 4px 0 var(--primary-color);
     transition: all 0.15s steps(3);
     clip-path: polygon(0 4px, 4px 0,

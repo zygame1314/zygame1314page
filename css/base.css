@@ -59,7 +59,7 @@
 }
 
 body {
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     background-color: var(--background-color);
     color: var(--text-color);
     margin: 0;

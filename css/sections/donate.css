@@ -1,6 +1,6 @@
 #donate-button {
     font-size: 18px;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     color: var(--primary-color);
     background-color: #000;
     border: 3px solid var(--primary-color);
@@ -62,7 +62,7 @@
 
 .day-tip {
     text-align: center;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     font-size: 16px;
     font-weight: bold;
     padding: 10px;
@@ -114,7 +114,7 @@
 .modal-content {
     background-color: #000;
     color: var(--text-color);
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
     border: 3px solid var(--primary-color);
     padding: 20px;
     margin: 0;
@@ -257,7 +257,7 @@
 .modal-content .qr-code p {
     margin-top: 10px;
     font-size: 18px;
-    font-family: 'Zpix', monospace;
+    font-family: 'zpix';
 }
 
 .modal-content .qr-code:hover {
