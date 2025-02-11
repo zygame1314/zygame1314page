@@ -30,7 +30,7 @@
     background: #1d1d1d;
     border: none;
     color: white;
-    cursor: url('../../images/cursors/black diablos diagnal resize II.cur'), auto;
+    cursor: url('/images/cursors/black diablos diagnal resize II.cur'), auto;
     font-family: 'zpix';
     z-index: 2;
     padding: 0 8px;
@@ -111,7 +111,7 @@
     height: 32px;
     background: #1d1d1d;
     border: none;
-    cursor: url('../../images/cursors/Rath pointer.cur'), auto;
+    cursor: url('/images/cursors/Rath pointer.cur'), auto;
     z-index: 1001;
     image-rendering: pixelated;
     box-shadow:

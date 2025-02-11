@@ -8,7 +8,7 @@
     border: 3px solid #000000;
     transition: all 0.3s ease;
     image-rendering: pixelated;
-    cursor: url('../images/cursors/Rath Link.cur'), auto;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
 }
 
 .button:hover {
@@ -49,7 +49,7 @@
     background: none;
     border: none;
     color: var(--primary-color);
-    cursor: url('../images/cursors/Rath Link.cur'), auto;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
     padding: 0.5rem;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -335,7 +335,7 @@
     font-size: 16px;
     font-family: zpix;
     border: 3px solid #000000;
-    cursor: url('../images/cursors/Rath Link.cur'), auto;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
     image-rendering: pixelated;
 }

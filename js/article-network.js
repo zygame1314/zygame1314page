@@ -670,10 +670,10 @@ class ArticleNetwork {
 
         this.draw();
         const cursor = this.hoveredNode
-            ? `url('${encodeURI('../images/cursors/Rath Link.cur')}'), pointer`
+            ? `url('${encodeURI('/images/cursors/Rath Link.cur')}'), pointer`
             : this.isDraggingCanvas
-                ? `url('${encodeURI('../images/cursors/RTON move.cur')}'), grabbing`
-                : `url('${encodeURI('../images/cursors/RTON move.cur')}'), grab`;
+                ? `url('${encodeURI('/images/cursors/RTON move.cur')}'), grabbing`
+                : `url('${encodeURI('/images/cursors/RTON move.cur')}'), grab`;
 
         this.activeCanvas.style.cursor = cursor;
     }

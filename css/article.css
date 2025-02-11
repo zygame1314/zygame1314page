@@ -51,7 +51,7 @@
     padding: 2rem 1rem;
     margin: 1rem 0;
     overflow-x: auto;
-    cursor: url('../images/cursors/kushala text select.cur'), auto;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
 }
 
 .language-label {
@@ -71,7 +71,7 @@
     font-family: 'zpix';
     font-size: 0.8rem;
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-    cursor: url('../images/cursors/Tobi Handwriting.cur'), auto;
+    cursor: url('/images/cursors/Tobi Handwriting.cur'), auto;
     opacity: 0;
     transition: all 0.2s ease;
     display: flex;
@@ -128,7 +128,7 @@
     color: #ffffff;
     font-family: 'zpix';
     font-size: 0.8rem;
-    cursor: url('../images/cursors/Rath Link.cur'), auto;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
     opacity: 0;
     transition: all 0.3s ease;
     display: flex;
@@ -325,7 +325,7 @@
     transition: all 0.3s ease;
     padding: 0.2em 0.4em 0.2em 2em;
     border-radius: 4px;
-    cursor: url('../images/cursors/jag help select.cur'), auto;
+    cursor: url('/images/cursors/jag help select.cur'), auto;
 }
 
 .article-content code.secure-code::selection {
@@ -433,7 +433,7 @@
     border: none;
     background: none;
     color: var(--primary-color);
-    cursor: url('../images/cursors/Rathian\ and\ Rathalos\ Alternate\ select.cur'), auto;
+    cursor: url('/images/cursors/Rathian\ and\ Rathalos\ Alternate\ select.cur'), auto;
     opacity: 0.6;
     transition: all 0.3s;
 }
