@@ -117,7 +117,7 @@
     pointer-events: none;
 }
 
-.copy-button {
+.article-copy-button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -136,20 +136,20 @@
     gap: 0.3rem;
 }
 
-.article-content pre:hover .copy-button {
+.article-content pre:hover .article-copy-button {
     opacity: 0.8;
 }
 
-.copy-button:hover {
+.article-copy-button:hover {
     opacity: 1 !important;
     transform: scale(1.05);
 }
 
-.copy-button.copied {
+.article-copy-button.copied {
     background: #28a745;
 }
 
-.copy-button i {
+.article-copy-button i {
     font-size: 0.8rem;
 }
 

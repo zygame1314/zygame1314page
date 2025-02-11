@@ -45,7 +45,7 @@
     text-overflow: ellipsis;
 }
 
-.copy-button {
+.contact-copy-button {
     background: transparent;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
@@ -58,13 +58,13 @@
     border-radius: 4px;
 }
 
-.copy-button:hover {
+.contact-copy-button:hover {
     background: var(--primary-color);
     color: var(--theme-bg);
     transform: scale(1.05);
 }
 
-.copy-button.copied {
+.contact-copy-button.copied {
     background: #4CAF50;
     border-color: #4CAF50;
     color: white;

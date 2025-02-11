@@ -750,7 +750,7 @@ class ArticlesManager {
 
                 if (!block.classList.contains('secure-code')) {
                     const copyButton = document.createElement('button');
-                    copyButton.className = 'copy-button';
+                    copyButton.className = 'article-copy-button';
                     copyButton.innerHTML = '<i class="far fa-copy"></i> 复制';
 
                     copyButton.addEventListener('click', async () => {

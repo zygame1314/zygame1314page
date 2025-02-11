@@ -1,4 +1,4 @@
-document.querySelectorAll('.copy-button').forEach(button => {
+document.querySelectorAll('.contact-copy-button').forEach(button => {
     button.addEventListener('click', () => {
         const textToCopy = button.getAttribute('data-copy');
         navigator.clipboard.writeText(textToCopy).then(() => {
