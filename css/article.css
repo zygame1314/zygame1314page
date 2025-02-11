@@ -48,7 +48,7 @@
     position: relative;
     background: #282c34;
     border-radius: 6px;
-    padding: 2rem;
+    padding: 2rem 1rem;
     margin: 1rem 0;
     overflow-x: auto;
     cursor: url('../images/cursors/kushala text select.cur'), auto;
