@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const textMap = {
             "#home": "欢迎来到主人的主页！不问来人，不问出处，放松就好！",
-            "#projects": "这里是主人目前发起的项目，也许有一天会充实起来……",
+            "#projects": "这里是主人目前发起的项目，何不来看看？",
             "#about": "一行诗韵承载梦想，一段代码编织未来；漫漫旅途记录成长，人生如诗静待绽放……",
             "#contact": "发邮件，加QQ，逛Github还是一起steam？",
             "#live2d-settings": "在这里可以调整Live2D模型的设置，按照你的喜好来吧！",

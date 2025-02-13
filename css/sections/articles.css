@@ -9,7 +9,7 @@
     image-rendering: pixelated;
     position: relative;
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 600px;
     flex: 1;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) rgba(26, 26, 26, 0.9);
@@ -43,7 +43,6 @@
             calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
-    max-height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -70,8 +69,8 @@
 }
 
 .article-thumbnail {
-    width: 50%;
-    height: 100px;
+    width: 80%;
+    max-height: 200px;
     object-fit: cover;
     border: 2px solid var(--primary-color);
     image-rendering: pixelated;

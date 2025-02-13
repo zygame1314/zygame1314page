@@ -1,8 +1,6 @@
 
 ```
 个人主页
-├─ .vscode
-│  └─ settings.json
 ├─ articles
 │  ├─ content
 │  │  ├─ activation-code-mechanism.html
@@ -33,6 +31,7 @@
 │  │  ├─ games.css
 │  │  ├─ home.css
 │  │  ├─ live2d-settings.css
+│  │  ├─ music-player.css
 │  │  ├─ steam-status.css
 │  │  ├─ textbox.css
 │  │  ├─ timeline.css
@@ -54,7 +53,14 @@
 │  │     ├─ knight.physics3.json
 │  │     ├─ knight.psd
 │  │     └─ maxresdefault.jpg
+│  ├─ music
+│  │  ├─ Hollow(8-bit) - Yosh.mp3
+│  │  ├─ INTERNET OVERDOSE(8-bit) - Aiobahn.mp3
+│  │  ├─ シカ色デイズ(8-bit) - シカ部.mp3
+│  │  ├─ 勇者(8-bit) - YOASOBI.mp3
+│  │  └─ 動く、動く(8-bit) - 水瀬いのり 久保由利香.mp3
 │  ├─ notices.json
+│  ├─ playlist.json
 │  ├─ projects.json
 │  └─ timeline.json
 ├─ functions
@@ -66,6 +72,13 @@
 │     └─ weather.js
 ├─ images
 │  ├─ alipay-qr-code.png
+│  ├─ articles
+│  │  ├─ decrypt.png
+│  │  ├─ deepseek.png
+│  │  ├─ security.png
+│  │  ├─ unity.png
+│  │  ├─ vercel.png
+│  │  └─ 又拍云_logo5.png
 │  ├─ avatar.png
 │  ├─ cloud-image1.png
 │  ├─ cloud-image2.png
@@ -86,22 +99,23 @@
 │  │  ├─ Rathian and Rathalos Alternate select.cur
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
-│  ├─ decrypt.png
-│  ├─ deepseek.png
 │  ├─ default-game-cover.png
 │  ├─ Dialogue_Bottom.png
 │  ├─ Dialogue_Top.png
 │  ├─ header-bg.jpg
-│  ├─ project1.png
-│  ├─ project2.png
-│  ├─ project3.png
-│  ├─ project4.png
-│  ├─ security.png
-│  ├─ unity.png
-│  ├─ vercel.png
+│  ├─ music
+│  │  ├─ FF7 logo.png
+│  │  ├─ INTERNET OVERDOSE.jpg
+│  │  ├─ シカ色デイズ.webp
+│  │  ├─ 勇者.webp
+│  │  └─ 動く、動く.jpg
+│  ├─ projects
+│  │  ├─ project1.png
+│  │  ├─ project2.png
+│  │  ├─ project3.png
+│  │  └─ project4.png
 │  ├─ web-icon.ico
-│  ├─ wechat-qr-code.png
-│  └─ 又拍云_logo5.png
+│  └─ wechat-qr-code.png
 ├─ index.html
 ├─ js
 │  ├─ article-network.js
@@ -120,6 +134,7 @@
 │  ├─ live2dTextBox.js
 │  ├─ loading.js
 │  ├─ main.js
+│  ├─ musicPlayer.js
 │  ├─ notice.js
 │  ├─ pageViews.js
 │  ├─ parallax.js

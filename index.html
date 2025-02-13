@@ -14,7 +14,8 @@
     <meta name="keywords" content="博客, 开发者, 项目, 游戏, 像素风">
     <link rel="icon" href="/images/web-icon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/styles/atom-one-dark.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/typography.css">
@@ -32,6 +33,7 @@
     <link rel="stylesheet" href="/css/sections/games.css">
     <link rel="stylesheet" href="/css/sections/steam-status.css">
     <link rel="stylesheet" href="/css/sections/article-network.css">
+    <link rel="stylesheet" href="/css/sections/music-player.css">
     <link rel="stylesheet" href="/css/sections/live2d-settings.css">
     <link rel="stylesheet" href="/css/sections/visit-counter.css">
     <link rel="stylesheet" href="/css/sections/donate.css">
@@ -339,6 +341,45 @@
                         <canvas id="networkCanvas"></canvas>
                     </div>
                 </section>
+                <section id="music-player">
+                    <h2 class="pixel-text">听点小曲</h2>
+                    <div class="music-player">
+                        <div class="music-cover">
+                            <img src="" alt="album cover" class="cover-img pixelated">
+                        </div>
+                        <div class="music-info">
+                            <div class="song-title"></div>
+                            <p class="artist"></p>
+                            <div class="yt-link"></div>
+                        </div>
+                        <div class="music-progress">
+                            <div class="music-progress-bar"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="total-time">0:00</span>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-up volume-icon"></i>
+                            <div class="volume-slider">
+                                <div class="volume-progress"></div>
+                            </div>
+                        </div>
+                        <div class="music-controls">
+                            <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                            <button id="play-btn"><i class="fas fa-play"></i></button>
+                            <button id="next-btn"><i class="fas fa-forward"></i></button>
+                            <button id="loop-btn" title="循环模式: 关闭"><i class="fas fa-sync"></i></button>
+                            <button id="shuffle-btn" title="随机播放"><i class="fas fa-random"></i></button>
+                        </div>
+                        <div class="playlist-toggle">
+                            <button id="playlist-btn"><i class="fas fa-list"></i></button>
+                        </div>
+                        <div class="playlist-container">
+                            <ul class="playlist"></ul>
+                        </div>
+                    </div>
+                </section>
                 <section id="live2d-settings">
                     <h2 class="pixel-text">Live2D 设置</h2>
                     <div class="settings-container">
@@ -422,7 +463,8 @@
                 <p class="cdn-support">
                     <i class="fas fa-cloud"></i> 本网站由
                     <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">
-                        <img src="/images/又拍云_logo5.png" alt="又拍云" style="height: 30px; vertical-align: middle;">
+                        <img src="/images/articles/又拍云_logo5.png" alt="又拍云"
+                            style="height: 30px; vertical-align: middle;">
                     </a>
                     提供 CDN 加速/云存储服务
                 </p>
@@ -450,6 +492,7 @@
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
     <script type="module" src="/js/article-network.js"></script>
+    <script src="/js/musicPlayer.js"></script>
     <script src="/js/live2dSettings.js"></script>
     <script src="/js/weather-effects.js"></script>
     <script src="/js/pageViews.js"></script>
