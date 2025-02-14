@@ -1,0 +1,20 @@
+{
+    "liveServer.settings.file": "index.html",
+    "liveServer.settings.mount": [
+        [
+            "/",
+            "./"
+        ],
+        [
+            "/article",
+            "./"
+        ]
+    ],
+    "liveServer.settings.root": "/",
+    "liveServer.settings.fullReload": true,
+    "liveServer.settings.wait": 100,
+    "liveServer.settings.ignoreFiles": [
+        ".git/*",
+        "node_modules/*"
+    ]
+}

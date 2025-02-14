@@ -1,0 +1,89 @@
+:root {
+    --spring-primary: #ff9ecd;
+    --spring-secondary: #95d5b2;
+    --spring-bg: #4a3034;
+
+    --summer-primary: #00b4d8;
+    --summer-secondary: #90e0ef;
+    --summer-bg: #1a4b53;
+
+    --autumn-primary: #ff6b6b;
+    --autumn-secondary: #ffd93d;
+    --autumn-bg: #4a3428;
+
+    --winter-primary: #a8dadc;
+    --winter-secondary: #ddf7f3;
+    --winter-bg: #2f3438;
+
+    --chinese-new-year-primary: #ff3838;
+    --chinese-new-year-secondary: #ffd700;
+    --chinese-new-year-bg: #8b0016;
+
+    --mid-autumn-primary: #f4c430;
+    --mid-autumn-secondary: #e6b422;
+    --mid-autumn-bg: #2b1810;
+
+    --dragon-boat-primary: #98b04a;
+    --dragon-boat-secondary: #f7d794;
+    --dragon-boat-bg: #1e4174;
+
+    --lantern-primary: #ff69b4;
+    --lantern-secondary: #da70d6;
+    --lantern-bg: #4a1033;
+
+    --christmas-primary: #ff0000;
+    --christmas-secondary: #00ff00;
+    --christmas-bg: #1a472a;
+
+    --halloween-primary: #ff6600;
+    --halloween-secondary: #9932cc;
+    --halloween-bg: #1a1a1a;
+
+    --valentines-primary: #ff69b4;
+    --valentines-secondary: #ff1493;
+    --valentines-bg: #4a1033;
+
+    --primary-color: var(--winter-primary);
+    --secondary-color: var(--winter-secondary);
+    --theme-bg: var(--winter-bg);
+
+    --dot-color: #fff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+    --wechat-color: #07C160;
+    --alipay-color: #1677FF;
+}
+
+body {
+    font-family: 'zpix';
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    cursor: url('/images/cursors/Rath pointer.cur'), auto;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.8;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}

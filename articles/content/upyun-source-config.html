@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>又拍云回源配置指南 - zygame1314</title>
+</head>
+
+<body>
+    <main class="article-content">
+        <div class="article-body">
+            <p class="article-intro">
+                又拍云CDN的回源配置是确保网站内容正确缓存和更新的关键设置，本文将详细介绍回源配置的重要参数及其最佳实践。
+            </p>
+
+            <h2>回源配置概述</h2>
+            <p>回源配置决定了CDN节点在缓存未命中时，如何向源站请求资源。合理的配置可以：</p>
+            <ul>
+                <li>提高回源效率</li>
+                <li>降低源站压力</li>
+                <li>确保内容正确性</li>
+            </ul>
+
+            <h2>源站设置详解</h2>
+            <div class="config-explanation">
+                <h3>1. 源站类型</h3>
+                <ul>
+                    <li><strong>IP源站</strong>：直接使用服务器IP地址(例如: 1.1.1.1)
+                        <ul>
+                            <li>支持配置多个IP，实现故障转移</li>
+                            <li>适合自建服务器场景</li>
+                        </ul>
+                    </li>
+                    <li><strong>域名源站</strong>：使用域名作为源站(例如: src.example.com)
+                        <ul>
+                            <li>CDN节点会进行一次DNS解析获取真实IP</li>
+                            <li>支持动态解析，便于源站迁移</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>2. 回源协议设置</h3>
+                <ul>
+                    <li><strong>HTTP回源</strong>：CDN节点使用HTTP协议回源</li>
+                    <li><strong>HTTPS回源</strong>：CDN节点使用HTTPS协议回源，确保数据传输安全</li>
+                    <li><strong>协议跟随</strong>：根据用户请求的协议类型自动选择回源协议</li>
+                </ul>
+
+                <h3>3. 源站配置注意事项</h3>
+                <ul>
+                    <li><strong>端口设置</strong>：
+                        <ul>
+                            <li>默认回源端口为80</li>
+                            <li>HTTPS回源必须使用443端口</li>
+                            <li>支持自定义端口号</li>
+                        </ul>
+                    </li>
+                    <li><strong>重要提示</strong>：
+                        <ul>
+                            <li>源站地址不能与加速域名相同</li>
+                            <li>使用前需进行源站可访问性测试</li>
+                            <li>暂不支持国密HTTPS回源</li>
+                        </ul>
+                    </li>
+                    <li><strong>权重配置</strong>：
+                        <ul>
+                            <li>可设置1-100的权重值</li>
+                            <li>权重越大，分配到的请求越多</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h2>回源Host配置</h2>
+            <div class="config-explanation">
+                <h3>1. 配置说明</h3>
+                <p>
+                    回源HOST指定了CDN节点回源时访问源站服务器时的域名。当源站服务器托管多个网站时，回源HOST可以准确指向特定站点。CDN节点会在HTTP请求头的HOST字段中使用该域名，例如：src.image.upyun.com。
+                </p>
+
+                <h3>2. 配置选项</h3>
+                <ul>
+                    <li><strong>默认配置</strong>：留空则默认使用访问域名</li>
+                    <li><strong>自定义域名</strong>：根据业务需求配置特定域名</li>
+                </ul>
+
+                <h3>3. 注意事项</h3>
+                <ul>
+                    <li>回源HOST为可选配置项</li>
+                    <li>源站地址用于定位服务器，而回源HOST用于指定具体站点</li>
+                    <li>建议根据实际业务场景选择合适的配置</li>
+                </ul>
+            </div>
+
+            <h2>高级配置选项</h2>
+            <div class="config-explanation">
+                <h3>1. 主备线路配置</h3>
+                <ul>
+                    <li><strong>主线路</strong>：默认使用RR轮询方式进行调度</li>
+                    <li><strong>备份线路</strong>：当主线路不可用时启用，同样使用轮询方式</li>
+                </ul>
+
+                <h3>2. 轮询权重设置</h3>
+                <ul>
+                    <li>默认权重值为1，各节点概率相等</li>
+                    <li>权重计算公式：当前节点权重/集群总权重</li>
+                    <li>示例：权重1:2时，访问概率分别为1/3和2/3</li>
+                </ul>
+
+                <h3>3. 故障转移机制</h3>
+                <ul>
+                    <li><strong>最大失败次数</strong>：
+                        <ul>
+                            <li>设置源站允许的最大失败次数</li>
+                            <li>设为0时关闭失败计数</li>
+                        </ul>
+                    </li>
+                    <li><strong>静默时间</strong>：
+                        <ul>
+                            <li>达到最大失败次数后的冷却期</li>
+                            <li>在静默期内该源站暂停服务</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h2>常见问题解决</h2>
+            <div class="article-tips">
+                <h3><i class="fas fa-lightbulb"></i> 注意事项</h3>
+                <ul>
+                    <li>确保源站能正常响应回源请求</li>
+                    <li>回源Host配置要与源站域名匹配</li>
+                    <li>合理设置超时时间避免回源失败</li>
+                    <li>定期检查源站健康状态</li>
+                </ul>
+
+                <div class="important-notice">
+                    <h3><i class="fas fa-exclamation-triangle"></i> 重要提示</h3>
+                    <p><strong>强烈建议申请又拍云免费HTTPS证书：</strong></p>
+                    <ul>
+                        <li>避免因协议不匹配导致访问失败</li>
+                        <li>防止浏览器安全限制造成的访问问题</li>
+                        <li>提升网站安全性和可信度</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>GitHub Pages配置示例</h2>
+            <div class="config-example">
+                <h3>基础配置参数</h3>
+                <ul>
+                    <li><strong>源站地址</strong>：
+                        <ul>
+                            <li>填写：username.github.io</li>
+                            <li>例如：比如我的GitHub Pages地址是 zygame1314.github.io，就填写这个域名</li>
+                            <li>或者填写GitHub Pages提供的IP地址（建议都填进去）：
+                                <div style="margin-left: 20px;">
+                                    185.199.108.153<br>
+                                    185.199.109.153<br>
+                                    185.199.110.153<br>
+                                    185.199.111.153
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>回源Host</strong>：
+                        <ul>
+                            <li>填写：你的完整GitHub Pages地址或在项目里绑定的自定义域名</li>
+                            <li>例如：username.github.io/project-name 或 blog.example.com</li>
+                            <li>这确保CDN能准确找到你的特定GitHub Pages项目</li>
+                        </ul>
+                    </li>
+                    <li><strong>协议选择</strong>：
+                        <ul>
+                            <li>建议选择：协议跟随（根据访问协议自动匹配）</li>
+                            <li>支持HTTP(80端口)和HTTPS(443端口)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h2>总结</h2>
+            <p>正确配置回源参数对于CDN的性能和稳定性至关重要。建议根据实际业务需求和源站特点，选择合适的配置方案。</p>
+
+            <div class="article-footer">
+                <p>如需更多帮助，建议查看又拍云官方文档或在评论区交流！</p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

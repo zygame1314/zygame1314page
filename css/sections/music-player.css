@@ -1,0 +1,318 @@
+.music-player {
+    text-align: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 0;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow:
+        inset 2px 2px var(--secondary-color),
+        inset -2px -2px rgba(0, 0, 0, 0.5);
+    image-rendering: pixelated;
+}
+
+.music-player h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.music-controls button {
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+    font-size: 16px;
+    padding: 8px 12px;
+    transition: all 0.2s ease;
+    box-shadow:
+        2px 2px 0 rgba(0, 0, 0, 0.3),
+        -1px -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.music-controls button:hover {
+    transform: translateY(-2px);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.music-controls button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.music-info {
+    position: relative;
+    padding: 8px;
+    margin: 15px 0;
+    border: 1px solid var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.music-info .song-title {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+.music-info .artist {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.music-info .yt-link {
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.music-info .yt-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: color 0.2s ease;
+}
+
+.music-info .yt-link a:hover {
+    color: var(--secondary-color);
+}
+
+.music-info .yt-link i {
+    font-size: 1.2em;
+}
+
+.music-progress {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+}
+
+.music-progress-bar {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width 0.1s steps(20);
+}
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'zpix', monospace;
+    font-size: 12px;
+    color: var(--primary-color);
+    margin-top: 10px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.music-cover {
+    margin: 0 auto 15px;
+    border-radius: 0;
+    overflow: hidden;
+    border: 2px solid var(--primary-color);
+    box-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.2),
+        -4px -4px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.music-cover:hover {
+    transform: translateY(-2px);
+}
+
+.cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transition: transform 0.3s steps(5);
+}
+
+.music-cover:hover .cover-img {
+    transform: scale(1.08);
+}
+
+.cover-img.loading {
+    animation: coverLoading 0.3s steps(6) forwards;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+.volume-icon {
+    color: var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+    position: relative;
+}
+
+.volume-progress {
+    height: 100%;
+    background: var(--primary-color);
+    width: 100%;
+}
+
+.playlist-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+}
+
+.playlist-container.show {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.playlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.playlist li {
+    padding: 8px 12px;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease-in-out,
+        color 0.2s ease-in-out,
+        border-color 0.2s ease-in-out;
+    color: var(--text-color);
+}
+
+.playlist li:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.playlist li.active {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.playlist-toggle {
+    margin-top: 10px;
+}
+
+#playlist-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    ;
+    padding: 5px;
+}
+
+#loop-btn {
+    position: relative;
+    opacity: 0.5;
+    color: var(--text-color);
+}
+
+#loop-btn.mode-one {
+    opacity: 1;
+    color: var(--secondary-color);
+}
+
+#loop-btn.mode-one {
+    color: var(--secondary-color);
+}
+
+#loop-btn.mode-all {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+#loop-btn .loop-one-indicator {
+    font-size: 0.7em;
+    font-family: 'zpix';
+    position: absolute;
+    right: 5px;
+}
+
+#loop-btn.active,
+#shuffle-btn.active {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.rhythm-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+    position: fixed;
+    display: none;
+    pointer-events: none;
+    z-index: 9999;
+    image-rendering: pixelated;
+    transition: transform 0.1s ease-out;
+}
+
+.rhythm-dot.active {
+    display: block;
+}
+
+.rhythm-dot.pulse::before {
+    opacity: 0.7;
+    transform: translate(-8px, -8px);
+}
+
+.rhythm-dot.pulse::after {
+    opacity: 0.7;
+    transform: translate(8px, 8px);
+}
+
+.rhythm-pixel {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: currentColor;
+    image-rendering: pixelated;
+}
+
+.rhythm-dot.top-left {
+    top: 40px;
+    left: 40px;
+}
+
+.rhythm-dot.top-right {
+    top: 40px;
+    right: 40px;
+}
+
+.rhythm-dot.bottom-left {
+    bottom: 40px;
+    left: 40px;
+}
+
+.rhythm-dot.bottom-right {
+    bottom: 40px;
+    right: 40px;
+}

@@ -1,0 +1,121 @@
+#notification-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    z-index: 10000;
+}
+
+.notification {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 40px 20px 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 3px solid var(--primary-color);
+    font-family: 'zpix';
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    animation: notification-appear 0.5s ease-out forwards;
+    transition: transform 0.2s ease-out, opacity 0.5s ease-out;
+}
+
+.notification.success {
+    border-color: var(--success-color);
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.notification.error {
+    border-color: var(--error-color);
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+
+.notification.warning {
+    border-color: var(--warning-color);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+.notification.info {
+    border-color: var(--info-color);
+    box-shadow: 0 0 10px rgba(23, 162, 184, 0.5);
+}
+
+.notification-close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #fff;
+    font-size: 20px;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.notification-close-button:hover {
+    color: var(--primary-color);
+}
+
+.pacman-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    width: 100%;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+.pacman {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    clip-path: polygon(50% 50%, 100% 25%, 100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 75%);
+    animation-name: pacman-move;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.dot {
+    position: absolute;
+    bottom: 9px;
+    width: 4px;
+    height: 4px;
+    background-color: var(--dot-color);
+    border-radius: 50%;
+    opacity: 1;
+}
+
+.notification.exit {
+    animation: notification-close 0.5s ease-in forwards;
+}
+
+.notification::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid var(--primary-color);
+    pointer-events: none;
+}
+
+.notification:hover {
+    transform: scale(1.02);
+}
+
+.notification-content {
+    font-size: 14px;
+    line-height: 1.4;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+.pacman-mouth {
+    animation: pacman-chomp 0.3s infinite;
+}

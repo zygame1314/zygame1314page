@@ -1,0 +1,104 @@
+[data-waline] {
+    --waline-theme-color: var(--primary-color);
+    --waline-info-bg-color: var(--success-color);
+    --waline-info-color: #fff;
+    --waline-active-color: var(--secondary-color);
+    --waline-color: var(--text-color);
+    --waline-bg-color-light: #292929;
+    --waline-bg-color: var(--background-color);
+    --waline-border-color: #333;
+    --waline-disable-color: #ffffff;
+    --waline-disable-bg-color: var(--error-color);
+    --waline-code-bg-color: #282c34;
+    font-family: 'zpix';
+}
+
+.wl-panel {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.wl-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;;
+    font-family: 'zpix';
+    transition: all 0.3s ease;
+}
+
+.wl-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.wl-card {
+    background: rgba(30, 30, 30, 0.6);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px 0;
+    transition: all 0.3s ease;
+}
+
+.wl-card:hover {
+    background: rgba(40, 40, 40, 0.8);
+}
+
+.wl-avatar {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+}
+
+.wl-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+.wl-comment-actions {
+    color: #888;
+    font-size: 12px;
+}
+
+.wl-like,
+.wl-reply {
+    cursor: url('/images/cursors/Rath Link.cur'), auto;;
+    transition: all 0.3s;
+}
+
+.wl-like:hover,
+.wl-reply:hover {
+    color: var(--primary-color);
+}
+
+.wl-meta {
+    color: var() ;
+}
+
+.wl-card .wl-meta>span {
+    display: inline-block;
+    margin-inline-end: 0.5em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #333;
+    color: #000000;
+    font-size: 12px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+.wl-card .wl-meta>span:hover {
+    background: rgba(50, 50, 50, 0.8);
+    border-color: var(--primary-color);
+    color: #aaa;
+}
+
+.wl-card .wl-meta>span:empty {
+    display: none;
+}

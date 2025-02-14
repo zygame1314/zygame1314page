@@ -1,0 +1,90 @@
+.background-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.cloud-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.cloud {
+    position: absolute;
+    will-change: transform;
+    overflow: visible;
+}
+
+.cloud-image {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease-out;
+}
+
+.rain-drop {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 2px;
+    height: 10px;
+    pointer-events: none;
+}
+
+.snow-flake {
+    position: absolute;
+    background-color: #fff;
+    width: 4px;
+    height: 4px;
+    pointer-events: none;
+}
+
+.cursor-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.click-particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
+    transform-origin: center;
+}
+
+.trail-particle {
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.trail-pixel {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    pointer-events: none;
+    image-rendering: pixelated;
+}
+
+.typing-effect {
+    overflow: hidden;
+    border-right: 2px solid var(--primary-color);
+    white-space: pre-wrap;
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    display: inline-block;
+}
