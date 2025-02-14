@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "notices": [
         {
@@ -149,4 +150,157 @@
             ]
         }
     ]
+=======
+{
+    "notices": [
+        {
+            "title": "使用条款及限制声明",
+            "icon": "fas fa-exclamation-triangle",
+            "content": [
+                {
+                    "type": "info",
+                    "icon": "fas fa-file-code",
+                    "text": "MIT开源许可说明",
+                    "highlight": true,
+                    "description": "MIT许可证仅适用于源代码的使用、修改和分发权利。这意味着你可以自由使用代码本身，但不影响我对软件服务使用方式的限制。"
+                },
+                {
+                    "type": "info",
+                    "icon": "fas fa-server",
+                    "text": "服务使用限制说明",
+                    "highlight": true,
+                    "description": "对于使用此处的脚本提供的服务，我将保留制定额外使用条款的权利。这些限制不影响MIT许可赋予的代码权利。"
+                },
+                {
+                    "type": "warning",
+                    "icon": "fas fa-exclamation-circle",
+                    "text": "你可以自由使用代码，但使用此处的脚本提供服务时需遵守使用条款",
+                    "highlight": true
+                },
+                {
+                    "type": "warning",
+                    "icon": "fas fa-ban",
+                    "text": "服务使用限制",
+                    "highlight": true,
+                    "description": "为维护良好的使用环境，特制定以下限制条款"
+                },
+                {
+                    "type": "steps",
+                    "icon": "fas fa-times-circle",
+                    "text": "禁止以下服务行为",
+                    "highlight": {
+                        "text": "以下服务行为",
+                        "full": false
+                    }
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 1,
+                    "text": "利用脚本提供代刷服务或收费代练"
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 2,
+                    "text": "利用脚本牟取不当信息费"
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 3,
+                    "text": "发布未经授权的修改版本且删除原作者信息"
+                },
+                {
+                    "type": "warning",
+                    "icon": "fas fa-exclamation-circle",
+                    "text": "违反上述条款的行为将被视为侵权",
+                    "highlight": true
+                }
+            ]
+        },
+        {
+            "title": "脚本兼容性提示",
+            "icon": "fas fa-info-circle",
+            "content": [
+                {
+                    "type": "info",
+                    "icon": "fas fa-exclamation-circle",
+                    "text": "关于脚本之间的兼容性说明",
+                    "highlight": true
+                },
+                {
+                    "type": "info",
+                    "icon": "fas fa-info-circle",
+                    "text": "虽然脚本都是自己写的，但是我并没有测试过它们之间的兼容性。（我是懒狗别骂了〒▽〒）",
+                    "highlight": [
+                        "兼容性",
+                        "没有测试",
+                        "懒狗"
+                    ]
+                },
+                {
+                    "type": "tip",
+                    "icon": "fas fa-lightbulb",
+                    "text": "建议各位按需启用脚本，暂时用不到的就先关闭，以免出现各种奇奇怪怪的bug~",
+                    "highlight": [
+                        "按需启用",
+                        "暂时用不到",
+                        "奇奇怪怪的bug"
+                    ],
+                    "description": "这个建议不仅适用于我的脚本，对所有用户脚本都是如此。保持良好的脚本管理习惯可以避免不必要的性能开销和潜在的冲突问题，让浏览器运行更加流畅。"
+                }
+            ]
+        },
+        {
+            "title": "篡改猴最新版本设置说明",
+            "icon": "fas fa-exclamation-triangle",
+            "content": [
+                {
+                    "type": "warning",
+                    "icon": "fas fa-exclamation-triangle",
+                    "text": "篡改猴最新版本需要开启浏览器扩展的开发者模式！",
+                    "highlight": [
+                        "篡改猴最新版本",
+                        "浏览器扩展的开发者模式"
+                    ],
+                    "description": "这是由于 Chrome 浏览器（以及其他基于 Chromium 的浏览器）的 Manifest V3 更新引入的安全限制所致。该更新禁止扩展程序加载远程代码，而 Tampermonkey 的用户脚本通常来自第三方，为确保用户知情并授权，Chrome 要求启用开发者模式才能运行用户脚本。"
+                },
+                {
+                    "type": "steps",
+                    "icon": "fas fa-clipboard-list",
+                    "text": "请按以下步骤操作："
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 1,
+                    "text": "打开浏览器扩展管理页面",
+                    "highlight": [
+                        "浏览器扩展管理页面"
+                    ]
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 2,
+                    "text": "找到并开启开发者模式",
+                    "highlight": [
+                        "开发者模式"
+                    ]
+                },
+                {
+                    "type": "step",
+                    "icon": "fas fa-angle-right",
+                    "number": 3,
+                    "text": "重启浏览器以确保设置生效",
+                    "highlight": [
+                        "重启浏览器"
+                    ],
+                    "description": "很多用户容易忽略这一步。请务必重启浏览器，否则设置可能不会生效，导致脚本无法正常运行。"
+                }
+            ]
+        }
+    ]
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }

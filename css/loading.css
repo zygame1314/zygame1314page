@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .loading-screen {
     position: fixed;
     top: 0;
@@ -82,4 +83,90 @@
     opacity: 0;
     transition: opacity 0.5s ease-out;
     pointer-events: none;
+=======
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    text-align: center;
+    color: #fff;
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.loading-text {
+    font-family: 'zpix';
+    font-size: clamp(16px, 4vw, 24px);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px var(--primary-color);
+    animation: glitch 1s infinite;
+    padding: 0 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 500px;
+    height: clamp(20px, 4vw, 30px);
+    margin: 0 auto;
+    background: #000;
+    border: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--primary-color);
+    border-radius: 4px;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(45deg,
+            var(--primary-color) 25%,
+            var(--secondary-color) 25%,
+            var(--secondary-color) 50%,
+            var(--primary-color) 50%,
+            var(--primary-color) 75%,
+            var(--secondary-color) 75%,
+            var(--secondary-color));
+    background-size: 40px 40px;
+    position: absolute;
+    transition: width 0.3s ease-out;
+    animation: moveStripes 1s linear infinite;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.pixel-character {
+    position: absolute;
+    width: clamp(20px, 4vw, 32px);
+    height: clamp(20px, 4vw, 32px);
+    top: clamp(-30px, -5vw, -40px);
+    background: var(--primary-color);
+    left: 0;
+    clip-path: polygon(0% 25%,
+            25% 0%,
+            75% 0%,
+            100% 25%,
+            100% 75%,
+            75% 100%,
+            25% 100%,
+            0% 75%);
+    animation: bounce 0.5s infinite alternate;
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    pointer-events: none;
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }

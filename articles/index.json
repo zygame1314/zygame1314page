@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
     {
         "id": "vercel-config",
@@ -93,4 +94,101 @@
             "Gemini Experimental 1206"
         ]
     }
+=======
+[
+    {
+        "id": "vercel-config",
+        "title": "Vercel配置教程",
+        "date": "2024-12-02",
+        "excerpt": "如何配置vercel.json文件实现项目部署...",
+        "thumbnail": "/images/articles/vercel.png",
+        "contentUrl": "/articles/content/vercel-config.html",
+        "tags": [
+            "技术配置",
+            "部署",
+            "系统设计"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "GPT4o"
+        ]
+    },
+    {
+        "id": "upyun-source-config",
+        "title": "又拍云回源配置指南",
+        "date": "2024-12-05",
+        "excerpt": "详细介绍又拍云CDN的回源配置参数设置及最佳实践...",
+        "thumbnail": "/images/articles/又拍云_logo5.png",
+        "contentUrl": "/articles/content/upyun-source-config.html",
+        "tags": [
+            "技术配置",
+            "系统设计",
+            "网络服务"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet"
+        ]
+    },
+    {
+        "id": "activation-code-mechanism",
+        "title": "浅谈本网站的激活码生成机制",
+        "date": "2024-12-08",
+        "excerpt": "详细介绍本站激活码的生成原理...",
+        "thumbnail": "/images/articles/security.png",
+        "contentUrl": "/articles/content/activation-code-mechanism.html",
+        "tags": [
+            "系统设计",
+            "安全机制",
+            "技术分析"
+        ]
+    },
+    {
+        "id": "xiaoyadecrypt",
+        "title": "小雅平台课件URL解密机制分析",
+        "date": "2024-12-14",
+        "excerpt": "解析小雅平台课件资源URL的加密原理及解密方法...",
+        "thumbnail": "/images/articles/decrypt.png",
+        "contentUrl": "/articles/content/xiaoyadecrypt.html",
+        "tags": [
+            "安全机制",
+            "技术分析",
+            "系统设计"
+        ]
+    },
+    {
+        "id": "unity-mosaic-removal",
+        "title": "Unity游戏去马赛克思路分享",
+        "date": "2025-01-08",
+        "excerpt": "探讨Unity游戏中马赛克效果的实现原理及去除方法...",
+        "thumbnail": "/images/articles/unity.png",
+        "contentUrl": "/articles/content/unity-mosaic-removal.html",
+        "tags": [
+            "游戏开发",
+            "技术分析",
+            "Unity"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "Gemini Experimental 1206"
+        ]
+    },
+    {
+        "id": "deepseek-server-recovery",
+        "title": "DeepSeek 炸服自救指南",
+        "date": "2025-02-04",
+        "excerpt": "详细介绍DeepSeek官方平替API...",
+        "thumbnail": "/images/articles/deepseek.png",
+        "contentUrl": "/articles/content/deepseek-server-recovery.html",
+        "tags": [
+            "技术配置",
+            "系统维护",
+            "部署"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "DeepSeek R1",
+            "Gemini Experimental 1206"
+        ]
+    }
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 ]

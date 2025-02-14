@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -230,4 +231,238 @@ Shader "FX/Censor" {
     </main>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Unity 游戏去马赛克思路分享 - zygame1314</title>
+</head>
+
+<body>
+    <main class="article-content">
+        <div class="article-body">
+            <h1>Unity 游戏去马赛克思路分享</h1>
+
+            <p class="article-intro">
+                本文将分享一种针对 Unity 游戏去除马赛克的思路，通过修改游戏内的 Shader 文件来实现。什么？你问我为什么要研究这个？当然是为了更好地欣赏...咳咳，是为了深入学习 Unity 的 Shader
+                机制！毕竟，LSP 才是第一生产力嘛（手动狗头）。
+            </p>
+
+            <h2>一、准备工具</h2>
+            <p>开始之前，我们需要准备以下工具：</p>
+            <ul>
+                <li><strong>AssetStudio</strong>：用于查找游戏资源中的 Shader 文件。</li>
+                <li><strong>UABEA</strong>：用于编辑 Asset 文件，修改 Shader 代码。</li>
+            </ul>
+
+            <h2>二、查找马赛克 Shader</h2>
+            <h3>1. 使用 AssetStudio 定位 Shader</h3>
+            <p>首先，我们需要找到控制马赛克效果的 Shader 文件。这里以名为 "FX/Censor" 的 Shader 为例：</p>
+            <ol>
+                <li>打开 AssetStudio，加载游戏资源。</li>
+                <li>在 Asset List 中搜索 "censor"（不区分大小写），通常可以找到名为 "FX/Censor" 的 Shader 文件。
+                    <p><strong>补充说明：</strong> 除了 "censor"，还可能使用其他关键词来标识马赛克效果的 Shader，例如：</p>
+                    <ul>
+                        <li><strong>mosaic</strong>：这是“马赛克”的英文直译，也是常用的关键词。</li>
+                        <li><strong>pixelate</strong> 或 <strong>pixelation</strong>：表示“像素化”，也可能用于描述马赛克效果。</li>
+                        <li>其他与特定游戏相关的自定义名称。</li>
+                    </ul>
+                    <p>因此，如果搜不到censor，可以尝试用 <strong>mosaic</strong> 等其他关键词再次搜索。</p>
+                </li>
+                <li>
+                    <p>查看找到的马赛克 Shader 的信息，记录下它的：</p>
+                    <ul>
+                        <li><strong>PathID</strong>：用于在 UABEA 中快速定位该 Shader。</li>
+                        <li><strong>Size</strong>：辅助确认 PathID 的准确性。</li>
+                        <li><strong>Source Asset</strong>：即该 Shader 所在的 Asset 文件名。</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>找到的 Shader 文件内容大致如下：</p>
+            <pre><code class="language-glsl">
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "FX/Censor" {
+    Properties {
+        _Pixelation ("Pixelation", Range(0.001, 0.1)) = 0.01
+    }
+    SubShader {
+        LOD 100
+        Tags { "QUEUE" = "Overlay" "RenderType" = "Opaque" }
+        GrabPass {
+        }
+        Pass {
+            LOD 100
+            Tags { "QUEUE" = "Overlay" "RenderType" = "Opaque" }
+            Cull Off
+            GpuProgramID 40088
+            PlayerProgram "vp" {
+                SubProgram "d3d11 " {
+                    "// shader disassembly not supported on DXBC"
+                }
+            }
+            PlayerProgram "fp" {
+                SubProgram "d3d11 " {
+                    "// shader disassembly not supported on DXBC"
+                }
+            }
+        }
+    }
+}
+            </code></pre>
+            <ol>
+                <li><strong>Shader 的目的：</strong> <code>"FX/Censor"</code> 这个名称以及 <code>_Pixelation</code> 属性明确暗示了这个
+                    Shader 的作用是添加马赛克或像素化效果。</li>
+                <li><strong>渲染时机：</strong> <code>"QUEUE" = "Overlay"</code> 表明这个 Shader
+                    作为一个后期处理效果，在其他所有对象渲染完成后才执行。这意味着它是最后添加到画面上的。</li>
+                <li><strong>作用方式：</strong> <code>GrabPass {}</code> 捕获了当前屏幕的渲染结果。可以推断，片元着色器 (<code>fp</code>)
+                    很可能对这个捕获到的纹理进行处理，应用像素化算法，然后输出到屏幕。</li>
+                <li><strong>目标——去除马赛克：</strong> 我们的目标是去除马赛克效果，也就是阻止这个 Shader 对最终画面产生影响。</li>
+                <li><strong>思路——阻止 Shader 输出：</strong> 既然马赛克效果是这个 Shader 的输出结果，那么如果我们能阻止这个 Shader
+                    的输出，不让它的任何像素写入到屏幕，马赛克效果自然就消失了。</li>
+                <li><strong>联想到 <code>colMask</code>：</strong> 在 Unity 的 Shader 编程中，<code>colMask</code> 属性正是用来控制 Shader
+                    向渲染目标的哪些颜色通道写入数据。</li>
+                <li><strong>假设验证：</strong> 如果我们将 <code>colMask</code> 设置为 <code>0</code>，禁止所有颜色通道的写入，那么这个 Shader
+                    的输出就会被完全屏蔽，从而达到去除马赛克的效果。</li>
+                <li><strong>实际验证：</strong> 文章中后续的操作和结果验证了我们的假设。将 <code>colMask</code> 从 <code>15</code>（允许所有通道写入）改为
+                    <code>0</code>（禁止所有通道写入）后，马赛克效果成功消失。
+                </li>
+            </ol>
+
+            <h2>三、修改 Shader 代码</h2>
+            <h3>1. 使用 UABEA 编辑 Asset 文件</h3>
+            <p>接下来，我们需要使用 UABEA 修改 "FX/Censor" 所在的 Asset 文件：</p>
+            <ol>
+                <li>打开 UABEA，加载之前记录的 Source Asset 文件。</li>
+                <li>在 Asset List 中筛选 "Shader" 类型。</li>
+                <li>根据之前记录的 PathID 和 Size 找到 "FX/Censor" 对应的条目。</li>
+                <li>选中该条目，点击 "Edit Data" 按钮。</li>
+            </ol>
+            <h3>2. 修改 Shader 代码</h3>
+            <p>在 Shader 编辑界面，我们需要修改以下内容：</p>
+            <p>找到所有类似 <code>0 float val = 15</code> 的代码行，将 <code>15</code> 改为
+                <code>0</code>。也就是把所有的<code>0 float val = 15</code>替换成<code>0 float val = 0</code>。修改后大致如下：
+            </p>
+            <pre><code class="language-yaml">
+0 SerializedShaderState m_State
+           1 string m_Name = ""
+           0 SerializedShaderRTBlendState rtBlend0
+            0 SerializedShaderFloatValue srcBlend
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlend
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue srcBlendAlpha
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlendAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOp
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOpAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue colMask
+             0 float val = 0
+             1 string name = "<noninit>"
+           0 SerializedShaderRTBlendState rtBlend1
+            0 SerializedShaderFloatValue srcBlend
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlend
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue srcBlendAlpha
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlendAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOp
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOpAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue colMask
+             0 float val = 0
+             1 string name = "<noninit>"
+           0 SerializedShaderRTBlendState rtBlend2
+            0 SerializedShaderFloatValue srcBlend
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlend
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue srcBlendAlpha
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlendAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOp
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue blendOpAlpha
+             0 float val = 0
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue colMask
+             0 float val = 0
+             1 string name = "<noninit>"
+           0 SerializedShaderRTBlendState rtBlend3
+            0 SerializedShaderFloatValue srcBlend
+             0 float val = 1
+             1 string name = "<noninit>"
+            0 SerializedShaderFloatValue destBlend
+             0 float val = 0
+             1 string name = "<noninit>"
+            ……
+</code></pre>
+            <p>修改完成后，保存并关闭 Shader 编辑界面。</p>
+            <p><strong>修改原理简析：</strong></p>
+            <p>观察修改的部分，可以看到主要是将 <code>SerializedShaderRTBlendState</code> 中的 <code>colMask</code> 的值从 <code>15</code>
+                改为了 <code>0</code>。在渲染管线中，<code>colMask</code>（颜色掩码）用于控制颜色通道的写入。每个
+                <code>SerializedShaderRTBlendState</code> 对应一个渲染目标（Render Target），通常是屏幕上的一个缓冲区。
+            </p>
+            <ul>
+                <li><code>colMask</code> 的值是一个位掩码（bitmask），通常用一个 4 位的二进制数表示，分别对应 RGBA 四个通道。</li>
+                <li>每一位的值为 <code>1</code> 表示允许写入对应的颜色通道，为 <code>0</code> 表示禁止写入。</li>
+                <li>其中，<code>15</code> 的二进制表示为 <code>1111</code>，表示允许写入所有四个通道（RGBA）。</li>
+                <li>而 <code>0</code> 的二进制表示为 <code>0000</code>，表示禁止写入所有颜色通道。</li>
+            </ul>
+            <p>因此，将 <code>colMask</code> 的值从 <code>15</code> 改为 <code>0</code>，意味着<strong>禁止将该 Shader
+                    的渲染结果写入到任何颜色通道</strong>。这样，原本用于产生马赛克效果的 Shader 就不会对最终的画面产生影响，从而实现了去马赛克的效果。</p>
+            <p><strong>正如我们之前所说的</strong>，就是让马赛克 Shader “失效”，不再对画面进行修改。</p>
+
+            <h3>3. 保存修改</h3>
+            <p>在 UABEA 主界面点击 "File" -> "Save" 或使用快捷键 Ctrl + S 保存修改后的 Asset 文件。</p>
+
+            <h2>四、效果验证</h2>
+            <p>重新启动游戏，如果马赛克效果消失，则说明修改成功！</p>
+
+            <h2>五、注意事项</h2>
+            <ul>
+                <li><strong>备份！备份！备份！</strong> 重要的事情说三遍，修改前务必备份原文件。</li>
+                <li>此方法可能不适用于所有游戏，具体情况具体分析。</li>
+                <li>修改游戏文件可能违反游戏的使用协议，请自行承担风险。</li>
+                <li><strong>针对贴图自带马赛克的情况：</strong> 如果游戏本身的贴图文件就已经被打上了马赛克（例如，直接在角色皮肤或衣物纹理上绘制了马赛克图案），那么仅仅修改 Shader
+                    是无法去除马赛克的。这种情况下，除了改图别无他法。</li>
+            </ul>
+
+            <div class="article-footer">
+                <p>以上就是去除 Unity 游戏马赛克的思路分享。希望对大家有所帮助！如果有什么问题或建议，欢迎在评论区留言交流！</p>
+            </div>
+        </div>
+    </main>
+</body>
+
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 </html>

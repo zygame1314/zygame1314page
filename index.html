@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="zh-CN">
 <script src="https://cdn.jsdmirror.com/npm/live2dcubismcore@latest/live2dcubismcore.min.js"></script>
@@ -504,4 +505,512 @@
     <script src="/js/main.js"></script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script src="https://cdn.jsdmirror.com/npm/live2dcubismcore@latest/live2dcubismcore.min.js"></script>
+<script src="https://cdn.jsdmirror.com/npm/pixi.js@4.6.1/dist/pixi.min.js"></script>
+<script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/live2dv3.min.js"></script>
+<script src="https://cdn.jsdmirror.com/npm/d3@7"></script>
+<script src="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/highlight.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>zygame1314 | 个人GitHub教程主页 - 代码、像素与梦想 🌌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="这里是zygame1314的个人主页">
+    <meta name="keywords" content="博客, 开发者, 项目, 游戏, 像素风">
+    <link rel="icon" href="/images/web-icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="/css/loading.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/typography.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/effects.css">
+    <link rel="stylesheet" href="/css/notification.css">
+    <link rel="stylesheet" href="/css/sections/home.css">
+    <link rel="stylesheet" href="/css/sections/timeline.css">
+    <link rel="stylesheet" href="/css/sections/articles.css">
+    <link rel="stylesheet" href="/css/sections/about.css">
+    <link rel="stylesheet" href="/css/sections/contact.css">
+    <link rel="stylesheet" href="/css/sections/weather.css">
+    <link rel="stylesheet" href="/css/sections/games.css">
+    <link rel="stylesheet" href="/css/sections/steam-status.css">
+    <link rel="stylesheet" href="/css/sections/article-network.css">
+    <link rel="stylesheet" href="/css/sections/music-player.css">
+    <link rel="stylesheet" href="/css/sections/live2d-settings.css">
+    <link rel="stylesheet" href="/css/sections/visit-counter.css">
+    <link rel="stylesheet" href="/css/sections/donate.css">
+    <link rel="stylesheet" href="/css/sections/comment.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/utilities.css">
+    <link rel="stylesheet" href="/css/sections/textbox.css">
+    <link rel="stylesheet" href="/css/article.css">
+</head>
+
+<body>
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-text">准备启动...</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+    <canvas id="pongGame"></canvas>
+    <div id="notification-container"></div>
+
+    <div class="background-elements">
+        <div class="pixel-stars"></div>
+        <div class="cloud-container"></div>
+    </div>
+    <header>
+        <div class="glitch-container">
+            <h1 class="glitch" data-text="欢迎来到zygame1314的主页">欢迎来到zygame1314的主页</h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#projects" class="nav-link"><i class="fas fa-code"></i> 项目展示</a></li>
+            <li><a href="#articles" class="nav-link"><i class="fas fa-book"></i> 文章</a></li>
+            <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> 关于我</a></li>
+            <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> 联系我</a></li>
+            <li><a href="#dev-journey" class="nav-link"><i class="fas fa-history"></i> 开发历程</a></li>
+            <li><a href="#comments" class="nav-link"><i class="fas fa-comments"></i> 评论区</a></li>
+        </ul>
+    </nav>
+    <nav id="article-nav" style="display: none;">
+        <ul>
+            <li><a href="#" class="nav-link scroll-to-top"><i class="fas fa-arrow-up"></i> 返回顶部</a></li>
+            <li><a href="#comments" class="nav-link"><i class="fas fa-comments"></i> 评论区</a></li>
+        </ul>
+    </nav>
+    <div class="visit-counter-widget">
+        <div class="visit-counter-card">
+            <div class="card-front">
+                <p id="activation-code" class="activation-code-style">
+                    某激活码：<span id="activation-code-value">获取中...</span><br>
+                    每四小时重新生成一次
+                </p>
+                <div class="button-container">
+                    <button id="refresh-activation-code" class="button-style">刷新</button>
+                    <button id="copy-activation-code" class="button-style">复制</button>
+                </div>
+                <div class="button-container">
+                    <button id="flip-card" class="button-style flip-button">访问次数</button>
+                </div>
+            </div>
+            <div class="card-back">
+                <p id="visit-count">
+                    访问次数: <span class="waline-pageview-count">0</span>
+                </p>
+                <div class="button-container">
+                    <button id="flip-back" class="button-style">激活码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="content-container">
+            <div class="main-content">
+                <section id="home">
+                    <div class="home-content">
+                        <div class="text-container">
+                            <h2 class="pixel-text">zygame1314</h2>
+                            <p class="typing-effect">弃我去者，昨日之日不可留；\n乱我心者，今日之日多烦忧。</p>
+                        </div>
+                        <a href="https://github.com/zygame1314">
+                            <img src="/images/avatar.png" alt="我的头像" class="avatar pixelated">
+                        </a>
+                    </div>
+                </section>
+                <section id="projects">
+                    <div class="notice-area pixel-border">
+                        <h3 class="pixel-text notice-title">
+                            <i class="fas fa-bullhorn"></i> 公告
+                            <div class="notice-controls">
+                                <button class="notice-prev"><i class="fas fa-chevron-left"></i></button>
+                                <button class="notice-autoplay"><i class="fas fa-pause"></i></button>
+                                <span class="notice-page">1/1</span>
+                                <button class="notice-next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </h3>
+                        <div class="notice-content-wrapper"></div>
+                    </div>
+                    <h2 class="pixel-text">项目展示</h2>
+                    <div class="project-list">
+                    </div>
+                    <div class="pagination"></div>
+                </section>
+                <section id="articles">
+                    <h2 class="pixel-text">文章专栏</h2>
+                    <div class="search-wrapper">
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="article-search" placeholder="搜索文章..." class="search-input">
+                                <div class="search-suggestions"></div>
+                            </div>
+                            <button class="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="search-history">
+                            <div class="history-header">
+                                <span>搜索历史</span>
+                                <button class="clear-history">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <div class="history-tags"></div>
+                        </div>
+                    </div>
+                    <div class="tags-filter"></div>
+                    <div class="articles-grid"></div>
+                    <div class="loading-indicator" style="display:none">
+                        <div class="loading-dots"></div>
+                    </div>
+                </section>
+                <section id="about">
+                    <h2 class="pixel-text">关于我</h2>
+
+                    <div class="quote">
+                        <p>张弛万象浮云外，</p>
+                        <p>艺展千秋浩瀚中。</p>
+                        <p class="quote-author">—— 一个爱敲代码的的师范生</p>
+                    </div>
+
+                    <div class="section">
+                        <h3><i class="fas fa-user"></i> 我是谁</h3>
+                        <p>华中师范大学的一名师范生，也是个热爱前端的野生开发者。你看到的这个网站是用HTML、CSS、JavaScript纯手写的 ——
+                            不是不想用框架，主要是用不来（菜）...不过这反而逼得我把原生技术吃得还算透彻。</p>
+                    </div>
+
+                    <div class="section">
+                        <h3><i class="fas fa-code"></i> 技能树</h3>
+                        <div class="skills-grid">
+                            <div class="skill-item">HTML5</div>
+                            <div class="skill-item">CSS3</div>
+                            <div class="skill-item">JS</div>
+                            <div class="skill-item">移动适配</div>
+                            <div class="skill-item">模块化开发</div>
+                            <div class="skill-item">Python</div>
+                        </div>
+                        <p class="skill-note">* 摊牌了，就是基于原生三件套和 Python 的一些小脚本...</p>
+                    </div>
+
+                    <div class="section">
+                        <h3><i class="fas fa-heart"></i> 开发日常</h3>
+                        <div class="interests">
+                            <span class="interest-tag">原生技术</span>
+                            <span class="interest-tag">前端开发</span>
+                            <span class="interest-tag">胡乱折腾</span>
+                            <span class="interest-tag">像素艺术</span>
+                            <span class="interest-tag">代码洁癖</span>
+                            <span class="interest-tag">预备教师</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h3><i class="fas fa-bullseye"></i> 未来计划</h3>
+                        <p>编不出来了，散会 (づ￣ 3￣)づ</p>
+                    </div>
+                </section>
+                <section id="contact">
+                    <h2 class="pixel-text"></i> 联系我</h2>
+                    <p>若有共鸣，愿与君畅谈：</p>
+                    <ul>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fab fa-qq"></i> QQ: 1364612205
+                            </div>
+                            <button class="contact-copy-button" data-copy="1364612205">复制</button>
+                        </li>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fab fa-weixin"></i> WeChat: We1364612205
+                            </div>
+                            <button class="contact-copy-button" data-copy="We1364612205">复制</button>
+                        </li>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fas fa-users"></i> QQ群: 790187356
+                            </div>
+                            <button class="contact-copy-button" data-copy="790187356">复制</button>
+                        </li>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fas fa-envelope"></i> Email: <a
+                                    href="mailto:zygame1314@gmail.com">zygame1314@gmail.com</a>
+                            </div>
+                            <button class="contact-copy-button" data-copy="zygame1314@gmail.com">复制</button>
+                        </li>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fab fa-github"></i> GitHub: <a href="https://github.com/zygame1314"
+                                    target="_blank">zygame1314</a>
+                            </div>
+                            <button class="contact-copy-button" data-copy="zygame1314">复制</button>
+                        </li>
+                        <li>
+                            <div class="contact-info">
+                                <i class="fab fa-steam"></i> Steam: <a
+                                    href="https://steamcommunity.com/profiles/76561199075833485/"
+                                    target="_blank">Steam个人主页</a>
+                            </div>
+                            <button class="contact-copy-button"
+                                data-copy="https://steamcommunity.com/profiles/76561199075833485/">复制</button>
+                        </li>
+                    </ul>
+                </section>
+                <section id="dev-journey">
+                    <h2 class="pixel-text">开发历程</h2>
+                    <div class="milestone-timeline"></div>
+                </section>
+                <section id="comments">
+                    <h2 class="pixel-text">评论区</h2>
+                    <div id="waline"></div>
+                </section>
+            </div>
+            <aside class="sidebar">
+                <section id="weather">
+                    <h2 class="pixel-text">当前天气</h2>
+                    <div class="weather-widget">
+                        <div class="weather-main">
+                            <div class="weather-icon">
+                                <img src="" alt="Weather Icon" class="pixelated">
+                            </div>
+                            <div class="weather-primary">
+                                <p class="temperature"><i class="fas fa-temperature-high"></i> </p>
+                                <p class="description"><i class="fas fa-cloud"></i> </p>
+                                <p class="location"><i class="fas fa-map-marker-alt"></i> </p>
+                            </div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-thermometer-half"></i> 体感</span>
+                                <p class="feels-like"></p>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-tint"></i> 湿度</span>
+                                <p class="humidity"></p>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-wind"></i> 风速</span>
+                                <p class="wind-speed"></p>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-tachometer-alt"></i> 气压</span>
+                                <p class="pressure"></p>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-sun"></i> 日出</span>
+                                <p class="sunrise"></p>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label"><i class="fas fa-moon"></i> 日落</span>
+                                <p class="sunset"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="games">
+                    <h2 class="pixel-text">
+                        热门游戏
+                        <button id="refreshGames" class="pixel-text">刷新</button>
+                    </h2>
+                    <div class="games-list"></div>
+                </section>
+                <section id="steam-games">
+                    <h2 class="pixel-text">最近在玩</h2>
+                    <div class="steam-games-list"></div>
+                </section>
+                <section id="steam-status">
+                    <h2 class="pixel-text">Steam状态</h2>
+                    <div class="steam-status-widget">
+                        <div class="steam-user-info">
+                            <a href="https://steamcommunity.com/profiles/76561199075833485/" target="_blank">
+                                <img src="" alt="Steam Avatar" class="steam-avatar pixelated">
+                            </a>
+                            <div class="steam-user-details">
+                                <p class="steam-username"></p>
+                                <p class="steam-status"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="article-network">
+                    <h2 class="pixel-text">文章网络</h2>
+                    <div class="network-container">
+                        <canvas id="networkCanvas"></canvas>
+                    </div>
+                </section>
+                <section id="music-player">
+                    <h2 class="pixel-text">听点小曲</h2>
+                    <div class="music-player">
+                        <div class="music-cover">
+                            <img src="" alt="album cover" class="cover-img pixelated">
+                        </div>
+                        <div class="music-info">
+                            <div class="song-title"></div>
+                            <p class="artist"></p>
+                            <div class="yt-link"></div>
+                        </div>
+                        <div class="music-progress">
+                            <div class="music-progress-bar"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="total-time">0:00</span>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-up volume-icon"></i>
+                            <div class="volume-slider">
+                                <div class="volume-progress"></div>
+                            </div>
+                        </div>
+                        <div class="music-controls">
+                            <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                            <button id="play-btn"><i class="fas fa-play"></i></button>
+                            <button id="next-btn"><i class="fas fa-forward"></i></button>
+                            <button id="loop-btn" title="循环模式: 关闭"><i class="fas fa-sync"></i></button>
+                            <button id="shuffle-btn" title="随机播放"><i class="fas fa-random"></i></button>
+                        </div>
+                        <div class="playlist-toggle">
+                            <button id="playlist-btn"><i class="fas fa-list"></i></button>
+                        </div>
+                        <div class="playlist-container">
+                            <ul class="playlist"></ul>
+                        </div>
+                    </div>
+                </section>
+                <section id="live2d-settings">
+                    <h2 class="pixel-text">Live2D 设置</h2>
+                    <div class="settings-container">
+                        <div class="setting-item">
+                            <label for="live2d-display">显示模型</label>
+                            <label class="switch">
+                                <input type="checkbox" id="live2d-display" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="text-box-display">显示对话框</label>
+                            <label class="switch">
+                                <input type="checkbox" id="text-box-display" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <section id="donate-button-section">
+                    <button id="donate-button" class="button-style">💖 打赏支持</button>
+                    <div id="day-tip" class="day-tip"></div>
+                </section>
+            </aside>
+        </div>
+        <div id="network-modal" class="network-modal">
+            <button class="network-modal-close" aria-label="关闭"></button>
+            <div class="network-modal-content">
+                <canvas id="networkCanvasFullscreen"></canvas>
+            </div>
+        </div>
+        <div id="donate-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>支持我</h2>
+                <p>如果你喜欢我的内容，欢迎打赏支持！除了用来续费域名和维护项目外，可能还会偷偷用来吃顿好的，感谢你的鼓励！😊</p>
+                <div class="qr-codes">
+                    <div class="qr-code">
+                        <img src="/images/wechat-qr-code.png" alt="微信支付二维码" class="pixelated">
+                        <p><i class="fab fa-weixin"></i> 微信支付</p>
+                    </div>
+                    <div class="qr-code">
+                        <img src="/images/alipay-qr-code.png" alt="支付宝二维码" class="pixelated">
+                        <p><i class="fab fa-alipay"></i> 支付宝</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="live2d-text-box" class="text-box"></div>
+        <div class="Canvas" style="position: fixed; left: 10px; bottom: 10px; z-index: 1" id="L2dCanvas"></div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="social-links">
+                    <a href="#contact" class="social-icon" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#contact" class="social-icon scroll-to">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="#contact" class="social-icon scroll-to">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p class="copyright">
+                    <i class="far fa-copyright"></i> 2024 zygame1314 - 版权所有
+                </p>
+                <p class="beian">
+                    <a href="https://beian.miit.gov.cn" target="_blank">
+                        <i class="fas fa-shield-alt"></i> 陇ICP备2024013799号
+                    </a>
+                    <a href="https://icp.gov.moe/?keyword=20244884" target="_blank">
+                        <i class="fas fa-heart"></i> 萌ICP备20244884号
+                    </a>
+                </p>
+            </div>
+            <div class="footer-section">
+                <p class="cdn-support">
+                    <i class="fas fa-cloud"></i> 本网站由
+                    <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">
+                        <img src="/images/articles/又拍云_logo5.png" alt="又拍云"
+                            style="height: 30px; vertical-align: middle;">
+                    </a>
+                    提供 CDN 加速/云存储服务
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/seasonTheme.js"></script>
+    <script src="/js/loading.js"></script>
+    <script src="/js/titleSwitcher.js"></script>
+    <script src="/js/live2d.js"></script>
+    <script src="/js/showNotification.js"></script>
+    <script src="/js/smoothScroll.js"></script>
+    <script src="/js/typingEffect.js"></script>
+    <script src="/js/parallax.js"></script>
+    <script src="/js/notice.js"></script>
+    <script src="/js/projects.js"></script>
+    <script src="/js/clouds.js"></script>
+    <script src="/js/cursorTrail.js"></script>
+    <script src="/js/timeline.js"></script>
+    <script type="module" src="/js/articles.js"></script>
+    <script src="/js/contact.js"></script>
+    <script src="/js/gamesFetch.js"></script>
+    <script src="/js/steamStatus.js"></script>
+    <script src="/js/pongGame.js"></script>
+    <script src="/js/weatherWidget.js"></script>
+    <script type="module" src="/js/article-network.js"></script>
+    <script src="/js/musicPlayer.js"></script>
+    <script src="/js/live2dSettings.js"></script>
+    <script src="/js/weather-effects.js"></script>
+    <script src="/js/pageViews.js"></script>
+    <script src="/js/fetchCode.js"></script>
+    <script src="/js/donate.js"></script>
+    <script src="/js/detectDevTools.js"></script>
+    <script type="module" src="/js/comment.js"></script>
+    <script src="/js/live2dTextBox.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @font-face {
     font-family: 'zpix';
     src: url('/zpix.woff2') format('woff2');
@@ -16,3 +17,23 @@ h3 {
     text-shadow: 2px 2px 0 #000000, -2px -2px 0 #000000, 2px -2px 0 #000000, -2px 2px 0 #000000;
     cursor: url('/images/cursors/kushala text select.cur'), auto;
 }
+=======
+@font-face {
+    font-family: 'zpix';
+    src: url('/zpix.woff2') format('woff2');
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+    margin-top: 0;
+    text-shadow: 3px 3px 0px #000000;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+
+.pixel-text {
+    text-shadow: 2px 2px 0 #000000, -2px -2px 0 #000000, 2px -2px 0 #000000, -2px 2px 0 #000000;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2

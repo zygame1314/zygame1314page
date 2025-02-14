@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
     background-color: #1a1a1a;
     color: #ffcc00;
@@ -147,4 +148,155 @@ body {
     font-size: 24px;
     color: #ffcc00;
     margin: 10px 0;
+=======
+body {
+    background-color: #1a1a1a;
+    color: #ffcc00;
+    font-family: 'zpix';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.error-container {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.error-code {
+    font-size: clamp(36px, 10vw, 72px);
+    color: #ff6600;
+    text-shadow: 3px 3px 0px #000;
+    animation: glitch 1s infinite;
+}
+
+.error-message {
+    font-size: clamp(16px, 5vw, 24px);
+    margin: 10px 0;
+}
+
+.game-container {
+    border: 4px solid #ffcc00;
+    padding: 10px;
+    margin: 10px auto;
+    width: min(85vw, 400px);
+    box-sizing: border-box;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    image-rendering: pixelated;
+}
+
+.controls {
+    margin-top: 20px;
+    color: #fff;
+}
+
+.touch-controls {
+    display: none;
+    width: 180px;
+    margin: 10px auto;
+}
+
+.touch-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin: 3px 0;
+}
+
+.touch-btn {
+    background: #ffcc00;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 20px;
+    font-family: 'zpix';
+    width: 100%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+}
+
+.touch-btn:active {
+    background: #ff6600;
+    transform: scale(0.95);
+}
+
+.touch-btn.invisible {
+    visibility: hidden;
+}
+
+.home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: #000;
+    text-decoration: none;
+    margin-top: 20px;
+    border: none;
+    cursor: url('/images/cursors/Rath pointer.cur'), auto;
+    image-rendering: pixelated;
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #ff6600;
+    transform: scale(1.1);
+}
+
+@media (max-width: 1200px) {
+    .touch-controls {
+        display: grid;
+    }
+
+    .controls {
+        display: none;
+    }
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-2px, 2px);
+    }
+
+    40% {
+        transform: translate(-2px, -2px);
+    }
+
+    60% {
+        transform: translate(2px, 2px);
+    }
+
+    80% {
+        transform: translate(2px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+.score {
+    font-size: 24px;
+    color: #ffcc00;
+    margin: 10px 0;
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }

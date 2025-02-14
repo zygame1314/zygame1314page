@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .button {
     display: inline-block;
     background-color: var(--primary-color);
@@ -366,4 +367,374 @@
 
 .project-card p::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+=======
+.button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #000000;
+    padding: 12px 12px;
+    text-decoration: none;
+    font-size: 16px;
+    border: 3px solid #000000;
+    transition: all 0.3s ease;
+    image-rendering: pixelated;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+.button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--secondary-color);
+}
+
+.notice-area {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 1.5rem;
+    border: 3px solid var(--primary-color);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.notice-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.notice-title i {
+    color: var(--secondary-color);
+}
+
+.notice-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notice-controls button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.notice-controls button:hover {
+    background: var(--theme-bg);
+    color: var(--secondary-color);
+}
+
+.notice-page {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    min-width: 3rem;
+    text-align: center;
+}
+
+.notice-content-wrapper {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 150px;
+    max-height: 300px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
+}
+
+.notice-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-left: 3px solid var(--primary-color);
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+}
+
+.notice-content .notice-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.notice-content .notice-header i {
+    color: var(--secondary-color);
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+.notice-content .notice-header h4 {
+    color: var(--secondary-color);
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.notice-content.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.notice-content.exit-left {
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.notice-content.exit-right {
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.notice-content p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+    opacity: inherit;
+    visibility: inherit;
+}
+
+.notice-content i {
+    color: var(--secondary-color);
+    margin-right: 0.75rem;
+    width: 1.25rem;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.notice-content p>span:not(.highlight) {
+    white-space: nowrap;
+}
+
+.warning i {
+    color: var(--warning-color);
+}
+
+.info i {
+    color: var(--info-color);
+}
+
+.tip i {
+    color: var(--success-color);
+}
+
+.step i {
+    color: var(--info-color);
+}
+
+.steps i {
+    color: var(--info-color);
+}
+
+.step-number {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.notice-content .info-description,
+.notice-content .warning-description,
+.notice-content .tip-description,
+.notice-content .step-description {
+    margin: 0.5rem 0 1rem 2rem;
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.4;
+    border-left: 2px solid var(--primary-color);
+    padding-left: 1rem;
+}
+
+.notice-content .info-description {
+    border-left-color: var(--info-color);
+}
+
+.notice-content .warning-description {
+    border-left-color: var(--primary-color);
+}
+
+.notice-content .tip-description {
+    border-left-color: var(--success-color);
+}
+
+.notice-content .step-description {
+    border-left-color: var(--secondary-color);
+}
+
+.highlight {
+    padding: 0 0.25rem;
+    color: var(--secondary-color);
+    font-weight: bold;
+    display: inline;
+}
+
+.notice-area:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.project-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.project-actions .button {
+    width: calc(50% - 5px);
+    text-align: center;
+    box-sizing: border-box;
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+.project-list {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 600px;
+}
+
+.project-card {
+    display: none;
+    background-color: rgba(26, 26, 26, 0.8);
+    width: 48%;
+    margin: 0 5px 30px 5px;
+    padding: 25px;
+    box-sizing: border-box;
+    border: 3px solid var(--primary-color);
+    position: absolute;
+    transform-origin: left center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    backface-visibility: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-card:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 8px 16px rgba(var(--primary-color), 0.3);
+    border-color: var(--secondary-color);
+}
+
+.project-card.exiting {
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(20px);
+}
+
+.project-card.visible {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    image-rendering: pixelated;
+}
+
+.project-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 20px 0 15px 0;
+    font-size: 22px;
+}
+
+.project-card p {
+    font-size: 16px;
+    height: 120px;
+    margin: 10px 0;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
+}
+
+.project-card .button {
+    margin-top: 15px;
+}
+
+#tetris-canvas {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #000000;
+    padding: 8px 12px;
+    width: 40px;
+    margin: 0 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: zpix;
+    border: 3px solid #000000;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transition: all 0.3s ease;
+    image-rendering: pixelated;
+}
+
+.pagination-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--secondary-color);
+}
+
+.pagination-button.active {
+    background-color: var(--secondary-color);
+}
+
+.project-card p::-webkit-scrollbar {
+    width: 5px;
+}
+
+.project-card p::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.project-card p::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+.project-card p::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #steam-status {
     background: rgba(0, 0, 0, 0.7);
     padding: 15px;
@@ -268,4 +269,276 @@
 
 .steam-status-widget.looking-to-play .steam-avatar {
     border-color: #32cd32;
+=======
+#steam-status {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    image-rendering: pixelated;
+    transition: all 0.3s ease;
+}
+
+#steam-status:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 192, 244, 0.2);
+}
+
+.steam-status-widget {
+    padding: 10px;
+    position: relative;
+    border: 2px solid #2a475e;
+    background-color: rgba(27, 40, 56, 0.6);
+    transition:
+        background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s ease;
+}
+
+.steam-user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px;
+}
+
+.steam-avatar {
+    width: 64px;
+    height: 64px;
+    border: 3px solid #2a475e;
+    image-rendering: pixelated;
+    position: relative;
+    transition:
+        border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s ease;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+.steam-avatar:hover {
+    transform: scale(1.05);
+}
+
+.steam-avatar::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.steam-avatar:hover::after {
+    border-color: #66c0f4;
+}
+
+.steam-user-details {
+    flex: 1;
+    position: relative;
+}
+
+.steam-username {
+    font-family: 'zpix';
+    font-size: 0.9em;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.steam-status {
+    margin: 5px 0 0;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.steam-status::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    transition:
+        background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.steam-status.online {
+    color: #66c0f4;
+}
+
+.steam-status.online::before {
+    background: #66c0f4;
+    box-shadow: 0 0 5px #66c0f4;
+}
+
+.steam-status.offline {
+    color: #898989;
+}
+
+.steam-status.offline::before {
+    background: #898989;
+}
+
+.steam-status.in-game {
+    color: #90ba3c;
+}
+
+.steam-status.in-game::before {
+    background: #90ba3c;
+    box-shadow: 0 0 5px #90ba3c;
+}
+
+.steam-status.in-game-away {
+    color: #ff7f50;
+}
+
+.steam-status.in-game-away::before {
+    background: #ff7f50;
+    box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
+}
+
+.steam-game-info {
+    margin-top: 8px;
+    font-size: 0.75em;
+    color: #acdbf5;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #2a475e;
+}
+
+.steam-status.busy::before {
+    background: #dc143c;
+    box-shadow: 0 0 5px rgba(220, 20, 60, 0.5);
+}
+
+.steam-status.busy {
+    color: #dc143c;
+}
+
+.steam-status.away::before {
+    background: #ffd700;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.steam-status.away {
+    color: #ffd700;
+}
+
+.steam-status.snooze::before {
+    background: #ff7f50;
+    box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
+}
+
+.steam-status.snooze {
+    color: #ff7f50;
+}
+
+.steam-status.trading::before {
+    background: #9370db;
+    box-shadow: 0 0 5px rgba(147, 112, 219, 0.5);
+}
+
+.steam-status.trading {
+    color: #9370db;
+}
+
+.steam-status.looking-to-play::before {
+    background: #32cd32;
+    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+}
+
+.steam-status.looking-to-play {
+    color: #32cd32;
+}
+
+.steam-status.in-game::before,
+.steam-status.looking-to-play::before,
+.steam-status.trading::before,
+.steam-status.in-game-away::before {
+    animation: pulse 2s infinite;
+}
+
+.steam-status-widget.online {
+    background: rgba(102, 192, 244, 0.2);
+    border-color: #66c0f4;
+}
+
+.steam-status-widget.online .steam-avatar {
+    border-color: #66c0f4;
+}
+
+.steam-status-widget.offline {
+    background: rgba(137, 137, 137, 0.2);
+    border-color: #898989;
+}
+
+.steam-status-widget.offline .steam-avatar {
+    border-color: #898989;
+}
+
+.steam-status-widget.in-game {
+    background: rgba(144, 186, 60, 0.2);
+    border-color: #90ba3c;
+}
+
+.steam-status-widget.in-game .steam-avatar {
+    border-color: #90ba3c;
+}
+
+.steam-status-widget.in-game-away {
+    background: rgba(255, 127, 80, 0.2);
+    border-color: #ff7f50;
+}
+
+.steam-status-widget.in-game-away .steam-avatar {
+    border-color: #ff7f50;
+}
+
+.steam-status-widget.busy {
+    background: rgba(220, 20, 60, 0.2);
+    border-color: #dc143c;
+}
+
+.steam-status-widget.busy .steam-avatar {
+    border-color: #dc143c;
+}
+
+.steam-status-widget.away {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #ffd700;
+}
+
+.steam-status-widget.away .steam-avatar {
+    border-color: #ffd700;
+}
+
+.steam-status-widget.snooze {
+    background: rgba(255, 127, 80, 0.2);
+    border-color: #ff7f50;
+}
+
+.steam-status-widget.snooze .steam-avatar {
+    border-color: #ff7f50;
+}
+
+.steam-status-widget.trading {
+    background: rgba(147, 112, 219, 0.2);
+    border-color: #9370db;
+}
+
+.steam-status-widget.trading .steam-avatar {
+    border-color: #9370db;
+}
+
+.steam-status-widget.looking-to-play {
+    background: rgba(50, 205, 50, 0.2);
+    border-color: #32cd32;
+}
+
+.steam-status-widget.looking-to-play .steam-avatar {
+    border-color: #32cd32;
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }

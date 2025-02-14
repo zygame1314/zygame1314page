@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #games {
     background-color: rgba(26, 26, 26, 0.8);
     padding: 20px;
@@ -171,4 +172,179 @@
     width: 100%;
     height: 100%;
     z-index: -1;
+=======
+#games {
+    background-color: rgba(26, 26, 26, 0.8);
+    padding: 20px;
+    border: 3px solid var(--primary-color);
+    margin-top: 30px;
+}
+
+.games-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.games-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.games-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.games-list::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.games-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-color);
+}
+
+.game-item {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--primary-color);
+    padding: 10px;
+    transition: all 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.game-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px var(--secondary-color);
+}
+
+.game-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    margin-bottom: 10px;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+.game-item .game-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+
+.game-item .game-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    line-height: 1.2;
+    max-height: 2.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+
+.game-item .game-info p {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    color: #aaa;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+
+.game-item a.button {
+    align-self: flex-start;
+    padding: 5px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+#games h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+}
+
+#games h2 button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    font-size: 14px;
+    font-family: 'zpix';
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+#games h2 button:hover {
+    color: var(--secondary-color);
+}
+
+.game-item img.default-cover {
+    object-fit: contain;
+    background-color: #2a2a2a;
+}
+
+.game-info .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 8px;
+}
+
+.game-info .discount {
+    color: #a4d007;
+    margin-right: 8px;
+}
+
+.game-info .final-price {
+    color: #fff;
+    font-weight: bold;
+}
+
+.steam-games-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.steam-games-list .game-item {
+    width: 48%;
+    margin-bottom: 4%;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.steam-games-list .game-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px var(--secondary-color);
+}
+
+.steam-games-list .game-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0;
+    border: none;
+}
+
+#pongGame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+>>>>>>> b029a527becedfc9927b8e11b6ce5e48017539d2
 }
