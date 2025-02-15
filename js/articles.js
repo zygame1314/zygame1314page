@@ -1,8 +1,8 @@
-import { init } from 'https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.js';
+import { init } from 'https://jsd.onmicrosoft.cn/npm/@waline/client@v3/dist/waline.js';
 
 if (!document.querySelector('link[href*="@waline"]')) {
     document.head.insertAdjacentHTML('beforeend',
-        '<link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.css">'
+        '<link rel="stylesheet" href="https://jsd.onmicrosoft.cn/npm/@waline/client@v3/dist/waline.css">'
     );
 }
 
@@ -578,7 +578,7 @@ class ArticlesManager {
     async loadLanguage(language) {
         if (!hljs.getLanguage(language)) {
             try {
-                await import(`https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/languages/${language}.min.js`);
+                await import(`https://jsd.onmicrosoft.cn/gh/highlightjs/cdn-release@latest/build/languages/${language}.min.js`);
                 return true;
             } catch (error) {
                 console.warn(`语言包 ${language} 加载失败:`, error);

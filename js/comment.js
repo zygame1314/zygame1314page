@@ -1,6 +1,6 @@
-import { init } from 'https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.js';
+import { init } from 'https://jsd.onmicrosoft.cn/npm/@waline/client@v3/dist/waline.js';
 
-document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@waline/client@v3/dist/waline.css">');
+document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://jsd.onmicrosoft.cn/npm/@waline/client@v3/dist/waline.css">');
 
 window.addEventListener('DOMContentLoaded', () => {
     init({

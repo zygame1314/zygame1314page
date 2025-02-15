@@ -15,7 +15,7 @@ const GREETINGS = {
 function loadLunarScript() {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdmirror.com/npm/lunar-javascript/lunar.min.js';
+        script.src = 'https://jsd.onmicrosoft.cn/npm/lunar-javascript/lunar.min.js';
         script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
