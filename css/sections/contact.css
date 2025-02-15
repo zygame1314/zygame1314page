@@ -5,6 +5,7 @@
     position: relative;
     max-width: 100%;
     box-sizing: border-box;
+    box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.3);
 }
 
 #contact::before {
@@ -17,6 +18,17 @@
     border: 2px solid var(--primary-color);
     animation: borderBlink 2s ease-in-out infinite;
     pointer-events: none;
+}
+
+#contact::after {
+    content: '< / >';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-family: 'zpix';
+    color: var(--primary-color);
+    opacity: 0.2;
+    font-size: 24px;
 }
 
 #contact ul {
@@ -34,6 +46,29 @@
     border: 2px solid transparent;
     transition: all 0.3s ease-out;
     position: relative;
+    background: linear-gradient(45deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.9));
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#contact ul li::before {
+    content: '[ ]';
+    color: var(--primary-color);
+    font-family: 'zpix';
+    margin-right: 10px;
+    opacity: 0.5;
+}
+
+#contact ul li:hover {
+    transform: translateX(15px) scale(1.02);
+    border-color: var(--primary-color);
+    background-color: var(--theme-bg);
+    white-space: normal;
+    box-shadow: 
+        0 0 10px rgba(var(--primary-color-rgb), 0.3),
+        0 0 20px rgba(var(--primary-color-rgb), 0.2),
+        0 0 30px rgba(var(--primary-color-rgb), 0.1);
+    animation: neonPulse 1.5s ease-in-out infinite;
 }
 
 .contact-info {
@@ -56,6 +91,26 @@
     transition: all 0.3s ease;
     font-size: 0.8em;
     border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-copy-button::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1)
+    );
+    transition: top 0.3s ease;
+}
+
+.contact-copy-button:hover::before {
+    top: 0;
 }
 
 .contact-copy-button:hover {
@@ -68,13 +123,7 @@
     background: #4CAF50;
     border-color: #4CAF50;
     color: white;
-}
-
-#contact ul li:hover {
-    transform: translateX(10px);
-    border-color: var(--primary-color);
-    background-color: var(--theme-bg);
-    white-space: normal;
+    animation: successPulse 0.5s ease;
 }
 
 #contact ul li i {
@@ -83,6 +132,7 @@
     color: var(--primary-color);
     text-shadow: 2px 2px 0 var(--background-color);
     transition: transform 0.3s ease;
+    animation: float 3s ease-in-out infinite;
 }
 
 #contact ul li:hover i {
@@ -107,28 +157,4 @@
     position: absolute;
     right: -20px;
     animation: blink 1s ease-in-out infinite;
-}
-
-@keyframes borderBlink {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-}
-
-@keyframes blink {
-
-    0%,
-    100% {
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 1;
-    }
 }
