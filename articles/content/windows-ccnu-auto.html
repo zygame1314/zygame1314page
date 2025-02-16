@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CCNU-AUTO 废物利用指南 - 让吃灰的网络重获新生！ - zygame1314</title>
+</head>
+
+<body>
+    <main class="article-content">
+        <div class="article-body">
+            <h1>CCNU-AUTO 废物利用指南 - 让吃灰的网络重获新生！</h1>
+            <p class="article-intro">
+                还记得那个曾经一键直连，现在却被大家当成摆设的 CCNU-AUTO 吗？别灰心！今天就教你几招，让这个吃灰的网络重新焕发生机，体验一把“变废为宝”的快感！
+            </p>
+
+            <h2>前情提要：官方文档的“极简主义”</h2>
+            <p>
+                首先，咱们掌声有请华中师范大学信息化办公室的<a href="https://nisc.ccnu.edu.cn/manualforccnu-auto.docx"
+                    target="_blank">官方文档</a>！这文档，怎么说呢，突出一个“简洁”。关于 Windows
+                连接 CCNU-AUTO，就一句话：<strong>“配置步骤较为复杂，建议连接 CCNU”</strong>。
+            </p>
+            <p>
+                嗯... 确实挺复杂的，然后呢？然后就没有然后了。这堪比《五年高考三年模拟》的参考答案写着"略"，建议改名叫《论当代大学生的自我修养》。自从它不能直接连之后，更像是直接把答案撕了。
+            </p>
+
+            <h2>名校的“别人家孩子”</h2>
+            <p>
+                再看看人家清华大学的<a href="https://thu.services/file/tsinghua-secure-config.pdf"
+                    target="_blank">配置教程</a>，那叫一个详细！图文并茂，步骤清晰，简直是保姆级教程。这大概就是传说中的“别人家的学校”吧。
+            </p>
+
+            <h2>Windows CCNU-AUTO “废物利用” 完全攻略</h2>
+            <p>
+                准备好你的 Windows 电脑，跟着本指南一起，让 CCNU-AUTO 重获新生！
+            </p>
+
+            <h3>准备工作</h3>
+            <p>
+                在开始之前，请务必确保你已经：
+            </p>
+            <ul>
+                <li>成功连接过 CCNU，并且用你的学号密码登录过一次。这是学校官方文档里唯一有用的信息，咱们得听话。</li>
+            </ul>
+
+            <h3>详细步骤 (Windows)</h3>
+            <ol>
+                <li>
+                    <strong>打开网络设置</strong>
+                    <ul>
+                        <li>打开"控制面板" -> "网络和 Internet" -> "网络和共享中心"。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>添加新网络</strong>
+                    <ul>
+                        <li>在“网络和共享中心”里，找到“设置新的连接或网络”，点它！</li>
+                        <li>选择“手动连接到无线网络”，然后点“下一步”。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>填写网络信息</strong>
+                    <p>这里是关键，别填错啦：</p>
+                    <ul>
+                        <li>网络名：<code>CCNU-AUTO</code></li>
+                        <li>安全类型：<code>WPA2-企业</code> (或者 <code>WPA3-企业</code>，如果你的设备支持而且学校也开了的话)</li>
+                        <li>加密类型：<code>AES</code></li>
+                    </ul>
+                    <p>填完点"下一步"。如果提示已存在同名网络，请先在 Wi-Fi 列表中找到 CCNU-AUTO 并“忘记”它，然后重新开始配置。</p>
+                </li>
+                <li>
+                    <strong>修改连接设置</strong>
+                    <p>点击“更改连接设置”，进入更高级的配置。</p>
+                </li>
+                <li>
+                    <strong>配置安全选项卡</strong>
+                    <ul>
+                        <li>网络身份验证方法：选择 <code>Microsoft: 受保护的 EAP (PEAP)</code></li>
+                        <li>点击旁边的“设置”按钮，继续！</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>配置受保护的 EAP 属性</strong>
+                    <p>这里是重中之重，千万别搞错！</p>
+                    <ul>
+                        <li><strong style="color:red">取消勾选</strong> “验证服务器证书”。(不取消就连不上，问就是量子力学)</li>
+                        <li>选择身份验证方法：<code>安全密码 (EAP-MSCHAP v2)</code></li>
+                        <li><strong style="color:red">取消勾选</strong> “自动使用 Windows 登录名和密码(和域, 如果有)”。(不然你的 Windows
+                            密码就泄露给校园网啦)</li>
+                        <li>勾选“启用快速重新连接”。(这个随意，勾上方便点)</li>
+                    </ul>
+                    <p>设置完点“确定”。</p>
+                </li>
+                <li>
+                    <strong>高级设置</strong>
+                    <ul>
+                        <li>回到“安全”选项卡，点“高级设置”。</li>
+                        <li>勾选"指定身份验证模式", 下拉框选择"用户身份验证"。</li>
+                        <li>点击"保存凭据",输入用户名和密码：输入你在 CCNU 校园网认证时使用的账号和密码。</li>
+                        <li>（可选）取消“启动成对主密钥(PMK)缓存”。</li>
+                    </ul>
+                </li>
+
+                <li>
+                    <strong>保存设置</strong>
+                    <p>一路“确定”回去，保存所有设置。</p>
+                </li>
+                <li>
+                    <strong>连接 CCNU-AUTO</strong>
+                    <p>在 Wi-Fi 列表里找到 CCNU-AUTO，点“连接”！如果弹出让你输入用户名密码，再输一遍你的 CCNU 账号密码。</p>
+                </li>
+            </ol>
+
+            <h2>见证奇迹的时刻！</h2>
+            <p>
+                如果一切顺利，你现在应该已经成功“复活” CCNU-AUTO 了！如果还是不行，可以尝试重启电脑，或者检查一下上面的步骤有没有遗漏。
+            </p>
+
+            <h2>常见问题</h2>
+            <div class="article-tips">
+                <h3><i class="fas fa-lightbulb"></i> 小提示</h3>
+                <ul>
+                    <li>如果连不上，先检查账号密码有没有输错。</li>
+                    <li>确保“验证服务器证书”是<strong>取消勾选</strong>的状态。</li>
+                    <li>“自动使用 Windows 登录名和密码”也一定要<strong>取消勾选</strong>！</li>
+                    <li>如果还是不行，可以尝试把上面步骤里的“可选”操作也做了。</li>
+                     <li>实在不行，咱还是老老实实用 CCNU 吧，毕竟活着最重要。</li>
+                </ul>
+            </div>
+
+            <div class="article-footer">
+                <p>希望这篇指南能帮到你！如果还有其他问题，欢迎在评论区留言！</p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

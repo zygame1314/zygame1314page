@@ -92,5 +92,23 @@
             "DeepSeek R1",
             "Gemini Experimental 1206"
         ]
+    },
+    {
+        "id": "windows-ccnu-auto",
+        "title": "Windows 连接 CCNU-AUTO 完整流程",
+        "date": "2025-02-17",
+        "excerpt": "详细介绍 Windows 系统下配置 802.1x 认证连接 CCNU-AUTO 的完整步骤...",
+        "thumbnail": "/images/articles/ccnu-auto.png",
+        "contentUrl": "/articles/content/windows-ccnu-auto.html",
+        "tags": [
+            "技术配置",
+            "网络服务",
+            "系统设置"
+        ],
+        "aiAssistants": [
+            "Claude 3.5 Sonnet",
+            "DeepSeek R1",
+            "Gemini 2.0 Pro Experimental 02-05"
+        ]
     }
 ]
