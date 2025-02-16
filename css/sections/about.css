@@ -143,6 +143,9 @@
 }
 
 #about .skill-level {
+    display: grid;
+    gap: 30px;
+    justify-items: center;
     width: 100%;
     position: relative;
     padding: 20px;
@@ -175,13 +178,6 @@
 
 #about .skill-level:not(:last-child)::after {
     display: block;
-}
-
-#about .skill-level {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 30px;
-    justify-items: center;
 }
 
 #about .skill-item {
