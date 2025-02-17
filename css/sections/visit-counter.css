@@ -407,7 +407,7 @@
 .visit-counter-widget.flipped .card-front {
     pointer-events: none;
     visibility: hidden;
-}dd
+}
 
 .visit-counter-widget:not(.flipped) .card-back {
     pointer-events: none;
