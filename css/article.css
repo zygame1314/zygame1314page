@@ -1,7 +1,6 @@
 .article-content {
     max-width: 900px;
     background: #1a1a1a;
-    image-rendering: pixelated;
 }
 
 .article-content h1 {
@@ -30,6 +29,58 @@
 .article-content h3,
 .article-content h4 {
     scroll-margin-top: 80px;
+}
+
+.article-content img {
+    cursor: url('/images/cursors/black diablos diagnal resize II.cur'), auto;
+    transition: transform 0.3s ease;
+}
+
+.article-content img:hover {
+    transform: scale(1.02);
+}
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.active {
+    opacity: 1;
+}
+
+.modal-image {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.image-modal.active .modal-image {
+    transform: scale(1);
+}
+
+.image-modal::before {
+    content: "点击任何区域关闭";
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-family: 'zpix';
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 
 .article-content p {
@@ -698,4 +749,40 @@
 .preview-item:hover::before {
     opacity: 1;
     visibility: visible;
+}
+
+.chat-message {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #2a2a2a;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.chat-message.sent {
+    border-left-color: var(--secondary-color);
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+}
+
+.chat-content {
+    flex: 1;
+}
+
+.chat-name {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
 }

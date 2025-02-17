@@ -588,6 +588,36 @@ class ArticlesManager {
         return true;
     }
 
+    setupImageZoom(container) {
+        if (!document.querySelector('.image-modal')) {
+            const modal = document.createElement('div');
+            modal.className = 'image-modal';
+            const modalImg = document.createElement('img');
+            modalImg.className = 'modal-image';
+            modal.appendChild(modalImg);
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', () => {
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+                document.body.style.overflow = '';
+            });
+        }
+
+        container.querySelectorAll('img').forEach(img => {
+            if (!img.closest('.article-thumbnail')) {
+                img.addEventListener('click', () => {
+                    const modal = document.querySelector('.image-modal');
+                    const modalImg = modal.querySelector('.modal-image');
+                    modalImg.src = img.src;
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    requestAnimationFrame(() => modal.classList.add('active'));
+                });
+            }
+        });
+    }
+
     async showArticle(article, fromHistory = false, directAccess = false) {
         const existingToc = document.querySelector('.article-toc');
         if (existingToc) {
@@ -685,6 +715,7 @@ class ArticlesManager {
             const content = await response.text();
             const articleContent = articleSection.querySelector('.article-content');
             articleContent.innerHTML = content;
+            this.setupImageZoom(articleContent);
 
             const codeBlocks = articleContent.querySelectorAll('pre code');
             for (const block of codeBlocks) {
