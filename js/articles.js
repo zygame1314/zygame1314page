@@ -59,6 +59,7 @@ class ArticlesManager {
 
                     window.handleHomeView();
                     this.renderArticles(false);
+                    this.setupScrollListener();
                     this.initWaline();
                 }
             } else if (path.startsWith('/article/')) {
@@ -67,6 +68,9 @@ class ArticlesManager {
                     a.contentUrl.replace('/articles/content/', '').replace('.html', '') === articleId
                 );
                 if (article) {
+                    this.currentIndex = 0;
+                    this.loading = false;
+                    this.allLoaded = false;
                     await this.showArticle(article, true);
                 }
             }
@@ -75,6 +79,11 @@ class ArticlesManager {
             this.transitionMask.classList.add('reverse');
             setTimeout(() => {
                 this.transitionMask.classList.remove('reverse');
+                if (path === '/') {
+                    this.loading = false;
+                    this.allLoaded = false;
+                    this.updateLoadingIndicator();
+                }
             }, 500);
         });
 
@@ -459,7 +468,10 @@ class ArticlesManager {
             await this.loadArticles();
             this.renderTagsFilter();
             this.renderArticles();
+            this.initWaline();
             this.setupScrollListener();
+            this.loading = false;
+            this.allLoaded = false;
         }
     }
 
@@ -951,8 +963,13 @@ class ArticlesManager {
             mainContent.style.margin = '';
 
             window.handleHomeView();
+
             this.currentIndex = 0;
+            this.loading = false;
+            this.allLoaded = false;
+
             this.renderArticles(false);
+            this.setupScrollListener();
             this.initWaline();
 
             this.transitionMask.classList.remove('active');
