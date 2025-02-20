@@ -68,7 +68,8 @@
 │  └─ timeline.json
 ├─ functions
 │  ├─ check
-│  │  └─ page-status.js
+│  │  ├─ page-status.js
+│  │  └─ status-history.js
 │  ├─ games
 │  │  ├─ popular.js
 │  │  ├─ recent-games.js
