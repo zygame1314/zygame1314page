@@ -111,12 +111,14 @@
 }
 
 .uptime-chart svg circle {
-    transition: r 0.3s ease;
+    transition: all 0.3s ease;
     cursor: url('/images/cursors/jag help select.cur'), auto;
+    transform-origin: center;
+    transform: scale(1);
 }
 
 .uptime-chart svg circle:hover {
-    r: 5;
+    transform: scale(1.67);
 }
 
 .uptime-chart svg {
