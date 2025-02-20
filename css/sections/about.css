@@ -5,20 +5,20 @@
     position: relative;
 }
 
-.pixel-icon {
+#about .pixel-icon {
     image-rendering: pixelated;
     transform: scale(1.2);
     margin-right: 10px;
 }
 
-.pixel-card {
+#about .pixel-card {
     padding: 4px;
     background: #000;
     position: relative;
     margin: 20px 0;
 }
 
-.pixel-card::before {
+#about .pixel-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -33,7 +33,7 @@
     opacity: 0.3;
 }
 
-.pixel-border {
+#about .pixel-border {
     border: 4px solid var(--primary-color);
     padding: 20px;
     background: rgba(0, 0, 0, 0.8);
@@ -41,7 +41,7 @@
     overflow: hidden;
 }
 
-.pixel-border::after {
+#about .pixel-border::after {
     content: '';
     position: absolute;
     top: 4px;
@@ -51,7 +51,7 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.pixel-text-content {
+#about .pixel-text-content {
     line-height: 1.8;
     font-size: 0.9em;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
