@@ -32,7 +32,7 @@ class SiteStatus {
 
     async updateStatus() {
         try {
-            const response = await fetch(`${API_BASE}/page/page-status`);
+            const response = await fetch(`${API_BASE}/check/page-status`);
             const data = await response.json();
 
             const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);

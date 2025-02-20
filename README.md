@@ -5,9 +5,11 @@
 │  ├─ content
 │  │  ├─ activation-code-mechanism.html
 │  │  ├─ deepseek-server-recovery.html
+│  │  ├─ steam-scammer-story.html
 │  │  ├─ unity-mosaic-removal.html
 │  │  ├─ upyun-source-config.html
 │  │  ├─ vercel-config.html
+│  │  ├─ windows-ccnu-auto.html
 │  │  └─ xiaoyadecrypt.html
 │  └─ index.json
 ├─ css
@@ -32,6 +34,7 @@
 │  │  ├─ home.css
 │  │  ├─ live2d-settings.css
 │  │  ├─ music-player.css
+│  │  ├─ site-status.css
 │  │  ├─ steam-status.css
 │  │  ├─ textbox.css
 │  │  ├─ timeline.css
@@ -64,18 +67,25 @@
 │  ├─ projects.json
 │  └─ timeline.json
 ├─ functions
+│  ├─ check
+│  │  └─ page-status.js
 │  ├─ games
 │  │  ├─ popular.js
 │  │  ├─ recent-games.js
-│  │  └─ status.js
+│  │  └─ steam-status.js
 │  └─ weather
 │     └─ weather.js
 ├─ images
 │  ├─ alipay-qr-code.png
 │  ├─ articles
+│  │  ├─ ccnu-auto.png
 │  │  ├─ decrypt.png
 │  │  ├─ deepseek.png
+│  │  ├─ fabricated Steam transaction screenshot.png
+│  │  ├─ fake Steam support reply.png
+│  │  ├─ inventory history screenshot.png
 │  │  ├─ security.png
+│  │  ├─ steam-scam.png
 │  │  ├─ unity.png
 │  │  ├─ vercel.png
 │  │  └─ 又拍云_logo5.png
@@ -99,23 +109,35 @@
 │  │  ├─ Rathian and Rathalos Alternate select.cur
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
+│  ├─ decrypt.png
+│  ├─ deepseek.png
 │  ├─ default-game-cover.png
 │  ├─ Dialogue_Bottom.png
 │  ├─ Dialogue_Top.png
+│  ├─ enable-developer-mode.png
 │  ├─ header-bg.jpg
+│  ├─ map.png
 │  ├─ music
 │  │  ├─ FF7 logo.png
 │  │  ├─ INTERNET OVERDOSE.jpg
 │  │  ├─ シカ色デイズ.webp
 │  │  ├─ 勇者.webp
 │  │  └─ 動く、動く.jpg
+│  ├─ project1.png
+│  ├─ project2.png
+│  ├─ project3.png
+│  ├─ project4.png
 │  ├─ projects
 │  │  ├─ project1.png
 │  │  ├─ project2.png
 │  │  ├─ project3.png
 │  │  └─ project4.png
+│  ├─ security.png
+│  ├─ unity.png
+│  ├─ vercel.png
 │  ├─ web-icon.ico
-│  └─ wechat-qr-code.png
+│  ├─ wechat-qr-code.png
+│  └─ 又拍云_logo5.png
 ├─ index.html
 ├─ js
 │  ├─ article-network.js
@@ -129,6 +151,7 @@
 │  ├─ errorpage.js
 │  ├─ fetchCode.js
 │  ├─ gamesFetch.js
+│  ├─ hoverEffects.js
 │  ├─ live2d.js
 │  ├─ live2dSettings.js
 │  ├─ live2dTextBox.js
@@ -142,6 +165,7 @@
 │  ├─ projects.js
 │  ├─ seasonTheme.js
 │  ├─ showNotification.js
+│  ├─ siteStatus.js
 │  ├─ smoothScroll.js
 │  ├─ steamStatus.js
 │  ├─ timeline.js
