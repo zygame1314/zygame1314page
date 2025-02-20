@@ -23,20 +23,6 @@ class SiteStatus {
         setInterval(() => this.loadHistory(), 60000);
     }
 
-    async updateStatus() {
-        try {
-            const response = await fetch(`${API_BASE}/check/page-status`);
-            const data = await response.json();
-
-            await this.saveHistory(data);
-            this.updateUI(data);
-            this.updateChart();
-        } catch (error) {
-            console.error('获取网站状态失败:', error);
-            this.updateUIError();
-        }
-    }
-
     updateUI(data) {
         const statusIndicator = document.querySelector('.status-indicator');
         const responseSpan = document.querySelector('.status-response');
