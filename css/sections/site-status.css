@@ -1,0 +1,134 @@
+.site-status-widget {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--pixel-border-color);
+    padding: 1.2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.site-status-widget:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color), 0.2);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.status-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(4px);
+}
+
+.status-label {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-color);
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-label i {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+.status-indicator {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.status-indicator::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+.status-indicator.online {
+    background: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71;
+}
+
+.status-indicator.online::after {
+    border: 2px solid #2ecc71;
+}
+
+.status-indicator.offline {
+    background: #e74c3c;
+    box-shadow: 0 0 10px #e74c3c;
+}
+
+.status-indicator.offline::after {
+    border: 2px solid #e74c3c;
+}
+
+.status-uptime,
+.status-response {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: right;
+}
+
+.uptime-chart {
+    height: 70px;
+    margin: 1.2rem 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.uptime-chart svg {
+    filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+}
+
+.uptime-chart svg text {
+    font-family: 'zpix', monospace;
+    font-size: 10px;
+}
+
+.uptime-chart svg circle {
+    transition: r 0.3s ease;
+    cursor: help;
+}
+
+.uptime-chart svg circle:hover {
+    r: 5;
+}
+
+.uptime-chart svg {
+    filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+}
+
+.last-check {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: right;
+    margin-top: 0.8rem;
+    font-style: italic;
+}

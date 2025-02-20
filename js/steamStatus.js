@@ -12,7 +12,7 @@ function initSteamStatus() {
 
     async function updateSteamStatus() {
         try {
-            const response = await fetch(`${API_BASE}/games/status`);
+            const response = await fetch(`${API_BASE}/games/steam-status`);
             const data = await response.json();
             const player = data.response.players[0];
 

@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="/css/sections/about.css">
     <link rel="stylesheet" href="/css/sections/contact.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
+    <link rel="stylesheet" href="/css/sections/site-status.css">
     <link rel="stylesheet" href="/css/sections/games.css">
     <link rel="stylesheet" href="/css/sections/steam-status.css">
     <link rel="stylesheet" href="/css/sections/article-network.css">
@@ -343,6 +344,29 @@
                         </div>
                     </div>
                 </section>
+                <section id="site-status">
+                    <h2 class="pixel-text">网站状态</h2>
+                    <div class="site-status-widget">
+                        <div class="status-item">
+                            <span class="status-label">
+                                <i class="fas fa-server"></i>
+                                主页状态
+                            </span>
+                            <span class="status-indicator"></span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">
+                                <i class="fas fa-tachometer-alt"></i>
+                                响应时间
+                            </span>
+                            <span class="status-response"></span>
+                        </div>
+                        <div class="status-details">
+                            <div class="uptime-chart"></div>
+                            <div class="last-check">上次检查: <span></span></div>
+                        </div>
+                    </div>
+                </section>
                 <section id="games">
                     <h2 class="pixel-text">
                         热门游戏
@@ -522,6 +546,7 @@
     <script src="/js/contact.js"></script>
     <script src="/js/gamesFetch.js"></script>
     <script src="/js/steamStatus.js"></script>
+    <script src="/js/siteStatus.js"></script>
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
     <script type="module" src="/js/article-network.js"></script>
