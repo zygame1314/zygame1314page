@@ -84,7 +84,6 @@
 
 .status-uptime,
 .status-response {
-    font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     color: var(--text-color);
     padding: 2px 8px;
@@ -95,7 +94,6 @@
 }
 
 .uptime-chart {
-    height: 70px;
     margin: 1.2rem 0;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
@@ -114,7 +112,7 @@
 
 .uptime-chart svg circle {
     transition: r 0.3s ease;
-    cursor: help;
+    cursor: url('/images/cursors/jag help select.cur'), auto;
 }
 
 .uptime-chart svg circle:hover {

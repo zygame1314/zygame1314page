@@ -1,10 +1,3 @@
-#weather {
-    background-color: rgba(26, 26, 26, 0.8);
-    padding: 15px;
-    border: 3px solid var(--primary-color);
-    margin: 0 auto;
-}
-
 .weather-widget {
     display: flex;
     flex-direction: column;

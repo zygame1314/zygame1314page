@@ -57,11 +57,6 @@
         padding: 0;
     }
 
-    #weather {
-        padding: 15px;
-        margin: 0;
-    }
-
     .weather-main {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -133,6 +128,7 @@
     .games-list .game-item,
     .game-item a.button,
     #weather,
+    #site-status,
     #steam-status,
     #article-network,
     #donate-button-section,

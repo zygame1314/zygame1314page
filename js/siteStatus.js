@@ -2,32 +2,25 @@ const API_BASE = 'https://zygame1314.site';
 
 class SiteStatus {
     constructor() {
-        this.statusHistory = this.loadHistory();
-        this.maxHistoryLength = 30;
+        this.statusHistory = [];
         this.init();
     }
 
-    loadHistory() {
+    async loadHistory() {
         try {
-            const saved = localStorage.getItem('site-status-history');
-            return saved ? JSON.parse(saved) : [];
+            const response = await fetch(`${API_BASE}/check/status-history`);
+            this.statusHistory = await response.json();
+            this.updateUI(this.statusHistory[0]);
+            this.updateChart();
         } catch (error) {
             console.error('加载状态历史失败:', error);
-            return [];
-        }
-    }
-
-    saveHistory() {
-        try {
-            localStorage.setItem('site-status-history', JSON.stringify(this.statusHistory));
-        } catch (error) {
-            console.error('保存状态历史失败:', error);
+            this.updateUIError();
         }
     }
 
     async init() {
-        this.updateStatus();
-        setInterval(() => this.updateStatus(), 60000);
+        await this.loadHistory();
+        setInterval(() => this.loadHistory(), 60000);
     }
 
     async updateStatus() {
@@ -35,17 +28,9 @@ class SiteStatus {
             const response = await fetch(`${API_BASE}/check/page-status`);
             const data = await response.json();
 
-            const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
-            this.statusHistory = this.statusHistory.filter(item =>
-                new Date(item.timestamp) > thirtyMinutesAgo
-            );
-
-            this.statusHistory.push(data);
-            this.saveHistory();
-
+            await this.saveHistory(data);
             this.updateUI(data);
             this.updateChart();
-
         } catch (error) {
             console.error('获取网站状态失败:', error);
             this.updateUIError();
@@ -81,7 +66,7 @@ class SiteStatus {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '100%');
         svg.setAttribute('height', '100%');
-        svg.setAttribute('viewBox', '-25 0 330 60');
+        svg.setAttribute('viewBox', '-25 0 330 70');
         svg.style.padding = '5px';
 
         for (let i = 0; i < 6; i++) {
@@ -107,7 +92,7 @@ class SiteStatus {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             text.textContent = label.text;
             text.setAttribute('x', 5 + (index * 90));
-            text.setAttribute('y', 58);
+            text.setAttribute('y', 68);
             text.setAttribute('fill', 'rgba(255,255,255,0.5)');
             text.setAttribute('font-size', '10');
             text.setAttribute('text-anchor', 'middle');

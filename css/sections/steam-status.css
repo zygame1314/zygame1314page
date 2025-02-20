@@ -1,15 +1,3 @@
-#steam-status {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 15px;
-    image-rendering: pixelated;
-    transition: all 0.3s ease;
-}
-
-#steam-status:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 192, 244, 0.2);
-}
-
 .steam-status-widget {
     padding: 10px;
     position: relative;
