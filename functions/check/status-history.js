@@ -6,26 +6,26 @@ export async function onRequest(context) {
         }
 
         const now = new Date();
-        const currentHour = now.toISOString().slice(0, 13);
-        const previousHour = new Date(now - 3600000).toISOString().slice(0, 13);
+        const promises = [];
 
-        let currentData = [], previousData = [];
+        for (let i = 0; i < 5; i++) {
+            const time = new Date(now - i * 3600000);
+            const hourKey = time.toISOString().slice(0, 13);
+            promises.push(KV.get(`status-${hourKey}`, 'json'));
+        }
+
+        let allData = [];
         try {
-            [currentData, previousData] = await Promise.all([
-                KV.get(`status-${currentHour}`, 'json'),
-                KV.get(`status-${previousHour}`, 'json')
-            ]);
+            const results = await Promise.all(promises);
+            allData = results
+                .filter(data => Array.isArray(data))
+                .flat();
         } catch (kvError) {
             console.error('KV 读取失败:', kvError);
             throw new Error('读取状态历史记录失败');
         }
 
-        currentData = Array.isArray(currentData) ? currentData : [];
-        previousData = Array.isArray(previousData) ? previousData : [];
-
-        const combinedHistory = [...currentData, ...previousData];
-
-        if (combinedHistory.length === 0) {
+        if (allData.length === 0) {
             return new Response(JSON.stringify([]), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export async function onRequest(context) {
             });
         }
 
-        const sortedHistory = combinedHistory.sort((a, b) =>
+        const sortedHistory = allData.sort((a, b) =>
             new Date(b.timestamp) - new Date(a.timestamp)
         );
 
