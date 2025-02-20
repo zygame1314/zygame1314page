@@ -68,16 +68,17 @@ class SiteStatus {
 
         const now = Date.now();
         const timeLabels = [
+            { text: '2小时', minutes: 120 },
+            { text: '90分钟', minutes: 90 },
+            { text: '60分钟', minutes: 60 },
             { text: '30分钟', minutes: 30 },
-            { text: '20分钟', minutes: 20 },
-            { text: '10分钟', minutes: 10 },
             { text: '现在', minutes: 0 }
         ].reverse();
 
         timeLabels.forEach((label, index) => {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             text.textContent = label.text;
-            text.setAttribute('x', 5 + (index * 90));
+            text.setAttribute('x', 5 + (index * 70));
             text.setAttribute('y', 68);
             text.setAttribute('fill', 'rgba(255,255,255,0.5)');
             text.setAttribute('font-size', '10');
@@ -94,10 +95,12 @@ class SiteStatus {
             let pathD = '';
 
             const endTime = now;
-            const startTime = endTime - (30 * 60 * 1000);
+            const startTime = endTime - (120 * 60 * 1000);
 
             sortedHistory.forEach((status, index) => {
                 const statusTime = new Date(status.timestamp).getTime();
+                if (statusTime < startTime) return;
+
                 const timeProgress = 1 - ((statusTime - startTime) / (endTime - startTime));
                 const x = 5 + (timeProgress * 270);
                 const y = status.status === 'online' ? 15 : 45;
@@ -118,9 +121,9 @@ class SiteStatus {
                 const timeAgo = Math.round((now - statusTime) / 60000);
                 const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
                 title.textContent = `状态: ${status.status === 'online' ? '在线' : '离线'}
-    时间: ${new Date(status.timestamp).toLocaleTimeString()}
-    响应: ${status.responseTime || '--'}ms
-    ${timeAgo}分钟前`;
+时间: ${new Date(status.timestamp).toLocaleTimeString()}
+响应: ${status.responseTime || '--'}ms
+${timeAgo}分钟前`;
                 circle.appendChild(title);
 
                 svg.appendChild(circle);
