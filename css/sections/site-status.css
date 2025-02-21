@@ -15,16 +15,29 @@
 .status-item {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
-    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
+    border-radius: 8px;
     transition: all 0.3s ease;
+    border-left: 4px solid transparent;
 }
 
 .status-item:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateX(4px);
+}
+
+.status-item[data-site="主站"] {
+    border-left-color: #2ecc71;
+}
+
+.status-item[data-site="源站"] {
+    border-left-color: #3498db;
+}
+
+.status-item[data-site="CDN"] {
+    border-left-color: #9b59b6;
 }
 
 .status-label {
@@ -44,12 +57,22 @@
 }
 
 .status-indicator {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 12px;
     transition: all 0.5s ease;
     position: relative;
+}
+
+.status-indicator.online {
+    background: var(--success-color, #2ecc71);
+    box-shadow: 0 0 8px var(--success-color, #2ecc71);
+}
+
+.status-indicator.offline {
+    background: var(--error-color, #e74c3c);
+    box-shadow: 0 0 8px var(--error-color, #e74c3c);
 }
 
 .status-indicator::after {
@@ -64,13 +87,31 @@
     z-index: -1;
 }
 
-.status-indicator.online {
+.status-indicator.online.主站 {
     background: #2ecc71;
     box-shadow: 0 0 10px #2ecc71;
 }
 
-.status-indicator.online::after {
+.status-indicator.online.源站 {
+    background: #3498db;
+    box-shadow: 0 0 10px #3498db;
+}
+
+.status-indicator.online.CDN {
+    background: #9b59b6;
+    box-shadow: 0 0 10px #9b59b6;
+}
+
+.status-indicator.online.主站::after {
     border: 2px solid #2ecc71;
+}
+
+.status-indicator.online.源站::after {
+    border: 2px solid #3498db;
+}
+
+.status-indicator.online.CDN::after {
+    border: 2px solid #9b59b6;
 }
 
 .status-indicator.offline {
@@ -86,11 +127,11 @@
 .status-response {
     font-size: 0.9rem;
     color: var(--text-color);
-    padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     min-width: 60px;
-    text-align: right;
+    text-align: center;
 }
 
 .uptime-chart {
@@ -103,6 +144,47 @@
 
 .uptime-chart svg {
     filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+}
+
+.uptime-chart svg .status-point {
+    transition: r 0.3s ease;
+}
+
+.uptime-chart svg .status-point:hover {
+    r: 5;
+}
+
+.uptime-chart svg .status-path {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.uptime-chart svg .status-point.主站 {
+    filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+}
+
+.uptime-chart svg .status-point.源站 {
+    filter: drop-shadow(0 0 3px rgba(52, 152, 219, 0.6));
+}
+
+.uptime-chart svg .status-point.CDN {
+    filter: drop-shadow(0 0 3px rgba(155, 89, 182, 0.6));
+}
+
+.uptime-chart svg .status-path.主站 {
+    stroke: #2ecc71;
+}
+
+.uptime-chart svg .status-path.源站 {
+    stroke: #3498db;
+}
+
+.uptime-chart svg .status-path.CDN {
+    stroke: #9b59b6;
+}
+
+.uptime-chart svg .status-point:hover+.status-path {
+    opacity: 1;
 }
 
 .uptime-chart svg text {
