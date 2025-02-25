@@ -43,7 +43,9 @@ class SiteStatus {
         statuses.forEach(status => {
             const siteName = this.getSiteName(status.url);
             const statusHTML = `
-                <div class="status-item" data-site="${siteName}">
+                <div class="status-item" data-site="${siteName}"
+                     onmouseenter="this.dispatchEvent(new CustomEvent('site-status-hover', 
+                     {detail: {status: '${status.status}', responseTime: ${status.responseTime}, site: '${siteName}'}}))">
                     <span class="status-label">
                         <i class="fas ${this.getSiteIcon(siteName)}"></i>
                         ${siteName}
@@ -57,10 +59,73 @@ class SiteStatus {
             statusContainer.insertAdjacentHTML('beforeend', statusHTML);
         });
 
+        document.querySelectorAll('.status-item').forEach(item => {
+            item.addEventListener('site-status-hover', (e) => {
+                const { status, responseTime, site } = e.detail;
+                const message = this.getStatusMessage(site, status, responseTime);
+                if (typeof window.showLive2dNotification === 'function') {
+                    window.showLive2dNotification(message, 3000);
+                }
+            });
+        });
+
         const lastCheck = document.querySelector('.last-check span');
         if (statuses.length > 0) {
             lastCheck.textContent = new Date(statuses[0].timestamp).toLocaleString();
         }
+    }
+
+    getStatusMessage(site, status, responseTime) {
+        const getSpeedComment = (rt) => {
+            if (!rt) return '';
+            if (rt < 100) return '，超快！✨';
+            if (rt < 500) return '，还不错呢～';
+            if (rt < 1000) return '，还可以接受啦';
+            if (rt < 3000) return '，有点慢呢，凑合凑活吧';
+            return '，好像有点卡的说...';
+        };
+
+        const messages = {
+            '主站': {
+                online: [
+                    `主站状态良好！响应时间${responseTime}ms${getSpeedComment(responseTime)}`,
+                    `主站运行正常，${responseTime}ms的响应速度${getSpeedComment(responseTime)}`,
+                    `主站一切正常${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '，放心访问吧！'}`
+                ],
+                offline: [
+                    "啊哦，主站似乎遇到了一些小问题...",
+                    "主站暂时不在线，让我们稍等一下~",
+                    "主人！主站好像出故障了！"
+                ]
+            },
+            '源站': {
+                online: [
+                    `源站运行正常！${responseTime}ms${getSpeedComment(responseTime)}`,
+                    `源站状态良好，${responseTime}ms的响应速度${getSpeedComment(responseTime)}`,
+                    `源站准备就绪${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '！'}`
+                ],
+                offline: [
+                    "源站暂时失联了，不过不用担心~",
+                    "源站似乎在开小差呢...",
+                    "源站遇到了一些技术问题，主人应该正在处理~"
+                ]
+            },
+            'CDN': {
+                online: [
+                    `CDN工作正常！${responseTime}ms${getSpeedComment(responseTime)}`,
+                    `CDN加速中，${responseTime}ms的速度${getSpeedComment(responseTime)}`,
+                    `CDN运转良好${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '～'}`
+                ],
+                offline: [
+                    "CDN似乎出了点问题，可能会影响加载速度...",
+                    "CDN暂时不可用，网站访问可能会变慢~",
+                    "CDN连接不上了，让主人看看是怎么回事~"
+                ]
+            }
+        };
+
+        const statusMessages = messages[site][status.toLowerCase()];
+        return statusMessages[Math.floor(Math.random() * statusMessages.length)];
     }
 
     getSiteName(url) {
