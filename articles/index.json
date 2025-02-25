@@ -4,7 +4,7 @@
         "title": "Vercel 配置教程",
         "date": "2024-12-02",
         "excerpt": "如何配置 vercel.json 文件实现项目部署...",
-        "thumbnail": "/images/articles/vercel.png",
+        "thumbnail": "/images/articles/vercel.webp",
         "contentUrl": "/articles/content/vercel-config.html",
         "tags": [
             "技术配置",
@@ -21,7 +21,7 @@
         "title": "又拍云回源配置指南",
         "date": "2024-12-05",
         "excerpt": "详细介绍又拍云 CDN 的回源配置参数设置及最佳实践...",
-        "thumbnail": "/images/articles/又拍云_logo5.png",
+        "thumbnail": "/images/articles/又拍云_logo5.webp",
         "contentUrl": "/articles/content/upyun-source-config.html",
         "tags": [
             "技术配置",
@@ -37,7 +37,7 @@
         "title": "浅谈本网站的激活码生成机制",
         "date": "2024-12-08",
         "excerpt": "详细介绍本站激活码的生成原理...",
-        "thumbnail": "/images/articles/security.png",
+        "thumbnail": "/images/articles/security.webp",
         "contentUrl": "/articles/content/activation-code-mechanism.html",
         "tags": [
             "系统设计",
@@ -50,7 +50,7 @@
         "title": "小雅平台课件 URL 解密机制分析",
         "date": "2024-12-14",
         "excerpt": "解析小雅平台课件资源 URL 的加密原理及解密方法...",
-        "thumbnail": "/images/articles/decrypt.png",
+        "thumbnail": "/images/articles/decrypt.webp",
         "contentUrl": "/articles/content/xiaoyadecrypt.html",
         "tags": [
             "安全机制",
@@ -63,7 +63,7 @@
         "title": "Unity 游戏去马赛克思路分享",
         "date": "2025-01-08",
         "excerpt": "探讨 Unity 游戏中马赛克效果的实现原理及去除方法...",
-        "thumbnail": "/images/articles/unity.png",
+        "thumbnail": "/images/articles/unity.webp",
         "contentUrl": "/articles/content/unity-mosaic-removal.html",
         "tags": [
             "游戏开发",
@@ -80,7 +80,7 @@
         "title": "DeepSeek 炸服自救指南",
         "date": "2025-02-04",
         "excerpt": "详细介绍 DeepSeek 官方平替 API...",
-        "thumbnail": "/images/articles/deepseek.png",
+        "thumbnail": "/images/articles/deepseek.webp",
         "contentUrl": "/articles/content/deepseek-server-recovery.html",
         "tags": [
             "技术配置",
@@ -98,7 +98,7 @@
         "title": "Windows 连接 CCNU-AUTO 完整流程",
         "date": "2025-02-17",
         "excerpt": "详细介绍 Windows 系统下配置 802.1x 认证连接 CCNU-AUTO 的完整步骤...",
-        "thumbnail": "/images/articles/ccnu-auto.png",
+        "thumbnail": "/images/articles/ccnu-auto.webp",
         "contentUrl": "/articles/content/windows-ccnu-auto.html",
         "tags": [
             "技术配置",
@@ -116,7 +116,7 @@
         "title": "我与 Steam 骗子的\"爱恨情仇\"",
         "date": "2025-02-17",
         "excerpt": "分享一次与 Steam 诈骗者周旋的经历，以及常见的 Steam 诈骗手法防范...",
-        "thumbnail": "/images/articles/steam-scam.png",
+        "thumbnail": "/images/articles/steam-scam.webp",
         "contentUrl": "/articles/content/steam-scammer-story.html",
         "tags": [
             "安全机制",

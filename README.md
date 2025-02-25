@@ -57,11 +57,14 @@
 │  │     ├─ knight.psd
 │  │     └─ maxresdefault.jpg
 │  ├─ music
-│  │  ├─ Hollow(8-bit) - Yosh.mp3
-│  │  ├─ INTERNET OVERDOSE(8-bit) - Aiobahn.mp3
-│  │  ├─ シカ色デイズ(8-bit) - シカ部.mp3
-│  │  ├─ 勇者(8-bit) - YOASOBI.mp3
-│  │  └─ 動く、動く(8-bit) - 水瀬いのり 久保由利香.mp3
+│  │  ├─ convert_to_webm.bat
+│  │  ├─ Hollow(8-bit) - Yosh.webm
+│  │  ├─ INTERNET OVERDOSE(8-bit) - Aiobahn.webm
+│  │  ├─ シカ色デイズ(8-bit) - シカ部.webm
+│  │  ├─ 勇者(8-bit) - YOASOBI.webm
+│  │  ├─ 動く、動く(8-bit) - 水瀬いのり 久保由利香.webm
+│  │  ├─ 流線形メーデ(8-bit) - 花谱 可不 - 副本.webm
+│  │  └─ 花の塔(8-bit) - さユり.webm
 │  ├─ notices.json
 │  ├─ playlist.json
 │  ├─ projects.json
@@ -76,23 +79,24 @@
 │  └─ weather
 │     └─ weather.js
 ├─ images
-│  ├─ alipay-qr-code.png
+│  ├─ alipay-qr-code.webp
 │  ├─ articles
-│  │  ├─ ccnu-auto.png
-│  │  ├─ decrypt.png
-│  │  ├─ deepseek.png
-│  │  ├─ fabricated Steam transaction screenshot.png
-│  │  ├─ fake Steam support reply.png
-│  │  ├─ inventory history screenshot.png
-│  │  ├─ security.png
-│  │  ├─ steam-scam.png
-│  │  ├─ unity.png
-│  │  ├─ vercel.png
-│  │  └─ 又拍云_logo5.png
-│  ├─ avatar.png
-│  ├─ cloud-image1.png
-│  ├─ cloud-image2.png
-│  ├─ cloud-image3.png
+│  │  ├─ ccnu-auto.webp
+│  │  ├─ decrypt.webp
+│  │  ├─ deepseek.webp
+│  │  ├─ fabricated Steam transaction screenshot.webp
+│  │  ├─ fake Steam support reply.webp
+│  │  ├─ inventory history screenshot.webp
+│  │  ├─ security.webp
+│  │  ├─ steam-scam.webp
+│  │  ├─ unity.webp
+│  │  ├─ vercel.webp
+│  │  └─ 又拍云_logo5.webp
+│  ├─ avatar.webp
+│  ├─ cloud-image1.webp
+│  ├─ cloud-image2.webp
+│  ├─ cloud-image3.webp
+│  ├─ convert_to_webp.bat
 │  ├─ cursors
 │  │  ├─ black diablos diagnal resize I.cur
 │  │  ├─ black diablos diagnal resize II.cur
@@ -109,35 +113,36 @@
 │  │  ├─ Rathian and Rathalos Alternate select.cur
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
-│  ├─ decrypt.png
-│  ├─ deepseek.png
-│  ├─ default-game-cover.png
-│  ├─ Dialogue_Bottom.png
-│  ├─ Dialogue_Top.png
-│  ├─ enable-developer-mode.png
-│  ├─ header-bg.jpg
-│  ├─ map.png
+│  ├─ decrypt.webp
+│  ├─ deepseek.webp
+│  ├─ default-game-cover.webp
+│  ├─ Dialogue_Bottom.webp
+│  ├─ Dialogue_Top.webp
+│  ├─ enable-developer-mode.webp
+│  ├─ header-bg.webp
 │  ├─ music
-│  │  ├─ FF7 logo.png
-│  │  ├─ INTERNET OVERDOSE.jpg
+│  │  ├─ FF7 logo.webp
+│  │  ├─ INTERNET OVERDOSE.webp
 │  │  ├─ シカ色デイズ.webp
 │  │  ├─ 勇者.webp
-│  │  └─ 動く、動く.jpg
-│  ├─ project1.png
-│  ├─ project2.png
-│  ├─ project3.png
-│  ├─ project4.png
+│  │  ├─ 動く、動く.webp
+│  │  ├─ 流線形メーデ.webp
+│  │  └─ 花の塔.webp
+│  ├─ project1.webp
+│  ├─ project2.webp
+│  ├─ project3.webp
+│  ├─ project4.webp
 │  ├─ projects
-│  │  ├─ project1.png
-│  │  ├─ project2.png
-│  │  ├─ project3.png
-│  │  └─ project4.png
-│  ├─ security.png
-│  ├─ unity.png
-│  ├─ vercel.png
+│  │  ├─ project1.webp
+│  │  ├─ project2.webp
+│  │  ├─ project3.webp
+│  │  └─ project4.webp
+│  ├─ security.webp
+│  ├─ unity.webp
+│  ├─ vercel.webp
 │  ├─ web-icon.ico
-│  ├─ wechat-qr-code.png
-│  └─ 又拍云_logo5.png
+│  ├─ wechat-qr-code.webp
+│  └─ 又拍云_logo5.webp
 ├─ index.html
 ├─ js
 │  ├─ article-network.js

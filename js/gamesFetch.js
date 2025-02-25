@@ -34,12 +34,12 @@ function initGamesFetch() {
             if (game.background_image) {
                 gameImage.src = game.background_image;
             } else {
-                gameImage.src = '/images/default-game-cover.png';
+                gameImage.src = '/images/default-game-cover.webp';
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                this.src = '/images/default-game-cover.png';
+                this.src = '/images/default-game-cover.webp';
                 this.classList.add('default-cover');
             };
 
@@ -166,7 +166,7 @@ function initGamesFetch() {
             gameImage.onerror = function () {
                 this.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900.jpg`;
                 this.onerror = function () {
-                    this.src = '/images/default-game-cover.png';
+                    this.src = '/images/default-game-cover.webp';
                     this.classList.add('default-cover');
                 };
             };

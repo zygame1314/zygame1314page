@@ -96,7 +96,7 @@ class MusicPlayer {
             this.coverImg.src = song.cover;
             this.coverImg.style.display = 'block';
         } else {
-            this.coverImg.src = '/images/default-album-cover.png';
+            this.coverImg.src = '/images/default-album-cover.webp';
         }
         this.updatePlaylistActive();
     }
