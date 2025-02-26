@@ -17,16 +17,15 @@ export async function onRequestPost(context) {
             throw new Error('仅支持图片文件上传');
         }
 
-        const fileExtension = file.name.split('.').pop().toLowerCase();
         const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 8);
-        const fileName = `comments/${timestamp}-${randomString}.${fileExtension}`;
+        const fileName = `comments/${timestamp}-${randomString}.webp`;
 
         const arrayBuffer = await file.arrayBuffer();
 
         await env.IMAGES_BUCKET.put(fileName, arrayBuffer, {
             httpMetadata: {
-                contentType: file.type,
+                contentType: 'image/webp',
             },
         });
 
