@@ -17,6 +17,10 @@ export async function onRequestPost(context) {
             throw new Error('仅支持图片文件上传');
         }
 
+        if (file.type !== 'image/webp') {
+            throw new Error('上传的图片必须是WebP格式');
+        }
+
         const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 8);
         const fileName = `comments/${timestamp}-${randomString}.webp`;
