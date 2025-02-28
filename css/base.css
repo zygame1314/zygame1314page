@@ -43,6 +43,34 @@
     --valentines-secondary: #ff1493;
     --valentines-bg: #4a1033;
 
+    --qixi-primary: #ff9fd9;
+    --qixi-secondary: #db94ff;
+    --qixi-bg: #3a283d;
+
+    --nationalDay-primary: #ff4d4d;
+    --nationalDay-secondary: #ffcd00;
+    --nationalDay-bg: #7c0a02;
+
+    --qingming-primary: #a0d6b4;
+    --qingming-secondary: #8ccbbe;
+    --qingming-bg: #2a473e;
+
+    --labor-primary: #ff6b6b;
+    --labor-secondary: #5aa9e6;
+    --labor-bg: #292929;
+
+    --teacher-primary: #9b5de5;
+    --teacher-secondary: #f15bb5;
+    --teacher-bg: #2e294e;
+
+    --children-primary: #ff9e7d;
+    --children-secondary: #5fe4b4;
+    --children-bg: #304d63;
+
+    --newyear-primary: #4cc9f0;
+    --newyear-secondary: #f72585;
+    --newyear-bg: #16213e;
+
     --primary-color: var(--winter-primary);
     --secondary-color: var(--winter-secondary);
     --theme-bg: var(--winter-bg);
