@@ -166,7 +166,7 @@
     right: -8px;
 }
 
-.close-button {
+.donate-close-button {
     color: var(--primary-color);
     position: absolute;
     right: 15px;
@@ -180,7 +180,7 @@
         -1px -1px 0 var(--primary-color);
 }
 
-.close-button:hover {
+.donate-close-button:hover {
     color: var(--secondary-color);
     transform: rotate(90deg) scale(1.1);
 }

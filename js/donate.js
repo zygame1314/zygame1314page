@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     var donateButton = document.getElementById('donate-button');
     var donateModal = document.getElementById('donate-modal');
-    var closeButton = document.querySelector('.close-button');
+    var closeButton = document.querySelector('.donate-close-button');
 
     function openModal() {
         donateModal.style.display = 'flex';

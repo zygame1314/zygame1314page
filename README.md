@@ -63,7 +63,7 @@
 │  │  ├─ シカ色デイズ(8-bit) - シカ部.webm
 │  │  ├─ 勇者(8-bit) - YOASOBI.webm
 │  │  ├─ 動く、動く(8-bit) - 水瀬いのり 久保由利香.webm
-│  │  ├─ 流線形メーデ(8-bit) - 花谱 可不 - 副本.webm
+│  │  ├─ 流線形メーデ(8-bit) - 花谱 可不.webm
 │  │  └─ 花の塔(8-bit) - さユり.webm
 │  ├─ notices.json
 │  ├─ playlist.json
@@ -72,6 +72,8 @@
 ├─ functions
 │  ├─ check
 │  │  └─ status-history.js
+│  ├─ comment
+│  │  └─ upload-image.js
 │  ├─ games
 │  │  ├─ popular.js
 │  │  ├─ recent-games.js
@@ -148,7 +150,6 @@
 │  ├─ article-network.js
 │  ├─ articles.js
 │  ├─ clouds.js
-│  ├─ comment.js
 │  ├─ contact.js
 │  ├─ cursorTrail.js
 │  ├─ detectDevTools.js

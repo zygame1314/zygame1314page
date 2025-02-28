@@ -352,4 +352,18 @@
         width: 90%;
         padding: 15px;
     }
+
+    .important-notice-content {
+        width: 90%;
+    }
+
+    .important-notice-footer {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .notice-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
