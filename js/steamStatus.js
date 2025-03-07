@@ -10,6 +10,53 @@ function initSteamStatus() {
         LOOKING_TO_PLAY: 6
     };
 
+    let updateInterval = null;
+    let userLastActive = Date.now();
+    const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+
+    function isUserActive() {
+        return Date.now() - userLastActive < INACTIVITY_TIMEOUT;
+    }
+
+    function updateUserActivity() {
+        userLastActive = Date.now();
+
+        if (!updateInterval) {
+            startUpdates();
+        }
+    }
+
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            stopUpdates();
+        } else {
+            updateUserActivity();
+            startUpdates();
+        }
+    }
+
+    function startUpdates() {
+        if (!updateInterval) {
+            updateSteamStatus();
+            updateInterval = setInterval(() => {
+                if (!document.hidden && isUserActive()) {
+                    updateSteamStatus();
+                } else {
+                    stopUpdates();
+                }
+            }, 60 * 1000);
+            console.log("Steam状态更新已启动");
+        }
+    }
+
+    function stopUpdates() {
+        if (updateInterval) {
+            clearInterval(updateInterval);
+            updateInterval = null;
+            console.log("Steam状态更新已暂停");
+        }
+    }
+
     async function updateSteamStatus() {
         try {
             const response = await fetch(`${API_BASE}/games/steam-status`);
@@ -131,8 +178,13 @@ function initSteamStatus() {
         }
     }
 
-    updateSteamStatus();
-    setInterval(updateSteamStatus, 60 * 1000);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    ['click', 'keydown', 'mousemove', 'scroll', 'touchstart'].forEach(eventName => {
+        document.addEventListener(eventName, updateUserActivity);
+    });
+
+    startUpdates();
 }
 
 document.addEventListener('DOMContentLoaded', initSteamStatus);

@@ -3,7 +3,64 @@ const API_BASE = 'https://zygame1314.site';
 class SiteStatus {
     constructor() {
         this.statusHistory = [];
+        this.updateInterval = null;
+        this.userLastActive = Date.now();
+        this.INACTIVITY_TIMEOUT = 5 * 60 * 1000;
         this.init();
+        this.setupActivityTracking();
+    }
+
+    isUserActive() {
+        return Date.now() - this.userLastActive < this.INACTIVITY_TIMEOUT;
+    }
+
+    updateUserActivity() {
+        this.userLastActive = Date.now();
+
+        if (!this.updateInterval) {
+            this.startUpdates();
+        }
+    }
+
+    setupActivityTracking() {
+        document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+
+        ['click', 'keydown', 'mousemove', 'scroll', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, () => this.updateUserActivity());
+        });
+    }
+
+    handleVisibilityChange() {
+        if (document.hidden) {
+            this.stopUpdates();
+        } else {
+            this.updateUserActivity();
+            this.startUpdates();
+        }
+    }
+
+    startUpdates() {
+        if (!this.updateInterval) {
+            this.loadHistory();
+
+            this.updateInterval = setInterval(() => {
+                if (!document.hidden && this.isUserActive()) {
+                    this.loadHistory();
+                } else {
+                    this.stopUpdates();
+                }
+            }, 60000);
+
+            console.log("站点状态更新已启动");
+        }
+    }
+
+    stopUpdates() {
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
+            this.updateInterval = null;
+            console.log("站点状态更新已暂停");
+        }
     }
 
     async loadHistory() {
@@ -32,8 +89,10 @@ class SiteStatus {
     }
 
     async init() {
+        // 首次加载
         await this.loadHistory();
-        setInterval(() => this.loadHistory(), 60000);
+        // 开始定时更新
+        this.startUpdates();
     }
 
     updateUI(statuses) {
