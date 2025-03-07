@@ -31,6 +31,34 @@ export async function onRequest(context) {
 
         const statusData = await statusResponse.json();
 
+        if (statusData.response?.players?.[0]?.gameextrainfo) {
+            const gameInfo = statusData.response.players[0];
+
+            if (gameInfo.gameid) {
+                try {
+                    const gameDetailsParams = new URLSearchParams({
+                        appids: gameInfo.gameid,
+                        l: 'schinese'
+                    }).toString();
+
+                    const gameDetailsResponse = await fetch(
+                        `https://store.steampowered.com/api/appdetails?${gameDetailsParams}`
+                    );
+
+                    if (gameDetailsResponse.ok) {
+                        const gameDetailsData = await gameDetailsResponse.json();
+
+                        if (gameDetailsData[gameInfo.gameid]?.success &&
+                            gameDetailsData[gameInfo.gameid].data?.name) {
+                            gameInfo.gameextrainfo = gameDetailsData[gameInfo.gameid].data.name;
+                        }
+                    }
+                } catch (gameError) {
+                    console.error('Failed to fetch game details:', gameError);
+                }
+            }
+        }
+
         return new Response(JSON.stringify(statusData), {
             headers: {
                 'Content-Type': 'application/json',
