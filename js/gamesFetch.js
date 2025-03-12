@@ -1,7 +1,7 @@
 function initGamesFetch() {
     const gamesListElem = document.querySelector('.games-list');
     const refreshButton = document.getElementById('refreshGames');
-    const API_BASE = 'https://zygame1314.site';
+    const API_BASE = 'https://blog.zygame1314.site';
 
     async function fetchPopularGames() {
         gamesListElem.innerHTML = '<p>加载中...</p>';
