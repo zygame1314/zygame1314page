@@ -1161,7 +1161,6 @@ class ArticlesManager {
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
 
-                if (spinner) spinner.classList.add('success');
                 if (loaderText) {
                     loaderText.textContent = '正在接收内容...';
                 }
@@ -1212,12 +1211,16 @@ class ArticlesManager {
                             case 'error':
                                 throw new Error(eventData.error || '生成过程中出错');
                             case 'end':
+                                // 只有在完全结束时才设置成功状态
+                                if (spinner) spinner.classList.add('success');
                                 if (loaderText) {
                                     loaderText.textContent = '内容生成完成';
                                     loaderText.classList.add('success');
                                 }
+                                if (loader) loader.classList.add('success');
 
-                                const formattedFullSummary = generatedSummary
+                                const cleanedSummary = generatedSummary.trim();
+                                const formattedFullSummary = cleanedSummary
                                     .replace(/\n/g, '<br>')
                                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
