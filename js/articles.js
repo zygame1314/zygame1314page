@@ -757,7 +757,7 @@ class ArticlesManager {
             aiSummarySection.innerHTML = `
                 <div class="summary-loader">
                     <div class="summary-spinner"></div>
-                    <div class="summary-loader-text">AI正在分析文章内容...</div>
+                    <div class="summary-loader-text">AI正在分析文章内容</div>
                 </div>
                 <div class="article-ai-summary-header">
                     <i class="fas fa-brain"></i>
@@ -767,7 +767,7 @@ class ArticlesManager {
                     正在生成文章总结...
                 </div>
                 <div class="article-ai-summary-footer">
-                    <span>由Gork AI提供技术支持</span>
+                    <span>由 DeepSeek AI 提供技术支持</span>
                     <button class="article-ai-summary-reload" style="display: none;">
                         <i class="fas fa-sync"></i> 重新生成
                     </button>
@@ -1056,8 +1056,10 @@ class ArticlesManager {
         if (!footerSpan) {
             const footer = summaryElement.querySelector('.article-ai-summary-footer');
             if (footer) {
-                footer.insertAdjacentHTML('afterbegin', '<span>由Gork AI提供技术支持</span>');
+                footer.insertAdjacentHTML('afterbegin', '<span>由 DeepSeek AI 提供技术支持</span>');
             }
+        } else {
+            footerSpan.innerHTML = '由 DeepSeek AI 提供技术支持';
         }
 
         const fetchSummary = async () => {
@@ -1077,7 +1079,7 @@ class ArticlesManager {
             }
 
             try {
-                const cacheKey = `article-summary-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
+                const cacheKey = `article-summary-${this.simpleHash(title)}`;
                 const cachedSummary = localStorage.getItem(cacheKey);
 
                 if (cachedSummary && !summaryElement.dataset.regenerating) {
@@ -1126,15 +1128,36 @@ class ArticlesManager {
                 }
             } catch (error) {
                 console.error('获取AI总结失败:', error);
-                summaryContent.innerHTML = `
-                    <div class="summary-error">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        无法生成文章总结
-                    </div>
-                    <div>原因: ${error.message || '未知错误'}</div>
-                    <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
-                `;
-                reloadButton.style.display = 'flex';
+
+                const errorMessage = error.message || '未知错误';
+                const isApiError = errorMessage.includes('API调用失败') ||
+                    errorMessage.includes('服务不可用') ||
+                    errorMessage.includes('This service is not available');
+
+                const canGenerateLocalSummary = content.length > 100;
+
+                if (isApiError && canGenerateLocalSummary) {
+                    const localSummary = this.generateLocalSummary(title, content);
+                    summaryContent.innerHTML = localSummary;
+
+                    const footer = summaryElement.querySelector('.article-ai-summary-footer span');
+                    if (footer) {
+                        footer.innerHTML = '本地生成的内容预览';
+                    }
+
+                    reloadButton.innerHTML = '<i class="fas fa-cloud"></i> 尝试使用AI';
+                    reloadButton.style.display = 'flex';
+                } else {
+                    summaryContent.innerHTML = `
+                        <div class="summary-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            无法生成文章总结
+                        </div>
+                        <div>原因: ${errorMessage}</div>
+                        <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
+                    `;
+                    reloadButton.style.display = 'flex';
+                }
             } finally {
                 summaryElement.classList.remove('loading');
                 delete summaryElement.dataset.regenerating;
@@ -1151,6 +1174,34 @@ class ArticlesManager {
             reloadButton.innerHTML = '<i class="fas fa-sync"></i> 重新生成';
             reloadButton.disabled = false;
         });
+    }
+
+    simpleHash(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return Math.abs(hash).toString(16);
+    }
+
+    generateLocalSummary(title, content) {
+        const maxLength = 250;
+        let summary = content.substring(0, Math.min(content.length, maxLength * 2));
+
+        const lastPeriod = summary.lastIndexOf('。');
+        if (lastPeriod > maxLength) {
+            summary = summary.substring(0, lastPeriod + 1);
+        }
+
+        return `
+            <div class="local-summary">
+                <p><strong>${title}</strong> 的内容概览：</p>
+                <p>${summary}...</p>
+                <p style="margin-top:10px;"><em>因AI服务暂不可用，此为自动生成的简要内容预览。</em></p>
+            </div>
+        `;
     }
 }
 

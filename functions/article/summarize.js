@@ -2,8 +2,8 @@ export async function onRequestPost(context) {
     try {
         const { request, env } = context;
 
-        if (!env.GORK_API_KEY) {
-            throw new Error('未配置Gork API密钥');
+        if (!env.AZURE_API_KEY) {
+            throw new Error('未配置Azure API密钥');
         }
 
         const { articleContent, title } = await request.json();
@@ -16,14 +16,14 @@ export async function onRequestPost(context) {
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
 
-        const response = await fetch('https://api.x.ai/v1/chat/completions', {
+        const response = await fetch('https://ai-zygame1314models044002979816.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${env.GORK_API_KEY}`
+                'api-key': env.AZURE_API_KEY
             },
             body: JSON.stringify({
-                model: "grok-2-1212",
+                model: "DeepSeek-R1",
                 messages: [
                     {
                         role: "system",
@@ -47,8 +47,7 @@ export async function onRequestPost(context) {
                     }
                 ],
                 max_tokens: 400,
-                temperature: 0.4,
-                top_p: 0.95
+                temperature: 0.4
             })
         });
 
@@ -71,7 +70,7 @@ export async function onRequestPost(context) {
         }
 
         const result = await response.json();
-        const summary = result.choices[0]?.message?.content?.trim();
+        const summary = result.choices?.[0]?.message?.content?.trim();
 
         if (!summary || summary.length < 50) {
             throw new Error('未能获取到有效的文章总结');
