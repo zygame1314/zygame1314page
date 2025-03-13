@@ -1204,14 +1204,19 @@ class ArticlesManager {
                                 if (eventData.content) {
                                     generatedSummary += eventData.content;
                                     const formattedContent = eventData.content
-                                        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                                        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                                        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                                        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                                        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                                        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                                        .replace(/`([^`]+)`/g, '<code>$1</code>')
+                                        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
                                     streamingContainer.insertAdjacentHTML('beforeend', formattedContent);
                                 }
                                 break;
                             case 'error':
                                 throw new Error(eventData.error || '生成过程中出错');
                             case 'end':
-                                // 只有在完全结束时才设置成功状态
                                 if (spinner) spinner.classList.add('success');
                                 if (loaderText) {
                                     loaderText.textContent = '内容生成完成';
