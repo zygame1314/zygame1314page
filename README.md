@@ -21,6 +21,7 @@
 │  ├─ errorpage.css
 │  ├─ layout.css
 │  ├─ loading.css
+│  ├─ modal-notice.css
 │  ├─ notification.css
 │  ├─ responsive.css
 │  ├─ sections
@@ -45,6 +46,7 @@
 ├─ custom
 │  └─ errorpage.html
 ├─ data
+│  ├─ important-notice.json
 │  ├─ live2d
 │  │  └─ knight
 │  │     ├─ knight.1024
@@ -70,6 +72,8 @@
 │  ├─ projects.json
 │  └─ timeline.json
 ├─ functions
+│  ├─ article
+│  │  └─ summarize.js
 │  ├─ check
 │  │  └─ status-history.js
 │  ├─ comment
@@ -158,6 +162,7 @@
 │  ├─ fetchCode.js
 │  ├─ gamesFetch.js
 │  ├─ hoverEffects.js
+│  ├─ importantNotice.js
 │  ├─ live2d.js
 │  ├─ live2dSettings.js
 │  ├─ live2dTextBox.js

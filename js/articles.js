@@ -587,7 +587,7 @@ class ArticlesManager {
                     return result.url;
                 } catch (error) {
                     console.error('上传图片失败:', error);
-                    alert('图片上传失败，请重试');
+                    showNotification('图片上传失败，请重试', 2, 'error');
                     return null;
                 }
             },
@@ -751,6 +751,38 @@ class ArticlesManager {
             const articleContent = articleSection.querySelector('.article-content');
             articleContent.innerHTML = content;
             this.setupImageZoom(articleContent);
+
+            const aiSummarySection = document.createElement('div');
+            aiSummarySection.className = 'article-ai-summary loading';
+            aiSummarySection.innerHTML = `
+                <div class="summary-loader">
+                    <div class="summary-spinner"></div>
+                    <div class="summary-loader-text">AI正在分析文章内容...</div>
+                </div>
+                <div class="article-ai-summary-header">
+                    <i class="fas fa-brain"></i>
+                    <h4>AI文章总结</h4>
+                </div>
+                <div class="article-ai-summary-content">
+                    正在生成文章总结...
+                </div>
+                <div class="article-ai-summary-footer">
+                    <span>由Gork AI提供技术支持</span>
+                    <button class="article-ai-summary-reload" style="display: none;">
+                        <i class="fas fa-sync"></i> 重新生成
+                    </button>
+                </div>
+            `;
+
+            const firstHeading = articleContent.querySelector('h1, h2');
+            if (firstHeading) {
+                firstHeading.after(aiSummarySection);
+            } else {
+                articleContent.prepend(aiSummarySection);
+            }
+
+            const textContent = this.getArticleTextContent(articleContent);
+            this.generateArticleSummary(article.title, textContent, aiSummarySection);
 
             const codeBlocks = articleContent.querySelectorAll('pre code');
             for (const block of codeBlocks) {
@@ -1000,6 +1032,124 @@ class ArticlesManager {
             setTimeout(() => {
                 this.transitionMask.classList.remove('reverse');
             }, 500);
+        });
+    }
+
+    getArticleTextContent(articleElement) {
+        const tempElement = articleElement.cloneNode(true);
+
+        const excludeSelectors = ['pre', '.image-modal', 'script', 'style'];
+        excludeSelectors.forEach(selector => {
+            tempElement.querySelectorAll(selector).forEach(el => el.remove());
+        });
+
+        return tempElement.textContent
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    async generateArticleSummary(title, content, summaryElement) {
+        const summaryContent = summaryElement.querySelector('.article-ai-summary-content');
+        const reloadButton = summaryElement.querySelector('.article-ai-summary-reload');
+        const footerSpan = summaryElement.querySelector('.article-ai-summary-footer span');
+
+        if (!footerSpan) {
+            const footer = summaryElement.querySelector('.article-ai-summary-footer');
+            if (footer) {
+                footer.insertAdjacentHTML('afterbegin', '<span>由Gork AI提供技术支持</span>');
+            }
+        }
+
+        const fetchSummary = async () => {
+            summaryElement.classList.add('loading');
+
+            const loadingTexts = [
+                'AI正在分析文章内容...',
+                'AI正在提取关键信息...',
+                'AI正在生成精简总结...',
+                'AI正在思考中...',
+                'AI正在整理观点...'
+            ];
+
+            const loaderText = summaryElement.querySelector('.summary-loader-text');
+            if (loaderText) {
+                loaderText.textContent = loadingTexts[Math.floor(Math.random() * loadingTexts.length)];
+            }
+
+            try {
+                const cacheKey = `article-summary-${btoa(title).substring(0, 20)}`;
+                const cachedSummary = localStorage.getItem(cacheKey);
+
+                if (cachedSummary && !summaryElement.dataset.regenerating) {
+                    setTimeout(() => {
+                        summaryContent.innerHTML = cachedSummary;
+                        summaryContent.classList.add('fade-in');
+                        reloadButton.style.display = 'flex';
+                        summaryElement.classList.remove('loading');
+                    }, 800);
+                    return;
+                }
+
+                const response = await fetch('https://blog.zygame1314.site/article/summarize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        articleContent: content
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || '生成总结失败');
+                }
+
+                const result = await response.json();
+
+                if (result.success && result.summary) {
+                    const formattedSummary = result.summary
+                        .replace(/\n/g, '<br>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                    localStorage.setItem(cacheKey, formattedSummary);
+
+                    setTimeout(() => {
+                        summaryContent.innerHTML = formattedSummary;
+                        summaryContent.classList.add('fade-in');
+                    }, 400);
+
+                    reloadButton.style.display = 'flex';
+                } else {
+                    throw new Error(result.error || '未能获取有效的文章总结');
+                }
+            } catch (error) {
+                console.error('获取AI总结失败:', error);
+                summaryContent.innerHTML = `
+                    <div class="summary-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        无法生成文章总结
+                    </div>
+                    <div>原因: ${error.message || '未知错误'}</div>
+                    <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
+                `;
+                reloadButton.style.display = 'flex';
+            } finally {
+                summaryElement.classList.remove('loading');
+                delete summaryElement.dataset.regenerating;
+            }
+        };
+
+        await fetchSummary();
+
+        reloadButton.addEventListener('click', async () => {
+            summaryElement.dataset.regenerating = 'true';
+            reloadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 重新生成中...';
+            reloadButton.disabled = true;
+            await fetchSummary();
+            reloadButton.innerHTML = '<i class="fas fa-sync"></i> 重新生成';
+            reloadButton.disabled = false;
         });
     }
 }
