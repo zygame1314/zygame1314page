@@ -1092,75 +1092,90 @@ class ArticlesManager {
                     return;
                 }
 
-                const response = await fetch('https://blog.zygame1314.site/article/summarize', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title,
-                        articleContent: content
-                    })
-                });
+                summaryContent.innerHTML = '';
+                let receivedSummary = '';
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || '生成总结失败');
-                }
+                const eventSource = new EventSource(
+                    `https://blog.zygame1314.site/article/summarize?title=${encodeURIComponent(title)}`
+                );
 
-                const result = await response.json();
+                eventSource.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
 
-                if (result.success && result.summary) {
-                    const formattedSummary = result.summary
-                        .replace(/\n/g, '<br>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        if (data.content) {
+                            receivedSummary += data.content;
 
-                    localStorage.setItem(cacheKey, formattedSummary);
+                            const formattedContent = receivedSummary
+                                .replace(/\n/g, '<br>')
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-                    setTimeout(() => {
-                        summaryContent.innerHTML = formattedSummary;
-                        summaryContent.classList.add('fade-in');
-                    }, 400);
+                            summaryContent.innerHTML = formattedContent;
 
-                    reloadButton.style.display = 'flex';
-                } else {
-                    throw new Error(result.error || '未能获取有效的文章总结');
-                }
-            } catch (error) {
-                console.error('获取AI总结失败:', error);
+                            if (summaryElement.classList.contains('loading')) {
+                                setTimeout(() => {
+                                    summaryElement.classList.remove('loading');
+                                    summaryContent.classList.add('fade-in');
+                                }, 300);
+                            }
+                        }
 
-                const errorMessage = error.message || '未知错误';
-                const isApiError = errorMessage.includes('API调用失败') ||
-                    errorMessage.includes('服务不可用') ||
-                    errorMessage.includes('This service is not available');
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                    } catch (e) {
+                        console.error('处理服务器消息时出错:', e);
+                    }
+                };
 
-                const canGenerateLocalSummary = content.length > 100;
+                eventSource.addEventListener('done', () => {
+                    if (receivedSummary) {
+                        const formattedSummary = receivedSummary
+                            .replace(/\n/g, '<br>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-                if (isApiError && canGenerateLocalSummary) {
-                    const localSummary = this.generateLocalSummary(title, content);
-                    summaryContent.innerHTML = localSummary;
-
-                    const footer = summaryElement.querySelector('.article-ai-summary-footer span');
-                    if (footer) {
-                        footer.innerHTML = '本地生成的内容预览';
+                        localStorage.setItem(cacheKey, formattedSummary);
                     }
 
-                    reloadButton.innerHTML = '<i class="fas fa-cloud"></i> 尝试使用AI';
+                    eventSource.close();
                     reloadButton.style.display = 'flex';
-                } else {
-                    summaryContent.innerHTML = `
-                        <div class="summary-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            无法生成文章总结
-                        </div>
-                        <div>原因: ${errorMessage}</div>
-                        <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
-                    `;
+                });
+
+                eventSource.onerror = async (error) => {
+                    console.error('EventSource 连接错误:', error);
+                    eventSource.close();
+
+                    if (receivedSummary) {
+                        const formattedSummary = receivedSummary
+                            .replace(/\n/g, '<br>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                        summaryContent.innerHTML = formattedSummary;
+                        localStorage.setItem(cacheKey, formattedSummary);
+                    } else {
+                        await this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan);
+                    }
+
                     reloadButton.style.display = 'flex';
-                }
+                    summaryElement.classList.remove('loading');
+                };
+
+                setTimeout(() => {
+                    if (summaryElement.classList.contains('loading') && !receivedSummary) {
+                        eventSource.close();
+                        this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan);
+                    }
+                }, 8000);
+
+            } catch (error) {
+                await this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan, error);
             } finally {
-                summaryElement.classList.remove('loading');
-                delete summaryElement.dataset.regenerating;
+                setTimeout(() => {
+                    if (summaryElement.classList.contains('loading')) {
+                        summaryElement.classList.remove('loading');
+                    }
+                    delete summaryElement.dataset.regenerating;
+                }, 1000);
             }
         };
 
@@ -1174,6 +1189,68 @@ class ArticlesManager {
             reloadButton.innerHTML = '<i class="fas fa-sync"></i> 重新生成';
             reloadButton.disabled = false;
         });
+    }
+
+    async fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan, initialError = null) {
+        console.log('回退到普通请求方式');
+        try {
+            const response = await fetch('https://blog.zygame1314.site/article/summarize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title,
+                    articleContent: content
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || '生成总结失败');
+            }
+
+            const result = await response.json();
+
+            if (result.success && result.summary) {
+                const formattedSummary = result.summary
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                localStorage.setItem(`article-summary-${this.simpleHash(title)}`, formattedSummary);
+                summaryContent.innerHTML = formattedSummary;
+                summaryContent.classList.add('fade-in');
+            } else {
+                throw new Error(result.error || '未能获取有效的文章总结');
+            }
+        } catch (error) {
+            console.error('获取AI总结失败:', error || initialError);
+
+            const errorMessage = (error || initialError)?.message || '未知错误';
+            const isApiError = errorMessage.includes('API调用失败') ||
+                errorMessage.includes('服务不可用') ||
+                errorMessage.includes('This service is not available');
+
+            const canGenerateLocalSummary = content.length > 100;
+
+            if (isApiError && canGenerateLocalSummary) {
+                const localSummary = this.generateLocalSummary(title, content);
+                summaryContent.innerHTML = localSummary;
+
+                if (footerSpan) {
+                    footerSpan.innerHTML = '本地生成的内容预览';
+                }
+            } else {
+                summaryContent.innerHTML = `
+                    <div class="summary-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        无法生成文章总结
+                    </div>
+                    <div>原因: ${errorMessage}</div>
+                    <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
+                `;
+            }
+        }
     }
 
     simpleHash(str) {
