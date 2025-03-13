@@ -1082,10 +1082,9 @@ class ArticlesManager {
 
                 if (cachedSummary && !summaryElement.dataset.regenerating) {
                     setTimeout(() => {
-                        summaryContent.innerHTML = cachedSummary;
-                        summaryContent.classList.add('fade-in');
-                        reloadButton.style.display = 'flex';
                         summaryElement.classList.remove('loading');
+                        this.typeWriterEffect(summaryContent, cachedSummary);
+                        reloadButton.style.display = 'flex';
                     }, 800);
                     return;
                 }
@@ -1116,8 +1115,8 @@ class ArticlesManager {
                     localStorage.setItem(cacheKey, formattedSummary);
 
                     setTimeout(() => {
-                        summaryContent.innerHTML = formattedSummary;
-                        summaryContent.classList.add('fade-in');
+                        summaryElement.classList.remove('loading');
+                        this.typeWriterEffect(summaryContent, formattedSummary);
                     }, 400);
 
                     reloadButton.style.display = 'flex';
@@ -1134,9 +1133,9 @@ class ArticlesManager {
                     <div>原因: ${error.message || '未知错误'}</div>
                     <div style="margin-top:8px;">请稍后重试，或直接阅读全文获取详细信息。</div>
                 `;
+                summaryElement.classList.remove('loading');
                 reloadButton.style.display = 'flex';
             } finally {
-                summaryElement.classList.remove('loading');
                 delete summaryElement.dataset.regenerating;
             }
         };
@@ -1151,6 +1150,72 @@ class ArticlesManager {
             reloadButton.innerHTML = '<i class="fas fa-sync"></i> 重新生成';
             reloadButton.disabled = false;
         });
+    }
+
+    typeWriterEffect(element, text, speed = 15) {
+        element.innerHTML = '';
+        element.classList.add('typing');
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(`<div>${text}</div>`, 'text/html');
+        const nodes = Array.from(doc.body.firstChild.childNodes);
+
+        const processNodes = (nodes, parentElement) => {
+            let charIndex = 0;
+            let currentNode = 0;
+
+            const typeNextChar = () => {
+                if (currentNode >= nodes.length) {
+                    element.classList.remove('typing');
+                    element.classList.add('fade-in');
+                    return;
+                }
+
+                const node = nodes[currentNode];
+
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    const newElement = document.createElement(node.tagName);
+
+                    Array.from(node.attributes).forEach(attr => {
+                        newElement.setAttribute(attr.name, attr.value);
+                    });
+
+                    parentElement.appendChild(newElement);
+
+                    if (node.childNodes.length > 0) {
+                        processNodes(Array.from(node.childNodes), newElement);
+                    }
+
+                    currentNode++;
+                    typeNextChar();
+                }
+                else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+                    const br = document.createElement('br');
+                    parentElement.appendChild(br);
+                    currentNode++;
+                    typeNextChar();
+                }
+                else if (node.nodeType === Node.TEXT_NODE) {
+                    if (charIndex < node.textContent.length) {
+                        parentElement.appendChild(document.createTextNode(node.textContent[charIndex]));
+                        charIndex++;
+                        setTimeout(typeNextChar, speed);
+                    } else {
+                        charIndex = 0;
+                        currentNode++;
+                        typeNextChar();
+                    }
+                }
+                else {
+                    currentNode++;
+                    typeNextChar();
+                }
+            };
+
+            typeNextChar();
+        };
+
+        processNodes(nodes, element);
     }
 }
 
