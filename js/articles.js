@@ -1134,6 +1134,9 @@ class ArticlesManager {
 
                 localStorage.setItem(lastRequestTimeKey, Date.now().toString());
 
+                summaryContent.innerHTML = '';
+                let generatedSummary = '';
+
                 const response = await fetch('https://blog.zygame1314.site/article/summarize', {
                     method: 'POST',
                     headers: {
@@ -1155,35 +1158,76 @@ class ArticlesManager {
                     throw new Error(errorData.error || '生成总结失败');
                 }
 
-                const result = await response.json();
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                if (spinner) spinner.classList.add('success');
+                if (loaderText) {
+                    loaderText.textContent = '正在接收内容...';
+                }
+
+                summaryElement.classList.remove('loading');
+                summaryContent.classList.add('streaming');
+                summaryContent.innerHTML = '<div class="summary-streaming"></div>';
+                const streamingContainer = summaryContent.querySelector('.summary-streaming');
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n\n');
+
+                    for (const line of lines) {
+                        if (!line.trim()) continue;
+
+                        const match = line.match(/^event: (\w+)\ndata: (.+)$/);
+                        if (!match) continue;
+
+                        const [, eventType, eventData] = match;
+                        const data = JSON.parse(eventData);
+
+                        switch (eventType) {
+                            case 'start':
+                                streamingContainer.innerHTML = '';
+                                break;
+                            case 'token':
+                                if (data.content) {
+                                    generatedSummary += data.content;
+                                    const formattedContent = data.content
+                                        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                                    streamingContainer.insertAdjacentHTML('beforeend', formattedContent);
+                                }
+                                break;
+                            case 'error':
+                                throw new Error(data.error || '生成过程中出错');
+                            case 'end':
+                                if (loaderText) {
+                                    loaderText.textContent = '内容生成完成';
+                                    loaderText.classList.add('success');
+                                }
+
+                                const formattedFullSummary = generatedSummary
+                                    .replace(/\n/g, '<br>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                                localStorage.setItem(cacheKey, JSON.stringify({
+                                    summary: formattedFullSummary,
+                                    timestamp: Date.now()
+                                }));
+
+                                setTimeout(() => {
+                                    summaryContent.classList.remove('streaming');
+                                    summaryContent.innerHTML = formattedFullSummary;
+                                    reloadButton.style.display = 'flex';
+                                }, 500);
+                                break;
+                        }
+                    }
+                }
 
                 localStorage.setItem('last-summary-request-time', response.headers.get('x-last-request-time') || Date.now().toString());
 
-                if (result.success && result.summary) {
-                    const formattedSummary = result.summary
-                        .replace(/\n/g, '<br>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                    localStorage.setItem(cacheKey, JSON.stringify({
-                        summary: formattedSummary,
-                        timestamp: Date.now()
-                    }));
-
-                    if (spinner) spinner.classList.add('success');
-                    if (loaderText) {
-                        loaderText.textContent = '内容生成完成';
-                        loaderText.classList.add('success');
-                    }
-                    if (loader) loader.classList.add('success');
-
-                    setTimeout(() => {
-                        summaryElement.classList.remove('loading');
-                        this.typeWriterEffect(summaryContent, formattedSummary);
-                        reloadButton.style.display = 'flex';
-                    }, 1200);
-                } else {
-                    throw new Error(result.error || '未能获取有效的文章总结');
-                }
             } catch (error) {
                 console.error('获取AI总结失败:', error);
                 summaryContent.innerHTML = `

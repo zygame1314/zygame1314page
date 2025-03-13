@@ -1030,3 +1030,23 @@
     font-size: 1.1rem;
     image-rendering: pixelated;
 }
+
+.summary-streaming {
+    min-height: 40px;
+}
+
+.article-ai-summary-content.streaming {
+    padding: 12px 16px;
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.summary-streaming::after {
+    content: '|';
+    display: inline-block;
+    margin-left: 2px;
+    color: #333;
+    animation: cursor-blink 0.8s infinite;
+    font-weight: 100;
+}
