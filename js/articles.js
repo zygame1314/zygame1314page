@@ -1072,33 +1072,83 @@ class ArticlesManager {
             ];
 
             const loaderText = summaryElement.querySelector('.summary-loader-text');
+            const spinner = summaryElement.querySelector('.summary-spinner');
+            const loader = summaryElement.querySelector('.summary-loader');
+
             if (loaderText) {
                 loaderText.textContent = loadingTexts[Math.floor(Math.random() * loadingTexts.length)];
+                loaderText.classList.remove('success');
+            }
+
+            if (spinner) {
+                spinner.classList.remove('success');
+            }
+
+            if (loader) {
+                loader.classList.remove('success');
             }
 
             try {
                 const cacheKey = `article-summary-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
-                const cachedSummary = localStorage.getItem(cacheKey);
+                const cachedData = localStorage.getItem(cacheKey);
+                let cachedSummary = null;
+                let cacheTime = 0;
 
-                if (cachedSummary && !summaryElement.dataset.regenerating) {
+                if (cachedData) {
+                    try {
+                        const parsed = JSON.parse(cachedData);
+                        cachedSummary = parsed.summary;
+                        cacheTime = parsed.timestamp || 0;
+                    } catch (e) {
+                        cachedSummary = cachedData;
+                    }
+                }
+
+                const cacheValid = cachedSummary && (Date.now() - cacheTime < 7 * 24 * 60 * 60 * 1000);
+
+                if (cacheValid && !summaryElement.dataset.regenerating) {
+                    await new Promise(resolve => setTimeout(resolve, 800));
+
+                    if (spinner) spinner.classList.add('success');
+                    if (loaderText) {
+                        loaderText.textContent = '内容生成完成';
+                        loaderText.classList.add('success');
+                    }
+                    if (loader) loader.classList.add('success');
+
                     setTimeout(() => {
                         summaryElement.classList.remove('loading');
                         this.typeWriterEffect(summaryContent, cachedSummary);
                         reloadButton.style.display = 'flex';
-                    }, 800);
+                    }, 1200);
+
                     return;
                 }
+
+                const lastRequestTimeKey = `summary-last-request-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
+                const lastRequestTime = localStorage.getItem(lastRequestTimeKey);
+
+                if (lastRequestTime && (Date.now() - parseInt(lastRequestTime)) < 60000 && !summaryElement.dataset.regenerating) {
+                    throw new Error('请求过于频繁，请稍后再试（1分钟内只能请求一次相同文章的摘要）');
+                }
+
+                localStorage.setItem(lastRequestTimeKey, Date.now().toString());
 
                 const response = await fetch('https://blog.zygame1314.site/article/summarize', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'x-last-request-time': localStorage.getItem('last-summary-request-time') || '0'
                     },
                     body: JSON.stringify({
                         title,
                         articleContent: content
                     })
                 });
+
+                if (response.status === 429) {
+                    throw new Error('请求过于频繁，请稍后再试');
+                }
 
                 if (!response.ok) {
                     const errorData = await response.json();
@@ -1107,19 +1157,30 @@ class ArticlesManager {
 
                 const result = await response.json();
 
+                localStorage.setItem('last-summary-request-time', response.headers.get('x-last-request-time') || Date.now().toString());
+
                 if (result.success && result.summary) {
                     const formattedSummary = result.summary
                         .replace(/\n/g, '<br>')
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-                    localStorage.setItem(cacheKey, formattedSummary);
+                    localStorage.setItem(cacheKey, JSON.stringify({
+                        summary: formattedSummary,
+                        timestamp: Date.now()
+                    }));
+
+                    if (spinner) spinner.classList.add('success');
+                    if (loaderText) {
+                        loaderText.textContent = '内容生成完成';
+                        loaderText.classList.add('success');
+                    }
+                    if (loader) loader.classList.add('success');
 
                     setTimeout(() => {
                         summaryElement.classList.remove('loading');
                         this.typeWriterEffect(summaryContent, formattedSummary);
-                    }, 400);
-
-                    reloadButton.style.display = 'flex';
+                        reloadButton.style.display = 'flex';
+                    }, 1200);
                 } else {
                     throw new Error(result.error || '未能获取有效的文章总结');
                 }
@@ -1143,6 +1204,9 @@ class ArticlesManager {
         await fetchSummary();
 
         reloadButton.addEventListener('click', async () => {
+            const lastRequestTimeKey = `summary-last-request-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
+            localStorage.removeItem(lastRequestTimeKey);
+
             summaryElement.dataset.regenerating = 'true';
             reloadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 重新生成中...';
             reloadButton.disabled = true;

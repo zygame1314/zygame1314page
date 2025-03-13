@@ -990,9 +990,29 @@
             8px 100%, 0 calc(100% - 8px));
 }
 
-.fade-in {
-    animation: fadeIn 0.8s ease forwards;
+.summary-spinner.success {
+    animation: none;
+    border: 4px solid rgba(124, 77, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.summary-spinner.success::before {
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #28a745;
     opacity: 0;
+    transform: scale(0.5);
+    animation: check-appears 0.5s 0.2s forwards;
+}
+
+.summary-loader-text.success {
+    color: #28a745;
+    transition: all 0.3s ease;
 }
 
 .summary-error {

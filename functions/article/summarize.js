@@ -2,6 +2,20 @@ export async function onRequestPost(context) {
     try {
         const { request, env } = context;
 
+        const clientIP = request.headers.get('cf-connecting-ip') ||
+            request.headers.get('x-forwarded-for') ||
+            'unknown';
+
+        const lastRequestTime = request.headers.get('x-last-request-time');
+        const currentTime = Date.now();
+
+        if (lastRequestTime) {
+            const timeDiff = currentTime - parseInt(lastRequestTime);
+            if (timeDiff < 60000) {
+                throw new Error('请求过于频繁，请等待60秒后再试');
+            }
+        }
+
         if (!env.GEMINI_API_KEY) {
             throw new Error('未配置API密钥');
         }
@@ -84,7 +98,8 @@ export async function onRequestPost(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=1800'
+                'Cache-Control': 'public, max-age=1800',
+                'x-last-request-time': currentTime.toString()
             }
         });
     } catch (error) {
@@ -94,10 +109,11 @@ export async function onRequestPost(context) {
             success: false,
             error: error.message || '生成总结失败'
         }), {
-            status: 500,
+            status: error.message.includes('请求过于频繁') ? 429 : 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Retry-After': '60'
             }
         });
     }
