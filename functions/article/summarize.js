@@ -2,8 +2,8 @@ export async function onRequestPost(context) {
     try {
         const { request, env } = context;
 
-        if (!env.OPENROUTER_API_KEY) {
-            throw new Error('未配置OpenRouter API密钥');
+        if (!env.SILICONFLOW_API_KEY) {
+            throw new Error('未配置SILICONFLOW API密钥');
         }
 
         const { articleContent, title } = await request.json();
@@ -16,14 +16,14 @@ export async function onRequestPost(context) {
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
 
-        const response = await fetch(`https://openrouter.ai/api/v1/chat/completions`, {
+        const response = await fetch(`https://api.siliconflow.cn/v1/chat/completions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${env.OPENROUTER_API_KEY}`,
+                'Authorization': `Bearer ${env.SILICONFLOW_API_KEY}`,
             },
             body: JSON.stringify({
-                model: "deepseek/deepseek-chat:free",
+                model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
                 messages: [
                     {
                         role: "user",
