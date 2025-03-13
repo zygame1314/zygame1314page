@@ -71,32 +71,61 @@ export async function onRequestPost(context) {
 
                 const reader = apiResponse.body.getReader();
                 const decoder = new TextDecoder();
+                let buffer = '';
                 let fullSummary = '';
+
+                let accumulatedContent = '';
+                const MIN_CHUNK_SIZE = 15;
+
+                const sendAccumulatedContent = async () => {
+                    if (accumulatedContent.length > 0) {
+                        const message = `data: ${JSON.stringify({ content: accumulatedContent })}\n\n`;
+                        await writer.write(new TextEncoder().encode(message));
+                        fullSummary += accumulatedContent;
+                        accumulatedContent = '';
+                    }
+                };
 
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    const chunk = decoder.decode(value, { stream: true });
-                    const lines = chunk.split('\n');
+                    buffer += decoder.decode(value, { stream: true });
 
-                    for (const line of lines) {
+                    let processedBuffer = '';
+                    const lines = buffer.split('\n');
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i];
+
                         if (line.startsWith('data: ') && line !== 'data: [DONE]') {
                             try {
                                 const data = JSON.parse(line.substring(6));
                                 const content = data.choices?.[0]?.delta?.content || '';
+
                                 if (content) {
-                                    fullSummary += content;
-                                    // 发送数据块到客户端
-                                    const message = `data: ${JSON.stringify({ content })}\n\n`;
-                                    await writer.write(new TextEncoder().encode(message));
+                                    accumulatedContent += content;
+
+                                    if (accumulatedContent.length >= MIN_CHUNK_SIZE ||
+                                        (i === lines.length - 1 && !done)) {
+                                        await sendAccumulatedContent();
+                                    }
                                 }
                             } catch (e) {
-                                console.error('解析数据错误:', e);
+                                console.error('解析数据错误:', e, '原始行:', line);
+                                processedBuffer += line + '\n';
                             }
+                        } else if (line === 'data: [DONE]') {
+                            await sendAccumulatedContent();
+                        } else if (line.trim() !== '') {
+                            processedBuffer += line + '\n';
                         }
                     }
+
+                    buffer = processedBuffer;
                 }
+
+                await sendAccumulatedContent();
 
                 if (fullSummary.length < 50) {
                     throw new Error('未能获取到有效的文章总结');

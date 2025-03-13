@@ -1092,82 +1092,90 @@ class ArticlesManager {
                     return;
                 }
 
+                // 清空现有内容，准备接收流式响应
                 summaryContent.innerHTML = '';
                 let receivedSummary = '';
 
-                const eventSource = new EventSource(
-                    `https://blog.zygame1314.site/article/summarize?title=${encodeURIComponent(title)}`
-                );
-
-                eventSource.onmessage = (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-
-                        if (data.content) {
-                            receivedSummary += data.content;
-
-                            const formattedContent = receivedSummary
-                                .replace(/\n/g, '<br>')
-                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                            summaryContent.innerHTML = formattedContent;
-
-                            if (summaryElement.classList.contains('loading')) {
-                                setTimeout(() => {
-                                    summaryElement.classList.remove('loading');
-                                    summaryContent.classList.add('fade-in');
-                                }, 300);
-                            }
-                        }
-
-                        if (data.error) {
-                            throw new Error(data.error);
-                        }
-                    } catch (e) {
-                        console.error('处理服务器消息时出错:', e);
-                    }
-                };
-
-                eventSource.addEventListener('done', () => {
-                    if (receivedSummary) {
-                        const formattedSummary = receivedSummary
-                            .replace(/\n/g, '<br>')
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                        localStorage.setItem(cacheKey, formattedSummary);
-                    }
-
-                    eventSource.close();
-                    reloadButton.style.display = 'flex';
+                // 准备使用fetch和流式处理来替代EventSource
+                const response = await fetch('https://blog.zygame1314.site/article/summarize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        articleContent: content
+                    })
                 });
 
-                eventSource.onerror = async (error) => {
-                    console.error('EventSource 连接错误:', error);
-                    eventSource.close();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-                    if (receivedSummary) {
-                        const formattedSummary = receivedSummary
-                            .replace(/\n/g, '<br>')
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // 确保响应是可读流
+                if (!response.body) {
+                    throw new Error('ReadableStream not supported');
+                }
 
-                        summaryContent.innerHTML = formattedSummary;
-                        localStorage.setItem(cacheKey, formattedSummary);
-                    } else {
-                        await this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan);
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                summaryElement.classList.remove('loading');
+
+                // 处理流
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                // 跳过心跳和结束消息
+                                if (line === 'data: [DONE]') continue;
+
+                                const data = JSON.parse(line.substring(6));
+
+                                if (data.content) {
+                                    receivedSummary += data.content;
+
+                                    // 格式化并更新显示的内容
+                                    const formattedContent = receivedSummary
+                                        .replace(/\n/g, '<br>')
+                                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                                    summaryContent.innerHTML = formattedContent;
+                                    summaryContent.classList.add('fade-in');
+                                }
+
+                                if (data.error) {
+                                    throw new Error(data.error);
+                                }
+                            } catch (e) {
+                                console.error('解析服务器消息时出错:', e);
+                                // 如果是JSON解析错误但内容已经接收，继续处理
+                                if (receivedSummary) continue;
+                                throw e;
+                            }
+                        }
                     }
+                }
 
-                    reloadButton.style.display = 'flex';
-                    summaryElement.classList.remove('loading');
-                };
+                // 流处理完成
+                if (receivedSummary) {
+                    const formattedSummary = receivedSummary
+                        .replace(/\n/g, '<br>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-                setTimeout(() => {
-                    if (summaryElement.classList.contains('loading') && !receivedSummary) {
-                        eventSource.close();
-                        this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan);
-                    }
-                }, 8000);
+                    localStorage.setItem(cacheKey, formattedSummary);
+                } else {
+                    throw new Error('未能接收到有效的摘要内容');
+                }
 
             } catch (error) {
+                console.error('获取AI总结失败:', error);
                 await this.fallbackToNonStreamingRequest(title, content, summaryContent, summaryElement, footerSpan, error);
             } finally {
                 setTimeout(() => {
@@ -1175,6 +1183,7 @@ class ArticlesManager {
                         summaryElement.classList.remove('loading');
                     }
                     delete summaryElement.dataset.regenerating;
+                    reloadButton.style.display = 'flex';
                 }, 1000);
             }
         };
