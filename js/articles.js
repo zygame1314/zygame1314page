@@ -1176,31 +1176,41 @@ class ArticlesManager {
                     if (done) break;
 
                     const chunk = decoder.decode(value, { stream: true });
-                    const lines = chunk.split('\n\n');
 
-                    for (const line of lines) {
-                        if (!line.trim()) continue;
+                    const messageBlocks = chunk.split('\n\n');
 
-                        const match = line.match(/^event: (\w+)\ndata: (.+)$/);
-                        if (!match) continue;
+                    for (const block of messageBlocks) {
+                        if (!block.trim()) continue;
 
-                        const [, eventType, eventData] = match;
-                        const data = JSON.parse(eventData);
+                        const eventMatch = block.match(/^event:\s*(\w+)/m);
+                        const dataMatch = block.match(/^data:\s*(.+)$/m);
+
+                        if (!eventMatch || !dataMatch) continue;
+
+                        const eventType = eventMatch[1];
+                        let eventData;
+
+                        try {
+                            eventData = JSON.parse(dataMatch[1]);
+                        } catch (e) {
+                            console.error('解析事件数据失败:', e);
+                            continue;
+                        }
 
                         switch (eventType) {
                             case 'start':
                                 streamingContainer.innerHTML = '';
                                 break;
                             case 'token':
-                                if (data.content) {
-                                    generatedSummary += data.content;
-                                    const formattedContent = data.content
+                                if (eventData.content) {
+                                    generatedSummary += eventData.content;
+                                    const formattedContent = eventData.content
                                         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
                                     streamingContainer.insertAdjacentHTML('beforeend', formattedContent);
                                 }
                                 break;
                             case 'error':
-                                throw new Error(data.error || '生成过程中出错');
+                                throw new Error(eventData.error || '生成过程中出错');
                             case 'end':
                                 if (loaderText) {
                                     loaderText.textContent = '内容生成完成';
