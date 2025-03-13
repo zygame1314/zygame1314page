@@ -767,25 +767,24 @@ class ArticlesManager {
                     正在生成文章总结...
                 </div>
                 <div class="article-ai-summary-footer">
-                    <span>由DeepSeek-R1-Distill-Qwen-7B提供内容生成</span>
+                    <span>由硅基流动提供AI服务</span>
                     <button class="article-ai-summary-reload" style="display: none;">
                         <i class="fas fa-sync"></i> 重新生成
                     </button>
                 </div>
             `;
 
-            const firstHeading = articleContent.querySelector('h1, h2');
-            if (firstHeading) {
-                firstHeading.after(aiSummarySection);
-            } else {
-                articleContent.prepend(aiSummarySection);
-            }
+            const articleHeader = articleSection.querySelector('.article-header');
+            articleHeader.insertAdjacentElement('afterend', aiSummarySection);
 
             const textContent = this.getArticleTextContent(articleContent);
             this.generateArticleSummary(article.title, textContent, aiSummarySection);
 
             const codeBlocks = articleContent.querySelectorAll('pre code');
             for (const block of codeBlocks) {
+                const originalCode = block.innerHTML;
+                block.textContent = originalCode;
+
                 const languageClass = Array.from(block.classList)
                     .find(cls => cls.startsWith('language-'));
 
@@ -836,9 +835,14 @@ class ArticlesManager {
                     block.parentElement.appendChild(languageLabel);
 
                     if (language !== 'plaintext') {
-                        block.innerHTML = `<div class="code-loading">正在加载 ${language} 语言支持...</div>` + block.innerHTML;
+                        const loadingDiv = document.createElement('div');
+                        loadingDiv.className = 'code-loading';
+                        loadingDiv.textContent = `正在加载 ${language} 语言支持...`;
+                        block.insertAdjacentElement('beforebegin', loadingDiv);
+
                         const loaded = await this.loadLanguage(language);
-                        block.querySelector('.code-loading')?.remove();
+                        loadingDiv.remove();
+
                         if (loaded) {
                             block.classList.add('hljs');
                             hljs.highlightElement(block);
@@ -1053,14 +1057,29 @@ class ArticlesManager {
         const reloadButton = summaryElement.querySelector('.article-ai-summary-reload');
         const footerSpan = summaryElement.querySelector('.article-ai-summary-footer span');
 
+        this.currentSummaryController = null;
+        this.typewriterTimers = [];
+
         if (!footerSpan) {
             const footer = summaryElement.querySelector('.article-ai-summary-footer');
             if (footer) {
-                footer.insertAdjacentHTML('afterbegin', '<span>由DeepSeek-R1-Distill-Qwen-7B提供内容生成</span>');
+                footer.insertAdjacentHTML('afterbegin', '<span>由硅基流动提供AI服务</span>');
             }
         }
 
         const fetchSummary = async () => {
+            if (this.typewriterTimers && this.typewriterTimers.length) {
+                this.typewriterTimers.forEach(timer => clearTimeout(timer));
+                this.typewriterTimers = [];
+            }
+
+            if (this.currentSummaryController) {
+                this.currentSummaryController.abort();
+            }
+
+            this.currentSummaryController = new AbortController();
+            const signal = this.currentSummaryController.signal;
+
             summaryElement.classList.add('loading');
 
             const loadingTexts = [
@@ -1146,7 +1165,8 @@ class ArticlesManager {
                     body: JSON.stringify({
                         title,
                         articleContent: content
-                    })
+                    }),
+                    signal: signal
                 });
 
                 if (response.status === 429) {
@@ -1176,10 +1196,19 @@ class ArticlesManager {
 
                     const chunk = decoder.decode(value, { stream: true });
 
+                    if (signal.aborted) {
+                        console.log('请求已中断');
+                        break;
+                    }
+
                     const messageBlocks = chunk.split('\n\n');
 
                     for (const block of messageBlocks) {
                         if (!block.trim()) continue;
+
+                        if (signal.aborted) {
+                            break;
+                        }
 
                         const eventMatch = block.match(/^event:\s*(\w+)/m);
                         const dataMatch = block.match(/^data:\s*(.+)$/m);
@@ -1205,9 +1234,10 @@ class ArticlesManager {
                                     generatedSummary += eventData.content;
                                     const formattedContent = eventData.content
                                         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-                                        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-                                        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-                                        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                                        .replace(/(?:^|<br>|<\/p>)\s*####\s+(.*?)(?=$|<br>|<p>)/g, '<h4>$1</h4>')
+                                        .replace(/(?:^|<br>|<\/p>)\s*###\s+(.*?)(?=$|<br>|<p>)/g, '<h3>$1</h3>')
+                                        .replace(/(?:^|<br>|<\/p>)\s*##\s+(.*?)(?=$|<br>|<p>)/g, '<h2>$1</h2>')
+                                        .replace(/(?:^|<br>|<\/p>)\s*#\s+(.*?)(?=$|<br>|<p>)/g, '<h1>$1</h1>')
                                         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
                                         .replace(/`([^`]+)`/g, '<code>$1</code>')
                                         .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
@@ -1227,7 +1257,11 @@ class ArticlesManager {
                                 const cleanedSummary = generatedSummary.trim();
                                 const formattedFullSummary = cleanedSummary
                                     .replace(/\n/g, '<br>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    .replace(/(?:^|<br>)\s*####\s+(.*?)(?=$|<br>)/g, '<h4>$1</h4>')
+                                    .replace(/(?:^|<br>)\s*###\s+(.*?)(?=$|<br>)/g, '<h3>$1</h3>')
+                                    .replace(/(?:^|<br>)\s*##\s+(.*?)(?=$|<br>)/g, '<h2>$1</h2>')
+                                    .replace(/(?:^|<br>)\s*#\s+(.*?)(?=$|<br>)/g, '<h1>$1</h1>');
 
                                 localStorage.setItem(cacheKey, JSON.stringify({
                                     summary: formattedFullSummary,
@@ -1247,6 +1281,11 @@ class ArticlesManager {
                 localStorage.setItem('last-summary-request-time', response.headers.get('x-last-request-time') || Date.now().toString());
 
             } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log('请求被用户取消');
+                    return;
+                }
+
                 console.error('获取AI总结失败:', error);
                 summaryContent.innerHTML = `
                     <div class="summary-error">
@@ -1265,7 +1304,10 @@ class ArticlesManager {
 
         await fetchSummary();
 
-        reloadButton.addEventListener('click', async () => {
+        reloadButton.removeEventListener('click', reloadSummary);
+        reloadButton.addEventListener('click', reloadSummary);
+
+        async function reloadSummary() {
             const lastRequestTimeKey = `summary-last-request-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
             localStorage.removeItem(lastRequestTimeKey);
 
@@ -1275,12 +1317,20 @@ class ArticlesManager {
             await fetchSummary();
             reloadButton.innerHTML = '<i class="fas fa-sync"></i> 重新生成';
             reloadButton.disabled = false;
-        });
+        }
     }
 
     typeWriterEffect(element, text, speed = 15) {
         element.innerHTML = '';
+        element.classList.remove('fade-in');
         element.classList.add('typing');
+
+        if (this.typewriterTimers && this.typewriterTimers.length) {
+            this.typewriterTimers.forEach(timer => clearTimeout(timer));
+            this.typewriterTimers = [];
+        }
+
+        this.typewriterTimers = [];
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(`<div>${text}</div>`, 'text/html');
@@ -1325,7 +1375,8 @@ class ArticlesManager {
                     if (charIndex < node.textContent.length) {
                         parentElement.appendChild(document.createTextNode(node.textContent[charIndex]));
                         charIndex++;
-                        setTimeout(typeNextChar, speed);
+                        const timerId = setTimeout(typeNextChar, speed);
+                        this.typewriterTimers.push(timerId);
                     } else {
                         charIndex = 0;
                         currentNode++;
