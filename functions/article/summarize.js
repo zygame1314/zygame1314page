@@ -6,13 +6,14 @@ export async function onRequestPost(context) {
             request.headers.get('x-forwarded-for') ||
             'unknown';
 
-        const lastRequestTime = request.headers.get('x-last-request-time');
+        const lastRequestTimeHeader = request.headers.get(`x-last-request-time-${clientIP}`);
         const currentTime = Date.now();
 
-        if (lastRequestTime) {
-            const timeDiff = currentTime - parseInt(lastRequestTime);
+        if (lastRequestTimeHeader) {
+            const timeDiff = currentTime - parseInt(lastRequestTimeHeader);
             if (timeDiff < 60000) {
-                throw new Error('请求过于频繁，请等待60秒后再试');
+                const remainingSeconds = Math.ceil((60000 - timeDiff) / 1000);
+                throw new Error(`请求过于频繁，请等待${remainingSeconds}秒后再试`);
             }
         }
 
@@ -30,10 +31,13 @@ export async function onRequestPost(context) {
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-goog-api-key': env.GEMINI_API_KEY,
+                'x-forwarded-for': '104.28.193.196',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
             },
             body: JSON.stringify({
                 contents: [
@@ -99,17 +103,17 @@ export async function onRequestPost(context) {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=1800',
-                'x-last-request-time': currentTime.toString()
+                [`x-last-request-time-${clientIP}`]: currentTime.toString()
             }
         });
     } catch (error) {
-        console.error('生成文章总结错误:', error);
+        const status = error.message.includes('请求过于频繁') ? 429 : 500;
 
         return new Response(JSON.stringify({
             success: false,
-            error: error.message || '生成总结失败'
+            error: error.message
         }), {
-            status: error.message.includes('请求过于频繁') ? 429 : 500,
+            status,
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
