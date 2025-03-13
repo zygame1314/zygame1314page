@@ -16,11 +16,29 @@ export async function onRequestPost(context) {
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
 
-        const responseStream = new ReadableStream({
-            start(controller) {
-                controller.enqueue(new TextEncoder().encode('event: start\ndata: {"message": "开始生成摘要"}\n\n'));
+        const transformer = new TransformStream({
+            async transform(chunk, controller) {
+                controller.enqueue(chunk);
+            }
+        });
 
-                fetch(`https://api.siliconflow.cn/v1/chat/completions`, {
+        const response = new Response(transformer.readable, {
+            headers: {
+                'Content-Type': 'text/event-stream',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+
+        const writer = transformer.writable.getWriter();
+        const encoder = new TextEncoder();
+
+        writer.write(encoder.encode('event: start\ndata: {"message": "开始生成摘要"}\n\n'));
+
+        (async function () {
+            try {
+                const apiResponse = await fetch(`https://api.siliconflow.cn/v1/chat/completions`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -51,69 +69,57 @@ export async function onRequestPost(context) {
                         top_p: 0.95,
                         stream: true
                     })
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`API调用失败: ${response.status}`);
-                        }
+                });
 
-                        const reader = response.body.getReader();
-                        const decoder = new TextDecoder();
-                        let buffer = '';
+                if (!apiResponse.ok) {
+                    throw new Error(`API调用失败: ${apiResponse.status}`);
+                }
 
-                        function processStream() {
-                            return reader.read().then(({ done, value }) => {
-                                if (done) {
-                                    controller.enqueue(new TextEncoder().encode('event: end\ndata: {"message": "摘要生成完成"}\n\n'));
-                                    controller.close();
-                                    return;
-                                }
+                const reader = apiResponse.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
 
-                                buffer += decoder.decode(value, { stream: true });
+                while (true) {
+                    const { done, value } = await reader.read();
 
-                                const lines = buffer.split('\n');
-                                buffer = lines.pop() || '';
+                    if (done) {
+                        await writer.write(encoder.encode('event: end\ndata: {"message": "摘要生成完成"}\n\n'));
+                        await writer.close();
+                        break;
+                    }
 
-                                for (const line of lines) {
-                                    if (line.startsWith('data: ')) {
-                                        try {
-                                            const data = line.slice(6);
-                                            if (data === '[DONE]') continue;
+                    buffer += decoder.decode(value, { stream: true });
 
-                                            const json = JSON.parse(data);
-                                            const content = json.choices?.[0]?.delta?.content;
+                    if (buffer.includes('\n')) {
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop() || '';
 
-                                            if (content) {
-                                                controller.enqueue(new TextEncoder().encode(`event: token\ndata: ${JSON.stringify({ content })}\n\n`));
-                                            }
-                                        } catch (e) {
-                                            console.error('解析流数据出错:', e);
-                                        }
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const data = line.slice(6);
+                                    if (data === '[DONE]') continue;
+
+                                    const json = JSON.parse(data);
+                                    const content = json.choices?.[0]?.delta?.content;
+
+                                    if (content) {
+                                        await writer.write(encoder.encode(`event: token\ndata: ${JSON.stringify({ content })}\n\n`));
                                     }
+                                } catch (e) {
+                                    console.error('解析错误');
                                 }
-
-                                return processStream();
-                            });
+                            }
                         }
-
-                        return processStream();
-                    })
-                    .catch(error => {
-                        controller.enqueue(new TextEncoder().encode(`event: error\ndata: ${JSON.stringify({ error: error.message })}\n\n`));
-                        controller.close();
-                    });
+                    }
+                }
+            } catch (error) {
+                await writer.write(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: error.message })}\n\n`));
+                await writer.close();
             }
-        });
+        })();
 
-        return new Response(responseStream, {
-            headers: {
-                'Content-Type': 'text/event-stream',
-                'Cache-Control': 'no-cache',
-                'Connection': 'keep-alive',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-
+        return response;
     } catch (error) {
         return new Response(JSON.stringify({
             success: false,
