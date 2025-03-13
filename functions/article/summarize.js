@@ -1,4 +1,23 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
+    if (context.request.method === "OPTIONS") {
+        return new Response(null, {
+            status: 200,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                "Access-Control-Max-Age": "86400"
+            }
+        });
+    }
+    else if (context.request.method === "POST") {
+        return await handlePost(context);
+    }
+
+    return new Response("Method Not Allowed", { status: 405 });
+}
+
+async function handlePost(context) {
     try {
         const { request, env } = context;
 
