@@ -1077,7 +1077,7 @@ class ArticlesManager {
             }
 
             try {
-                const cacheKey = `article-summary-${btoa(title).substring(0, 20)}`;
+                const cacheKey = `article-summary-${btoa(encodeURIComponent(title)).substring(0, 20)}`;
                 const cachedSummary = localStorage.getItem(cacheKey);
 
                 if (cachedSummary && !summaryElement.dataset.regenerating) {
