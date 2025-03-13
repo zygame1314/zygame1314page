@@ -34,7 +34,7 @@ export async function onRequestPost(context) {
         const writer = transformer.writable.getWriter();
         const encoder = new TextEncoder();
 
-        writer.write(encoder.encode('event: start\ndata: {"message": "开始生成摘要"}\n\n'));
+        writer.write(encoder.encode('event: start\ndata: {"message": "开始生成摘要"}'));
 
         (async function () {
             try {
