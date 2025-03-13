@@ -797,7 +797,7 @@
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.8),
         inset 0 0 0 2px rgba(65, 105, 225, 0.3),
         0 0 8px rgba(65, 105, 225, 0.2);
-    transition: all 0.2s steps(2);
+    transition: all 0.2s ease;
     image-rendering: pixelated;
 }
 
@@ -902,7 +902,7 @@
     border-radius: 0;
     box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
     cursor: url('/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.2s steps(2);
+    transition: all 0.2s ease;
     font-size: 0.9rem;
     font-family: 'zpix';
 }
@@ -920,11 +920,11 @@
 
 .article-ai-summary-reload i {
     font-size: 0.9rem;
-    transition: transform 0.3s steps(4);
+    transition: transform 0.3s;
 }
 
 .article-ai-summary-reload:hover i {
-    animation: rotate-border 1s steps(8) infinite;
+    animation: rotate-border 1s infinite;
 }
 
 .article-ai-summary.loading {
@@ -987,7 +987,6 @@
 
 .fade-in {
     animation: FadeIn 0.8s forwards;
-    opacity: 0;
 }
 
 .summary-error {

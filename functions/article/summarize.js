@@ -16,7 +16,11 @@ export async function onRequestPost(context) {
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
 
-        const response = await fetch('https://ai-zygame1314models044002979816.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview', {
+        const { readable, writable } = new TransformStream();
+        const writer = writable.getWriter();
+        const encoder = new TextEncoder();
+
+        const fetchPromise = fetch('https://ai-zygame1314models044002979816.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,6 +28,8 @@ export async function onRequestPost(context) {
             },
             body: JSON.stringify({
                 model: "DeepSeek-R1",
+                stream: true,
+                max_tokens: 2048,
                 messages: [
                     {
                         role: "system",
@@ -46,44 +52,123 @@ export async function onRequestPost(context) {
                         ${truncatedContent}`
                     }
                 ],
-                max_tokens: 400,
-                temperature: 0.4
             })
         });
 
-        if (!response.ok) {
-            const contentType = response.headers.get('content-type');
-            let errorText;
+        const initialChunk = JSON.stringify({
+            success: true,
+            streaming: true,
+            summary: ""
+        });
+        await writer.write(encoder.encode(initialChunk + '\n'));
 
-            try {
-                if (contentType && contentType.includes('application/json')) {
-                    const errorData = await response.json();
-                    errorText = JSON.stringify(errorData);
-                } else {
-                    errorText = await response.text();
+        fetchPromise.then(async response => {
+            if (!response.ok) {
+                const contentType = response.headers.get('content-type');
+                let errorText;
+
+                try {
+                    if (contentType && contentType.includes('application/json')) {
+                        const errorData = await response.json();
+                        errorText = JSON.stringify(errorData);
+                    } else {
+                        errorText = await response.text();
+                    }
+                } catch (e) {
+                    errorText = `状态码: ${response.status}`;
                 }
-            } catch (e) {
-                errorText = `状态码: ${response.status}`;
+
+                const errorObj = {
+                    success: false,
+                    error: `API调用失败: ${errorText}`
+                };
+                await writer.write(encoder.encode(JSON.stringify(errorObj)));
+                await writer.close();
+                return;
             }
 
-            throw new Error(`API调用失败: ${errorText}`);
-        }
+            if (!response.body) {
+                const errorObj = {
+                    success: false,
+                    error: "API返回的响应没有正文"
+                };
+                await writer.write(encoder.encode(JSON.stringify(errorObj)));
+                await writer.close();
+                return;
+            }
 
-        const result = await response.json();
-        const summary = result.choices?.[0]?.message?.content?.trim();
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let accumulatedSummary = "";
 
-        if (!summary || summary.length < 50) {
-            throw new Error('未能获取到有效的文章总结');
-        }
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
 
-        return new Response(JSON.stringify({
-            success: true,
-            summary
-        }), {
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n').filter(line => line.trim() !== '');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data:')) {
+                            const data = line.substring(5).trim();
+
+                            if (data === '[DONE]') continue;
+
+                            try {
+                                const parsed = JSON.parse(data);
+                                const content = parsed.choices[0]?.delta?.content || '';
+                                if (content) {
+                                    accumulatedSummary += content;
+
+                                    const updateChunk = JSON.stringify({
+                                        success: true,
+                                        streaming: true,
+                                        content: content,
+                                        summary: accumulatedSummary
+                                    });
+                                    await writer.write(encoder.encode(updateChunk + '\n'));
+                                }
+                            } catch (e) {
+                                console.error('解析流式数据出错:', e);
+                            }
+                        }
+                    }
+                }
+
+                const finalChunk = JSON.stringify({
+                    success: true,
+                    streaming: false,
+                    summary: accumulatedSummary
+                });
+                await writer.write(encoder.encode(finalChunk));
+            } catch (error) {
+                console.error('处理流式数据时出错:', error);
+                const errorObj = {
+                    success: false,
+                    error: error.message || '处理流式响应时发生错误'
+                };
+                await writer.write(encoder.encode(JSON.stringify(errorObj)));
+            } finally {
+                await writer.close();
+            }
+        }).catch(async error => {
+            console.error('流处理错误:', error);
+            const errorObj = {
+                success: false,
+                error: error.message || '处理流式响应时发生错误'
+            };
+            await writer.write(encoder.encode(JSON.stringify(errorObj)));
+            await writer.close();
+        });
+
+        return new Response(readable, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=1800'
+                'Cache-Control': 'no-cache',
+                'X-Content-Type-Options': 'nosniff',
+                'Transfer-Encoding': 'chunked'
             }
         });
     } catch (error) {
