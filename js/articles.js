@@ -767,7 +767,7 @@ class ArticlesManager {
                     正在生成文章总结...
                 </div>
                 <div class="article-ai-summary-footer">
-                    <span>由Gemini提供技术支持</span>
+                    <span>由DeepSeek V3提供内容生成</span>
                     <button class="article-ai-summary-reload" style="display: none;">
                         <i class="fas fa-sync"></i> 重新生成
                     </button>
@@ -1056,7 +1056,7 @@ class ArticlesManager {
         if (!footerSpan) {
             const footer = summaryElement.querySelector('.article-ai-summary-footer');
             if (footer) {
-                footer.insertAdjacentHTML('afterbegin', '<span>由Gemini提供技术支持</span>');
+                footer.insertAdjacentHTML('afterbegin', '<span>由DeepSeek V3提供内容生成</span>');
             }
         }
 
