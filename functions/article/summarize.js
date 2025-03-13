@@ -6,7 +6,8 @@ export async function onRequestPost(context) {
             request.headers.get('x-forwarded-for') ||
             'unknown';
 
-        const lastRequestTimeHeader = request.headers.get(`x-last-request-time-${clientIP}`);
+        const ipHash = btoa(clientIP).replace(/[+/=]/g, '');
+        const lastRequestTimeHeader = request.headers.get(`x-req-time-${ipHash}`);
         const currentTime = Date.now();
 
         if (lastRequestTimeHeader) {
@@ -103,7 +104,8 @@ export async function onRequestPost(context) {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=1800',
-                [`x-last-request-time-${clientIP}`]: currentTime.toString()
+                [`x-req-time-${ipHash}`]: currentTime.toString(),
+                'x-rate-limit-reset': (currentTime + 60000).toString()
             }
         });
     } catch (error) {
@@ -117,7 +119,8 @@ export async function onRequestPost(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Retry-After': '60'
+                'Retry-After': '60',
+                'x-rate-limit-remaining': '0'
             }
         });
     }
@@ -129,6 +132,7 @@ export async function onRequestOptions() {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Expose-Headers': 'x-rate-limit-remaining, x-rate-limit-reset, x-req-time-*',
             'Access-Control-Max-Age': '86400'
         }
     });
