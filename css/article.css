@@ -826,13 +826,16 @@
 .article-ai-summary-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
     margin-bottom: 1.2rem;
     border-bottom: 2px solid rgba(124, 77, 255, 0.2);
     padding-bottom: 0.8rem;
+    position: relative;
 }
 
 .article-ai-summary-header i {
+    margin-bottom: 15px;
     font-size: 1.4rem;
     color: #7c4dff;
     text-shadow: 0 0 10px rgba(124, 77, 255, 0.6);
@@ -1005,8 +1008,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(4px);
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(2px);
     z-index: 1;
     clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
@@ -1014,12 +1017,9 @@
 }
 
 .article-ai-summary.loading .summary-loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: static;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 15px;
     z-index: 2;
@@ -1028,26 +1028,25 @@
 .summary-loader-text {
     color: #b388ff;
     font-family: 'zpix';
-    font-size: 1rem;
+    font-size: 0.8rem;
     text-shadow: 0 0 8px rgba(124, 77, 255, 0.5);
-    margin: 10px 0;
     letter-spacing: 0;
+    white-space: nowrap;
 }
 
 .summary-spinner {
     width: 48px;
     height: 48px;
-    border: 4px solid transparent;
+    border: 3px solid transparent;
     background:
         linear-gradient(#1a1a1a, #1a1a1a) padding-box,
         linear-gradient(45deg, #7c4dff, #b388ff, #7c4dff) border-box;
-    border-radius: 50px;
+    border-radius: 50%;
     animation: rotate-border 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
     box-shadow: 0 0 16px rgba(124, 77, 255, 0.2);
     image-rendering: pixelated;
-    clip-path: polygon(0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px,
-            100% calc(100% - 8px), calc(100% - 8px) 100%,
-            8px 100%, 0 calc(100% - 8px));
+    flex-shrink: 0;
+    margin-bottom: 10px;
 }
 
 .summary-spinner.success {

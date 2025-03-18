@@ -755,13 +755,15 @@ class ArticlesManager {
             const aiSummarySection = document.createElement('div');
             aiSummarySection.className = 'article-ai-summary loading';
             aiSummarySection.innerHTML = `
-                <div class="summary-loader">
-                    <div class="summary-spinner"></div>
-                    <div class="summary-loader-text">AI正在分析文章内容...</div>
-                </div>
                 <div class="article-ai-summary-header">
-                    <i class="fas fa-brain"></i>
-                    <h4>AI文章总结</h4>
+                    <div class="header-left">
+                        <i class="fas fa-brain"></i>
+                        <h4>AI文章总结</h4>
+                    </div>
+                    <div class="summary-loader">
+                        <div class="summary-spinner"></div>
+                        <div class="summary-loader-text">AI正在分析...</div>
+                    </div>
                 </div>
                 <div class="article-ai-summary-content">
                     正在生成文章总结...

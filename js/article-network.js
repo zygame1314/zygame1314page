@@ -187,15 +187,15 @@ class ArticleNetwork {
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links)
-                .strength(d => d.strength)
-                .distance(50))
+                .strength(d => d.strength * 0.8)
+                .distance(80))
             .force("charge", d3.forceManyBody()
-                .strength(d => d.type === 'tag' ? -100 : -30)
-                .distanceMax(200))
+                .strength(d => d.type === 'tag' ? -250 : -120)
+                .distanceMax(250))
             .force("collision", d3.forceCollide()
-                .radius(d => d.radius * 2)
-                .strength(0.3))
-            .velocityDecay(0.4)
+                .radius(d => d.radius * 3)
+                .strength(0.5))
+            .velocityDecay(0.5)
             .alphaMin(0.001)
             .alphaDecay(0.02)
             .on("tick", () => {
@@ -504,34 +504,19 @@ class ArticleNetwork {
                 }
             });
 
-            this.nodes.forEach(node => {
-                if ((this.scale >= this.titleScaleThreshold && node.type === 'article') ||
-                    node.type === 'tag' ||
-                    node === this.hoveredNode) {
+            const nodesToLabel = this.nodes.filter(node =>
+                (this.scale >= this.titleScaleThreshold && node.type === 'article') ||
+                node.type === 'tag' ||
+                node === this.hoveredNode
+            );
 
-                    const fontSize = node.type === 'tag' ? 10 : 14;
-                    ctx.font = `${fontSize}px "zpix"`;
-                    ctx.textAlign = 'center';
+            this.calculateLabelPositions(nodesToLabel, ctx);
 
-                    if (node.type === 'article') {
-                        ctx.strokeStyle = '#000';
-                        ctx.lineWidth = 3;
-                        ctx.strokeText(node.title, node.x, node.y - 15);
-                        ctx.fillStyle = node === this.hoveredNode ? '#FFE166' : '#7BFFF0';
-                    } else {
-                        ctx.fillStyle = '#fff';
-                    }
-
-                    ctx.fillText(node.title, node.x, node.y - 15);
-
-                    if (node === this.hoveredNode) {
-                        ctx.shadowColor = '#fff';
-                        ctx.shadowBlur = 10;
-                        ctx.fillText(node.title, node.x, node.y - 15);
-                        ctx.shadowBlur = 0;
-                    }
-                }
-            });
+            nodesToLabel
+                .sort((a, b) => (a === this.hoveredNode) ? 1 : (b === this.hoveredNode ? -1 : 0))
+                .forEach(node => {
+                    this.drawNodeLabel(node, ctx);
+                });
 
             ctx.restore();
         };
@@ -540,6 +525,131 @@ class ArticleNetwork {
 
         if (this.fullscreenModal && this.fullscreenModal.style.display === 'block') {
             drawOnCanvas(this.fullscreenCanvas, this.fullscreenCtx);
+        }
+    }
+
+    calculateLabelPositions(nodes, ctx) {
+        const positions = [
+            { x: 0, y: -15 },
+            { x: 0, y: 20 },
+            { x: -20, y: 0 },
+            { x: 20, y: 0 },
+            { x: -15, y: -15 },
+            { x: 15, y: -15 },
+            { x: -15, y: 15 },
+            { x: 15, y: 15 }
+        ];
+
+        const occupied = new Map();
+
+        const sortedNodes = [...nodes].sort((a, b) =>
+            (a === this.hoveredNode) ? -1 : (b === this.hoveredNode ? 1 : 0)
+        );
+
+        sortedNodes.forEach(node => {
+            const fontSize = node.type === 'tag' ? 10 : 14;
+            ctx.font = `${fontSize}px "zpix"`;
+
+            const textWidth = ctx.measureText(node.title).width;
+            const textHeight = fontSize + 2;
+
+            if (node.labelOffset && !(node === this.hoveredNode && !node.wasHovered)) {
+                const rect = {
+                    x: node.x + node.labelOffset.x - textWidth / 2,
+                    y: node.y + node.labelOffset.y - textHeight,
+                    width: textWidth,
+                    height: textHeight
+                };
+                occupied.set(node.id, rect);
+                return;
+            }
+
+            let bestPosition = null;
+            let minOverlap = Infinity;
+
+            for (const pos of positions) {
+                const labelX = node.x + pos.x;
+                const labelY = node.y + pos.y;
+
+                const rect = {
+                    x: labelX - textWidth / 2,
+                    y: labelY - textHeight,
+                    width: textWidth,
+                    height: textHeight
+                };
+
+                let overlap = 0;
+                for (const [, occupiedRect] of occupied) {
+                    if (this.rectsOverlap(rect, occupiedRect)) {
+                        overlap += this.calculateOverlap(rect, occupiedRect);
+                    }
+                }
+
+                if (overlap < minOverlap) {
+                    minOverlap = overlap;
+                    bestPosition = pos;
+                }
+            }
+
+            node.labelOffset = bestPosition || positions[0];
+
+            node.wasHovered = node === this.hoveredNode;
+
+            const rect = {
+                x: node.x + node.labelOffset.x - textWidth / 2,
+                y: node.y + node.labelOffset.y - textHeight,
+                width: textWidth,
+                height: textHeight
+            };
+            occupied.set(node.id, rect);
+        });
+    }
+
+    rectsOverlap(rect1, rect2) {
+        return !(
+            rect1.x + rect1.width < rect2.x ||
+            rect2.x + rect2.width < rect1.x ||
+            rect1.y + rect1.height < rect2.y ||
+            rect2.y + rect2.height < rect1.y
+        );
+    }
+
+    calculateOverlap(rect1, rect2) {
+        const xOverlap = Math.max(0,
+            Math.min(rect1.x + rect1.width, rect2.x + rect2.width) -
+            Math.max(rect1.x, rect2.x)
+        );
+        const yOverlap = Math.max(0,
+            Math.min(rect1.y + rect1.height, rect2.y + rect2.height) -
+            Math.max(rect1.y, rect2.y)
+        );
+        return xOverlap * yOverlap;
+    }
+
+    drawNodeLabel(node, ctx) {
+        const fontSize = node.type === 'tag' ? 10 : 14;
+        ctx.font = `${fontSize}px "zpix"`;
+        ctx.textAlign = 'center';
+
+        const offsetX = node.labelOffset?.x || 0;
+        const offsetY = node.labelOffset?.y || -15;
+
+        if (node.type === 'article') {
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.strokeText(node.title, node.x + offsetX, node.y + offsetY);
+            ctx.fillStyle = node === this.hoveredNode ? '#FFE166' : '#7BFFF0';
+        } else {
+            ctx.fillStyle = node === this.hoveredNode ? '#FFE166' : '#fff';
+        }
+
+        ctx.fillText(node.title, node.x + offsetX, node.y + offsetY);
+
+        if (node === this.hoveredNode) {
+            ctx.shadowColor = '#fff';
+            ctx.shadowBlur = 10;
+            ctx.fillText(node.title, node.x + offsetX, node.y + offsetY);
+            ctx.shadowBlur = 0;
         }
     }
 
@@ -655,11 +765,18 @@ class ArticleNetwork {
         const y = (event.clientY - rect.top - this.offset.y) / this.scale;
 
         if (!this.isDragging) {
+            const oldHoveredNode = this.hoveredNode;
+
             this.hoveredNode = this.nodes.find(node => {
                 const dx = x - node.x;
                 const dy = y - node.y;
                 return Math.sqrt(dx * dx + dy * dy) < node.radius * 2;
             });
+
+            if (oldHoveredNode !== this.hoveredNode) {
+                if (oldHoveredNode) oldHoveredNode.wasHovered = false;
+                if (this.hoveredNode) this.hoveredNode.wasHovered = true;
+            }
         }
 
         if (this.isDragging && this.selectedNode) {
