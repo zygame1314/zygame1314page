@@ -6,7 +6,6 @@
 
 .articles-grid {
     padding: 1.5rem;
-    image-rendering: pixelated;
     position: relative;
     overflow-y: auto;
     max-height: 600px;
@@ -36,7 +35,6 @@
     padding: 1rem;
     margin-bottom: 1rem;
     position: relative;
-    image-rendering: pixelated;
     box-shadow: 4px 4px 0 var(--primary-color);
     transition: all 0.15s steps(3);
     clip-path: polygon(0 4px, 4px 0,
@@ -73,7 +71,6 @@
     max-height: 200px;
     object-fit: cover;
     border: 2px solid var(--primary-color);
-    image-rendering: pixelated;
     margin-bottom: 1rem;
     flex-shrink: 0;
     transition: transform 0.2s steps(2);

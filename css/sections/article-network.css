@@ -11,7 +11,6 @@
 #networkCanvas {
     width: 100%;
     height: 100%;
-    image-rendering: pixelated;
     image-rendering: crisp-edges;
     -webkit-font-smoothing: none;
     transition: transform 0.3s ease;
@@ -34,7 +33,6 @@
     font-family: 'zpix';
     z-index: 2;
     padding: 0 8px;
-    image-rendering: pixelated;
     box-shadow:
         inset -2px -2px 0 0 #000,
         inset 2px 2px 0 0 #333,
@@ -46,7 +44,6 @@
 
 .network-fullscreen-btn i {
     font-size: 14px;
-    image-rendering: pixelated;
     transform: scale(1.2);
     display: inline-block;
     transition: transform 0.2s ease;
@@ -99,7 +96,6 @@
         inset 4px 4px 0 0 #2a2a2a,
         -4px -4px 0 0 var(--primary-color),
         4px 4px 0 0 var(--secondary-color);
-    image-rendering: pixelated;
     animation: modalContentScale 0.3s ease;
 }
 
@@ -113,7 +109,6 @@
     border: none;
     cursor: url('/images/cursors/Rath pointer.cur'), auto;
     z-index: 1001;
-    image-rendering: pixelated;
     box-shadow:
         inset -2px -2px 0 0 #000,
         inset 2px 2px 0 0 #333,
@@ -140,7 +135,6 @@
     top: 50%;
     left: 50%;
     transform-origin: center;
-    image-rendering: pixelated;
     transition: all 0.2s ease;
 }
 

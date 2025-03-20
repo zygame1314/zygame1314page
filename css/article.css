@@ -128,7 +128,6 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    image-rendering: pixelated;
     transform-origin: center;
 }
 
@@ -798,7 +797,6 @@
         inset 0 0 0 1px rgba(124, 77, 255, 0.2),
         0 0 20px rgba(124, 77, 255, 0.15);
     transition: all 0.3s ease;
-    image-rendering: pixelated;
     clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
@@ -839,7 +837,6 @@
     font-size: 1.4rem;
     color: #7c4dff;
     text-shadow: 0 0 10px rgba(124, 77, 255, 0.6);
-    image-rendering: pixelated;
 }
 
 .article-ai-summary-header h4 {
@@ -859,7 +856,6 @@
     padding: 12px 10px;
     background-color: #0c0c0c;
     border: 2px solid rgba(124, 77, 255, 0.3);
-    image-rendering: pixelated;
     clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
@@ -971,7 +967,6 @@
     transition: all 0.3s;
     font-size: 0.9rem;
     font-family: 'zpix';
-    image-rendering: pixelated;
     clip-path: polygon(0 3px, 3px 0, calc(100% - 3px) 0, 100% 3px,
             100% calc(100% - 3px), calc(100% - 3px) 100%,
             3px 100%, 0 calc(100% - 3px));
@@ -1044,7 +1039,6 @@
     border-radius: 50%;
     animation: rotate-border 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
     box-shadow: 0 0 16px rgba(124, 77, 255, 0.2);
-    image-rendering: pixelated;
     flex-shrink: 0;
     margin-bottom: 10px;
 }
@@ -1087,7 +1081,6 @@
 
 .summary-error i {
     font-size: 1.1rem;
-    image-rendering: pixelated;
 }
 
 .summary-streaming {

@@ -61,7 +61,6 @@
     border-radius: 0;
     position: absolute;
     z-index: 1;
-    image-rendering: pixelated;
     animation: pulse 2s infinite;
     transform: translateY(-50%);
 }

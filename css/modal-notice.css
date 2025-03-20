@@ -25,7 +25,6 @@
     max-height: 80vh;
     overflow-y: auto;
     background-color: var(--background-color);
-    image-rendering: pixelated;
     border: 4px solid var(--primary-color);
     box-shadow: 0 0 15px var(--primary-color);
     border-radius: 0;
@@ -61,6 +60,7 @@
     display: flex;
     align-items: center;
     animation: glitch 5s infinite;
+    margin: 0;
 }
 
 .important-notice-title .notice-icon {
@@ -123,7 +123,6 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    image-rendering: pixelated;
 }
 
 .important-notice-modal .important-close-button::before {
@@ -171,7 +170,6 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    image-rendering: pixelated;
 }
 
 .notice-btn::before {
@@ -236,12 +234,10 @@
     border: 2px solid var(--primary-color);
     background-color: transparent;
     margin-right: 8px;
-    image-rendering: pixelated;
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
-/* 创建像素艺术风格眼睛 */
 .do-not-show-again .checkmark::before {
     content: '';
     position: absolute;
@@ -335,4 +331,66 @@
 
 .do-not-show-again:active .checkmark {
     transform: scale(0.9);
+}
+
+.important-notice-image {
+    margin: 10px 0;
+    position: relative;
+    animation: fadeIn 0.5s ease-out 0.1s both;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.important-notice-image img {
+    display: block;
+    transition: transform 0.3s ease;
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.important-notice-image:hover img {
+    transform: scale(1.02);
+}
+
+.important-notice-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(var(--primary-color-rgb), 0.2) 0%,
+            transparent 50%,
+            rgba(var(--secondary-color-rgb), 0.2) 100%);
+    pointer-events: none;
+}
+
+.notice-with-image-left,
+.notice-with-image-right {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.notice-with-image-left .important-notice-image,
+.notice-with-image-right .important-notice-image {
+    flex: 0 0 35%;
+    margin-bottom: 0;
+}
+
+.notice-with-image-left .important-notice-image img,
+.notice-with-image-right .important-notice-image img {
+    max-height: 220px;
+}
+
+.notice-with-image-left .important-notice-body,
+.notice-with-image-right .important-notice-body {
+    flex: 1;
+}
+
+.notice-with-image-right {
+    flex-direction: row-reverse;
 }

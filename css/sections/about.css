@@ -6,7 +6,6 @@
 }
 
 #about .pixel-icon {
-    image-rendering: pixelated;
     transform: scale(1.2);
     margin-right: 10px;
 }

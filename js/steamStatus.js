@@ -45,7 +45,6 @@ function initSteamStatus() {
                     stopUpdates();
                 }
             }, 60 * 1000);
-            console.log("Steam状态更新已启动");
         }
     }
 
@@ -53,7 +52,6 @@ function initSteamStatus() {
         if (updateInterval) {
             clearInterval(updateInterval);
             updateInterval = null;
-            console.log("Steam状态更新已暂停");
         }
     }
 
@@ -169,7 +167,7 @@ function initSteamStatus() {
                             break;
                     }
                 }
-                showLive2dNotification(message, 3000);
+                showLive2dNotification(message);
             });
 
         } catch (error) {

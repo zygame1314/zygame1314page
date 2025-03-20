@@ -251,7 +251,7 @@ class MusicPlayer {
 
                 const song = this.songs[this.currentSong];
                 if (song.comment && window.showLive2dNotification) {
-                    window.showLive2dNotification(song.comment, 7000);
+                    window.showLive2dNotification(song.comment);
                 }
 
                 this.isLoaded = true;

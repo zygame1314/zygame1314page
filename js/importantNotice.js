@@ -6,13 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function showImportantNotice() {
-        const doNotShowAgain = localStorage.getItem('doNotShowImportantNotice');
         const lastShownDate = localStorage.getItem('lastImportantNoticeDate');
         const currentDate = new Date().toDateString();
-
-        if (doNotShowAgain === 'true') {
-            return;
-        }
 
         if (lastShownDate === currentDate) {
             return;
@@ -31,9 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!data.active) return;
 
                 const noticeId = data.id;
-                const lastSeenNoticeId = localStorage.getItem('lastSeenNoticeId');
+                const doNotShowThisNotice = localStorage.getItem(`doNotShow_${noticeId}`);
 
-                if (noticeId === lastSeenNoticeId && doNotShowAgain === 'true') {
+                if (doNotShowThisNotice === 'true') {
                     return;
                 }
 
@@ -48,15 +43,64 @@ document.addEventListener('DOMContentLoaded', function () {
         const modal = document.createElement('div');
         modal.className = 'important-notice-modal';
 
+        let contentHtml = '';
+        const hasImage = data.image && data.image.url;
+        const imagePosition = hasImage ? (data.image.position || 'top') : null;
+
+        const imageHtml = hasImage ?
+            `<div class="important-notice-image">
+                <img src="${data.image.url}" alt="${data.image.alt || '通知图片'}" loading="lazy">
+            </div>` : '';
+
+        if (hasImage) {
+            if (imagePosition === 'top') {
+                contentHtml = `
+                    ${imageHtml}
+                    <div class="important-notice-body">
+                        ${data.content}
+                    </div>
+                `;
+            } else if (imagePosition === 'bottom') {
+                contentHtml = `
+                    <div class="important-notice-body">
+                        ${data.content}
+                    </div>
+                    ${imageHtml}
+                `;
+            } else if (imagePosition === 'left') {
+                contentHtml = `
+                    <div class="notice-with-image-left">
+                        ${imageHtml}
+                        <div class="important-notice-body">
+                            ${data.content}
+                        </div>
+                    </div>
+                `;
+            } else if (imagePosition === 'right') {
+                contentHtml = `
+                    <div class="notice-with-image-right">
+                        ${imageHtml}
+                        <div class="important-notice-body">
+                            ${data.content}
+                        </div>
+                    </div>
+                `;
+            }
+        } else {
+            contentHtml = `
+                <div class="important-notice-body">
+                    ${data.content}
+                </div>
+            `;
+        }
+
         modal.innerHTML = `
             <div class="important-notice-content">
                 <div class="important-notice-title">
                     <h2><i class="fas fa-exclamation-circle notice-icon"></i> ${data.title}</h2>
                     <button class="important-close-button"></button>
                 </div>
-                <div class="important-notice-body">
-                    ${data.content}
-                </div>
+                ${contentHtml}
                 <div class="important-notice-footer">
                     <label class="do-not-show-again">
                         <input type="checkbox" id="doNotShowAgain">
@@ -76,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             modal.classList.add('show');
         }, 100);
-
-        localStorage.setItem('lastSeenNoticeId', data.id);
 
         const closeBtn = modal.querySelector('.important-close-button');
         const noticeCloseBtn = modal.querySelector('#noticeClose');
@@ -104,10 +146,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         doNotShowAgainCheck.addEventListener('change', function () {
             if (this.checked) {
-                localStorage.setItem('doNotShowImportantNotice', 'true');
+                localStorage.setItem(`doNotShow_${data.id}`, 'true');
             } else {
-                localStorage.setItem('doNotShowImportantNotice', 'false');
+                localStorage.setItem(`doNotShow_${data.id}`, 'false');
             }
         });
+
+        if (hasImage) {
+            const img = modal.querySelector('.important-notice-image img');
+            img.onerror = function () {
+                const imageContainer = this.parentElement;
+                imageContainer.style.display = 'none';
+            };
+        }
     }
 });

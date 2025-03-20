@@ -113,7 +113,7 @@ function initGamesFetch() {
                     message += ' 还支持手柄游玩呢！';
                 }
 
-                showLive2dNotification(message, 3000);
+                showLive2dNotification(message);
             });
 
             gameInfo.appendChild(gameTitle);
@@ -200,7 +200,7 @@ function initGamesFetch() {
                     message = `${gameName}最近已经玩了${hours}小时了！看得出来主人真的很喜欢这个游戏呢~`;
                 }
 
-                showLive2dNotification(message, 2000);
+                showLive2dNotification(message);
             });
 
             gameItem.appendChild(gameImage);

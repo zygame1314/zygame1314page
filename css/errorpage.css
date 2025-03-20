@@ -44,7 +44,6 @@ body {
     width: 100%;
     height: auto;
     aspect-ratio: 1;
-    image-rendering: pixelated;
 }
 
 .controls {
@@ -98,7 +97,6 @@ body {
     margin-top: 20px;
     border: none;
     cursor: url('/images/cursors/Rath pointer.cur'), auto;
-    image-rendering: pixelated;
     transition: all 0.3s ease;
 }
 

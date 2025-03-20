@@ -2,11 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const textBox = document.getElementById("live2d-text-box");
     let notificationTimer = null;
 
+    function calculateDisplayDuration(text) {
+        const baseTime = 1000;
+        const perCharTime = 100;
+        return Math.min(baseTime + text.length * perCharTime, 8000);
+    }
 
-    window.showLive2dNotification = function (text, duration = 1000) {
+    window.showLive2dNotification = function (text, duration = null) {
         if (notificationTimer) {
             clearTimeout(notificationTimer);
         }
+
+        const displayTime = duration || calculateDisplayDuration(text);
 
         textBox.innerHTML = text;
         textBox.classList.remove("hide");
@@ -15,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notificationTimer = setTimeout(() => {
             textBox.classList.remove("show");
             textBox.classList.add("hide");
-        }, duration);
+        }, displayTime);
     };
 
     function setupTextHover() {
@@ -71,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ".typing-effect": "出自唐代李白的《陪侍御叔华登楼歌》。",
             "#dev-journey": "记录了主人的编程历程，从最初的梦想到现在的点点进步~",
             "#waline": "期待听到你的想法和建议！别客气，说说看~",
-            ".avatar": "主人的头像，派克猫猫！",
+            ".avatar": "“猎人握着片手剑，立于寒风之中。这剑，是斩过龙的，也是格挡过猛击的。然而，今日的怪物，却狡猾异常。猎人屡次出击，却总是差之毫厘。他听见有人在窃笑，说：'看哪，这便是一个哦润吉的下场！' 猎人紧咬牙关，他不信这'哦润吉'的命运，正如他不信这世间的黑暗一般。”",
             "footer": "这里是页脚区域，包含了一些关于本站的信息。",
             ".Canvas": "没有可以思考的心智。<br>没有可以屈从的意志。<br>没有为苦难哭泣的声音。<br>生于神与虚空之手。<br>你必封印在众人梦中散布瘟疫的障目之光。<br>你是容器。<br>你是空洞骑士。"
         };
@@ -83,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const description = document.querySelector('.description')?.textContent;
 
                 if (!temperature || !description || temperature.trim() === '' || description.trim() === '') {
-                    showLive2dNotification("天气数据还在路上~稍后再来看看吧!", 2000);
+                    showLive2dNotification("天气数据还在路上~稍后再来看看吧!");
                     return;
                 }
 
@@ -128,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const message = `${description}，${temperature}。${weatherDialog || ''}`;
-                showLive2dNotification(message, 3000);
+                showLive2dNotification(message);
             });
         }
 
@@ -136,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const element = document.querySelector(selector);
             if (element) {
                 element.addEventListener("mouseenter", function () {
-                    showLive2dNotification(text, 2000);
+                    showLive2dNotification(text);
                 });
             }
         }

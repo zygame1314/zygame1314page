@@ -1,7 +1,12 @@
 {
-    "id": "notice-domain-change",
+    "id": "notice-achievements",
     "active": true,
-    "title": "域名变更通知",
-    "content": "<p>亲爱的访客：</p><p>本站域名已从 zygame1314.site 变更为 blog.zygame1314.site。虽然访问旧域名会自动重定向，但建议直接使用新域名 blog.zygame1314.site 访问本站。记得更新你的书签，感谢支持！</p>",
+    "title": "铂金了！",
+    "content": "<p>什么？你怎么知道我《怪物猎人：荒野》全成就了！</p>",
+    "image": {
+        "url": "/images/achievement.webp",
+        "alt": "全成就",
+        "position": "top"
+    },
     "expiryDate": "2025-06-01"
 }

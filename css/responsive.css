@@ -362,6 +362,28 @@
         gap: 15px;
     }
 
+    .notice-with-image-left,
+    .notice-with-image-right {
+        flex-direction: column;
+    }
+
+    .notice-with-image-left .important-notice-image,
+    .notice-with-image-right .important-notice-image {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .notice-with-image-left .important-notice-image img,
+    .notice-with-image-right .important-notice-image img,
+    .important-notice-image img {
+        max-height: 200px;
+    }
+
+    .important-notice-content {
+        width: 85%;
+        padding: 15px;
+    }
+
     .notice-actions {
         width: 100%;
         justify-content: space-between;

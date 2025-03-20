@@ -16,7 +16,6 @@
     display: inline-block;
     width: 64px;
     height: 32px;
-    image-rendering: pixelated;
 }
 
 .switch input {

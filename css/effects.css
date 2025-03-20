@@ -77,7 +77,6 @@
     background-color: var(--primary-color);
     opacity: 0.7;
     pointer-events: none;
-    image-rendering: pixelated;
 }
 
 .typing-effect {

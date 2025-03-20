@@ -123,7 +123,7 @@ class SiteStatus {
                 const { status, responseTime, site } = e.detail;
                 const message = this.getStatusMessage(site, status, responseTime);
                 if (typeof window.showLive2dNotification === 'function') {
-                    window.showLive2dNotification(message, 3000);
+                    window.showLive2dNotification(message);
                 }
             });
         });
