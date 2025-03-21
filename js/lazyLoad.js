@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         lazyImages.forEach(img => {
-            if (!img.src || img.src === window.location.href) {
-                img.removeAttribute('src');
-            }
-
             img.classList.add('lazy-placeholder');
             img.classList.add('lazy-initialized');
+
+            if (!img.src || img.src === window.location.href) {
+                img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            }
 
             if (img.dataset.width && img.dataset.height) {
                 img.style.aspectRatio = `${img.dataset.width} / ${img.dataset.height}`;
