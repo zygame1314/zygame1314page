@@ -147,6 +147,39 @@
                     "description": "很多用户容易忽略这一步。请务必重启浏览器，否则设置可能不会生效，导致脚本无法正常运行。"
                 }
             ]
+        },
+        {
+            "title": "域名更换通知",
+            "icon": "fas fa-globe",
+            "content": [
+                {
+                    "type": "info",
+                    "icon": "fas fa-exchange-alt",
+                    "text": "网站域名已更新",
+                    "highlight": true,
+                    "description": "为方便域名管理，网站域名已从 zygame1314.site 更换为 blog.zygame1314.site"
+                },
+                {
+                    "type": "warning",
+                    "icon": "fas fa-link",
+                    "text": "记得更新你的书签和收藏夹",
+                    "highlight": [
+                        "更新",
+                        "书签",
+                        "收藏夹"
+                    ]
+                },
+                {
+                    "type": "tip",
+                    "icon": "fas fa-info-circle",
+                    "text": "直接访问旧域名将被重定向到新域名",
+                    "highlight": [
+                        "旧域名",
+                        "重定向",
+                        "新域名"
+                    ]
+                }
+            ]
         }
     ]
 }

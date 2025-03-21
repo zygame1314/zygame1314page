@@ -2,23 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var donateButton = document.getElementById('donate-button');
     var donateModal = document.getElementById('donate-modal');
     var closeButton = document.querySelector('.donate-close-button');
-    var qrCodeImages = donateModal.querySelectorAll('.qr-code img');
-    var isQrCodesLoaded = false;
-
-    function loadQrCodes() {
-        if (!isQrCodesLoaded) {
-            qrCodeImages.forEach(function (img) {
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                }
-            });
-            isQrCodesLoaded = true;
-        }
-    }
 
     function openModal() {
-        loadQrCodes();
-
         donateModal.style.display = 'flex';
         donateModal.style.justifyContent = 'center';
         donateModal.style.alignItems = 'center';
@@ -87,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const randomEmoji = arr => arr[Math.floor(Math.random() * arr.length)];
-        const todayMood = moodEmojis[daysUntilThursday];
+        const todayMood = moodEmojis[dayOfWeek];
 
         if (dayOfWeek === 4) {
             const phrases = [

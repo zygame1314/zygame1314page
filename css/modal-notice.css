@@ -348,6 +348,7 @@
     object-fit: cover;
     border: 2px solid var(--secondary-color);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    min-height: 300px;
 }
 
 .important-notice-image:hover img {

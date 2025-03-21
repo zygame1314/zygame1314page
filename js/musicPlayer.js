@@ -93,11 +93,44 @@ class MusicPlayer {
         }
 
         if (song.cover) {
-            this.coverImg.src = song.cover;
+            this.coverImg.setAttribute('data-src', song.cover);
+            this.coverImg.classList.remove('lazy-initialized', 'lazy-loaded', 'lazy-error');
+            this.coverImg.classList.add('lazy-placeholder');
+            this.coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
             this.coverImg.style.display = 'block';
         } else {
-            this.coverImg.src = '/images/default-album-cover.webp';
+            this.coverImg.setAttribute('data-src', '/images/default-album-cover.webp');
+            this.coverImg.classList.remove('lazy-initialized', 'lazy-loaded', 'lazy-error');
+            this.coverImg.classList.add('lazy-placeholder');
+            this.coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
         }
+
+        this.coverImg.onerror = () => {
+            console.error(`封面图片加载失败: ${this.coverImg.getAttribute('data-src')}`);
+            this.coverImg.setAttribute('data-src', '/images/default-album-cover.webp');
+            this.coverImg.classList.add('default-cover');
+
+            const defaultImg = new Image();
+            defaultImg.onload = () => {
+                this.coverImg.src = '/images/default-album-cover.webp';
+                this.coverImg.classList.remove('lazy-placeholder');
+                this.coverImg.classList.add('lazy-loaded');
+            };
+            defaultImg.src = '/images/default-album-cover.webp';
+        };
+
+        if (window.reinitializeLazyLoad) {
+            setTimeout(() => window.reinitializeLazyLoad(), 50);
+        } else {
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                this.coverImg.src = this.coverImg.getAttribute('data-src');
+                this.coverImg.classList.remove('lazy-placeholder');
+                this.coverImg.classList.add('lazy-loaded');
+            };
+            tempImg.src = this.coverImg.getAttribute('data-src');
+        }
+
         this.updatePlaylistActive();
     }
 

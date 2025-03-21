@@ -535,7 +535,9 @@ class ArticlesManager {
         ` : '';
 
         card.innerHTML = `
-            <img src="${article.thumbnail}" alt="${article.title}" class="article-thumbnail pixelated">
+            <div class="article-thumbnail-container">
+                <img data-src="${article.thumbnail}" alt="${article.title}" class="article-thumbnail">
+            </div>
             <h3 class="article-title">${highlightText(article.title)}</h3>
             <div class="article-meta">
                 <i class="far fa-calendar-alt"></i> ${article.date}

@@ -24,13 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         card.innerHTML = `
             <a href="${project.githubUrl}" target="_blank">
-                <img src="${project.imageUrl}" alt="${project.title}" class="pixelated">
+                <img data-src="${project.imageUrl}" alt="${project.title}">
             </a>
             <h3>${project.title}</h3>
             <p>${project.description}</p>
             <div class="project-actions">
                 ${project.actions.map(action => `
-                    <a href="${action.url}" class="button pixelated" ${action.type === 'external' ? 'target="_blank"' : ''}>
+                    <a href="${action.url}" class="button" ${action.type === 'external' ? 'target="_blank"' : ''}>
                         ${action.text}
                     </a>
                 `).join('')}

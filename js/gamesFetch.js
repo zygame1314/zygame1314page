@@ -32,15 +32,38 @@ function initGamesFetch() {
 
             const gameImage = document.createElement('img');
             if (game.background_image) {
-                gameImage.src = game.background_image;
+                gameImage.setAttribute('data-src', game.background_image);
+                gameImage.classList.add('fixed-ratio');
             } else {
-                gameImage.src = '/images/default-game-cover.webp';
+                gameImage.setAttribute('data-src', '/images/default-game-cover.webp');
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
+
             gameImage.onerror = function () {
-                this.src = '/images/default-game-cover.webp';
+                if (this.getAttribute('data-src') === '/images/default-game-cover.webp') {
+                    this.classList.add('default-cover');
+                    return;
+                }
+
+                console.log(`图片加载失败，切换到默认封面: ${this.getAttribute('data-src')}`);
+                this.setAttribute('data-src', '/images/default-game-cover.webp');
                 this.classList.add('default-cover');
+
+                const newSrc = this.getAttribute('data-src');
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    this.src = newSrc;
+                    this.classList.remove('lazy-placeholder');
+                    this.classList.remove('lazy-error');
+                    this.classList.add('lazy-loaded');
+                };
+                tempImg.onerror = () => {
+                    console.error(`默认图片也加载失败: ${newSrc}`);
+                    this.classList.remove('lazy-placeholder');
+                    this.classList.add('lazy-error');
+                };
+                tempImg.src = newSrc;
             };
 
             gameImage.addEventListener('click', function () {
@@ -125,6 +148,8 @@ function initGamesFetch() {
 
             gamesListElem.appendChild(gameItem);
         });
+
+        if (window.reinitializeLazyLoad) window.reinitializeLazyLoad();
     }
 
     fetchPopularGames();
@@ -161,15 +186,49 @@ function initGamesFetch() {
             gameItem.classList.add('game-item');
 
             const gameImage = document.createElement('img');
-            gameImage.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900_schinese.jpg`;
+            gameImage.setAttribute('data-src', `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900_schinese.jpg`);
             gameImage.alt = game.name || '未知游戏';
-            gameImage.onerror = function () {
-                this.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900.jpg`;
-                this.onerror = function () {
-                    this.src = '/images/default-game-cover.webp';
+
+            gameImage.dataset.width = 600;
+            gameImage.dataset.height = 900;
+
+            gameImage.dataset.appid = game.appid;
+
+            const customErrorHandler = function () {
+                const appid = this.dataset.appid;
+                const currentSrc = this.getAttribute('data-src');
+                console.log(`Steam 图片加载失败: ${currentSrc}`);
+
+                if (currentSrc.includes('library_600x900_schinese.jpg')) {
+                    const newSrc = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_600x900.jpg`;
+                    console.log(`尝试加载英文版封面: ${newSrc}`);
+                    this.setAttribute('data-src', newSrc);
+
+                    if (window.reloadLazyImage) {
+                        window.reloadLazyImage(this);
+                    }
+                }
+                else if (currentSrc.includes('library_600x900.jpg')) {
+                    const defaultSrc = '/images/default-game-cover.webp';
+                    console.log(`英文版封面加载失败，使用默认封面`);
+                    this.setAttribute('data-src', defaultSrc);
                     this.classList.add('default-cover');
-                };
+
+                    if (window.reloadLazyImage) {
+                        window.reloadLazyImage(this);
+                    }
+                }
+                else if (currentSrc === '/images/default-game-cover.webp') {
+                    console.error(`默认图片加载失败`);
+                    this.classList.remove('lazy-placeholder');
+                    this.classList.add('lazy-error');
+                }
             };
+
+            if (window.saveLazyLoadErrorHandler) {
+                window.saveLazyLoadErrorHandler(gameImage, customErrorHandler);
+            }
+
             gameImage.style.imageRendering = 'crisp-edges';
 
             gameImage.addEventListener('click', function () {
@@ -206,6 +265,8 @@ function initGamesFetch() {
             gameItem.appendChild(gameImage);
             steamGamesListElem.appendChild(gameItem);
         });
+
+        if (window.reinitializeLazyLoad) window.reinitializeLazyLoad();
     }
 
     fetchRecentlyPlayedGames();

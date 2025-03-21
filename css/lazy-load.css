@@ -1,0 +1,34 @@
+img[data-src] {
+    opacity: 0.2;
+    transition: all 0.3s ease-in-out;
+}
+
+img.lazy-loaded {
+    opacity: 1;
+}
+
+.lazy-placeholder {
+    background-color: #f0f0f0;
+    background-image: linear-gradient(90deg,
+            #f0f0f0 0px,
+            #e0e0e0 40px,
+            #f0f0f0 80px);
+    background-size: 200% 100%;
+    animation: loading-placeholder 1.5s infinite linear;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+.steam-games-list img[data-src] {
+    aspect-ratio: 2/3;
+}
+
+img[data-src].fixed-ratio {
+    aspect-ratio: 16/9;
+}
+
+img.lazy-error {
+    opacity: 0.7;
+    filter: grayscale(100%);
+}

@@ -66,7 +66,22 @@ function initSteamStatus() {
             const username = statusWidget.querySelector('.steam-username');
             const status = statusWidget.querySelector('.steam-status');
 
-            avatar.src = player.avatarfull;
+            if (avatar.getAttribute('data-src') !== player.avatarfull) {
+                avatar.setAttribute('data-src', player.avatarfull);
+
+                avatar.classList.remove('lazy-initialized');
+                avatar.classList.remove('lazy-loaded');
+                avatar.classList.remove('lazy-error');
+
+                avatar.classList.add('lazy-placeholder');
+
+                avatar.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+
+                if (window.reinitializeLazyLoad) {
+                    window.reinitializeLazyLoad();
+                }
+            }
+
             username.textContent = player.personaname;
 
             let statusText = '';

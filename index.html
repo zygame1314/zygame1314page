@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/sections/textbox.css">
     <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/lazy-load.css">
 </head>
 
 <body>
@@ -117,7 +118,7 @@
                             <p class="typing-effect">弃我去者，昨日之日不可留；\n乱我心者，今日之日多烦忧。</p>
                         </div>
                         <a href="https://github.com/zygame1314">
-                            <img src="/images/avatar.webp" alt="我的头像" class="avatar pixelated">
+                            <img data-src="/images/avatar.webp" alt="我的头像" class="avatar">
                         </a>
                     </div>
                 </section>
@@ -308,7 +309,7 @@
                     <div class="weather-widget">
                         <div class="weather-main">
                             <div class="weather-icon">
-                                <img src="" alt="Weather Icon" class="pixelated">
+                                <img data-src="" alt="Weather Icon">
                             </div>
                             <div class="weather-primary">
                                 <p class="temperature"><i class="fas fa-temperature-high"></i> </p>
@@ -369,7 +370,7 @@
                     <div class="steam-status-widget">
                         <div class="steam-user-info">
                             <a href="https://steamcommunity.com/profiles/76561199075833485/" target="_blank">
-                                <img src="" alt="Steam Avatar" class="steam-avatar pixelated">
+                                <img data-src="" alt="Steam Avatar" class="steam-avatar">
                             </a>
                             <div class="steam-user-details">
                                 <p class="steam-username"></p>
@@ -388,7 +389,7 @@
                     <h2 class="pixel-text">听点小曲</h2>
                     <div class="music-player">
                         <div class="music-cover">
-                            <img src="" alt="album cover" class="cover-img pixelated">
+                            <img data-src="" alt="album cover" class="cover-img">
                         </div>
                         <div class="music-info">
                             <div class="song-title"></div>
@@ -461,11 +462,11 @@
                 <p>如果你喜欢我的内容，欢迎打赏支持！除了用来续费域名和维护项目外，可能还会偷偷用来吃顿好的，感谢你的鼓励！😊</p>
                 <div class="qr-codes">
                     <div class="qr-code">
-                        <img data-src="/images/wechat-qr-code.webp" alt="微信支付二维码" class="pixelated">
+                        <img data-src="/images/wechat-qr-code.webp" alt="微信支付二维码"">
                         <p><i class="fab fa-weixin"></i> 微信支付</p>
                     </div>
                     <div class="qr-code">
-                        <img data-src="/images/alipay-qr-code.webp" alt="支付宝二维码" class="pixelated">
+                        <img data-src="/images/alipay-qr-code.webp" alt="支付宝二维码"">
                         <p><i class="fab fa-alipay"></i> 支付宝</p>
                     </div>
                 </div>
@@ -506,7 +507,7 @@
                 <p class="cdn-support">
                     <i class="fas fa-cloud"></i> 本网站由
                     <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">
-                        <img src="/images/articles/又拍云_logo5.webp" alt="又拍云"
+                        <img data-src="/images/articles/又拍云_logo5.webp" alt="又拍云"
                             style="height: 30px; vertical-align: middle;">
                     </a>
                     提供 CDN 加速/云存储服务
@@ -545,6 +546,7 @@
     <script src="/js/donate.js"></script>
     <script src="/js/detectDevTools.js"></script>
     <script src="/js/live2dTextBox.js"></script>
+    <script src="/js/lazyLoad.js"></script>
     <script src="/js/main.js"></script>
 </body>
 

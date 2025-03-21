@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const imageHtml = hasImage ?
             `<div class="important-notice-image">
-                <img src="${data.image.url}" alt="${data.image.alt || '通知图片'}" loading="lazy">
+                <img data-src="${data.image.url}" 
+                     alt="${data.image.alt || '通知图片'}" 
+                     class="lazy-placeholder"
+                     ${data.image.width ? `data-width="${data.image.width}"` : ''}
+                     ${data.image.height ? `data-height="${data.image.height}"` : ''}>
             </div>` : '';
 
         if (hasImage) {
@@ -79,10 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (imagePosition === 'right') {
                 contentHtml = `
                     <div class="notice-with-image-right">
-                        ${imageHtml}
                         <div class="important-notice-body">
                             ${data.content}
                         </div>
+                        ${imageHtml}
                     </div>
                 `;
             }
@@ -116,6 +120,10 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
         document.body.appendChild(modal);
+
+        if (window.reinitializeLazyLoad) {
+            window.reinitializeLazyLoad();
+        }
 
         setTimeout(() => {
             modal.classList.add('show');
@@ -154,10 +162,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (hasImage) {
             const img = modal.querySelector('.important-notice-image img');
-            img.onerror = function () {
+            window.saveLazyLoadErrorHandler(img, function () {
                 const imageContainer = this.parentElement;
                 imageContainer.style.display = 'none';
-            };
+            });
         }
     }
 });

@@ -66,17 +66,26 @@
         calc(100% + 2px - 8px) calc(100% + 2px - 8px) var(--primary-color);
 }
 
+.article-thumbnail-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .article-thumbnail {
+    max-width: 100%;
+    min-width: 240px;
     width: 80%;
     max-height: 200px;
-    object-fit: cover;
+    min-height: 120px;
+    object-fit: contain;
     border: 2px solid var(--primary-color);
-    margin-bottom: 1rem;
     flex-shrink: 0;
     transition: transform 0.2s steps(2);
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
 .article-card:hover .article-thumbnail {
