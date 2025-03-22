@@ -132,7 +132,8 @@
     #steam-status,
     #article-network,
     #donate-button-section,
-    #home .text-container {
+    #home .text-container,
+    #music-player {
         width: 100%;
         box-sizing: border-box;
     }
