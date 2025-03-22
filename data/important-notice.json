@@ -1,6 +1,6 @@
 {
     "id": "notice-achievements",
-    "active": true,
+    "active": false,
     "title": "铂金了！",
     "content": "<p>什么？你怎么知道我《怪物猎人：荒野》全成就了！</p>",
     "image": {
