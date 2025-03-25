@@ -562,7 +562,6 @@
     transform: translateY(-50%);
     font-size: 0.9em;
     font-weight: bold;
-    color: var(--background-color);
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     z-index: 1;
 }

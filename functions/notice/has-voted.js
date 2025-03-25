@@ -1,4 +1,15 @@
 export async function onRequestGet(context) {
+    const corsHeaders = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json"
+    };
+
+    if (context.request.method === "OPTIONS") {
+        return new Response(null, { headers: corsHeaders });
+    }
+
     try {
         const url = new URL(context.request.url);
         const noticeId = url.searchParams.get("id");
@@ -8,7 +19,7 @@ export async function onRequestGet(context) {
                 error: "缺少通知ID参数"
             }), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }
+                headers: corsHeaders
             });
         }
 
@@ -17,7 +28,7 @@ export async function onRequestGet(context) {
             return new Response(JSON.stringify({
                 hasVoted: false
             }), {
-                headers: { "Content-Type": "application/json" }
+                headers: corsHeaders
             });
         }
 
@@ -27,7 +38,7 @@ export async function onRequestGet(context) {
         return new Response(JSON.stringify({
             hasVoted: !!hasVoted
         }), {
-            headers: { "Content-Type": "application/json" }
+            headers: corsHeaders
         });
 
     } catch (error) {
@@ -36,7 +47,7 @@ export async function onRequestGet(context) {
             details: error.message
         }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: corsHeaders
         });
     }
 }

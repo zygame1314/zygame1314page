@@ -1,4 +1,15 @@
 export async function onRequestPost(context) {
+    const corsHeaders = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json"
+    };
+
+    if (context.request.method === "OPTIONS") {
+        return new Response(null, { headers: corsHeaders });
+    }
+
     try {
         const request = context.request;
         const body = await request.json();
@@ -8,7 +19,7 @@ export async function onRequestPost(context) {
                 error: "无效的请求数据"
             }), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }
+                headers: corsHeaders
             });
         }
 
@@ -41,7 +52,7 @@ export async function onRequestPost(context) {
             success: true,
             results: currentResults
         }), {
-            headers: { "Content-Type": "application/json" }
+            headers: corsHeaders
         });
 
     } catch (error) {
@@ -50,7 +61,7 @@ export async function onRequestPost(context) {
             details: error.message
         }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: corsHeaders
         });
     }
 }
