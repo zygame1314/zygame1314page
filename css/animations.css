@@ -1135,3 +1135,35 @@
         background-position: 200% 0;
     }
 }
+
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes border-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 1px var(--primary-color);
+    }
+
+    50% {
+        box-shadow: 0 0 0 3px var(--primary-color);
+    }
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}

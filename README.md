@@ -20,6 +20,7 @@
 │  ├─ effects.css
 │  ├─ errorpage.css
 │  ├─ layout.css
+│  ├─ lazy-load.css
 │  ├─ loading.css
 │  ├─ modal-notice.css
 │  ├─ notification.css
@@ -41,8 +42,7 @@
 │  │  ├─ timeline.css
 │  │  ├─ visit-counter.css
 │  │  └─ weather.css
-│  ├─ typography.css
-│  └─ utilities.css
+│  └─ typography.css
 ├─ custom
 │  └─ errorpage.html
 ├─ data
@@ -85,6 +85,7 @@
 │  └─ weather
 │     └─ weather.js
 ├─ images
+│  ├─ achievement.webp
 │  ├─ alipay-qr-code.webp
 │  ├─ articles
 │  │  ├─ ccnu-auto.webp
@@ -163,6 +164,7 @@
 │  ├─ gamesFetch.js
 │  ├─ hoverEffects.js
 │  ├─ importantNotice.js
+│  ├─ lazyLoad.js
 │  ├─ live2d.js
 │  ├─ live2dSettings.js
 │  ├─ live2dTextBox.js

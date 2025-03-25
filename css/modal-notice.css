@@ -395,3 +395,193 @@
 .notice-with-image-right {
     flex-direction: row-reverse;
 }
+
+.notice-poll-container {
+    margin: 20px 0;
+    padding: 15px;
+    border: 2px solid var(--secondary-color);
+    background-color: rgba(0, 0, 0, 0.05);
+    position: relative;
+    animation: fadeIn 0.5s ease-out 0.3s both;
+}
+
+.notice-poll-container::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid var(--primary-color);
+    pointer-events: none;
+    animation: border-pulse 3s infinite;
+    z-index: -1;
+}
+
+.notice-poll-question {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    position: relative;
+    text-shadow: 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.notice-poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notice-poll-option {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.notice-poll-option input[type="radio"],
+.notice-poll-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+}
+
+.notice-poll-option label {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border: 2px solid var(--secondary-color);
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.notice-poll-option label::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.notice-poll-option input[type="radio"]+label::before {
+    border-radius: 50%;
+}
+
+.notice-poll-option input[type="checkbox"]+label::before {
+    border-radius: 0;
+}
+
+.notice-poll-option input:checked+label {
+    border-color: var(--primary-color);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+.notice-poll-option input:checked+label::before {
+    background-color: var(--primary-color);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.notice-poll-option:hover label {
+    transform: translateX(5px);
+}
+
+.notice-poll-option input:checked+label::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg,
+            transparent,
+            rgba(var(--primary-color-rgb), 0.1),
+            transparent);
+    animation: shine 2s infinite;
+}
+
+.notice-poll-submit {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notice-poll-result {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--secondary-color);
+}
+
+.notice-poll-result-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.notice-poll-result-item {
+    margin-bottom: 8px;
+}
+
+.notice-poll-result-bar {
+    height: 20px;
+    background-color: rgba(var(--primary-color-rgb), 0.2);
+    margin: 5px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.notice-poll-result-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    position: relative;
+    transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.notice-poll-result-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: slide 2s infinite;
+}
+
+.notice-poll-result-percent {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--background-color);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.notice-poll-thanks {
+    padding: 15px;
+    text-align: center;
+    background: rgba(var(--primary-color-rgb), 0.1);
+    border: 1px solid var(--primary-color);
+    margin-top: 15px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.notice-poll-error {
+    padding: 10px;
+    color: #ff3333;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff3333;
+    margin-top: 10px;
+    text-align: center;
+    animation: pulse 2s infinite;
+}

@@ -1,12 +1,31 @@
 {
-    "id": "notice-achievements",
-    "active": false,
-    "title": "铂金了！",
-    "content": "<p>什么？你怎么知道我《怪物猎人：荒野》全成就了！</p>",
-    "image": {
-        "url": "/images/achievement.webp",
-        "alt": "全成就",
-        "position": "top"
-    },
-    "expiryDate": "2025-06-01"
+    "id": "notice-website-speed",
+    "active": true,
+    "title": "网站性能调查",
+    "content": "<p>来投个票帮助我优化网站性能吧( •̀ ω •́ )✧</p>",
+    "expiryDate": "2025-06-01",
+    "poll": {
+        "active": true,
+        "question": "你认为本网站的加载速度如何？",
+        "options": [
+            {
+                "id": "option1",
+                "text": "嘎嘎快"
+            },
+            {
+                "id": "option2",
+                "text": "还可以"
+            },
+            {
+                "id": "option3",
+                "text": "有点慢"
+            },
+            {
+                "id": "option4",
+                "text": "史"
+            }
+        ],
+        "allowMultipleVotes": false,
+        "showResults": true
+    }
 }
