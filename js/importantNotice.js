@@ -1,3 +1,5 @@
+const API_BASE = 'https://blog.zygame1314.site';
+
 document.addEventListener('DOMContentLoaded', function () {
     window.loadingComplete.then(() => {
         if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
@@ -215,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch(`/notice/has-voted?id=${noticeId}`);
+            const response = await fetch(`${API_BASE}/notice/has-voted?id=${noticeId}`);
             if (!response.ok) throw new Error('获取投票状态失败');
             const data = await response.json();
             if (data.hasVoted) {
@@ -295,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         function fetchAndDisplayResults(noticeId) {
-            fetch(`/notice/poll-results?id=${noticeId}`)
+            fetch(`${API_BASE}/notice/poll-results?id=${noticeId}`)
                 .then(response => {
                     if (!response.ok) throw new Error('获取投票结果失败');
                     return response.json();
@@ -339,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function submitVote(noticeId, selectedOptions) {
-            return fetch('/notice/vote', {
+            return fetch(`${API_BASE}/notice/vote`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
