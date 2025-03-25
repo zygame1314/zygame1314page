@@ -1,5 +1,3 @@
-const API_BASE = 'https://blog.zygame1314.site';
-
 class SiteStatus {
     constructor() {
         this.statusHistory = [];
