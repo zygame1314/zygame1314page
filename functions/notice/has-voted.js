@@ -6,10 +6,6 @@ export async function onRequestGet(context) {
         "Content-Type": "application/json"
     };
 
-    if (context.request.method === "OPTIONS") {
-        return new Response(null, { headers: corsHeaders });
-    }
-
     try {
         const url = new URL(context.request.url);
         const noticeId = url.searchParams.get("id");
@@ -50,4 +46,15 @@ export async function onRequestGet(context) {
             headers: corsHeaders
         });
     }
+}
+
+export async function onRequestOptions() {
+    return new Response(null, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400'
+        }
+    });
 }

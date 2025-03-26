@@ -6,10 +6,6 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json"
     };
 
-    if (context.request.method === "OPTIONS") {
-        return new Response(null, { headers: corsHeaders });
-    }
-
     try {
         const request = context.request;
         const body = await request.json();
@@ -64,4 +60,15 @@ export async function onRequestPost(context) {
             headers: corsHeaders
         });
     }
+}
+
+export async function onRequestOptions() {
+    return new Response(null, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400'
+        }
+    });
 }
