@@ -55,6 +55,22 @@
             "cover": "/images/music/花の塔.webp",
             "ytLink": "https://www.youtube.com/watch?v=bM3bYVt-c1k",
             "comment": "《莉可丽丝》的ED变成8-bit后，竟然有种莫名的燃情感？ 脑海中已经开始自动播放千束和泷奈贴贴的画面了！"
+        },
+        {
+            "title": "怪獣(8-bit)",
+            "artist": "サカナクション",
+            "path": "/data/music/怪獣(8-bit) - サカナクション.webm",
+            "cover": "/images/music/怪獣.webp",
+            "ytLink": "https://www.youtube.com/watch?v=TzDeek1RP6Y",
+            "comment": "这首歌是献给“怪獣”们的赞歌，他们的呐喊跨越光年，正是《チ。》中知识与牺牲代代相传的回响。"
+        },
+        {
+            "title": "アボリア(8-bit)",
+            "artist": "ヨルシカ",
+            "path": "/data/music/アボリア(8-bit) - ヨルシカ.webm",
+            "cover": "/images/music/アボリア.webp",
+            "ytLink": "https://www.youtube.com/watch?v=wNVKtBOHgbg",
+            "comment": "如果说《怪獣》是反抗的呐喊，ED《アポリア》就是支撑呐喊的、那份在“叹息”与“着迷”中坚守的内在力量。"
         }
     ]
 }

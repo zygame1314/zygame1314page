@@ -258,54 +258,96 @@
     border-color: var(--secondary-color);
 }
 
-.rhythm-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--primary-color);
+.audio-visualizer {
     position: fixed;
-    display: none;
+    top: 0;
+    bottom: 0;
+    width: 180px;
+    z-index: 9998;
     pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease-out;
+    display: flex;
+    align-items: center;
 }
 
-.rhythm-dot.active {
-    display: block;
+.audio-visualizer.left {
+    left: 0;
 }
 
-.rhythm-dot.pulse::before {
-    opacity: 0.7;
-    transform: translate(-8px, -8px);
+.audio-visualizer.right {
+    right: 0;
 }
 
-.rhythm-dot.pulse::after {
-    opacity: 0.7;
-    transform: translate(8px, 8px);
+.spectrum-container {
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 2px;
+    transform: perspective(500px) rotateY(20deg);
 }
 
-.rhythm-pixel {
+.audio-visualizer.right .spectrum-container {
+    transform: perspective(500px) rotateY(-20deg);
+}
+
+.spectrum-bar {
+    margin: 0;
+    height: 5px;
+    width: 0;
+    align-self: flex-start;
+    transform-origin: left center;
+    transition: width 0.06s steps(8);
+    position: relative;
+    overflow: visible;
+    image-rendering: pixelated;
+    box-shadow: 0 0 3px var(--primary-color);
+}
+
+.spectrum-bar::after {
+    content: '';
     position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: currentColor;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(90deg,
+            currentColor,
+            currentColor 3px,
+            transparent 4px,
+            transparent 6px);
+    opacity: 0.7;
 }
 
-.rhythm-dot.top-left {
-    top: 40px;
-    left: 40px;
+.audio-visualizer.right .spectrum-bar {
+    align-self: flex-end;
+    transform-origin: right center;
 }
 
-.rhythm-dot.top-right {
-    top: 40px;
-    right: 40px;
+.audio-visualizer.right .spectrum-bar::after {
+    background: repeating-linear-gradient(-90deg,
+            currentColor,
+            currentColor 3px,
+            transparent 4px,
+            transparent 6px);
 }
 
-.rhythm-dot.bottom-left {
-    bottom: 40px;
-    left: 40px;
+.spectrum-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-image: linear-gradient(90deg,
+            var(--primary-color) 1px,
+            transparent 1px);
+    background-size: 6px 100%;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
-.rhythm-dot.bottom-right {
-    bottom: 40px;
-    right: 40px;
+.audio-visualizer.right .spectrum-bar::before {
+    background-image: linear-gradient(-90deg,
+            var(--primary-color) 1px,
+            transparent 1px);
 }

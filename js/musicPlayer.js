@@ -153,7 +153,7 @@ class MusicPlayer {
     setupAudioAnalyzer() {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         this.analyser = this.audioContext.createAnalyser();
-        this.analyser.fftSize = 64;
+        this.analyser.fftSize = 256;
         this.analyser.smoothingTimeConstant = 0.8;
         this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
         this.source = this.audioContext.createMediaElementSource(this.audio);
@@ -162,22 +162,8 @@ class MusicPlayer {
     }
 
     createRhythmDots() {
-        const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-        this.rhythmDots = positions.map(pos => {
-            const dot = document.createElement('div');
-            dot.className = `rhythm-dot ${pos}`;
-
-            for (let i = 0; i < 8; i++) {
-                const pixel = document.createElement('div');
-                pixel.className = 'rhythm-pixel';
-                pixel.style.left = '3px';
-                pixel.style.top = '3px';
-                dot.appendChild(pixel);
-            }
-
-            document.body.appendChild(dot);
-            return dot;
-        });
+        this.createVisualizer('left');
+        this.createVisualizer('right');
 
         this.frequencyToColor = (frequency) => {
             const hue = Math.floor((frequency / 255) * 360);
@@ -187,72 +173,111 @@ class MusicPlayer {
         this.animateRhythm();
     }
 
+    createVisualizer(side) {
+        const visualizer = document.createElement('div');
+        visualizer.className = `audio-visualizer ${side}`;
+
+        const container = document.createElement('div');
+        container.className = 'spectrum-container';
+        visualizer.appendChild(container);
+
+        const barCount = 32;
+        for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'spectrum-bar';
+
+            bar.style.setProperty('--pixel-offset', `${Math.random() * 5}px`);
+            container.appendChild(bar);
+        }
+
+        document.body.appendChild(visualizer);
+
+        if (!this[`${side}Visualizer`]) {
+            this[`${side}Visualizer`] = visualizer;
+        }
+    }
+
+    frequencyToColor(frequency) {
+        if (frequency < 50) {
+            return `rgb(0, ${100 + frequency}, ${150 + frequency / 2})`;
+        } else if (frequency < 120) {
+            return `rgb(0, ${180 + frequency / 4}, ${120 - frequency / 3})`;
+        } else if (frequency < 190) {
+            return `rgb(${frequency - 120}, ${255}, 0)`;
+        } else if (frequency < 220) {
+            return `rgb(${255}, ${255 - (frequency - 190) * 4}, 0)`;
+        } else {
+            return `rgb(255, ${Math.max(0, 120 - (frequency - 220))}, ${Math.min(255, (frequency - 220) * 5)})`;
+        }
+    }
+
     animateRhythm() {
+        const createNoise = (magnitude = 5) => Math.floor(Math.random() * magnitude);
+
         const updateRhythm = () => {
             if (this.isPlaying) {
                 this.analyser.getByteFrequencyData(this.dataArray);
 
-                const bassFreq = this.dataArray.slice(0, 8).reduce((a, b) => a + b) / 8;
-                const midFreq = this.dataArray.slice(8, 16).reduce((a, b) => a + b) / 8;
-                const highFreq = this.dataArray.slice(16, 24).reduce((a, b) => a + b) / 8;
+                if (this.leftVisualizer) {
+                    const leftBars = this.leftVisualizer.querySelectorAll('.spectrum-bar');
+                    const leftBarCount = leftBars.length;
 
-                this.rhythmDots.forEach((dot, index) => {
-                    dot.classList.add('active');
+                    for (let i = 0; i < leftBarCount; i++) {
+                        const dataIndex = Math.floor(i * (this.dataArray.length / 2) / leftBarCount);
+                        const value = this.dataArray[dataIndex] + createNoise();
 
-                    let intensity, freq;
-                    switch (index) {
-                        case 0:
-                            intensity = bassFreq * 1.2;
-                            freq = bassFreq;
-                            break;
-                        case 1:
-                            intensity = highFreq * 1.1;
-                            freq = highFreq;
-                            break;
-                        case 2:
-                            intensity = midFreq * 1.15;
-                            freq = midFreq;
-                            break;
-                        case 3:
-                            intensity = (bassFreq + midFreq) / 1.8;
-                            freq = (bassFreq + midFreq) / 2;
-                            break;
+                        const width = `${Math.floor((value / 255) * 20) * 5}%`;
+                        const color = this.frequencyToColor(value);
+
+                        leftBars[i].style.width = width;
+                        leftBars[i].style.color = color;
+                        leftBars[i].style.backgroundColor = color;
+                        leftBars[i].classList.toggle('active', value > 200);
                     }
+                }
 
-                    const ratio = intensity / 255;
-                    const scale = 1 + (intensity / 200);
-                    const color = this.frequencyToColor(freq);
+                if (this.rightVisualizer) {
+                    const rightBars = this.rightVisualizer.querySelectorAll('.spectrum-bar');
+                    const rightBarCount = rightBars.length;
 
-                    dot.style.transform = `scale(${scale}) rotate(${intensity / 10}deg)`;
-                    dot.style.backgroundColor = color;
+                    for (let i = 0; i < rightBarCount; i++) {
+                        const dataIndex = Math.floor((this.dataArray.length / 2) + i * (this.dataArray.length / 2) / rightBarCount);
+                        const value = this.dataArray[dataIndex < this.dataArray.length ? dataIndex : this.dataArray.length - 1] + createNoise();
 
-                    const pixels = dot.querySelectorAll('.rhythm-pixel');
-                    pixels.forEach((pixel, i) => {
-                        if (intensity > 80) {
-                            const angle = (i * Math.PI / 4) + performance.now() / 400;
-                            const distance = 4 + (ratio * 8);
-                            const x = Math.cos(angle) * distance;
-                            const y = Math.sin(angle) * distance;
+                        const width = `${Math.floor((value / 255) * 20) * 5}%`;
+                        const color = this.frequencyToColor(value);
 
-                            pixel.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px) scale(${0.8 + ratio * 0.4})`;
-                            pixel.style.opacity = (ratio * 1.2).toString();
-                            pixel.style.display = 'block';
-                            pixel.style.backgroundColor = color;
-                        } else {
-                            pixel.style.display = 'none';
-                            pixel.style.opacity = '0';
+                        rightBars[i].style.width = width;
+                        rightBars[i].style.color = color;
+                        rightBars[i].style.backgroundColor = color;
+                        rightBars[i].classList.toggle('active', value > 200);
+
+                        if (value > 180 && Math.random() > 0.9) {
+                            rightBars[i].style.filter = 'brightness(1.3)';
+                            setTimeout(() => {
+                                if (rightBars[i]) rightBars[i].style.filter = 'none';
+                            }, 50);
                         }
-                    });
-                });
+                    }
+                }
             } else {
-                this.rhythmDots.forEach(dot => {
-                    dot.classList.remove('active');
-                    dot.querySelectorAll('.rhythm-pixel').forEach(pixel => {
-                        pixel.style.display = 'none';
-                        pixel.style.opacity = '0';
+                if (this.leftVisualizer) {
+                    const leftBars = this.leftVisualizer.querySelectorAll('.spectrum-bar');
+                    leftBars.forEach(bar => {
+                        bar.style.width = '0';
+                        bar.classList.remove('active');
                     });
-                });
+                }
+
+                if (this.rightVisualizer) {
+                    const rightBars = this.rightVisualizer.querySelectorAll('.spectrum-bar');
+                    rightBars.forEach(bar => {
+                        bar.style.width = '0';
+                        bar.classList.remove('active');
+                    });
+                }
             }
+
             requestAnimationFrame(updateRhythm);
         };
 
@@ -292,6 +317,10 @@ class MusicPlayer {
 
             this.isPlaying = true;
             this.playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+            if (this.leftVisualizer) this.leftVisualizer.style.display = 'flex';
+            if (this.rightVisualizer) this.rightVisualizer.style.display = 'flex';
+
             await this.audio.play();
         } catch (error) {
             console.error('播放出错:', error);
@@ -304,7 +333,7 @@ class MusicPlayer {
         this.isPlaying = false;
         this.playBtn.innerHTML = '<i class="fas fa-play"></i>';
         this.audio.pause();
-        this.rhythmDots.forEach(dot => dot.classList.remove('active'));
+
     }
 
     initializePlaylist() {
