@@ -1136,13 +1136,23 @@
     }
 }
 
-@keyframes slide {
+@keyframes slide-smooth {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.7;
+    }
+
+    90% {
+        opacity: 0.7;
     }
 
     100% {
-        transform: translateX(100%);
+        transform: translateX(200%);
+        opacity: 0;
     }
 }
 

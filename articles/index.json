@@ -126,5 +126,22 @@
         "aiAssistants": [
             "Claude 3.5 Sonnet"
         ]
+    },
+    {
+        "id": "broke-webmaster-survival",
+        "title": "穷狗站长生存指南",
+        "date": "2025-03-26",
+        "excerpt": "分享个人网站运营过程中的低成本解决方案和省钱技巧...",
+        "thumbnail": "/images/articles/webmaster.webp",
+        "contentUrl": "/articles/content/broke-webmaster-survival.html",
+        "tags": [
+            "经验分享",
+            "网站运营",
+            "系统维护"
+        ],
+        "aiAssistants": [
+            "Claude 3.7 Sonnet",
+            "Gemini 2.5 Pro Experimental 03-25"
+        ]
     }
 ]

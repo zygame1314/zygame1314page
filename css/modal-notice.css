@@ -545,14 +545,14 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -100%;
+    width: 70%;
     height: 100%;
     background: linear-gradient(90deg,
             transparent,
-            rgba(255, 255, 255, 0.3),
+            rgba(255, 255, 255, 0.3) 50%,
             transparent);
-    animation: slide 2s infinite;
+    animation: slide-smooth 3s ease-in-out infinite;
 }
 
 .notice-poll-result-percent {

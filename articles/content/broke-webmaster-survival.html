@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>穷狗站长生存指南 - zygame1314</title>
+</head>
+
+<body>
+    <main class="article-content">
+        <div class="article-body">
+            <h1>穷狗站长的白嫖生存指南：除了域名，一分钱也不想多花！</h1>
+            <p class="article-intro">
+                大家好，我是传说中的“穷狗站长”。在这个服务器按秒计费、带宽贵过黄金的时代，囊中羞涩的我，依然坚守着自己的一亩三分地。怎么做到的？别问，问就是“白嫖”！本文将毫无保留地分享我的独门抠门秘籍，目标只有一个：<strong>除了域名那点“底裤钱”，其他能省则省，能嫖则嫖！</strong>
+                如果你也是预算有限但又想搞点事情的同道中人，那这篇文章绝对是为你量身定做的。
+            </p>
+
+            <h2>唯一的“投资”：域名</h2>
+            <p>咱们丑话说在前头，域名这玩意儿，基本是白嫖不来的（除非你用那些免费的二级域名，但那感觉就像寄人篱下，不够自由）。一个属于自己的域名，是网站的门面，是身份的象征，更是我们穷狗站长最后的“尊严”。</p>
+            <p>所以，该掏钱还得掏。不过，抠门如我，自然也有省钱小技巧：</p>
+            <ul>
+                <li>选择非主流但便宜的后缀，比如 <code>.top</code>, <code>.xyz</code>, <code>.icu</code> (虽然听起来有点怪)。</li>
+                <li>蹲各大域名注册商的活动，首年优惠有时能打骨折。</li>
+                <li>续费？不存在的！打折的时候多注册几年才是王道（如果预算允许的话）。</li>
+            </ul>
+            <p>总之，域名是基础投入，咱们认了。但从这里开始，白嫖之旅正式启动！</p>
+            <p
+                style="border: 1px dashed #ff9800; padding: 10px; background-color: rgba(255, 152, 0, 0.1); border-radius: 4px;">
+                <strong>喂喂喂，听到没有！</strong> 看到本站长为了省钱如此费尽心机，连这唯一的域名钱都抠抠搜搜的，你们于心何忍啊？<br>
+                要是觉得本站对你有那么一丢丢帮助，或者纯粹是想支持一下我这“贫困”站长继续发光发热（主要是发热），<strong>主页的按钮懂我意思吧？</strong>
+                目标不高，帮我把今年的域名钱续上就行！感激涕零！🙏
+            </p>
+
+            <h2>“打工换饭吃”：又拍云的代金券大法</h2>
+            <p>静态资源总得有个地方放吧？访问慢了总得加速吧？直接买对象存储（OSS）和 CDN？太贵了！我的选择是——给大佬“打工”，换取免费资源。</p>
+            <p>这里点名表扬
+                <strong>又拍云联盟</strong>。只要你的网站符合他们的要求（通常需要已备案、内容合规等），并且愿意在网站底部挂上他们的小广告（牺牲一点点用户体验，换来真金白银的代金券，值！），就能每月获得一定额度的代金券。
+            </p>
+            <p>这些代金券可以用来抵扣又拍云的云存储、CDN 流量等费用。对于个人小站来说，只要不是流量爆炸，基本上靠代金券就能覆盖大部分开销了。这波操作，我称之为“用广告位换生存空间”。</p>
+
+            <div class="article-tips">
+                <h3><i class="fas fa-lightbulb"></i> 又拍云联盟小贴士</h3>
+                <ul>
+                    <li>申请前务必仔细阅读联盟要求，确保你的网站符合条件。国内服务商，备案通常是硬性要求。</li>
+                    <li>广告位选择尽量低调，别太影响用户浏览。底部文字链是比较常见的选择。</li>
+                    <li>代金券有有效期，记得及时使用，别浪费了这“血汗钱”。</li>
+                </ul>
+            </div>
+
+            <h2>Cloudflare：永远滴神！</h2>
+            <p>如果说又拍云是“打工换饭”，那 Cloudflare 简直就是“活菩萨送温暖”！这家公司的免费套餐，强大到令人发指，给得实在太多了，多到让我怀疑他们是不是在做慈善。常规操作下，你只需要把域名的 DNS
+                服务器（NS 记录）指向 Cloudflare，就能享受全家桶服务。</p>
+            <p>看看 Cloudflare 免费套餐都提供了啥（标准接入下）：</p>
+            <ul>
+                <li><strong>全球 CDN 加速：</strong> 让你的网站在全球各地访问都起飞（理论上），而且流量不限量！简直离谱！</li>
+                <li><strong>免费 SSL 证书：</strong> 一键开启 HTTPS，浏览器地址栏的小绿锁，免费拥有！省了一笔证书钱。</li>
+                <li><strong>DDoS 防护：</strong> 有人打你？别怕，Cloudflare 帮你扛！基础的防护免费管够。</li>
+                <li><strong>防火墙规则 (WAF)：</strong> 可以自定义规则，屏蔽恶意访问、爬虫，增强网站安全性。免费额度也够用。</li>
+                <li><strong>DNS 解析：</strong> 稳定快速的 DNS 服务，也是免费的。</li>
+                <li><strong>Workers 边缘计算：</strong> 免费额度（每天 10 万次请求）足够玩出很多花样。</li>
+                <li><strong>Pages 静态托管：</strong> 部署静态网站，速度飞快，还带 CI/CD。</li>
+                <li><strong>R2 对象存储：</strong> 每月免费额度香喷喷，虽然比不上专业付费的，但白嫖还要啥自行车。</li>
+            </ul>
+
+            <p><strong>但是！重点来了！</strong> 有朋友就问了：“我的域名在国内服务商那里备过案，NS 记录动不了/不想动，咋办？难道就和 Cloudflare 无缘了吗？”</p>
+            <p>问得好！咱们穷狗站长，主打的就是一个“灵活变通”、“曲线救国”！确实，如果你<strong>不把 NS 记录迁到 Cloudflare</strong>（也就是所谓的 CNAME
+                接入或部分接入），你会损失掉大部分核心功能，比如：</p>
+            <ul>
+                <li><strong>主站的 CDN 加速：</strong> 那朵标志性的“橙色云彩” ☁️ 你点不亮了。不过嘛，考虑到国内这玩意又叫“减速小黄云”，这损失……嗯，看开点？😅</li>
+                <li><strong>基于 CDN 的安全防护：</strong> DDoS 防护、WAF 这些主要依赖于流量经过 Cloudflare 的节点，不接管 NS 就没法完全享受。</li>
+                <li><strong>便捷的 DNS 管理：</strong> 还是得在你原来的 DNS 服务商那里管理解析记录。</li>
+            </ul>
+
+            <p><strong>不过！即使不托管域名，Cloudflare 的这些宝贝你依然能“嫖”到：</strong></p>
+            <ul>
+                <li><strong style="color: #00bcd4;">Workers 边缘计算：</strong> 你可以在 Workers 里添加自定义域（比如
+                    `api.yourdomain.com`），Cloudflare 会告诉你添加一个 CNAME 解析记录。你去你当前的 DNS 服务商那里，把这个 CNAME 记录加上，就能用自己的子域名跑
+                    Workers 了！</li>
+                <li><strong style="color: #00bcd4;">Pages 静态托管：</strong> 和 Workers 类似，Pages 也支持绑定自定义域（比如
+                    `blog.yourdomain.com`）。同样是在你当前的 DNS 提供商那里添加 Cloudflare 指定的 CNAME 记录即可。白嫖一个高性能静态网站托管！</li>
+            </ul>
+
+            <div class="article-tips">
+                <h3><i class="fas fa-lightbulb"></i> CNAME 接入小贴士</h3>
+                <ul>
+                    <li>这种方式通常只适用于<strong>子域名</strong>。根域名（比如 `yourdomain.com`）直接 CNAME 可能不支持或不推荐。</li>
+                    <li>你需要在你<strong>当前的 DNS 服务商</strong>（比如阿里云、腾讯云 DNSPod 等）那里添加 CNAME 记录，而不是在 Cloudflare。</li>
+                    <li>Cloudflare 会自动为通过这种方式绑定的子域名提供 SSL 证书，这点还是很良心的。</li>
+                </ul>
+            </div>
+
+            <p><strong>至于 R2 存储呢？</strong> 这玩意儿可是个好东西，Cloudflare
+                送的免费对象存储额度，不用白不用！它非常适合用来当<strong>图床</strong>，比如我就用它来托管网站评论区用户上传的图片，简直完美（压根没人上传）。理论上，你可以给 R2 绑定一个自定义域名（比如
+                `assets.yourdomain.com`）来提供服务，显得更专业。</p>
+            <p><strong>但是，注意了！</strong> 和 Workers/Pages 不同，要想给 R2 绑定自定义域名，你的主域名<strong>必须</strong>是完全托管在 Cloudflare
+                上的（也就是 NS 记录指向 Cloudflare）。如果你是 CNAME 接入或者域名在别处，那就没法直接用自己的域名访问 R2 了。</p>
+            <p>那咋办？别慌，即使不能绑自己的域名，R2 还是会提供一个公共访问链接（形如
+                <code><var>your-bucket</var>.<var>your-account-id</var>.r2.cloudflarestorage.com</code> 或者更简洁的
+                <code>pub-<var>hash</var>.r2.dev</code> 公开访问桶链接）。对于像评论区图床这种场景，或者内部使用、临时分享，直接用这个公共链接也完全够用了！
+            </p>
+            <blockquote>
+                <p><strong>友情提示：</strong> 直接用 R2 的 <code>*.r2.dev</code> 公共链接当 CDN
+                    使，属于“骚操作”，虽然技术上可行，但不保证长期稳定，也缺乏自定义域名的专业性。小范围测试或者内部用用还行，正式对外的大流量服务嘛……三思而后行，毕竟是白嫖来的，要求别太高。 😉</p>
+            </blockquote>
+
+            <p>所以你看，即使有备案等限制，只要思想不滑坡，办法总比困难多！Cloudflare
+                大善人，总能在犄角旮旯里给你留点白嫖的余地。</strong></p>
+
+            <h2>抠门到极致：疯狂压缩静态资源</h2>
+            <p>白嫖来的资源虽然香，但也不能滥用。CDN 流量（即使是免费的，也要考虑回源流量或某些限制）、存储空间（无论是又拍云还是 Github），都是有限的。所以，我们必须从源头抓起，把静态资源文件的大小压榨到极致！
+            </p>
+            <p>我的原则是：<strong>能有损，绝不用无损；能转格式，绝不用原格式！</strong></p>
+            <ul>
+                <li><strong>图片：</strong> JPG/PNG/GIF 通通给我转成 <strong>WebP</strong>！同等画质下，体积能小一大圈。现代浏览器兼容性已经非常好了。</li>
+                <li><strong>音频：</strong> MP3？太大了！转成 <strong>Opus 编码的 WebM</strong> 格式，32kbps 的码率就能听个响，体积骤减！</li>
+                <li><strong>字体：</strong> 还在直接往网站里塞几兆甚至十几兆的 TTF/OTF 字体文件？不会吧不会吧！这年头了，字体必须优化啊！
+                    <ul>
+                        <li><strong>按需加载字形 (Subsetting)：</strong> 只打包你网站实际用到的那些字，别把整个几万字的字库都塞进去！很多工具都能做（比如
+                            `font-spider`、`pyftsubset`）。</li>
+                        <li><strong>格式转换：</strong> 转成压缩率更高的 <strong>WOFF2</strong> 格式，体积能再小不少，而且现代浏览器通吃。</li>
+                    </ul>
+                    <p style="font-size: 0.9em; color: #aaa; margin-top: 0.5em;">（温馨提示：直接用 TTF
+                        的朋友，用户打开你网站可能需要泡杯咖啡的时间……☕️）</p>
+                </li>
+            </ul>
+            <p>为了方便，我甚至写了两个简单的批处理脚本（Windows 用户专属福利），一键转换文件夹下的所有图片和音频：</p>
+
+            <div class="config-explanation">
+                <h4>使用说明</h4>
+                <ul>
+                    <li>需要先安装 <a href="https://ffmpeg.org/download.html" target="_blank">FFmpeg</a> 并将其添加到系统环境变量 Path
+                        中。（不会的出门右转百度哈）
+                    </li>
+                    <li>将下面的代码保存为 <code>.bat</code> 文件（例如 <code>image_to_webp.bat</code>）。</li>
+                    <li>将脚本文件放到需要处理的图片/音频文件夹中，双击运行即可。</li>
+                    <li><strong>注意：</strong> 脚本会直接删除原始文件，请务必提前备份！</li>
+                </ul>
+            </div>
+
+            <pre><code class="language-batch">
+@echo off
+rem 图片批量转 WebP (有损压缩，质量参数 50) 并删除原图
+echo 开始转换图片为 WebP 格式...
+for /r %%a in (*.jpg *.png *.gif *.jpeg) do (
+    echo 正在处理: "%%a"
+    ffmpeg -i "%%a" -qscale:v 50 "%%~dpna.webp" && (
+        echo 成功转换为: "%%~dpna.webp", 删除原文件: "%%a"
+        del /f /q "%%a"
+    ) || (
+        echo 处理失败: "%%a"
+    )
+)
+echo 图片转换完成！
+pause</code></pre>
+
+            <pre><code class="language-batch">
+@echo off
+rem 音频批量转 WebM (Opus 编码, 32kbps) 并删除原图
+echo 开始转换音频为 WebM (Opus) 格式...
+for %%a in (*.mp3) do (
+    echo 正在处理: "%%a"
+    ffmpeg -i "%%a" -f webm -vn -c:a libopus -b:a 32k "%%~na.webm" && (
+        echo 成功转换为: "%%~na.webm", 删除原文件: "%%a"
+        del /f /q "%%a"
+    ) || (
+        echo 处理失败: "%%a"
+    )
+)
+echo 音频转换完成！
+pause</code></pre>
+
+            <p>通过这些极限压缩手段，不仅节省了宝贵的存储空间和 CDN 流量，还能显著提升网站加载速度，一举多得！</p>
+
+            <h2>Github：免费的“无限”存储空间？</h2>
+            <p>搞定了 CDN 加速和资源压缩，那么这些静态资源放哪里呢？又拍云的存储虽然可以用代金券抵扣，但万一代金券不够用或者想更省一点呢？</p>
+            <p>这时候，全球最大的同性交友网站（不是）—— <strong>Github</strong>，就成了我的目标！Github 的仓库是免费的，而且理论上空间和流量限制对于个人小站来说相当宽松（只要你别太过分）。
+            </p>
+            <p><strong>操作思路：</strong></p>
+            <ol>
+                <li>创建一个公开的 Github 仓库，专门用来存放网站的 CSS、JS、图片、转换后的音频等静态文件。</li>
+                <li>将文件 push 到仓库。</li>
+                <li>获取文件的 Raw 地址（例如
+                    `https://raw.githubusercontent.com/your_username/your_repo/main/path/to/file.webp`）或者使用 Github Pages
+                    的地址。</li>
+            </ol>
+            <p>这时候问题来了：直接用 Github 的 Raw 地址或者 Pages 地址，在国内访问速度可能不太理想，时不时抽风。怎么办？</p>
+            <p><strong>答案：结合前面提到的又拍云 CDN（或其他支持自定义源站的 CDN）！</strong></p>
+            <p>我们可以在又拍云 CDN 中添加一个加速域名，然后把<strong>源站设置为 Github Raw 或 Pages 的地址</strong>。这样一来，访问流程就变成了：</p>
+            <p><code>用户 -> 又拍云 CDN 边缘节点（缓存命中则直接返回） -> Github 源站（缓存未命中则回源）</code></p>
+            <p>完美！利用 Github 的免费存储和又拍云（代金券）的国内 CDN 加速，实现了静态资源的免费（或接近免费）托管和分发。</p>
+
+            <div class="config-explanation">
+                <h4>Github + CDN 配置要点</h4>
+                <ul>
+                    <li><strong>Github 仓库：</strong> 必须是公开仓库。</li>
+                    <li><strong>源站地址：</strong> 在 CDN 配置中，源站地址填写 Github Raw 的域名 (<code>raw.githubusercontent.com</code>)
+                        或你的 Github Pages 域名。回源 HOST 需要正确设置。</li>
+                    <li><strong>缓存策略：</strong> 在 CDN 服务商处配置好缓存规则，尽量提高缓存命中率，减少回源 Github 的请求。</li>
+                    <li><strong>风险提示：</strong> Github 的服务条款<strong>不鼓励</strong>将其用作 CDN
+                        或大流量文件托管。虽然个人小站一般没事，但如果流量过大或滥用，有被限制甚至封号的风险。<strong>低调使用，后果自负！</strong> （别说是我教的 😉）</li>
+                </ul>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>方案</th>
+                            <th>成本</th>
+                            <th>速度 (国内)</th>
+                            <th>稳定性</th>
+                            <th>风险</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Github Raw 直连</td>
+                            <td>免费</td>
+                            <td>慢 / 不稳定</td>
+                            <td>一般</td>
+                            <td>滥用可能被限</td>
+                        </tr>
+                        <tr>
+                            <td>Github Pages 直连</td>
+                            <td>免费</td>
+                            <td>一般 / 不稳定</td>
+                            <td>较好</td>
+                            <td>滥用可能被限</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Github + 又拍云 CDN (代金券)</strong></td>
+                            <td><strong>接近免费</strong></td>
+                            <td><strong>快</strong></td>
+                            <td><strong>高</strong></td>
+                            <td>回源 Github 风险</td>
+                        </tr>
+                        <tr>
+                            <td>付费 OSS + 付费 CDN</td>
+                            <td>较高</td>
+                            <td>快</td>
+                            <td>高</td>
+                            <td>钱包会痛</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>终极白嫖奥义：懒人福音与性能怪兽的融合！</h2>
+            <p><strong>“主播主播，你的技巧确实很强，但还是太繁琐了，有没有又快又白嫖拉满的方案呢？”</strong></p>
+            <p>有的兄弟，有的。懂的都懂，折腾是乐趣，但效率也很重要。确实存在一种更“一步到位”的组合拳，特别适合喜欢 Git 操作和追求部署简洁性的朋友们：</p>
+            <p><strong>核心思路：Github + Cloudflare Pages (带 Functions) + Cloudflare 子域名 + 又拍云 CDN</strong></p>
+            <p>听起来好像更复杂了？别急，看我拆解：</p>
+            <ol>
+                <li><strong>代码与内容托管：</strong> 你的网站代码、文章、甚至一些不太大的静态资源，直接放在 <strong>Github
+                        仓库</strong>里。这是我们的“源码基地”。</li>
+                <li><strong>部署与动态处理核心：</strong> 使用 <strong>Cloudflare Pages</strong>。
+                    <ul>
+                        <li>直接关联你的 Github 仓库，实现 <code>git push</code> 自动部署，简直不要太爽！</li>
+                        <li>Pages 自带静态资源全球分发，基础速度有保障。</li>
+                        <li>更妙的是，可以用 <strong>Pages Functions</strong> 写点轻量级的后端逻辑（比如 API 接口、表单处理）。白嫖 Serverless！</li>
+                    </ul>
+                </li>
+                <li><strong>动态请求专用通道：</strong> 在 Cloudflare DNS (或者你的第三方 DNS 服务商) 那里，给你的 Cloudflare Pages
+                    部署绑定一个<strong>独立的子域名</strong>，比如 `direct.yourdomain.com` 或 `api.yourdomain.com`。这个域名直接解析到 Cloudflare
+                    Pages。
+                    <ul>
+                        <li>所有需要调用 Pages Functions 的 API 请求，或者你希望不经过又拍云 CDN 直接访问 Pages 的场景，都走这个子域名。</li>
+                        <li>这样可以避免又拍云对动态请求进行加速，消耗不必要的代金券。Cloudflare 处理动态请求的响应速度通常也足够快。</li>
+                    </ul>
+                </li>
+                <li><strong>静态资源国内加速：</strong> 在<strong>又拍云</strong>（或其他国内 CDN 服务商）那里，为你主要的对外访问域名（比如
+                    `www.yourdomain.com`）配置 CDN 加速。
+                    <ul>
+                        <li><strong>关键点：</strong> 将这个又拍云 CDN 服务的<strong>源站</strong>设置为你的 Cloudflare Pages 地址（比如
+                            `your-project.pages.dev` 或者上面绑定的 `direct.yourdomain.com`）。</li>
+                        <li>这样一来，用户访问 `www.yourdomain.com` 时，静态资源（CSS, JS, 图片等）会由又拍云的国内节点提供加速，速度拉满！又拍云回源到 Cloudflare
+                            Pages 时，由于 Pages 本身是全球分布的，回源速度也不会太差。</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="config-explanation">
+                <h4>这种组合的好处是啥？</h4>
+                <ul>
+                    <li><strong>部署极简：</strong> <code>git push</code> 就完事儿了，Cloudflare Pages 自动构建部署。</li>
+                    <li><strong>动静分离：</strong> 动态请求（API）走 Cloudflare 子域名直连，静态资源走又拍云 CDN 加速。</li>
+                    <li><strong>成本可控：</strong> 又拍云代金券主要消耗在相对便宜的静态流量上，动态请求的开销由 Cloudflare Pages 的免费额度覆盖（超出另算，但免费额度很高）。
+                    </li>
+                    <li><strong>性能均衡：</strong> 国内用户访问静态资源快（又拍云），动态请求和国外访问速度也有 Cloudflare 保底。</li>
+                </ul>
+            </div>
+
+            <p><strong>请求流程示意：</strong></p>
+            <ul>
+                <li>用户访问 <code>www.yourdomain.com/style.css</code> -> 又拍云 CDN (缓存) -> Cloudflare Pages (源站) -> Github
+                    (代码)</li>
+                <li>用户提交表单到 <code>api.yourdomain.com/submit</code> -> Cloudflare (直接处理) -> Cloudflare Pages Functions ->
+                    (可能读写 KV 或 D1 数据库)</li>
+            </ul>
+
+            <p>这套方案，可以说是把 Github 的便捷、Cloudflare Pages 的强大部署和 Serverless
+                能力、以及又拍云的国内加速优势结合了起来，同时最大化了白嫖额度。懒人福音，值得拥有！还要啥自行车啊！</p>
+
+            <h2>总结</h2>
+            <p>好了，以上就是我这个穷狗站长摸索出来的白嫖生存技巧。总结一下核心思路：</p>
+            <ul>
+                <li><strong>域名是底线：</strong> 该花的钱一分不能少（但可以省着花）。</li>
+                <li><strong>拥抱免费资源：</strong> Cloudflare 大法好，免费 CDN、SSL、安全防护用到爽。</li>
+                <li><strong>打工换资源：</strong> 利用又拍云联盟等活动，用广告位换取代金券，覆盖存储和国内 CDN 开销。</li>
+                <li><strong>极限压缩：</strong> 图片转 WebP，音频转 Opus，把资源体积压到最小。</li>
+                <li><strong>曲线救国：</strong> Github 作存储，配合 CDN 加速，实现静态资源免费托管。</li>
+            </ul>
+            <p>依靠这些方法，我的小破站至今依然坚挺，并且访问速度和稳定性都还不错（不接受反驳）。当然，这些技巧更适用于个人博客、小型项目或者流量不大的网站。如果你要做商业项目或者大流量应用，还是老老实实付费购买稳定的商业服务吧。
+            </p>
+            <p>白嫖虽好，但也要注意合理使用，遵守服务商的规则。希望这些技巧能帮到同样预算紧张的你！</p>
+
+            <div class="article-footer">
+                <p>欢迎各位在评论区分享更多技巧！让我们一起在互联网的世界里，优雅地“活下去”！</p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
