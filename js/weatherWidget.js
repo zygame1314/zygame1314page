@@ -2,8 +2,6 @@ function initWeatherWidget() {
     const API_BASE = 'https://api.zygame1314.site';
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
-    const defaultIconURL = 'https://openweathermap.org/img/wn/01d@2x.png';
-    weatherIconElem.dataset.src = defaultIconURL;
 
     async function getLocationByIP() {
         try {
