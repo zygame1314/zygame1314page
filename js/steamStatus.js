@@ -1,5 +1,5 @@
 function initSteamStatus() {
-    const API_BASE = 'https://blog.zygame1314.site';
+    const API_BASE = 'https://api.zygame1314.site';
     const STEAM_STATUS = {
         OFFLINE: 0,
         ONLINE: 1,
