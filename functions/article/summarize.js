@@ -64,7 +64,7 @@ async function handlePost(context) {
                         'Authorization': `Bearer ${env.SILICONFLOW_API_KEY}`,
                     },
                     body: JSON.stringify({
-                        model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+                        model: "Qwen/Qwen2.5-7B-Instruct",
                         messages: [
                             {
                                 role: "user",
