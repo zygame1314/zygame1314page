@@ -31,13 +31,26 @@ function initSteamStatus() {
             stopUpdates();
         } else {
             updateUserActivity();
-            startUpdates();
+            if (!updateInterval) {
+                updateInterval = setInterval(() => {
+                    if (!document.hidden && isUserActive()) {
+                        updateSteamStatus();
+                    } else {
+                        stopUpdates();
+                    }
+                }, 60 * 1000);
+                console.log("Steam状态更新已恢复");
+            }
         }
     }
 
     function startUpdates() {
         if (!updateInterval) {
-            updateSteamStatus();
+            if (!window.steamStatusInitialized) {
+                updateSteamStatus();
+                window.steamStatusInitialized = true;
+            }
+
             updateInterval = setInterval(() => {
                 if (!document.hidden && isUserActive()) {
                     updateSteamStatus();
@@ -45,6 +58,8 @@ function initSteamStatus() {
                     stopUpdates();
                 }
             }, 60 * 1000);
+
+            console.log("Steam状态更新已启动");
         }
     }
 

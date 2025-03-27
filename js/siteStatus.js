@@ -33,13 +33,24 @@ class SiteStatus {
             this.stopUpdates();
         } else {
             this.updateUserActivity();
-            this.startUpdates();
+            if (!this.updateInterval) {
+                this.updateInterval = setInterval(() => {
+                    if (!document.hidden && this.isUserActive()) {
+                        this.loadHistory();
+                    } else {
+                        this.stopUpdates();
+                    }
+                }, 60000);
+                console.log("站点状态更新已恢复");
+            }
         }
     }
 
     startUpdates() {
         if (!this.updateInterval) {
-            this.loadHistory();
+            if (this.statusHistory.length === 0) {
+                this.loadHistory();
+            }
 
             this.updateInterval = setInterval(() => {
                 if (!document.hidden && this.isUserActive()) {
@@ -87,9 +98,7 @@ class SiteStatus {
     }
 
     async init() {
-        // 首次加载
         await this.loadHistory();
-        // 开始定时更新
         this.startUpdates();
     }
 

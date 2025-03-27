@@ -27,9 +27,12 @@ export async function onRequestGet(context) {
             results = "[]";
         }
 
+        const parsedResults = JSON.parse(results);
+        parsedResults.sort((a, b) => b.count - a.count);
+
         return new Response(JSON.stringify({
             success: true,
-            results: JSON.parse(results)
+            results: parsedResults
         }), {
             headers: corsHeaders
         });

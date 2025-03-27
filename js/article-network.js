@@ -93,7 +93,6 @@ class ArticleNetwork {
     }
 
     createBackgroundEffect(overlay) {
-        const gridSize = 20;
         const numDots = 25;
 
         for (let i = 0; i < numDots; i++) {
@@ -113,19 +112,6 @@ class ArticleNetwork {
             dot.style.animation = `float ${3 + Math.random() * 5}s infinite ease-in-out`;
 
             overlay.appendChild(dot);
-        }
-
-        if (!document.getElementById('network-animations')) {
-            const styleSheet = document.createElement('style');
-            styleSheet.id = 'network-animations';
-            styleSheet.textContent = `
-                @keyframes float {
-                    0% { transform: translate(0, 0); opacity: 0.3; }
-                    50% { transform: translate(${Math.random() * 15 - 7.5}px, ${Math.random() * 15 - 7.5}px); opacity: 0.8; }
-                    100% { transform: translate(0, 0); opacity: 0.3; }
-                }
-            `;
-            document.head.appendChild(styleSheet);
         }
     }
 
