@@ -10,7 +10,9 @@
     }
 
     #L2dCanvas,
-    #live2d-text-box {
+    #live2d-text-box,
+    #live2d-settings,
+    #article-network {
         display: none;
     }
 
@@ -117,10 +119,6 @@
         align-items: center;
     }
 
-    #live2d-settings {
-        display: none;
-    }
-
     .main-content,
     .sidebar,
     .project-card,
@@ -132,8 +130,7 @@
     #steam-status,
     #article-network,
     #donate-button-section,
-    #home .text-container,
-    #music-player {
+    #home .text-container {
         width: 100%;
         box-sizing: border-box;
     }

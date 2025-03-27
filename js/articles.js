@@ -24,6 +24,13 @@ class ArticlesManager {
         this.init();
         window.addEventListener('popstate', async (event) => {
             const path = window.location.pathname;
+
+            if (path === '/') {
+                this.transitionMessage.innerHTML = '返回主页<span class="transition-loading"></span>';
+            } else if (path.startsWith('/article/')) {
+                this.transitionMessage.innerHTML = '加载文章<span class="transition-loading"></span>';
+            }
+
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
 
@@ -351,8 +358,15 @@ class ArticlesManager {
     initTransitionEffect() {
         const mask = document.createElement('div');
         mask.className = 'transition-mask';
+
+        const message = document.createElement('div');
+        message.className = 'transition-message';
+        message.innerHTML = '正在载入内容<span class="transition-loading"></span>';
+        mask.appendChild(message);
+
         document.body.appendChild(mask);
         this.transitionMask = mask;
+        this.transitionMessage = message;
     }
 
     getAllTags() {
@@ -482,6 +496,12 @@ class ArticlesManager {
                 throw new Error('无法加载文章列表');
             }
             this.articles = await response.json();
+
+            this.articles.sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
+            });
         } catch (error) {
             console.error('加载文章列表失败:', error);
             this.articles = [];
@@ -666,6 +686,7 @@ class ArticlesManager {
         articleNav.style.display = 'block';
 
         if (!directAccess) {
+            this.transitionMessage.innerHTML = '正在载入文章<span class="transition-loading"></span>';
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
         }
@@ -994,6 +1015,7 @@ class ArticlesManager {
                 window.removeEventListener('scroll', this.updateActivePreview);
             }
 
+            this.transitionMessage.innerHTML = '返回主页<span class="transition-loading"></span>';
             this.transitionMask.classList.add('active');
             await new Promise(resolve => setTimeout(resolve, 600));
 

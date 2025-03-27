@@ -6,10 +6,13 @@ function initPongGame() {
         paddleWidth: 8,
         paddleHeight: 80,
         ballSize: 6,
-        speed: 2,
-        paddleSpeed: 3,
+        speed: 5,
+        paddleSpeed: 5,
         paddleSmoothing: 0.05,
-        paddleMaxSpeed: 5
+        paddleMaxSpeed: 10,
+        predictionThreshold: 300,
+        trailLength: 10,
+        trailFade: 0.8
     };
 
     let ball = {
@@ -19,10 +22,18 @@ function initPongGame() {
         dy: config.speed
     };
 
+    let ballTrail = [];
+
     let paddle = {
         left: 0,
         right: 0
     };
+
+    let primaryColor;
+
+    function updatePrimaryColor() {
+        primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    }
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -31,6 +42,8 @@ function initPongGame() {
         ball.y = canvas.height / 2;
         paddle.left = canvas.height / 2;
         paddle.right = canvas.height / 2;
+        ballTrail = [];
+        updatePrimaryColor();
     }
 
     function predictBallPosition(side) {
@@ -45,12 +58,12 @@ function initPongGame() {
 
     function updatePaddles() {
         let targetLeft = paddle.left;
-        if (ball.dx < 0) {
+        if (ball.dx < 0 && ball.x < config.predictionThreshold) {
             targetLeft = predictBallPosition('left');
         }
 
         let targetRight = paddle.right;
-        if (ball.dx > 0) {
+        if (ball.dx > 0 && (canvas.width - ball.x) < config.predictionThreshold) {
             targetRight = predictBallPosition('right');
         }
 
@@ -68,6 +81,22 @@ function initPongGame() {
     }
 
     function updateBall() {
+        ballTrail.push({
+            x: ball.x,
+            y: ball.y,
+            size: config.ballSize,
+            alpha: 1
+        });
+
+        if (ballTrail.length > config.trailLength) {
+            ballTrail.shift();
+        }
+
+        for (let i = 0; i < ballTrail.length - 1; i++) {
+            ballTrail[i].alpha *= config.trailFade;
+            ballTrail[i].size *= 0.95;
+        }
+
         ball.x += ball.dx;
         ball.y += ball.dy;
 
@@ -90,17 +119,27 @@ function initPongGame() {
             ball.y = canvas.height / 2;
             ball.dx = config.speed * (Math.random() > 0.5 ? 1 : -1);
             ball.dy = config.speed * (Math.random() > 0.5 ? 1 : -1);
+            ballTrail = [];
         }
     }
 
     function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         ctx.fillStyle = 'rgba(26, 26, 26, 0.2)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
         ctx.fillStyle = `${primaryColor}80`;
         ctx.fillRect(0, paddle.left - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
         ctx.fillRect(canvas.width - config.paddleWidth, paddle.right - config.paddleHeight / 2, config.paddleWidth, config.paddleHeight);
+
+        for (let i = 0; i < ballTrail.length; i++) {
+            const trail = ballTrail[i];
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(255, 255, 255, ${trail.alpha})`;
+            ctx.arc(trail.x, trail.y, trail.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
 
         ctx.beginPath();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
@@ -108,14 +147,27 @@ function initPongGame() {
         ctx.fill();
     }
 
-    function gameLoop() {
-        updatePaddles();
-        updateBall();
-        draw();
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
+    function gameLoop(timestamp) {
+        if (timestamp - lastTime >= frameInterval) {
+            lastTime = timestamp;
+            updatePaddles();
+            updateBall();
+            draw();
+        }
         requestAnimationFrame(gameLoop);
     }
 
+    const observer = new MutationObserver(updatePrimaryColor);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['style', 'class']
+    });
+
     window.addEventListener('resize', resize);
     resize();
-    gameLoop();
+    requestAnimationFrame(gameLoop);
 }

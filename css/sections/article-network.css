@@ -8,6 +8,165 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
+.network-start-btn {
+    min-width: 160px;
+    padding: 10px 18px;
+    background: #1d1d1d;
+    border: none;
+    color: white;
+    cursor: url('/images/cursors/Rath pointer.cur'), auto;
+    font-family: 'zpix';
+    font-size: 15px;
+    box-shadow:
+        inset -2px -2px 0 0 #000,
+        inset 2px 2px 0 0 #333,
+        -2px -2px 0 0 var(--primary-color),
+        2px 2px 0 0 var(--secondary-color),
+        0 0 5px rgba(var(--primary-rgb), 0.3);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.network-start-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg,
+            rgba(var(--primary-rgb), 0.8) 0%,
+            rgba(var(--secondary-rgb), 0.4) 50%,
+            rgba(var(--primary-rgb), 0.2) 100%);
+    z-index: -1;
+    opacity: 0;
+    transform: scale(0.9);
+    filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.network-start-btn::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    top: 0;
+    left: -100px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transform: skewX(-15deg);
+    transition: all 0.7s ease;
+    z-index: 1;
+}
+
+.network-start-btn:hover {
+    background: #2a2a2a;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+        inset -2px -2px 0 0 #000,
+        inset 2px 2px 0 0 #444,
+        -3px -3px 0 0 var(--primary-color),
+        3px 3px 0 0 var(--secondary-color),
+        0 0 15px rgba(var(--primary-rgb), 0.5);
+    letter-spacing: 0.5px;
+}
+
+.network-start-btn:hover::before {
+    opacity: 0.6;
+    transform: scale(1);
+}
+
+.network-start-btn:hover::after {
+    left: 120%;
+    transition: all 0.7s ease;
+}
+
+.network-start-btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow:
+        inset -1px -1px 0 0 #000,
+        inset 1px 1px 0 0 #333,
+        -1px -1px 0 0 var(--primary-color),
+        1px 1px 0 0 var(--secondary-color);
+}
+
+.network-overlay-text {
+    font-family: 'zpix';
+    color: #ffffff;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.7);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.network-overlay-text::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            var(--secondary-color),
+            var(--primary-color));
+    transform: translateX(-50%);
+    transition: width 0.5s ease;
+}
+
+.network-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1d1d1d;
+    z-index: 5;
+    transition: opacity 0.5s ease;
+}
+
+.network-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+        radial-gradient(circle at 80% 70%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.network-hint {
+    font-family: 'zpix';
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    margin-top: 20px;
+    max-width: 80%;
+    text-align: center;
+    opacity: 0.8;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+}
+
+.network-container:hover .network-overlay-text::after {
+    width: 70%;
+}
+
+.network-container:hover .network-hint {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
 #networkCanvas {
     width: 100%;
     height: 100%;

@@ -3,6 +3,7 @@ class ArticleNetwork {
         this.canvas = document.getElementById('networkCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.isInitialized = false;
+        this.isActive = false;
         this.nodes = [];
         this.links = [];
         this.simulation = null;
@@ -41,6 +42,98 @@ class ArticleNetwork {
         this.handleTouchMove = this.handleTouchMove.bind(this);
         this.handleTouchEnd = this.handleTouchEnd.bind(this);
 
+        this.initCanvas();
+        this.createOverlay();
+        this.addFullscreenButton();
+        this.initFullscreenModal();
+    }
+
+    createOverlay() {
+        const container = this.canvas.parentElement;
+        const overlay = document.createElement('div');
+        overlay.className = 'network-overlay';
+
+        const text = document.createElement('div');
+        text.className = 'network-overlay-text';
+        text.innerHTML = '探索文章关系网络……';
+
+        const startBtn = document.createElement('button');
+        startBtn.className = 'network-start-btn';
+        startBtn.innerHTML = '<i class="fas fa-project-diagram" style="margin-right: 8px;"></i>构建知识网络';
+
+        startBtn.addEventListener('mouseenter', () => {
+            const audioHover = new Audio('/audio/ui/hover.mp3');
+            audioHover.volume = 0.2;
+            audioHover.play().catch(err => console.log('Audio play failed:', err));
+        });
+
+        startBtn.addEventListener('click', () => {
+            const audioClick = new Audio('/audio/ui/click.mp3');
+            audioClick.volume = 0.3;
+            audioClick.play().catch(err => console.log('Audio play failed:', err));
+
+            startBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>构建中...';
+            startBtn.disabled = true;
+
+            setTimeout(() => this.initializeNetwork(), 800);
+        });
+
+        const hint = document.createElement('div');
+        hint.className = 'network-hint';
+        hint.textContent = '发现文章之间隐藏的关联，可拖拽交互，点击文章可直接阅读';
+
+        overlay.appendChild(text);
+        overlay.appendChild(startBtn);
+        overlay.appendChild(hint);
+
+        this.createBackgroundEffect(overlay);
+
+        this.networkOverlay = overlay;
+        container.appendChild(overlay);
+    }
+
+    createBackgroundEffect(overlay) {
+        const gridSize = 20;
+        const numDots = 25;
+
+        for (let i = 0; i < numDots; i++) {
+            const dot = document.createElement('div');
+            dot.style.position = 'absolute';
+            dot.style.width = '1px';
+            dot.style.height = '1px';
+            dot.style.backgroundColor = 'rgba(255,255,255,0.3)';
+
+            dot.style.left = `${Math.random() * 100}%`;
+            dot.style.top = `${Math.random() * 100}%`;
+
+            const size = Math.random() * 2 + 1;
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+
+            dot.style.animation = `float ${3 + Math.random() * 5}s infinite ease-in-out`;
+
+            overlay.appendChild(dot);
+        }
+
+        if (!document.getElementById('network-animations')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'network-animations';
+            styleSheet.textContent = `
+                @keyframes float {
+                    0% { transform: translate(0, 0); opacity: 0.3; }
+                    50% { transform: translate(${Math.random() * 15 - 7.5}px, ${Math.random() * 15 - 7.5}px); opacity: 0.8; }
+                    100% { transform: translate(0, 0); opacity: 0.3; }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        }
+    }
+
+    async initializeNetwork() {
+        if (this.isActive) return;
+
+        this.isActive = true;
+
         this.canvas.addEventListener('mousedown', this.handleMouseDown);
         this.canvas.addEventListener('mousemove', this.handleMouseMove);
         this.canvas.addEventListener('mouseup', this.handleMouseUp);
@@ -52,12 +145,28 @@ class ArticleNetwork {
         this.canvas.addEventListener('touchcancel', this.handleTouchEnd);
         this.canvas.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
 
-        this.initCanvas();
-        this.loadData();
-        this.addFullscreenButton();
-        this.initFullscreenModal();
+        this.networkOverlay.style.opacity = '0';
+        this.networkOverlay.style.transform = 'scale(1.1)';
+        this.networkOverlay.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
 
-        setInterval(() => {
+        setTimeout(() => {
+            this.networkOverlay.style.display = 'none';
+        }, 700);
+
+        try {
+            await this.loadData();
+            const audioComplete = new Audio('/audio/ui/complete.mp3');
+            audioComplete.volume = 0.3;
+            audioComplete.play().catch(err => console.log('Audio play failed:', err));
+        } catch (error) {
+            console.error('Failed to initialize network:', error);
+        }
+
+        this.startAnimationLoop();
+    }
+
+    startAnimationLoop() {
+        this.animationInterval = setInterval(() => {
             this.glowIntensity += 0.05 * this.glowDirection;
             if (this.glowIntensity > 1) {
                 this.glowDirection = -1;
@@ -68,6 +177,8 @@ class ArticleNetwork {
             }
             this.draw();
         }, 50);
+
+        this.lastParticleTime = Date.now();
     }
 
     addParticle(x, y) {
@@ -1016,5 +1127,5 @@ class ArticleNetwork {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new ArticleNetwork();
+    window.articleNetwork = new ArticleNetwork();
 });

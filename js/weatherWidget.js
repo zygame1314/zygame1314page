@@ -2,6 +2,11 @@ function initWeatherWidget() {
     const API_BASE = 'https://api.zygame1314.site';
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
+    const DEFAULT_ICON_URL = 'https://openweathermap.org/img/wn/01d@2x.png';
+
+    if (weatherIconElem) {
+        weatherIconElem.src = DEFAULT_ICON_URL;
+    }
 
     async function getLocationByIP() {
         try {
@@ -187,5 +192,9 @@ function initWeatherWidget() {
         .catch(error => {
             console.error('获取天气信息失败', error);
             temperatureElem.textContent = "获取天气失败";
+            if (weatherIconElem) {
+                weatherIconElem.src = DEFAULT_ICON_URL;
+            }
+            document.querySelector('.weather-widget')?.classList.add('weather-error');
         });
 }

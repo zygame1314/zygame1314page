@@ -309,6 +309,9 @@
         linear-gradient(to bottom,
             color-mix(in srgb, var(--primary-color) 10%, transparent) 1px,
             transparent 1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .transition-mask.active {
@@ -317,6 +320,42 @@
 
 .transition-mask.reverse {
     animation: pixelate-out 0.6s steps(8) forwards;
+}
+
+.transition-message {
+    color: var(--primary-color);
+    font-family: zpix;
+    font-size: 1.5rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s steps(3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--primary-color);
+    max-width: 80%;
+    clip-path: polygon(0 8px, 8px 0,
+            calc(100% - 8px) 0, 100% 8px,
+            100% calc(100% - 8px), calc(100% - 8px) 100%,
+            8px 100%, 0 calc(100% - 8px));
+}
+
+.transition-mask.active .transition-message {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.transition-loading {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    margin-left: 6px;
+    animation: loading-dots 1s infinite steps(2);
 }
 
 .empty-message {

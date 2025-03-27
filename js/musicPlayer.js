@@ -14,11 +14,66 @@ class MusicPlayer {
         this.initializeElements();
         this.setupAudioAnalyzer();
         this.createRhythmDots();
+        this.setupMobileLayout();
         this.loadPlaylist().then(() => {
             this.initializePlaylist();
             this.addEventListeners();
             this.updateLoopButton();
             this.updateUIForSong(this.currentSong);
+        });
+    }
+
+    isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            (window.innerWidth <= 1200);
+    }
+
+    setupMobileLayout() {
+        if (this.isMobileDevice()) {
+            if (this.leftVisualizer) this.leftVisualizer.classList.add('mobile');
+            if (this.rightVisualizer) this.rightVisualizer.classList.add('mobile');
+
+            this.setupTouchEvents();
+
+            this.progress.classList.add('mobile-progress');
+            this.volumeSlider.classList.add('mobile-volume');
+
+            document.querySelector('.music-player').classList.add('mobile-player');
+        }
+    }
+
+    setupTouchEvents() {
+        this.progress.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            this.setProgress({
+                offsetX: touch.clientX - this.progress.getBoundingClientRect().left
+            });
+        });
+
+        this.volumeSlider.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            this.setVolume({
+                clientX: touch.clientX
+            });
+        });
+
+        let touchStartX = 0;
+        this.coverImg.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        this.coverImg.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchEndX - touchStartX;
+
+            if (diff < -50) {
+                this.nextSong();
+            }
+            else if (diff > 50) {
+                this.prevSong();
+            }
         });
     }
 
@@ -181,13 +236,29 @@ class MusicPlayer {
         container.className = 'spectrum-container';
         visualizer.appendChild(container);
 
-        const barCount = 32;
-        for (let i = 0; i < barCount; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'spectrum-bar';
+        const particleContainer = document.createElement('div');
+        particleContainer.className = 'particle-container';
+        container.appendChild(particleContainer);
 
-            bar.style.setProperty('--pixel-offset', `${Math.random() * 5}px`);
-            container.appendChild(bar);
+        const particleCount = this.isMobileDevice() ? 60 : 120;
+        this[`${side}Particles`] = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'audio-particle';
+            particle.style.top = `${Math.random() * 100}%`;
+            particleContainer.appendChild(particle);
+
+            this[`${side}Particles`].push({
+                element: particle,
+                active: false,
+                size: 2 + Math.random() * 4,
+                speed: 2 + Math.random() * 6,
+                life: 0,
+                maxLife: 20 + Math.floor(Math.random() * 40),
+                frequency: 0,
+                y: Math.random() * 100
+            });
         }
 
         document.body.appendChild(visualizer);
@@ -199,81 +270,44 @@ class MusicPlayer {
 
     frequencyToColor(frequency) {
         if (frequency < 50) {
-            return `rgb(0, ${100 + frequency}, ${150 + frequency / 2})`;
-        } else if (frequency < 120) {
-            return `rgb(0, ${180 + frequency / 4}, ${120 - frequency / 3})`;
-        } else if (frequency < 190) {
-            return `rgb(${frequency - 120}, ${255}, 0)`;
-        } else if (frequency < 220) {
-            return `rgb(${255}, ${255 - (frequency - 190) * 4}, 0)`;
+            return `rgb(${frequency / 2}, 0, ${100 + frequency})`;
+        } else if (frequency < 100) {
+            return `rgb(0, ${frequency}, ${180 + frequency / 4})`;
+        } else if (frequency < 150) {
+            return `rgb(0, ${150 + frequency / 2}, ${100 + (150 - frequency)})`;
+        } else if (frequency < 200) {
+            return `rgb(${(frequency - 150) * 5}, ${220}, ${Math.max(0, 200 - frequency)})`;
         } else {
-            return `rgb(255, ${Math.max(0, 120 - (frequency - 220))}, ${Math.min(255, (frequency - 220) * 5)})`;
+            return `rgb(${255}, ${Math.max(0, 255 - (frequency - 200) * 2)}, ${Math.min(255, (frequency - 200) * 3)})`;
         }
     }
 
     animateRhythm() {
-        const createNoise = (magnitude = 5) => Math.floor(Math.random() * magnitude);
-
         const updateRhythm = () => {
             if (this.isPlaying) {
                 this.analyser.getByteFrequencyData(this.dataArray);
 
-                if (this.leftVisualizer) {
-                    const leftBars = this.leftVisualizer.querySelectorAll('.spectrum-bar');
-                    const leftBarCount = leftBars.length;
-
-                    for (let i = 0; i < leftBarCount; i++) {
-                        const dataIndex = Math.floor(i * (this.dataArray.length / 2) / leftBarCount);
-                        const value = this.dataArray[dataIndex] + createNoise();
-
-                        const width = `${Math.floor((value / 255) * 20) * 5}%`;
-                        const color = this.frequencyToColor(value);
-
-                        leftBars[i].style.width = width;
-                        leftBars[i].style.color = color;
-                        leftBars[i].style.backgroundColor = color;
-                        leftBars[i].classList.toggle('active', value > 200);
-                    }
+                if (this.leftVisualizer && this.leftParticles) {
+                    this.updateParticles('left', this.leftParticles);
                 }
 
-                if (this.rightVisualizer) {
-                    const rightBars = this.rightVisualizer.querySelectorAll('.spectrum-bar');
-                    const rightBarCount = rightBars.length;
-
-                    for (let i = 0; i < rightBarCount; i++) {
-                        const dataIndex = Math.floor((this.dataArray.length / 2) + i * (this.dataArray.length / 2) / rightBarCount);
-                        const value = this.dataArray[dataIndex < this.dataArray.length ? dataIndex : this.dataArray.length - 1] + createNoise();
-
-                        const width = `${Math.floor((value / 255) * 20) * 5}%`;
-                        const color = this.frequencyToColor(value);
-
-                        rightBars[i].style.width = width;
-                        rightBars[i].style.color = color;
-                        rightBars[i].style.backgroundColor = color;
-                        rightBars[i].classList.toggle('active', value > 200);
-
-                        if (value > 180 && Math.random() > 0.9) {
-                            rightBars[i].style.filter = 'brightness(1.3)';
-                            setTimeout(() => {
-                                if (rightBars[i]) rightBars[i].style.filter = 'none';
-                            }, 50);
-                        }
-                    }
+                if (this.rightVisualizer && this.rightParticles) {
+                    this.updateParticles('right', this.rightParticles);
                 }
             } else {
-                if (this.leftVisualizer) {
-                    const leftBars = this.leftVisualizer.querySelectorAll('.spectrum-bar');
-                    leftBars.forEach(bar => {
-                        bar.style.width = '0';
-                        bar.classList.remove('active');
+                if (this.leftParticles) {
+                    this.leftParticles.forEach(p => {
+                        p.active = false;
+                        p.element.classList.remove('active');
+                        p.element.style.opacity = '0';
                     });
                 }
 
-                if (this.rightVisualizer) {
-                    const rightBars = this.rightVisualizer.querySelectorAll('.spectrum-bar');
-                    rightBars.forEach(bar => {
-                        bar.style.width = '0';
-                        bar.classList.remove('active');
+                if (this.rightParticles) {
+                    this.rightParticles.forEach(p => {
+                        p.active = false;
+                        p.element.classList.remove('active');
+                        p.element.style.opacity = '0';
                     });
                 }
             }
@@ -282,6 +316,81 @@ class MusicPlayer {
         };
 
         requestAnimationFrame(updateRhythm);
+    }
+
+    updateParticles(side, particles) {
+        const isLeft = side === 'left';
+        const frequencies = [...this.dataArray];
+        const freqChunks = [];
+
+        const chunkSize = Math.floor(frequencies.length / 8);
+        for (let i = 0; i < 8; i++) {
+            const start = i * chunkSize;
+            const chunk = frequencies.slice(start, start + chunkSize);
+            const avg = chunk.reduce((sum, val) => sum + val, 0) / chunk.length;
+            freqChunks.push(avg);
+        }
+
+        const activationThreshold = 30;
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+
+            if (!p.active) {
+                const freqIndex = Math.floor(Math.random() * freqChunks.length);
+                const freqValue = freqChunks[freqIndex];
+
+                if (freqValue > activationThreshold && Math.random() * 255 < freqValue * 0.7) {
+                    p.active = true;
+                    p.life = 0;
+                    p.y = 10 + Math.random() * 80;
+                    p.frequency = freqValue;
+                    p.element.style.transform = 'translateX(0)';
+                    p.element.classList.add('active');
+
+                    const size = (2 + (freqValue / 255) * 6);
+                    p.element.style.width = `${size}px`;
+                    p.element.style.height = `${size}px`;
+                    p.element.style.top = `${p.y}%`;
+
+                    if (isLeft) {
+                        p.element.style.left = '0';
+                        p.element.style.right = 'auto';
+                    } else {
+                        p.element.style.right = '0';
+                        p.element.style.left = 'auto';
+                    }
+
+                    const color = this.frequencyToColor(freqValue);
+                    p.element.style.backgroundColor = color;
+                    p.element.style.boxShadow = `0 0 ${3 + (freqValue / 255) * 8}px ${color}`;
+                    p.element.style.opacity = '1';
+                }
+            }
+            else {
+                p.life++;
+
+                const lifeRatio = p.life / p.maxLife;
+                const distance = p.life * ((p.frequency / 255) * p.speed + 1);
+
+                const opacity = Math.max(0, 1 - Math.pow(lifeRatio, 1.5));
+
+                if (isLeft) {
+                    p.element.style.transform = `translateX(${distance}px)`;
+                } else {
+                    p.element.style.transform = `translateX(-${distance}px)`;
+                }
+
+                p.element.style.opacity = opacity.toString();
+
+                if (p.life >= p.maxLife || opacity <= 0.05) {
+                    p.active = false;
+                    p.element.classList.remove('active');
+                    p.element.style.opacity = '0';
+                    p.element.style.transform = 'translateX(0)';
+                }
+            }
+        }
     }
 
     async playSong() {
