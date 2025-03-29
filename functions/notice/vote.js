@@ -44,6 +44,8 @@ export async function onRequestPost(context) {
             await kv.put(`voted_${body.noticeId}_${clientIP}`, "true", { expirationTtl: 60 * 60 * 24 * 30 });
         }
 
+        currentResults.sort((a, b) => b.count - a.count);
+
         return new Response(JSON.stringify({
             success: true,
             results: currentResults
