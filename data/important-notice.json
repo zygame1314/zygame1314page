@@ -1,31 +1,12 @@
 {
-    "id": "notice-website-speed",
+    "id": "notice-webvpn-warning",
     "active": true,
-    "title": "网站性能调查",
-    "content": "<p>来投个票帮助我优化网站性能吧( •̀ ω •́ )✧</p>",
-    "expiryDate": "2025-06-01",
-    "poll": {
-        "active": true,
-        "question": "你认为本网站的加载速度如何？",
-        "options": [
-            {
-                "id": "option1",
-                "text": "嘎嘎快"
-            },
-            {
-                "id": "option2",
-                "text": "还可以"
-            },
-            {
-                "id": "option3",
-                "text": "有点慢"
-            },
-            {
-                "id": "option4",
-                "text": "史"
-            }
-        ],
-        "allowMultipleVotes": false,
-        "showResults": true
+    "title": "使用Web VPN访问小雅的重要提示",
+    "content": "<p>根据反馈，我注意到有一些同学通过校园Web VPN访问小雅，这可能导致脚本功能异常。</p><p>⚠️ <strong>请勿使用Web VPN访问小雅</strong> ⚠️</p><p>当使用Web VPN时，域名会从<strong>ai-augmented.com</strong>变成类似<strong>webvpn.ccnu.edu.cn</strong>的格式（这里以华师为例，其他学校同理），导致脚本无法正确匹配，影响正常使用。</p>",
+    "expiryDate": "2025-08-01",
+    "image": {
+        "url": "/images/notices/vpn-warning.webp",
+        "alt": "Web VPN警告图示",
+        "position": "top"
     }
 }

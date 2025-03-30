@@ -8,16 +8,31 @@ img.lazy-loaded {
 }
 
 .lazy-placeholder {
-    background-color: #f0f0f0;
-    background-image: linear-gradient(90deg,
-            #f0f0f0 0px,
-            #e0e0e0 40px,
-            #f0f0f0 80px);
-    background-size: 200% 100%;
-    animation: loading-placeholder 1.5s infinite linear;
+    position: relative;
+    background-color: var(--background-color);
+    background-image:
+        linear-gradient(45deg, var(--theme-bg) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--theme-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--theme-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--theme-bg) 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    animation: pixelate 2s infinite steps(10);
     display: inline-block;
     width: 100%;
     height: auto;
+}
+
+.lazy-placeholder::before {
+    content: "加载中...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    text-shadow: 2px 2px 0 var(--theme-bg);
+    animation: blink 1s infinite;
 }
 
 .steam-games-list img[data-src] {
@@ -31,4 +46,15 @@ img[data-src].fixed-ratio {
 img.lazy-error {
     opacity: 0.7;
     filter: grayscale(100%);
+    position: relative;
+}
+
+img.lazy-error::after {
+    content: "×";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: var(--error-color);
 }
