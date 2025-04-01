@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var donateButton = document.getElementById('donate-button');
     var donateModal = document.getElementById('donate-modal');
     var closeButton = document.querySelector('.donate-close-button');
+    let allDonations = [];
+    let currentDisplayCount = 10;
+    const incrementAmount = 10;
 
     function openModal() {
         donateModal.style.display = 'flex';
@@ -95,7 +98,92 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function renderDonations() {
+        const donationList = document.querySelector('.donation-list');
+        if (!donationList) return;
+
+        donationList.innerHTML = '';
+
+        if (!allDonations || allDonations.length === 0) {
+            donationList.innerHTML = '<div class="donation-empty">暂无捐赠记录，成为第一个支持者吧！</div>';
+            return;
+        }
+
+        const displayLimit = Math.min(allDonations.length, currentDisplayCount);
+        const displayedDonations = allDonations.slice(0, displayLimit);
+
+        displayedDonations.forEach((donation, index) => {
+            const donationItem = document.createElement('div');
+            donationItem.className = 'donation-item';
+
+            if (index === 0) {
+                donationItem.classList.add('highlighted');
+            }
+
+            const platformIcon = donation.platform === 'wechat'
+                ? '<i class="fab fa-weixin donation-platform wechat"></i>'
+                : '<i class="fab fa-alipay donation-platform alipay"></i>';
+
+            donationItem.innerHTML = `
+                <div class="donation-info">
+                    <div class="donation-name">${platformIcon}${donation.name}</div>
+                    ${donation.message ? `<div class="donation-message">${donation.message}</div>` : ''}
+                </div>
+                <div class="donation-amount">¥${donation.amount.toFixed(2)}</div>
+            `;
+
+            donationList.appendChild(donationItem);
+        });
+
+        if (allDonations.length > displayLimit) {
+            const loadMoreContainer = document.createElement('div');
+            loadMoreContainer.className = 'load-more-container';
+
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.className = 'load-more-button';
+            loadMoreBtn.innerHTML = `<i class="fas fa-angle-down"></i> 显示更多 (${allDonations.length - displayLimit}条)`;
+
+            loadMoreBtn.addEventListener('click', function () {
+                currentDisplayCount += incrementAmount;
+                renderDonations();
+            });
+
+            loadMoreContainer.appendChild(loadMoreBtn);
+            donationList.appendChild(loadMoreContainer);
+        }
+    }
+
+    function loadDonationList() {
+        const donationList = document.querySelector('.donation-list');
+        if (!donationList) return;
+
+        donationList.innerHTML = '<div class="donation-loading">加载赞助名单中...</div>';
+
+        fetch('/data/donations.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('无法加载捐赠记录');
+                }
+                return response.json();
+            })
+            .then(donations => {
+                if (!donations || donations.length === 0) {
+                    donationList.innerHTML = '<div class="donation-empty">暂无捐赠记录，成为第一个支持者吧！</div>';
+                    return;
+                }
+
+                allDonations = donations.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                renderDonations();
+            })
+            .catch(error => {
+                console.error('加载捐赠记录失败:', error);
+                donationList.innerHTML = '<div class="donation-empty">加载捐赠记录失败，请稍后再试</div>';
+            });
+    }
+
     updateDayTip();
+    loadDonationList();
 
     setInterval(updateDayTip, 60000);
 });

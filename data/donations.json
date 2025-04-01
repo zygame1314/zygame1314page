@@ -1,0 +1,58 @@
+[
+    {
+        "name": "*狗",
+        "amount": 20.00,
+        "date": "2024-11-20",
+        "platform": "wechat",
+        "message": "对不起我没有太多钱来以表敬意，但是真的非常感恩🙏小雅爬爬爬帮助我太多，您真是神仙下凡，祝生活愉快！"
+    },
+    {
+        "name": "c*e",
+        "amount": 15.00,
+        "date": "2024-11-23",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "k*k",
+        "amount": 1.00,
+        "date": "2024-11-29",
+        "platform": "wechat",
+        "message": "谢谢你的插件。虽然不多，但是也是一份感谢。呜呜呜~"
+    },
+    {
+        "name": "*子",
+        "amount": 6.00,
+        "date": "2024-12-09",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "l*n",
+        "amount": 6.00,
+        "date": "2024-12-19",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "*咯",
+        "amount": 6.66,
+        "date": "2024-12-24",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "*雾",
+        "amount": 12.00,
+        "date": "2025-01-06",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "*则",
+        "amount": 15.00,
+        "date": "2025-03-28",
+        "platform": "wechat",
+        "message": "麻烦大佬了，打扰2个多小时"
+    }
+]

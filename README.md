@@ -4,6 +4,7 @@
 ├─ articles
 │  ├─ content
 │  │  ├─ activation-code-mechanism.html
+│  │  ├─ broke-webmaster-survival.html
 │  │  ├─ deepseek-server-recovery.html
 │  │  ├─ steam-scammer-story.html
 │  │  ├─ unity-mosaic-removal.html
@@ -62,9 +63,11 @@
 │  │  ├─ convert_to_webm.bat
 │  │  ├─ Hollow(8-bit) - Yosh.webm
 │  │  ├─ INTERNET OVERDOSE(8-bit) - Aiobahn.webm
+│  │  ├─ アボリア(8-bit) - ヨルシカ.webm
 │  │  ├─ シカ色デイズ(8-bit) - シカ部.webm
 │  │  ├─ 勇者(8-bit) - YOASOBI.webm
 │  │  ├─ 動く、動く(8-bit) - 水瀬いのり 久保由利香.webm
+│  │  ├─ 怪獣(8-bit) - サカナクション.webm
 │  │  ├─ 流線形メーデ(8-bit) - 花谱 可不.webm
 │  │  └─ 花の塔(8-bit) - さユり.webm
 │  ├─ notices.json
@@ -82,10 +85,13 @@
 │  │  ├─ popular.js
 │  │  ├─ recent-games.js
 │  │  └─ steam-status.js
+│  ├─ notice
+│  │  ├─ has-voted.js
+│  │  ├─ poll-results.js
+│  │  └─ vote.js
 │  └─ weather
 │     └─ weather.js
 ├─ images
-│  ├─ achievement.webp
 │  ├─ alipay-qr-code.webp
 │  ├─ articles
 │  │  ├─ ccnu-auto.webp
@@ -98,6 +104,7 @@
 │  │  ├─ steam-scam.webp
 │  │  ├─ unity.webp
 │  │  ├─ vercel.webp
+│  │  ├─ webmaster.webp
 │  │  └─ 又拍云_logo5.webp
 │  ├─ avatar.webp
 │  ├─ cloud-image1.webp
@@ -120,36 +127,29 @@
 │  │  ├─ Rathian and Rathalos Alternate select.cur
 │  │  ├─ RTON move.cur
 │  │  └─ Tobi Handwriting.cur
-│  ├─ decrypt.webp
-│  ├─ deepseek.webp
 │  ├─ default-game-cover.webp
 │  ├─ Dialogue_Bottom.webp
 │  ├─ Dialogue_Top.webp
-│  ├─ enable-developer-mode.webp
 │  ├─ header-bg.webp
 │  ├─ music
 │  │  ├─ FF7 logo.webp
 │  │  ├─ INTERNET OVERDOSE.webp
+│  │  ├─ アボリア.webp
 │  │  ├─ シカ色デイズ.webp
 │  │  ├─ 勇者.webp
 │  │  ├─ 動く、動く.webp
+│  │  ├─ 怪獣.webp
 │  │  ├─ 流線形メーデ.webp
 │  │  └─ 花の塔.webp
-│  ├─ project1.webp
-│  ├─ project2.webp
-│  ├─ project3.webp
-│  ├─ project4.webp
+│  ├─ notices
+│  │  └─ vpn-warning.webp
 │  ├─ projects
 │  │  ├─ project1.webp
 │  │  ├─ project2.webp
 │  │  ├─ project3.webp
 │  │  └─ project4.webp
-│  ├─ security.webp
-│  ├─ unity.webp
-│  ├─ vercel.webp
 │  ├─ web-icon.ico
-│  ├─ wechat-qr-code.webp
-│  └─ 又拍云_logo5.webp
+│  └─ wechat-qr-code.webp
 ├─ index.html
 ├─ js
 │  ├─ article-network.js

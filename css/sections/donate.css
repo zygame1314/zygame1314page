@@ -264,3 +264,163 @@
     font-size: 20px;
     margin-right: 5px;
 }
+
+.donation-list-container {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px dashed var(--primary-color);
+}
+
+.donation-title {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donation-title i {
+    color: var(--secondary-color);
+    margin-right: 6px;
+}
+
+.donation-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 5px;
+    border: 2px solid var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #000;
+}
+
+.donation-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.donation-list::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.donation-list::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border: 1px solid #000;
+}
+
+.donation-loading {
+    text-align: center;
+    padding: 15px;
+    color: var(--text-color-secondary);
+    font-family: 'zpix';
+}
+
+.donation-empty {
+    text-align: center;
+    padding: 15px;
+    color: var(--text-color-secondary);
+    font-style: italic;
+    font-family: 'zpix';
+}
+
+.donation-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px dashed var(--text-color-secondary);
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.donation-item:last-child {
+    border-bottom: none;
+}
+
+.donation-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.donation-item.highlighted {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-left: 3px solid var(--secondary-color);
+    padding-left: 5px;
+}
+
+.donation-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.donation-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.donation-platform {
+    margin-right: 5px;
+}
+
+.donation-platform.wechat {
+    color: var(--wechat-color);
+}
+
+.donation-platform.alipay {
+    color: var(--alipay-color);
+}
+
+.donation-message {
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    margin-top: 2px;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.donation-amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--secondary-color);
+    text-align: right;
+}
+
+.load-more-container {
+    padding: 8px 0;
+    text-align: center;
+    border-top: 1px dashed var(--text-color-secondary);
+}
+
+.load-more-button {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-family: 'zpix';
+    font-size: 12px;
+    padding: 4px 10px;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.load-more-button i {
+    margin-right: 5px;
+}
+
+.load-more-button:hover {
+    background-color: var(--primary-color);
+    color: #000;
+    transform: translateY(-1px);
+}
+
+.load-more-button:active {
+    transform: translateY(1px);
+}
