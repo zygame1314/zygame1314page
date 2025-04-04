@@ -54,5 +54,12 @@
         "date": "2025-03-28",
         "platform": "wechat",
         "message": "麻烦大佬了，打扰2个多小时"
+    },
+    {
+        "name": ".",
+        "amount": 20.00,
+        "date": "2025-04-04",
+        "platform": "wechat",
+        "message": null
     }
 ]

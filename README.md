@@ -47,6 +47,7 @@
 ├─ custom
 │  └─ errorpage.html
 ├─ data
+│  ├─ donations.json
 │  ├─ important-notice.json
 │  ├─ live2d
 │  │  └─ knight

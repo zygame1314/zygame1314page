@@ -181,7 +181,9 @@ function initGamesFetch() {
             return;
         }
 
-        games.forEach(game => {
+        const displayGames = games.slice(0, 4);
+
+        displayGames.forEach(game => {
             const gameItem = document.createElement('div');
             gameItem.classList.add('game-item');
 
@@ -265,6 +267,28 @@ function initGamesFetch() {
             gameItem.appendChild(gameImage);
             steamGamesListElem.appendChild(gameItem);
         });
+
+        const placeholderCount = 4 - displayGames.length;
+        for (let i = 0; i < placeholderCount; i++) {
+            const placeholderItem = document.createElement('div');
+            placeholderItem.classList.add('game-item', 'placeholder-item');
+
+            const placeholderText = document.createElement('p');
+            placeholderText.textContent = '暂无更多游戏';
+            placeholderText.style.textAlign = 'center';
+            placeholderText.style.padding = '20px';
+
+            const placeholderIcon = document.createElement('i');
+            placeholderIcon.classList.add('fa', 'fa-gamepad');
+            placeholderIcon.style.display = 'block';
+            placeholderIcon.style.fontSize = '24px';
+            placeholderIcon.style.marginBottom = '10px';
+            placeholderIcon.style.opacity = '0.6';
+
+            placeholderItem.appendChild(placeholderIcon);
+            placeholderItem.appendChild(placeholderText);
+            steamGamesListElem.appendChild(placeholderItem);
+        }
 
         if (window.reinitializeLazyLoad) window.reinitializeLazyLoad();
     }

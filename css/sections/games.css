@@ -157,6 +157,43 @@
     border: none;
 }
 
+.steam-games-list .game-item.placeholder-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px dashed var(--primary-color);
+    color: #aaa;
+}
+
+.steam-games-list .game-item.placeholder-item:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.steam-games-list .game-item.placeholder-item .placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.steam-games-list .game-item.placeholder-item p {
+    margin: 0;
+    color: var(--primary-color);
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+.steam-games-list .game-item.placeholder-item:hover .placeholder-symbol,
+.steam-games-list .game-item.placeholder-item:hover p {
+    color: var(--secondary-color);
+    opacity: 0.9;
+}
+
 #pongGame {
     position: fixed;
     top: 0;
