@@ -77,13 +77,16 @@
 .article-thumbnail {
     width: 80%;
     max-height: 200px;
-    min-height: 120px;
     object-fit: contain;
     border: 2px solid var(--primary-color);
     flex-shrink: 0;
     transition: transform 0.2s steps(2);
     display: block;
     margin: 0 auto;
+}
+
+.article-thumbnail img {
+    border: 2px solid var(--primary-color);
 }
 
 .article-card:hover .article-thumbnail {

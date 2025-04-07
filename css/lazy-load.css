@@ -52,5 +52,5 @@ img.lazy-error {
 
 img.lazy-loaded {
     opacity: 1;
-    animation: gentlePulse 0.5s ease-out;
+    animation: pixelate-in 0.5s ease-out;
 }

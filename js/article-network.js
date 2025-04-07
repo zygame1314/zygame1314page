@@ -62,16 +62,9 @@ class ArticleNetwork {
         startBtn.innerHTML = '<i class="fas fa-project-diagram" style="margin-right: 8px;"></i>构建知识网络';
 
         startBtn.addEventListener('mouseenter', () => {
-            const audioHover = new Audio('/audio/ui/hover.mp3');
-            audioHover.volume = 0.2;
-            audioHover.play().catch(err => console.log('Audio play failed:', err));
         });
 
         startBtn.addEventListener('click', () => {
-            const audioClick = new Audio('/audio/ui/click.mp3');
-            audioClick.volume = 0.3;
-            audioClick.play().catch(err => console.log('Audio play failed:', err));
-
             startBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>构建中...';
             startBtn.disabled = true;
 
@@ -141,9 +134,6 @@ class ArticleNetwork {
 
         try {
             await this.loadData();
-            const audioComplete = new Audio('/audio/ui/complete.mp3');
-            audioComplete.volume = 0.3;
-            audioComplete.play().catch(err => console.log('Audio play failed:', err));
         } catch (error) {
             console.error('Failed to initialize network:', error);
         }
