@@ -328,6 +328,7 @@
 .donation-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 8px;
     border-bottom: 1px dashed var(--text-color-secondary);
     font-size: 0.9em;
@@ -388,6 +389,9 @@
     font-weight: bold;
     color: var(--secondary-color);
     text-align: right;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .load-more-container {

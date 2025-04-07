@@ -75,8 +75,6 @@
 }
 
 .article-thumbnail {
-    max-width: 100%;
-    min-width: 240px;
     width: 80%;
     max-height: 200px;
     min-height: 120px;

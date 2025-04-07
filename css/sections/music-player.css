@@ -132,6 +132,7 @@
 .cover-img {
     width: 100%;
     min-height: 100px;
+    max-height: 150px;
     object-fit: contain;
     transition: transform 0.3s steps(5);
 }
