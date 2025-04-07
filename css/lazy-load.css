@@ -36,6 +36,8 @@ img.lazy-loaded {
 }
 
 .steam-games-list img[data-src] {
+    width: 100%;
+    height: auto;
     aspect-ratio: 2/3;
 }
 
