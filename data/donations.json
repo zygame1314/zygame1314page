@@ -61,5 +61,12 @@
         "date": "2025-04-04",
         "platform": "wechat",
         "message": null
+    },
+    {
+        "name": "*沐",
+        "amount": 18.80,
+        "date": "2025-04-07",
+        "platform": "wechat",
+        "message": "好厉害，感谢你的脚本，祝你未来越来越好梦想都实现"
     }
 ]
