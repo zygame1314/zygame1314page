@@ -76,7 +76,7 @@
 
 .article-thumbnail {
     width: 80%;
-    max-height: 200px;
+    max-height: 250px;
     object-fit: contain;
     border: 2px solid var(--primary-color);
     flex-shrink: 0;
