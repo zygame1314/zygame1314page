@@ -18,6 +18,7 @@ class ArticlesManager {
         this.selectedTags = new Set();
         this.sidebar = document.querySelector('.sidebar');
         this.mainContent = document.querySelector('.main-content');
+        this.originalPageTitle = document.title;
         this.initTransitionEffect();
         this.setupSearchListener();
         this.updateSearchHistory();
@@ -27,8 +28,18 @@ class ArticlesManager {
 
             if (path === '/') {
                 this.transitionMessage.innerHTML = '返回主页<span class="transition-loading"></span>';
+                document.title = this.originalPageTitle || document.title;
             } else if (path.startsWith('/article/')) {
                 this.transitionMessage.innerHTML = '加载文章<span class="transition-loading"></span>';
+
+                const articleId = path.replace('/article/', '');
+                const article = this.articles.find(a =>
+                    a.contentUrl.replace('/articles/content/', '').replace('.html', '') === articleId
+                );
+
+                if (article) {
+                    document.title = `${article.title} - ${this.originalPageTitle || document.title.split(' - ')[1]}`;
+                }
             }
 
             this.transitionMask.classList.add('active');
@@ -676,6 +687,10 @@ class ArticlesManager {
     }
 
     async showArticle(article, fromHistory = false, directAccess = false) {
+        this.originalPageTitle = document.title;
+
+        document.title = `${article.title} - ${this.originalPageTitle}`;
+
         const existingToc = document.querySelector('.article-toc');
         if (existingToc) {
             existingToc.remove();
@@ -1011,6 +1026,8 @@ class ArticlesManager {
         }
 
         articleSection.querySelector('.back-btn').addEventListener('click', async () => {
+            document.title = this.originalPageTitle;
+
             if (this.updateActivePreview) {
                 window.removeEventListener('scroll', this.updateActivePreview);
             }
