@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressFill = document.querySelector('.progress-fill');
     const loadingText = document.querySelector('.loading-text');
     const loadingContent = document.querySelector('.loading-content');
+    const loadingHint = document.querySelector('.loading-hint');
 
     const loadingStages = {
         initializing: {
@@ -59,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStageDisplayed = '';
     const MIN_STAGE_DURATION = 1000;
     const TEXT_UPDATE_INTERVAL = 800;
+    const HINT_DISPLAY_DELAY = 100;
+
+    setTimeout(() => {
+        loadingHint.classList.add('show');
+    }, HINT_DISPLAY_DELAY);
 
     function getCurrentStage(progress) {
         if (progress < 25) return 'initializing';

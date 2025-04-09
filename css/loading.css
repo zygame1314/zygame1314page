@@ -83,3 +83,16 @@
     transition: opacity 0.5s ease-out;
     pointer-events: none;
 }
+
+.loading-hint {
+    font-family: 'zpix';
+    font-size: clamp(12px, 2vw, 16px);
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+.loading-hint.show {
+    opacity: 1;
+}
