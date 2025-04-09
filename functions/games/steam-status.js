@@ -48,9 +48,14 @@ export async function onRequest(context) {
                     if (gameDetailsResponse.ok) {
                         const gameDetailsData = await gameDetailsResponse.json();
 
-                        if (gameDetailsData[gameInfo.gameid]?.success &&
-                            gameDetailsData[gameInfo.gameid].data?.name) {
-                            gameInfo.gameextrainfo = gameDetailsData[gameInfo.gameid].data.name;
+                        if (gameDetailsData[gameInfo.gameid]?.success) {
+                            const gameData = gameDetailsData[gameInfo.gameid].data;
+                            if (gameData?.name) {
+                                gameInfo.gameextrainfo = gameData.name;
+                            }
+                            if (gameData?.header_image) {
+                                statusData.response.players[0].game_header_image = gameData.header_image;
+                            }
                         }
                     }
                 } catch (gameError) {
