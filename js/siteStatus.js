@@ -48,10 +48,6 @@ class SiteStatus {
 
     startUpdates() {
         if (!this.updateInterval) {
-            if (this.statusHistory.length === 0) {
-                this.loadHistory();
-            }
-
             this.updateInterval = setInterval(() => {
                 if (!document.hidden && this.isUserActive()) {
                     this.loadHistory();

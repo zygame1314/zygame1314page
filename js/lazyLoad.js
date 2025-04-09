@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         tempImg.onerror = () => {
-            console.log(`预加载图片失败: ${dataSrc}`);
             if (img._userErrorHandler) {
                 img._userErrorHandler.call(img);
             } else {

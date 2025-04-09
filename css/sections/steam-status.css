@@ -119,9 +119,60 @@
     margin-top: 8px;
     font-size: 0.75em;
     color: #acdbf5;
-    padding: 5px;
+    padding: 8px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid #2a475e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.steam-game-name {
+    width: 100%;
+    font-weight: 500;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted rgba(102, 192, 244, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+    position: relative;
+}
+
+.steam-game-name:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(100% + 5px);
+    background: rgba(0, 0, 0, 0.8);
+    color: #acdbf5;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    white-space: normal;
+    max-width: 200px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(102, 192, 244, 0.3);
+}
+
+.steam-game-thumbnail {
+    width: 180px;
+    height: 70px;
+    object-fit: cover;
+    border: 1px solid rgba(102, 192, 244, 0.5);
+    border-radius: 3px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.steam-game-thumbnail:hover {
+    transform: scale(1.05);
+    border-color: #66c0f4;
 }
 
 .steam-status.busy::before {

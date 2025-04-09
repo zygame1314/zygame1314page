@@ -155,15 +155,34 @@ function initSteamStatus() {
             gameInfoElement.className = 'steam-game-info';
 
             if (player.gameextrainfo && player.gameid) {
-                gameInfoElement.innerHTML = `正在游玩: ${player.gameextrainfo}`;
+                let gameInfoContent = `
+                <div class="steam-game-name" title="${player.gameextrainfo}">正在游玩: ${player.gameextrainfo}</div>
+            `;
+
+                if (player.game_header_image) {
+                    gameInfoContent += `
+                    <img 
+                        class="steam-game-thumbnail lazy-placeholder" 
+                        data-src="${player.game_header_image}" 
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                        alt="${player.gameextrainfo}" 
+                    />
+                `;
+                }
+
+                gameInfoElement.innerHTML = gameInfoContent;
 
                 if (!statusWidget.contains(gameInfoElement)) {
                     statusWidget.appendChild(gameInfoElement);
                 }
+
+                if (player.game_header_image && window.reinitializeLazyLoad) {
+                    window.reinitializeLazyLoad();
+                }
             } else {
                 gameInfoElement.remove();
             }
-
+            
             statusWidget.addEventListener("mouseenter", function () {
                 let message = '';
                 if (player.gameextrainfo) {

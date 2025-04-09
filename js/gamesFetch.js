@@ -199,11 +199,9 @@ function initGamesFetch() {
             const customErrorHandler = function () {
                 const appid = this.dataset.appid;
                 const currentSrc = this.getAttribute('data-src');
-                console.log(`Steam 图片加载失败: ${currentSrc}`);
 
                 if (currentSrc.includes('library_600x900_schinese.jpg')) {
                     const newSrc = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_600x900.jpg`;
-                    console.log(`尝试加载英文版封面: ${newSrc}`);
                     this.setAttribute('data-src', newSrc);
 
                     if (window.reloadLazyImage) {
@@ -212,7 +210,6 @@ function initGamesFetch() {
                 }
                 else if (currentSrc.includes('library_600x900.jpg')) {
                     const defaultSrc = '/images/default-game-cover.webp';
-                    console.log(`英文版封面加载失败，使用默认封面`);
                     this.setAttribute('data-src', defaultSrc);
                     this.classList.add('default-cover');
 
@@ -221,7 +218,6 @@ function initGamesFetch() {
                     }
                 }
                 else if (currentSrc === '/images/default-game-cover.webp') {
-                    console.error(`默认图片加载失败`);
                     this.classList.remove('lazy-placeholder');
                     this.classList.add('lazy-error');
                 }
