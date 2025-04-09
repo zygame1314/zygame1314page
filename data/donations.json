@@ -68,5 +68,12 @@
         "date": "2025-04-07",
         "platform": "wechat",
         "message": "好厉害，感谢你的脚本，祝你未来越来越好，梦想都实现"
+    },
+    {
+        "name": "Daisy",
+        "amount": 50.00,
+        "date": "2025-04-09",
+        "platform": "wechat",
+        "message": "Daisy要v你50!"
     }
 ]

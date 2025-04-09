@@ -65,16 +65,6 @@
     position: relative;
 }
 
-.status-indicator.online {
-    background: var(--success-color, #2ecc71);
-    box-shadow: 0 0 8px var(--success-color, #2ecc71);
-}
-
-.status-indicator.offline {
-    background: var(--error-color, #e74c3c);
-    box-shadow: 0 0 8px var(--error-color, #e74c3c);
-}
-
 .status-indicator::after {
     content: '';
     position: absolute;
@@ -104,14 +94,17 @@
 
 .status-indicator.online.主站::after {
     border: 2px solid #2ecc71;
+    color: #2ecc71;
 }
 
 .status-indicator.online.源站::after {
     border: 2px solid #3498db;
+    color: #3498db;
 }
 
 .status-indicator.online.CDN::after {
     border: 2px solid #9b59b6;
+    color: #9b59b6;
 }
 
 .status-indicator.offline {

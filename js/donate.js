@@ -116,6 +116,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const donationItem = document.createElement('div');
             donationItem.className = 'donation-item';
 
+            if (donation.amount >= 50) {
+                donationItem.classList.add('amount-huge');
+            } else if (donation.amount >= 20) {
+                donationItem.classList.add('amount-large');
+            } else if (donation.amount >= 10) {
+                donationItem.classList.add('amount-medium');
+            } else {
+                donationItem.classList.add('amount-small');
+            }
+
             if (index === 0) {
                 donationItem.classList.add('highlighted');
             }
