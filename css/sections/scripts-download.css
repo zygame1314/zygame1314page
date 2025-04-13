@@ -1,0 +1,193 @@
+#scripts-download h2 {
+    margin-bottom: 0;
+}
+
+.scripts-section {
+    margin-bottom: 2rem;
+}
+
+.scripts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.script-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.script-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.script-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.script-name {
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.script-item:hover .script-name {
+    color: var(--secondary-color);
+}
+
+.script-size {
+    font-size: 0.75rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.script-date {
+    font-size: 0.75rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+.script-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.script-download:hover {
+    background-color: var(--primary-color);
+    color: black;
+}
+
+.download-icon {
+    font-size: 1rem;
+}
+
+.scripts-refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.scripts-refresh:hover {
+    color: var(--secondary-color);
+    transform: rotate(180deg);
+}
+
+.scripts-header {
+    display: flex;
+    align-items: center;
+}
+
+.scripts-loading {
+    text-align: center;
+    padding: 1rem;
+    font-style: italic;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.script-version {
+    font-size: 0.75rem;
+    background-color: rgba(var(--primary-color-rgb), 0.2);
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin-left: 8px;
+    color: var(--primary-color);
+}
+
+.script-item:hover .script-version {
+    background-color: rgba(var(--secondary-color-rgb), 0.2);
+    color: var(--secondary-color);
+}
+
+.scripts-filter {
+    margin: 0.75rem 0;
+}
+
+.scripts-search {
+    font-family: 'zpix';
+    cursor: url('/images/cursors/kushala text select.cur'), auto;
+    padding: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.scripts-search:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.no-scripts-message {
+    text-align: center;
+    padding: 1rem 0;
+    font-style: italic;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.backup-notice {
+    margin: 0.75rem 0;
+    padding: 0.7rem;
+    background-color: rgba(255, 215, 0, 0.1);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.backup-notice:hover {
+    background-color: rgba(255, 215, 0, 0.15);
+}
+
+.backup-notice i {
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-top: 2px;
+}
+
+.backup-notice a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--secondary-color);
+    transition: all 0.2s ease;
+}
+
+.backup-notice a:hover {
+    opacity: 0.8;
+}

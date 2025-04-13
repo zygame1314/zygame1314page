@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="/css/sections/contact.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
     <link rel="stylesheet" href="/css/sections/site-status.css">
+    <link rel="stylesheet" href="/css/sections/scripts-download.css">
     <link rel="stylesheet" href="/css/sections/games.css">
     <link rel="stylesheet" href="/css/sections/steam-status.css">
     <link rel="stylesheet" href="/css/sections/article-network.css">
@@ -350,6 +351,25 @@
                         <div class="last-check">上次检查: <span></span></div>
                     </div>
                 </section>
+                <section id="scripts-download">
+                    <div class="scripts-header">
+                        <h2 class="pixel-text">油猴脚本</h2>
+                        <button id="refreshScripts" class="scripts-refresh" title="刷新脚本列表">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="backup-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a href="https://scriptcat.org/zh-CN/users/156336"
+                                target="_blank">脚本猫</a>，无法访问时再使用这里的备用版本~</span>
+                    </div>
+                    <div class="scripts-filter">
+                        <input type="text" id="scripts-search" placeholder="搜索脚本..." class="scripts-search">
+                    </div>
+                    <div class="scripts-list">
+                        <div class="scripts-loading">加载中...</div>
+                    </div>
+                </section>
                 <section id="games">
                     <h2 class="pixel-text">
                         热门游戏
@@ -547,6 +567,7 @@
     <script src="/js/gamesFetch.js"></script>
     <script src="/js/steamStatus.js"></script>
     <script src="/js/siteStatus.js"></script>
+    <script src="/js/scriptsDownload.js"></script>
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
     <script type="module" src="/js/article-network.js"></script>
