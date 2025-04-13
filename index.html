@@ -360,8 +360,22 @@
                     </div>
                     <div class="backup-notice">
                         <i class="fas fa-info-circle"></i>
-                        <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a href="https://scriptcat.org/zh-CN/users/156336"
-                                target="_blank">脚本猫</a>，无法访问时再使用这里的备用版本~</span>
+                        <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a
+                                href="https://scriptcat.org/zh-CN/users/156336"
+                                target="_blank">脚本猫</a>，情况特殊时再使用这里的备用版本~</span>
+                    </div>
+                    <div class="backup-notice warning-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>如果你访问不了脚本猫，脚本中的依赖库（如 <code>@require</code>）也会失效。<br>下载后请检查脚本头部，将类似
+                            <code>// @require https://scriptcat.org/lib/2770/1.0.0/jszip-min-js.js</code>
+                            的链接替换为公共CDN上的同名库，如 <a href="https://cdnjs.com/" target="_blank">cdnjs</a> 或 <a
+                                href="https://www.jsdelivr.com/" target="_blank">jsDelivr</a> 的版本。</span>
+                    </div>
+                    <div class="backup-notice tip-notice">
+                        <i class="fas fa-lightbulb"></i>
+                        <span><strong>冷知识：</strong>jsDelivr在国内有多个镜像站，如 <a href="https://cdn.onmicrosoft.cn/"
+                                target="_blank">渺软公益CDN</a>、<a href="https://cdn.jsdmirror.com/"
+                                target="_blank">jsdmirror</a> 等等，也许能帮助你突破某结界。</span>
                     </div>
                     <div class="scripts-filter">
                         <input type="text" id="scripts-search" placeholder="搜索脚本..." class="scripts-search">

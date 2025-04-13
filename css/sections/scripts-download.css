@@ -191,3 +191,45 @@
 .backup-notice a:hover {
     opacity: 0.8;
 }
+
+.warning-notice {
+    background-color: rgba(255, 99, 71, 0.1);
+    border-left: 3px solid #ff6347;
+}
+
+.warning-notice:hover {
+    background-color: rgba(255, 99, 71, 0.15);
+}
+
+.warning-notice i {
+    color: #ff6347;
+}
+
+.warning-notice code {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'zpix';
+    font-size: 0.8em;
+    word-break: break-word;
+    white-space: pre-wrap;
+    color: var(--primary-color);
+}
+
+.tip-notice {
+    background-color: rgba(72, 209, 204, 0.1);
+    border-left: 3px solid #48d1cc;
+}
+
+.tip-notice:hover {
+    background-color: rgba(72, 209, 204, 0.15);
+}
+
+.tip-notice i {
+    color: #ffc107;
+}
+
+.tip-notice strong {
+    color: #ffc107;
+    font-weight: bold;
+}
