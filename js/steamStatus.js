@@ -12,6 +12,7 @@ function initSteamStatus() {
     let updateInterval = null;
     let userLastActive = Date.now();
     const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+    const UPDATE_INTERVAL = 5 * 60 * 1000;
 
     function isUserActive() {
         return Date.now() - userLastActive < INACTIVITY_TIMEOUT;
@@ -37,8 +38,8 @@ function initSteamStatus() {
                     } else {
                         stopUpdates();
                     }
-                }, 60 * 1000);
-                console.log("Steam状态更新已恢复");
+                }, UPDATE_INTERVAL);
+                console.log("Steam状态更新已恢复，更新间隔为5分钟");
             }
         }
     }
@@ -56,9 +57,9 @@ function initSteamStatus() {
                 } else {
                     stopUpdates();
                 }
-            }, 60 * 1000);
+            }, UPDATE_INTERVAL);
 
-            console.log("Steam状态更新已启动");
+            console.log("Steam状态更新已启动，更新间隔为5分钟");
         }
     }
 
@@ -181,7 +182,7 @@ function initSteamStatus() {
             } else {
                 gameInfoElement.remove();
             }
-            
+
             statusWidget.addEventListener("mouseenter", function () {
                 let message = '';
                 if (player.gameextrainfo) {

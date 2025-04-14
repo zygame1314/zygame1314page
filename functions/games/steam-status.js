@@ -10,6 +10,16 @@ export async function onRequest(context) {
         });
     }
 
+    const cacheKey = 'steam-status';
+    const cache = caches.default;
+    let response = await cache.match(cacheKey);
+
+    if (response) {
+        console.log('返回缓存的Steam状态数据');
+        return response;
+    }
+
+    console.log('从Steam API获取最新数据');
     const steamAPIKey = context.env.STEAM_API_KEY;
     const steamID = context.env.STEAM_ID;
 
@@ -64,12 +74,21 @@ export async function onRequest(context) {
             }
         }
 
-        return new Response(JSON.stringify(statusData), {
+        response = new Response(JSON.stringify(statusData), {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=300'
             }
         });
+
+        const cacheOptions = {
+            expirationTtl: 300
+        };
+
+        context.waitUntil(cache.put(cacheKey, response.clone(), cacheOptions));
+
+        return response;
 
     } catch (error) {
         console.error('Steam API Error:', error);
