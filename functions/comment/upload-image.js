@@ -33,7 +33,7 @@ export async function onRequestPost(context) {
             },
         });
 
-        const imageUrl = `https://pub-d477e766898f476ab5049edca8c32627.r2.dev/${fileName}`;
+        const imageUrl = `https://img.zygame1314.top/${fileName}`;
 
         return new Response(
             JSON.stringify({
