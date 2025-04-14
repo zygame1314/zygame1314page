@@ -5,16 +5,21 @@ export async function onRequest(context) {
             throw new Error('未找到 STATUS_DB 数据库绑定，请在 Cloudflare Pages 设置中检查 D1 绑定');
         }
 
+        const url = new URL(context.request.url);
+        const minutes = parseInt(url.searchParams.get('minutes') || '60');
+
+        const validMinutes = Math.min(Math.max(10, minutes), 10080);
+
         const now = new Date();
-        const fiveHoursAgo = new Date(now.getTime() - 5 * 3600000).toISOString();
-        
+        const startTime = new Date(now.getTime() - validMinutes * 60000).toISOString();
+
         const { results: allData, error } = await DB.prepare(
             `SELECT url, status, responseTime, timestamp, statusCode, error 
              FROM status_history 
              WHERE timestamp >= ? 
              ORDER BY timestamp DESC`
-        ).bind(fiveHoursAgo).all();
-        
+        ).bind(startTime).all();
+
         if (error) {
             console.error('数据库查询错误:', error);
             throw new Error('读取状态历史记录失败');
