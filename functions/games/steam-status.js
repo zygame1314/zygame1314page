@@ -5,21 +5,21 @@ export async function onRequest(context) {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            }
+                'Access-Control-Allow-Headers': 'Content-Type',
+            },
         });
     }
 
-    const cacheKey = 'steam-status';
     const cache = caches.default;
-    let response = await cache.match(cacheKey);
+    let response = await cache.match(context.request);
 
     if (response) {
-        console.log('返回缓存的Steam状态数据');
+        console.log('Cache hit');
         return response;
     }
 
-    console.log('从Steam API获取最新数据');
+    console.log('Cache miss');
+
     const steamAPIKey = context.env.STEAM_API_KEY;
     const steamID = context.env.STEAM_ID;
 
@@ -27,7 +27,7 @@ export async function onRequest(context) {
         key: steamAPIKey,
         steamids: steamID,
         format: 'json',
-        l: 'schinese'
+        l: 'schinese',
     }).toString();
 
     try {
@@ -43,21 +43,17 @@ export async function onRequest(context) {
 
         if (statusData.response?.players?.[0]?.gameextrainfo) {
             const gameInfo = statusData.response.players[0];
-
             if (gameInfo.gameid) {
                 try {
                     const gameDetailsParams = new URLSearchParams({
                         appids: gameInfo.gameid,
-                        l: 'schinese'
+                        l: 'schinese',
                     }).toString();
-
                     const gameDetailsResponse = await fetch(
                         `https://store.steampowered.com/api/appdetails?${gameDetailsParams}`
                     );
-
                     if (gameDetailsResponse.ok) {
                         const gameDetailsData = await gameDetailsResponse.json();
-
                         if (gameDetailsData[gameInfo.gameid]?.success) {
                             const gameData = gameDetailsData[gameInfo.gameid].data;
                             if (gameData?.name) {
@@ -78,29 +74,26 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=300'
-            }
+                'Cache-Control': 'public, max-age=300',
+            },
         });
-
-        const cacheOptions = {
-            expirationTtl: 300
-        };
-
-        context.waitUntil(cache.put(cacheKey, response.clone(), cacheOptions));
-
-        return response;
 
     } catch (error) {
         console.error('Steam API Error:', error);
-        return new Response(JSON.stringify({
+        response = new Response(JSON.stringify({
             error: 'Failed to fetch Steam status data',
-            message: error.message
+            message: error.message,
         }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=300',
+            },
         });
     }
+
+    context.waitUntil(cache.put(context.request, response.clone()));
+
+    return response;
 }
