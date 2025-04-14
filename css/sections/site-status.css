@@ -92,28 +92,25 @@
     box-shadow: 0 0 10px #9b59b6;
 }
 
-.status-indicator.online.主站::after {
-    border: 2px solid #2ecc71;
-    color: #2ecc71;
-}
-
-.status-indicator.online.源站::after {
-    border: 2px solid #3498db;
-    color: #3498db;
-}
-
-.status-indicator.online.CDN::after {
-    border: 2px solid #9b59b6;
-    color: #9b59b6;
-}
-
 .status-indicator.offline {
     background: #e74c3c;
     box-shadow: 0 0 10px #e74c3c;
 }
 
+.status-indicator.online.主站::after {
+    color: #2ecc71;
+}
+
+.status-indicator.online.源站::after {
+    color: #3498db;
+}
+
+.status-indicator.online.CDN::after {
+    color: #9b59b6;
+}
+
 .status-indicator.offline::after {
-    border: 2px solid #e74c3c;
+    color: #e74c3c;
 }
 
 .status-uptime,
@@ -205,4 +202,38 @@
     text-align: right;
     margin-top: 0.8rem;
     font-style: italic;
+}
+
+.time-range-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.time-range-selector button {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--pixel-border-color);
+    color: var(--text-color);
+    padding: 3px 8px;
+    border-radius: 0;
+    font-size: 0.8rem;
+    font-family: 'zpix';
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transition: background-color 0.1s linear, border-color 0.1s linear;
+    image-rendering: pixelated;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+.time-range-selector button:hover {
+    background: rgba(var(--primary-color-rgb), 0.3);
+    border-color: var(--primary-color);
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.time-range-selector button.active {
+    background: rgba(var(--primary-color-rgb), 0.5);
+    border-color: var(--secondary-color, var(--primary-color));
+    box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.4);
 }

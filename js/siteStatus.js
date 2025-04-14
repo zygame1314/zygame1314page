@@ -4,8 +4,17 @@ class SiteStatus {
         this.updateInterval = null;
         this.userLastActive = Date.now();
         this.INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+        this.currentTimeRange = '1h';
+        this.timeRanges = {
+            '1h': { label: '1小时', minutes: 60 },
+            '12h': { label: '12小时', minutes: 720 },
+            '24h': { label: '1天', minutes: 1440 },
+            '3d': { label: '3天', minutes: 4320 },
+            '7d': { label: '7天', minutes: 10080 }
+        };
         this.init();
         this.setupActivityTracking();
+        this.setupTimeRangeSelector();
     }
 
     isUserActive() {
@@ -70,7 +79,8 @@ class SiteStatus {
 
     async loadHistory() {
         try {
-            const response = await fetch(`${API_BASE}/check/status-history`);
+            const minutes = this.timeRanges[this.currentTimeRange].minutes;
+            const response = await fetch(`${API_BASE}/check/status-history?minutes=${minutes}`);
             this.statusHistory = await response.json();
 
             const latestStatuses = this.groupLatestStatusesBySite(this.statusHistory);
@@ -80,6 +90,36 @@ class SiteStatus {
             console.error('加载状态历史失败:', error);
             this.updateUIError();
         }
+    }
+
+    setupTimeRangeSelector() {
+        const chartContainer = document.querySelector('.uptime-chart');
+        if (!chartContainer) return;
+
+        if (document.querySelector('.time-range-selector')) return;
+
+        const selectorContainer = document.createElement('div');
+        selectorContainer.className = 'time-range-selector';
+
+        Object.entries(this.timeRanges).forEach(([range, data]) => {
+            const button = document.createElement('button');
+            button.textContent = data.label;
+            button.dataset.range = range;
+            button.className = this.currentTimeRange === range ? 'active' : '';
+
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.time-range-selector button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                this.currentTimeRange = range;
+                this.loadHistory();
+            });
+
+            selectorContainer.appendChild(button);
+        });
+
+        chartContainer.parentNode.insertBefore(selectorContainer, chartContainer);
     }
 
     groupLatestStatusesBySite(history) {
@@ -252,13 +292,7 @@ class SiteStatus {
         }
 
         const now = Date.now();
-        const timeLabels = [
-            { text: '60分钟', minutes: 60 },
-            { text: '45分钟', minutes: 45 },
-            { text: '30分钟', minutes: 30 },
-            { text: '15分钟', minutes: 15 },
-            { text: '现在', minutes: 0 }
-        ].reverse();
+        const timeLabels = this.generateTimeLabels();
 
         timeLabels.forEach((label, index) => {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -303,7 +337,8 @@ class SiteStatus {
             let pathD = '';
 
             const endTime = now;
-            const startTime = endTime - (60 * 60 * 1000);
+            const minutes = this.timeRanges[this.currentTimeRange].minutes;
+            const startTime = endTime - (minutes * 60 * 1000);
 
             sortedHistory.forEach((status, index) => {
                 const statusTime = new Date(status.timestamp).getTime();
@@ -332,13 +367,13 @@ class SiteStatus {
                 circle.setAttribute('filter', 'url(#glow)');
                 circle.setAttribute('class', `status-point ${siteName}`);
 
-                const timeAgo = Math.round((now - statusTime) / 60000);
+                let timeAgoText = this.formatTimeAgo(now - statusTime);
                 const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
                 title.textContent = `站点: ${siteName}
     状态: ${status.status === 'online' ? '在线' : '离线'}
-    时间: ${new Date(status.timestamp).toLocaleTimeString()}
+    时间: ${new Date(status.timestamp).toLocaleString()}
     响应: ${status.responseTime || '--'}ms
-    ${timeAgo}分钟前`;
+    ${timeAgoText}`;
                 circle.appendChild(title);
 
                 svg.appendChild(circle);
@@ -386,6 +421,78 @@ class SiteStatus {
         }
 
         chartContainer.appendChild(svg);
+    }
+
+    generateTimeLabels() {
+        const minutes = this.timeRanges[this.currentTimeRange].minutes;
+
+        switch (this.currentTimeRange) {
+            case '1h':
+                return [
+                    { text: '60分钟', minutes: 60 },
+                    { text: '45分钟', minutes: 45 },
+                    { text: '30分钟', minutes: 30 },
+                    { text: '15分钟', minutes: 15 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+            case '12h':
+                return [
+                    { text: '12小时', minutes: 720 },
+                    { text: '9小时', minutes: 540 },
+                    { text: '6小时', minutes: 360 },
+                    { text: '3小时', minutes: 180 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+            case '24h':
+                return [
+                    { text: '24小时', minutes: 1440 },
+                    { text: '18小时', minutes: 1080 },
+                    { text: '12小时', minutes: 720 },
+                    { text: '6小时', minutes: 360 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+            case '3d':
+                return [
+                    { text: '3天前', minutes: 4320 },
+                    { text: '2天前', minutes: 2880 },
+                    { text: '1天前', minutes: 1440 },
+                    { text: '12小时前', minutes: 720 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+            case '7d':
+                return [
+                    { text: '7天前', minutes: 10080 },
+                    { text: '5天前', minutes: 7200 },
+                    { text: '3天前', minutes: 4320 },
+                    { text: '1天前', minutes: 1440 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+            default:
+                return [
+                    { text: '60分钟', minutes: 60 },
+                    { text: '45分钟', minutes: 45 },
+                    { text: '30分钟', minutes: 30 },
+                    { text: '15分钟', minutes: 15 },
+                    { text: '现在', minutes: 0 }
+                ].reverse();
+        }
+    }
+
+    formatTimeAgo(timeMs) {
+        const seconds = Math.floor(timeMs / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return `${days}天前`;
+        } else if (hours > 0) {
+            return `${hours}小时前`;
+        } else if (minutes > 0) {
+            return `${minutes}分钟前`;
+        } else {
+            return `${seconds}秒前`;
+        }
     }
 }
 
