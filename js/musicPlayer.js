@@ -30,8 +30,12 @@ class MusicPlayer {
 
     setupMobileLayout() {
         if (this.isMobileDevice()) {
-            if (this.leftVisualizer) this.leftVisualizer.classList.add('mobile');
-            if (this.rightVisualizer) this.rightVisualizer.classList.add('mobile');
+            if (this.leftVisualizer) {
+                this.leftVisualizer.style.display = 'none';
+            }
+            if (this.rightVisualizer) {
+                this.rightVisualizer.style.display = 'none';
+            }
 
             this.setupTouchEvents();
 
@@ -217,8 +221,10 @@ class MusicPlayer {
     }
 
     createRhythmDots() {
-        this.createVisualizer('left');
-        this.createVisualizer('right');
+        if (!this.isMobileDevice()) {
+            this.createVisualizer('left');
+            this.createVisualizer('right');
+        }
 
         this.frequencyToColor = (frequency) => {
             const hue = Math.floor((frequency / 255) * 360);
@@ -284,7 +290,7 @@ class MusicPlayer {
 
     animateRhythm() {
         const updateRhythm = () => {
-            if (this.isPlaying) {
+            if (this.isPlaying && !this.isMobileDevice()) {
                 this.analyser.getByteFrequencyData(this.dataArray);
 
                 if (this.leftVisualizer && this.leftParticles) {
@@ -294,6 +300,8 @@ class MusicPlayer {
                 if (this.rightVisualizer && this.rightParticles) {
                     this.updateParticles('right', this.rightParticles);
                 }
+            } else if (this.isPlaying && this.isMobileDevice()) {
+                this.analyser.getByteFrequencyData(this.dataArray);
             } else {
                 if (this.leftParticles) {
                     this.leftParticles.forEach(p => {
@@ -427,8 +435,10 @@ class MusicPlayer {
             this.isPlaying = true;
             this.playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 
-            if (this.leftVisualizer) this.leftVisualizer.style.display = 'flex';
-            if (this.rightVisualizer) this.rightVisualizer.style.display = 'flex';
+            if (!this.isMobileDevice()) {
+                if (this.leftVisualizer) this.leftVisualizer.style.display = 'flex';
+                if (this.rightVisualizer) this.rightVisualizer.style.display = 'flex';
+            }
 
             await this.audio.play();
         } catch (error) {

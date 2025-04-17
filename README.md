@@ -37,6 +37,7 @@
 │  │  ├─ home.css
 │  │  ├─ live2d-settings.css
 │  │  ├─ music-player.css
+│  │  ├─ scripts-download.css
 │  │  ├─ site-status.css
 │  │  ├─ steam-status.css
 │  │  ├─ textbox.css
@@ -79,6 +80,7 @@
 │  ├─ article
 │  │  └─ summarize.js
 │  ├─ check
+│  │  ├─ scripts.js
 │  │  └─ status-history.js
 │  ├─ comment
 │  │  └─ upload-image.js
@@ -177,13 +179,13 @@
 │  ├─ parallax.js
 │  ├─ pongGame.js
 │  ├─ projects.js
+│  ├─ scriptsDownload.js
 │  ├─ seasonTheme.js
 │  ├─ showNotification.js
 │  ├─ siteStatus.js
 │  ├─ smoothScroll.js
 │  ├─ steamStatus.js
 │  ├─ timeline.js
-│  ├─ titleSwitcher.js
 │  ├─ typingEffect.js
 │  ├─ weather-effects.js
 │  └─ weatherWidget.js
