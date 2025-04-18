@@ -28,7 +28,7 @@ export async function onRequest(context) {
             query = `SELECT url, status, responseTime, timestamp, statusCode, error 
                      FROM status_history 
                      WHERE timestamp >= ?
-                     AND (CAST(strftime('%M', timestamp) AS INTEGER) % ? = 0)
+                     AND (CAST(strftime('%s', timestamp) AS INTEGER) / 60 % ? = 0)
                      ORDER BY timestamp DESC`;
             params = [startTime, samplingStrategy.interval];
         } else if (samplingStrategy.type === 'limit') {
