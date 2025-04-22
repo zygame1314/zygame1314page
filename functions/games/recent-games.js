@@ -10,6 +10,16 @@ export async function onRequest(context) {
         });
     }
 
+    const cache = caches.default;
+    let response = await cache.match(context.request);
+
+    if (response) {
+        console.log('Cache hit for recent games');
+        return response;
+    }
+
+    console.log('Cache miss for recent games');
+
     const steamAPIKey = context.env.STEAM_API_KEY;
     const steamID = context.env.STEAM_ID;
 
@@ -59,24 +69,30 @@ export async function onRequest(context) {
 
         recentGamesData.response.games = gamesWithDetails;
 
-        return new Response(JSON.stringify(recentGamesData), {
+        response = new Response(JSON.stringify(recentGamesData), {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=300',
             }
         });
 
     } catch (error) {
         console.error('Steam API Error:', error);
-        return new Response(JSON.stringify({
+        response = new Response(JSON.stringify({
             error: 'Failed to fetch Steam games data',
             message: error.message
         }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=60',
             }
         });
     }
+
+    context.waitUntil(cache.put(context.request, response.clone()));
+
+    return response;
 }

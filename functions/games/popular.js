@@ -10,6 +10,16 @@ export async function onRequest(context) {
         });
     }
 
+    const cache = caches.default;
+    let response = await cache.match(context.request);
+
+    if (response) {
+        console.log('Cache hit for popular games');
+        return response;
+    }
+
+    console.log('Cache miss for popular games');
+
     const gamesPerPage = 5;
 
     try {
@@ -41,13 +51,14 @@ export async function onRequest(context) {
                 controller_support: game.controller_support
             }));
 
-        return new Response(JSON.stringify({
+        response = new Response(JSON.stringify({
             results: popularGames,
             count: popularGames.length
         }), {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=3600',
             }
         });
 
@@ -60,8 +71,10 @@ export async function onRequest(context) {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=60',
             }
         });
     }
+    context.waitUntil(cache.put(context.request, response.clone()));    return response;
 }
