@@ -79,8 +79,7 @@ Shader "FX/Censor" {
             }
         }
     }
-}
-            </code></pre>
+}</code></pre>
             <ol>
                 <li><strong>Shader 的目的：</strong> <code>"FX/Censor"</code> 这个名称以及 <code>_Pixelation</code> 属性明确暗示了这个
                     Shader 的作用是添加马赛克或像素化效果。</li>
@@ -120,78 +119,78 @@ Shader "FX/Censor" {
            0 SerializedShaderRTBlendState rtBlend0
             0 SerializedShaderFloatValue srcBlend
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlend
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue srcBlendAlpha
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlendAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOp
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOpAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue colMask
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
            0 SerializedShaderRTBlendState rtBlend1
             0 SerializedShaderFloatValue srcBlend
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlend
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue srcBlendAlpha
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlendAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOp
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOpAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue colMask
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
            0 SerializedShaderRTBlendState rtBlend2
             0 SerializedShaderFloatValue srcBlend
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlend
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue srcBlendAlpha
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlendAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOp
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue blendOpAlpha
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue colMask
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
            0 SerializedShaderRTBlendState rtBlend3
             0 SerializedShaderFloatValue srcBlend
              0 float val = 1
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             0 SerializedShaderFloatValue destBlend
              0 float val = 0
-             1 string name = "<noninit>"
+             1 string name = "&lt;noninit&gt;"
             ……
-</code></pre>
+            </code></pre>
             <p>修改完成后，保存并关闭 Shader 编辑界面。</p>
             <p><strong>修改原理简析：</strong></p>
             <p>观察修改的部分，可以看到主要是将 <code>SerializedShaderRTBlendState</code> 中的 <code>colMask</code> 的值从 <code>15</code>

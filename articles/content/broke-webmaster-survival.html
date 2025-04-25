@@ -137,7 +137,7 @@
                 </ul>
             </div>
 
-            <pre><code class="language-batch">
+            <pre><code class="language-dos">
 @echo off
 rem 图片批量转 WebP (有损压缩，质量参数 50) 并删除原图
 echo 开始转换图片为 WebP 格式...
@@ -151,11 +151,12 @@ for /r %%a in (*.jpg *.png *.gif *.jpeg) do (
     )
 )
 echo 图片转换完成！
-pause</code></pre>
+pause
+            </code></pre>
 
-            <pre><code class="language-batch">
+            <pre><code class="language-dos">
 @echo off
-rem 音频批量转 WebM (Opus 编码, 32kbps) 并删除原图
+rem 音频批量转 WebM (Opus 编码, 32kbps) 并删除原音频
 echo 开始转换音频为 WebM (Opus) 格式...
 for %%a in (*.mp3) do (
     echo 正在处理: "%%a"
@@ -167,7 +168,8 @@ for %%a in (*.mp3) do (
     )
 )
 echo 音频转换完成！
-pause</code></pre>
+pause
+            </code></pre>
 
             <p>通过这些极限压缩手段，不仅节省了宝贵的存储空间和 CDN 流量，还能显著提升网站加载速度，一举多得！</p>
 

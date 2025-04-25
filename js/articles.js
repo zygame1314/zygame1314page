@@ -823,7 +823,10 @@ class ArticlesManager {
             const codeBlocks = articleContent.querySelectorAll('pre code');
             for (const block of codeBlocks) {
                 const originalCode = block.innerHTML;
-                block.textContent = originalCode;
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.innerHTML = originalCode;
+                const decodedCode = tempTextArea.value;
+                block.textContent = decodedCode;
 
                 const languageClass = Array.from(block.classList)
                     .find(cls => cls.startsWith('language-'));
