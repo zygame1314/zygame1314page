@@ -23,7 +23,7 @@ export async function onRequest(context) {
     const gamesPerPage = 5;
 
     try {
-        const response = await fetch(
+        let response = await fetch(
             'https://store.steampowered.com/api/featuredcategories?cc=cn&l=schinese'
         );
 
@@ -76,5 +76,6 @@ export async function onRequest(context) {
             }
         });
     }
-    context.waitUntil(cache.put(context.request, response.clone()));    return response;
+    context.waitUntil(cache.put(context.request, response.clone()));
+    return response;
 }
