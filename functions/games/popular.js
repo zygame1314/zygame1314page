@@ -72,6 +72,5 @@ export async function onRequest(context) {
             }
         });
     }
-    context.waitUntil(cache.put(context.request, response.clone()));
     return response;
 }
