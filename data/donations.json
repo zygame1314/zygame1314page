@@ -75,5 +75,12 @@
         "date": "2025-04-09",
         "platform": "wechat",
         "message": "Daisy要v你50!"
+    },
+    {
+        "name": "*写",
+        "amount": 2.00,
+        "date": "2025-04-28",
+        "platform": "wechat",
+        "message": null
     }
 ]
