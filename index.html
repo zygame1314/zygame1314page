@@ -519,7 +519,9 @@
             </div>
         </div>
         <div id="live2d-text-box" class="text-box"></div>
-        <div class="Canvas" style="position: fixed; left: 10px; bottom: 10px; z-index: 1" id="L2dCanvas"></div>
+        <div class="Canvas"
+            style="position: fixed; left: 10px; bottom: 10px; z-index: 1; display: block; width: 300px; height: 300px;"
+            id="L2dCanvas"></div>
     </main>
     <footer>
         <div class="footer-content">
@@ -562,13 +564,10 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdmirror.com/npm/live2dcubismcore@latest/live2dcubismcore.min.js"></script>
-    <script src="https://cdn.jsdmirror.com/npm/pixi.js@4.6.1/dist/pixi.min.js"></script>
-    <script src="https://cdn.jsdmirror.com/gh/zygame1314/Live2dV3@1.6.8/live2dv3.min.js"></script>
-    <script src="https://cdn.jsdmirror.com/npm/d3@latest/dist/d3.min.js"></script>
     <script src="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/highlight.min.js"></script>
     <script src="/js/seasonTheme.js"></script>
     <script src="/js/loading.js"></script>
+    <script src="/js/live2dTextBox.js"></script>
     <script src="/js/live2d.js"></script>
     <script src="/js/showNotification.js"></script>
     <script src="/js/importantNotice.js"></script>
@@ -596,7 +595,6 @@
     <script src="/js/fetchCode.js"></script>
     <script src="/js/donate.js"></script>
     <script src="/js/detectDevTools.js"></script>
-    <script src="/js/live2dTextBox.js"></script>
     <script src="/js/lazyLoad.js"></script>
     <script src="/js/main.js"></script>
 </body>

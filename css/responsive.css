@@ -9,8 +9,6 @@
         font-size: 1.5em;
     }
 
-    #L2dCanvas,
-    #live2d-text-box,
     #live2d-settings,
     #article-network {
         display: none;

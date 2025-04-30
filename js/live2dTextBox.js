@@ -1,37 +1,38 @@
 document.addEventListener("DOMContentLoaded", function () {
+    if (window.innerWidth < 1200) {
+        console.log("Live2D TextBox disabled on mobile devices.");
+        const textBoxContainer = document.getElementById("live2d-text-box");
+        if (textBoxContainer) {
+            textBoxContainer.style.display = 'none';
+        }
+        return;
+    }
     const textBox = document.getElementById("live2d-text-box");
     let notificationTimer = null;
-
     function calculateDisplayDuration(text) {
         const baseTime = 1000;
         const perCharTime = 100;
         return Math.min(baseTime + text.length * perCharTime, 8000);
     }
-
     window.showLive2dNotification = function (text, duration = null) {
         if (notificationTimer) {
             clearTimeout(notificationTimer);
         }
-
         const displayTime = duration || calculateDisplayDuration(text);
-
         textBox.innerHTML = text;
         textBox.classList.remove("hide");
         textBox.classList.add("show");
-
         notificationTimer = setTimeout(() => {
             textBox.classList.remove("show");
             textBox.classList.add("hide");
         }, displayTime);
     };
-
     function setupTextHover() {
         const textBoxEnabled = localStorage.getItem('textBoxDisplay') !== 'false';
         if (!textBoxEnabled) {
             removeTextHover();
             return;
         }
-
         const weatherDialogs = {
             thunderstorm: {
                 cold: ["打雷啦！这种天气最适合待在家里了，记得关好门窗！"],
@@ -64,13 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 hot: ["闷热的多云，不过好在有云遮挡阳光~"]
             }
         };
-
         const textMap = {
             "#home": "欢迎来到主人的主页！不问来人，不问出处，放松就好！",
             "#projects": "这里是主人目前发起的项目，何不来看看？",
             "#about": "一行诗韵承载梦想，一段代码编织未来；漫漫旅途记录成长，人生如诗静待绽放……",
             "#contact": "发邮件，加QQ，逛Github还是一起steam？",
-            "#live2d-settings": "在这里可以调整Live2D模型的设置，按照你的喜好来吧！",
+            "#live2d-settings": "在这里可以调整Live2D模型的设置，按照你的喜好来吧！设置后记得刷新页面哦~",
             "#article-network": "这是一个展示文章之间关联的网络图，通过它可以发现更多相关内容~",
             "#articles": "这里是主人的文章分享，包含各类主题，欢迎阅读！",
             "#donate-button-section": "如果你喜欢主人的项目，可以考虑捐赠支持一下~",
@@ -82,27 +82,22 @@ document.addEventListener("DOMContentLoaded", function () {
             "footer": "这里是页脚区域，包含了一些关于本站的信息。",
             ".Canvas": "没有可以思考的心智。<br>没有可以屈从的意志。<br>没有为苦难哭泣的声音。<br>生于神与虚空之手。<br>你必封印在众人梦中散布瘟疫的障目之光。<br>你是容器。<br>你是空洞骑士。"
         };
-
         const weatherWidget = document.querySelector('.weather-widget');
         if (weatherWidget) {
             weatherWidget.addEventListener("mouseenter", async function () {
                 const temperature = document.querySelector('.temperature')?.textContent;
                 const description = document.querySelector('.description')?.textContent;
-
                 if (!temperature || !description || temperature.trim() === '' || description.trim() === '') {
                     showLive2dNotification("天气数据还在路上~稍后再来看看吧!");
                     return;
                 }
-
                 const weatherClass = Array.from(weatherWidget.classList)
                     .find(cls => cls.startsWith('weather-') && cls !== 'weather-widget');
-
                 let weatherType = '';
                 if (weatherClass) {
                     weatherType = weatherClass.replace('weather-', '');
                     console.log('Weather type:', weatherType);
                 }
-
                 let tempComment = '';
                 const temp = parseInt(temperature);
                 if (temp <= 0) {
@@ -116,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     tempComment = "好热呀，记得防暑降温！";
                 }
-
                 let weatherDialog = '';
                 if (weatherType && weatherDialogs[weatherType]) {
                     let tempRange = '';
@@ -127,18 +121,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         tempRange = 'hot';
                     }
-
                     const dialogArray = weatherDialogs[weatherType][tempRange];
                     if (dialogArray && dialogArray.length > 0) {
                         weatherDialog = dialogArray[Math.floor(Math.random() * dialogArray.length)];
                     }
                 }
-
                 const message = `${description}，${temperature}。${weatherDialog || ''}`;
                 showLive2dNotification(message);
             });
         }
-
         for (const [selector, text] of Object.entries(textMap)) {
             const element = document.querySelector(selector);
             if (element) {
@@ -148,6 +139,5 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-
     setupTextHover();
 });
