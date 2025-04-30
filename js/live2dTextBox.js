@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth < 1200) {
-        console.log("Live2D TextBox disabled on mobile devices.");
+        console.log("Live2D 文本组件在移动设备上已禁用。");
         const textBoxContainer = document.getElementById("live2d-text-box");
         if (textBoxContainer) {
             textBoxContainer.style.display = 'none';

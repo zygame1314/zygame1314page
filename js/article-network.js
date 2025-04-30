@@ -937,7 +937,7 @@ class ArticleNetwork {
 }
 document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth < 1200) {
-        console.log('Article network is disabled on mobile devices.');
+        console.log('文章网络图在移动设备上已禁用。');
         const networkContainer = document.getElementById('article-network-container');
         if (networkContainer) {
             networkContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-color-secondary);">关系网络图在移动端不可用。</p>';

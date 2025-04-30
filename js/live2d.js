@@ -10,7 +10,7 @@ function loadScript(url) {
         script.src = url;
         script.async = false;
         script.onload = resolve;
-        script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+        script.onerror = () => reject(new Error(`加载脚本失败: ${url}`));
         document.head.appendChild(script);
     });
 }
@@ -22,15 +22,15 @@ async function loadLive2dLibraries() {
     ];
     try {
         for (const url of libraries) {
-            console.log(`Loading library: ${url}`);
+            console.log(`正在加载库: ${url}`);
             await loadScript(url);
-            console.log(`Library loaded: ${url}`);
+            console.log(`库已加载: ${url}`);
         }
         window.PIXI = PIXI;
-        console.log("All Live2D libraries loaded successfully.");
+        console.log("所有 Live2D 库加载成功。");
         return true;
     } catch (error) {
-        console.error("Failed to load Live2D libraries:", error);
+        console.error("加载 Live2D 库失败:", error);
         if (typeof showLive2dNotification === 'function') {
             showNotification('错误：核心库加载失败', 3, 'error');
         } else {
@@ -41,14 +41,14 @@ async function loadLive2dLibraries() {
 }
 async function initializeLive2D() {
     if (window.innerWidth < 1200) {
-        console.log("Live2D disabled on mobile devices.");
+        console.log("Live2D 在移动设备上已禁用。");
         if (canvasContainer) {
             canvasContainer.style.display = 'none';
         }
         return;
     }
     if (!canvasContainer) {
-        console.error("L2dCanvas container element not found!");
+        console.error("未找到 L2dCanvas 容器元素！");
         return;
     }
     const librariesLoaded = await loadLive2dLibraries();
@@ -59,42 +59,43 @@ async function initializeLive2D() {
         return;
     }
     try {
-        console.log("Initializing PIXI Application...");
+        console.log("正在初始化 PIXI 应用...");
         app = new PIXI.Application({
-            width: 300,
-            height: 300,
             transparent: true,
             autoStart: true,
-            resizeTo: canvasContainer
+            resizeTo: canvasContainer,
+            resolution: window.devicePixelRatio || 1
         });
         canvasContainer.innerHTML = '';
         canvasContainer.appendChild(app.view);
         app.view.className = 'live2d-canvas-view';
+        app.renderer.view.style.width = '300px';
+        app.renderer.view.style.height = '300px';
         currentModel = await PIXI.live2d.Live2DModel.from(modelJsonPath, {
             idleMotionGroup: 'Idle',
             autoInteract: true,
             onError: (e) => {
-                console.error("Error loading Live2D model:", e);
+                console.error("加载 Live2D 模型时出错:", e);
                 if (typeof showLive2dNotification === 'function') {
                     showNotification('模型加载出错 (；′⌒`)', 3, 'error');
                 }
             }
         });
         if (!currentModel) {
-            throw new Error("Live2DModel.from returned undefined or null.");
+            throw new Error("Live2DModel.from 返回了 undefined 或 null。");
         }
-        console.log("Model loaded successfully:", currentModel);
+        console.log("模型加载成功:", currentModel);
         app.stage.addChild(currentModel);
         handleResize();
         if (typeof showLive2dNotification === 'function') {
             showTimeGreeting();
         } else {
-            console.warn("showLive2dNotification not ready when model loaded.");
+            console.warn("模型加载时 showLive2dNotification 尚未准备好。");
             setTimeout(() => {
                 if (typeof showLive2dNotification === 'function') {
                     showTimeGreeting();
                 } else {
-                    console.error("showLive2dNotification still not available for greeting.");
+                    console.error("showLive2dNotification 仍然无法用于问候。");
                 }
             }, 500);
         }
@@ -102,7 +103,7 @@ async function initializeLive2D() {
         window.live2dApp = app;
         window.live2dModel = currentModel;
     } catch (error) {
-        console.error("Error during Live2D setup (PIXI/Model):", error);
+        console.error("Live2D 设置期间出错 (PIXI/模型):", error);
         if (typeof showLive2dNotification === 'function') {
             showNotification('模型设置失败😭😭', 3, 'error');
         } else {
@@ -114,21 +115,32 @@ async function initializeLive2D() {
     }
 }
 function handleResize() {
-    if (!app || !currentModel || !currentModel.width || !currentModel.height) return;
-    const fixedScale = 0.2;
+    if (!app || !currentModel || !currentModel.internalModel || !currentModel.internalModel.width || !currentModel.internalModel.height) {
+        console.warn("模型或其尺寸不可用于调整大小。");
+        return;
+    }
     const containerRect = canvasContainer.getBoundingClientRect();
     const viewWidth = containerRect.width;
     const viewHeight = containerRect.height;
+    if (viewWidth <= 0 || viewHeight <= 0) {
+        console.warn("画布容器尺寸为零或负数。");
+        return;
+    }
     app.renderer.resize(viewWidth, viewHeight);
-    currentModel.scale.set(fixedScale);
+    const modelWidth = currentModel.internalModel.width;
+    const modelHeight = currentModel.internalModel.height;
+    const scaleX = viewWidth / modelWidth;
+    const scaleY = viewHeight / modelHeight;
+    const scale = Math.min(scaleX, scaleY) * 0.8;
+    currentModel.scale.set(scale);
     currentModel.x = viewWidth / 2;
     currentModel.y = viewHeight / 2;
     currentModel.anchor.set(0.5, 0.5);
-    console.log(`Canvas size: ${viewWidth}x${viewHeight}, Using fixed scale: ${fixedScale}`);
+    console.log(`画布尺寸: ${viewWidth}x${viewHeight}, 模型原始尺寸: ${modelWidth}x${modelHeight}, 计算缩放比例: ${scale.toFixed(3)}`);
 }
 function showTimeGreeting() {
     if (typeof showLive2dNotification !== 'function') {
-        console.warn("showLive2dNotification function not found. Skipping greeting.");
+        console.warn("未找到 showLive2dNotification 函数。跳过问候。");
         return;
     }
     const hour = new Date().getHours();
