@@ -9,10 +9,10 @@
     <meta name="keywords" content="博客, 开发者, 项目, 游戏, 像素风">
     <link rel="icon" href="/images/web-icon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-    <link rel="stylesheet"
-        href="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="/css/lib/atom-one-dark.min.css">
     <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/sections/articles.css">
     <link rel="stylesheet" href="/css/typography.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="/css/modal-notice.css">
     <link rel="stylesheet" href="/css/sections/home.css">
     <link rel="stylesheet" href="/css/sections/timeline.css">
-    <link rel="stylesheet" href="/css/sections/articles.css">
     <link rel="stylesheet" href="/css/sections/about.css">
     <link rel="stylesheet" href="/css/sections/contact.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
+    <link rel="stylesheet" href="/css/sections/donate.css">
     <link rel="stylesheet" href="/css/sections/site-status.css">
     <link rel="stylesheet" href="/css/sections/scripts-download.css">
     <link rel="stylesheet" href="/css/sections/games.css">
@@ -34,8 +34,6 @@
     <link rel="stylesheet" href="/css/sections/music-player.css">
     <link rel="stylesheet" href="/css/sections/live2d-settings.css">
     <link rel="stylesheet" href="/css/sections/visit-counter.css">
-    <link rel="stylesheet" href="/css/sections/donate.css">
-    <link rel="stylesheet" href="/css/sections/comment.css">
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/sections/textbox.css">
     <link rel="stylesheet" href="/css/article.css">
@@ -301,195 +299,197 @@
                 </section>
             </div>
             <aside class="sidebar">
-                <section id="weather">
-                    <h2 class="pixel-text">当前天气</h2>
-                    <div class="weather-widget">
-                        <div class="weather-main">
-                            <div class="weather-icon">
-                                <img src="" alt="Weather Icon">
+                <div class="sidebar-content">
+                    <section id="weather">
+                        <h2 class="pixel-text">当前天气</h2>
+                        <div class="weather-widget">
+                            <div class="weather-main">
+                                <div class="weather-icon">
+                                    <img src="" alt="Weather Icon">
+                                </div>
+                                <div class="weather-primary">
+                                    <p class="temperature"><i class="fas fa-temperature-high"></i> </p>
+                                    <p class="description"><i class="fas fa-cloud"></i> </p>
+                                    <p class="location"><i class="fas fa-map-marker-alt"></i> </p>
+                                </div>
                             </div>
-                            <div class="weather-primary">
-                                <p class="temperature"><i class="fas fa-temperature-high"></i> </p>
-                                <p class="description"><i class="fas fa-cloud"></i> </p>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> </p>
-                            </div>
-                        </div>
-                        <div class="weather-details">
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-thermometer-half"></i> 体感</span>
-                                <p class="feels-like"></p>
-                            </div>
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-tint"></i> 湿度</span>
-                                <p class="humidity"></p>
-                            </div>
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-wind"></i> 风速</span>
-                                <p class="wind-speed"></p>
-                            </div>
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-tachometer-alt"></i> 气压</span>
-                                <p class="pressure"></p>
-                            </div>
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-sun"></i> 日出</span>
-                                <p class="sunrise"></p>
-                            </div>
-                            <div class="weather-item">
-                                <span class="label"><i class="fas fa-moon"></i> 日落</span>
-                                <p class="sunset"></p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section id="site-status">
-                    <h2 class="pixel-text">网站状态</h2>
-                    <div class="site-status-widget">
-                    </div>
-                    <div class="status-details">
-                        <div class="uptime-chart"></div>
-                        <div class="last-check">上次检查: <span></span></div>
-                    </div>
-                </section>
-                <section id="scripts-download">
-                    <div class="scripts-header">
-                        <h2 class="pixel-text">油猴脚本</h2>
-                        <button id="refreshScripts" class="scripts-refresh" title="刷新脚本列表">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                    </div>
-                    <div class="backup-notice">
-                        <i class="fas fa-info-circle"></i>
-                        <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a
-                                href="https://scriptcat.org/zh-CN/users/156336"
-                                target="_blank">脚本猫</a>，情况特殊时再使用这里的备用版本~</span>
-                    </div>
-                    <div class="backup-notice warning-notice">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>如果你访问不了脚本猫，脚本中的依赖库（如 <code>@require</code>）也会失效。<br>下载后请检查脚本头部，将类似
-                            <code>// @require https://scriptcat.org/lib/2770/1.0.0/jszip-min-js.js</code>
-                            的链接替换为公共CDN上的同名库，如 <a href="https://cdnjs.com/" target="_blank">cdnjs</a> 或 <a
-                                href="https://www.jsdelivr.com/" target="_blank">jsDelivr</a> 的版本。</span>
-                    </div>
-                    <div class="backup-notice tip-notice">
-                        <i class="fas fa-lightbulb"></i>
-                        <span><strong>冷知识：</strong>jsDelivr在国内有多个镜像站，如 <a href="https://cdn.onmicrosoft.cn/"
-                                target="_blank">渺软公益CDN</a>、<a href="https://cdn.jsdmirror.com/"
-                                target="_blank">jsdmirror</a> 等等，也许能帮助你突破某结界。</span>
-                    </div>
-                    <div class="backup-notice success-notice">
-                        <i class="fas fa-check-circle"></i>
-                        <span>如果你是第一次在这里下载，不用担心，新版本已经更换成公共CDN了。</span>
-                    </div>
-                    <div class="scripts-filter">
-                        <input type="text" id="scripts-search" placeholder="搜索脚本..." class="scripts-search">
-                    </div>
-                    <div class="scripts-list">
-                        <div class="scripts-loading">加载中...</div>
-                    </div>
-                </section>
-                <section id="games">
-                    <h2 class="pixel-text">
-                        热门游戏
-                        <button id="refreshGames" class="pixel-text">刷新</button>
-                    </h2>
-                    <div class="games-list"></div>
-                </section>
-                <section id="steam-games">
-                    <h2 class="pixel-text">最近在玩</h2>
-                    <div class="steam-games-list"></div>
-                </section>
-                <section id="steam-status">
-                    <h2 class="pixel-text">Steam状态</h2>
-                    <div class="steam-status-widget">
-                        <div class="steam-user-info">
-                            <a href="https://steamcommunity.com/profiles/76561199075833485/" target="_blank">
-                                <img data-src="" alt="Steam Avatar" class="steam-avatar">
-                            </a>
-                            <div class="steam-user-details">
-                                <p class="steam-username"></p>
-                                <p class="steam-status"></p>
+                            <div class="weather-details">
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-thermometer-half"></i> 体感</span>
+                                    <p class="feels-like"></p>
+                                </div>
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-tint"></i> 湿度</span>
+                                    <p class="humidity"></p>
+                                </div>
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-wind"></i> 风速</span>
+                                    <p class="wind-speed"></p>
+                                </div>
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-tachometer-alt"></i> 气压</span>
+                                    <p class="pressure"></p>
+                                </div>
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-sun"></i> 日出</span>
+                                    <p class="sunrise"></p>
+                                </div>
+                                <div class="weather-item">
+                                    <span class="label"><i class="fas fa-moon"></i> 日落</span>
+                                    <p class="sunset"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                <section id="article-network">
-                    <h2 class="pixel-text">文章网络</h2>
-                    <div class="network-container">
-                        <canvas id="networkCanvas"></canvas>
-                    </div>
-                </section>
-                <section id="music-player">
-                    <h2 class="pixel-text">听点小曲</h2>
-                    <div class="music-player">
-                        <div class="music-cover">
-                            <img data-src="" alt="album cover" class="cover-img">
-                        </div>
-                        <div class="music-info">
-                            <div class="song-title"></div>
-                            <p class="artist"></p>
-                            <div class="yt-link"></div>
-                        </div>
-                        <div class="music-progress">
-                            <div class="music-progress-bar"></div>
-                        </div>
-                        <div class="time-info">
-                            <span class="current-time">0:00</span>
-                            <span class="total-time">0:00</span>
-                        </div>
-                        <div class="volume-control">
-                            <i class="fas fa-volume-up volume-icon"></i>
-                            <div class="volume-slider">
-                                <div class="volume-progress"></div>
-                            </div>
-                        </div>
-                        <div class="music-controls">
-                            <button id="prev-btn"><i class="fas fa-backward"></i></button>
-                            <button id="play-btn"><i class="fas fa-play"></i></button>
-                            <button id="next-btn"><i class="fas fa-forward"></i></button>
-                            <button id="loop-btn" title="循环模式: 关闭"><i class="fas fa-sync"></i></button>
-                            <button id="shuffle-btn" title="随机播放"><i class="fas fa-random"></i></button>
-                        </div>
-                        <div class="playlist-toggle">
-                            <button id="playlist-btn"><i class="fas fa-list"></i></button>
-                        </div>
-                        <div class="playlist-container">
-                            <ul class="playlist"></ul>
-                        </div>
-                    </div>
-                </section>
-                <section id="live2d-settings">
-                    <h2 class="pixel-text">Live2D 设置</h2>
-                    <div class="settings-container">
-                        <div class="setting-item">
-                            <label for="live2d-display">显示模型</label>
-                            <label class="switch">
-                                <input type="checkbox" id="live2d-display" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="setting-item">
-                            <label for="text-box-display">显示对话框</label>
-                            <label class="switch">
-                                <input type="checkbox" id="text-box-display" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
-                <section id="donate-button-section">
-                    <button id="donate-button" class="button-style">💖 打赏支持</button>
-                    <div id="day-tip" class="day-tip"></div>
+                    </section>
+                    <section id="donate-button-section">
+                        <button id="donate-button" class="button-style">💖 打赏支持</button>
+                        <div id="day-tip" class="day-tip"></div>
 
-                    <div class="donation-list-container">
-                        <h3 class="donation-title pixel-text">
-                            <i class="fas fa-crown"></i> 赞助墙
-                        </h3>
-                        <div class="donation-list">
-                            <div class="donation-loading">加载中...</div>
+                        <div class="donation-list-container">
+                            <h3 class="donation-title pixel-text">
+                                <i class="fas fa-crown"></i> 赞助墙
+                            </h3>
+                            <div class="donation-list">
+                                <div class="donation-loading">加载中...</div>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                    <section id="site-status">
+                        <h2 class="pixel-text">网站状态</h2>
+                        <div class="site-status-widget">
+                        </div>
+                        <div class="status-details">
+                            <div class="uptime-chart"></div>
+                            <div class="last-check">上次检查: <span></span></div>
+                        </div>
+                    </section>
+                    <section id="scripts-download">
+                        <div class="scripts-header">
+                            <h2 class="pixel-text">油猴脚本</h2>
+                            <button id="refreshScripts" class="scripts-refresh" title="刷新脚本列表">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="backup-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a
+                                    href="https://scriptcat.org/zh-CN/users/156336"
+                                    target="_blank">脚本猫</a>，情况特殊时再使用这里的备用版本~</span>
+                        </div>
+                        <div class="backup-notice warning-notice">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>如果你访问不了脚本猫，脚本中的依赖库（如 <code>@require</code>）也会失效。<br>下载后请检查脚本头部，将类似
+                                <code>// @require https://scriptcat.org/lib/2770/1.0.0/jszip-min-js.js</code>
+                                的链接替换为公共CDN上的同名库，如 <a href="https://cdnjs.com/" target="_blank">cdnjs</a> 或 <a
+                                    href="https://www.jsdelivr.com/" target="_blank">jsDelivr</a> 的版本。</span>
+                        </div>
+                        <div class="backup-notice tip-notice">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>冷知识：</strong>jsDelivr在国内有多个镜像站，如 <a href="https://cdn.onmicrosoft.cn/"
+                                    target="_blank">渺软公益CDN</a>、<a href="https://cdn.jsdmirror.com/"
+                                    target="_blank">jsdmirror</a> 等等，也许能帮助你突破某结界。</span>
+                        </div>
+                        <div class="backup-notice success-notice">
+                            <i class="fas fa-check-circle"></i>
+                            <span>如果你是第一次在这里下载，不用担心，新版本已经更换成公共CDN了。</span>
+                        </div>
+                        <div class="scripts-filter">
+                            <input type="text" id="scripts-search" placeholder="搜索脚本..." class="scripts-search">
+                        </div>
+                        <div class="scripts-list">
+                            <div class="scripts-loading">加载中...</div>
+                        </div>
+                    </section>
+                    <section id="games">
+                        <h2 class="pixel-text">
+                            热门游戏
+                            <button id="refreshGames" class="pixel-text">刷新</button>
+                        </h2>
+                        <div class="games-list"></div>
+                    </section>
+                    <section id="steam-games">
+                        <h2 class="pixel-text">最近在玩</h2>
+                        <div class="steam-games-list"></div>
+                    </section>
+                    <section id="steam-status">
+                        <h2 class="pixel-text">Steam状态</h2>
+                        <div class="steam-status-widget">
+                            <div class="steam-user-info">
+                                <a href="https://steamcommunity.com/profiles/76561199075833485/" target="_blank">
+                                    <img data-src="" alt="Steam Avatar" class="steam-avatar">
+                                </a>
+                                <div class="steam-user-details">
+                                    <p class="steam-username"></p>
+                                    <p class="steam-status"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="article-network">
+                        <h2 class="pixel-text">文章网络</h2>
+                        <div class="network-container">
+                            <canvas id="networkCanvas"></canvas>
+                        </div>
+                    </section>
+                    <section id="music-player">
+                        <h2 class="pixel-text">听点小曲</h2>
+                        <div class="music-player">
+                            <div class="music-cover">
+                                <img data-src="" alt="album cover" class="cover-img">
+                            </div>
+                            <div class="music-info">
+                                <div class="song-title"></div>
+                                <p class="artist"></p>
+                                <div class="yt-link"></div>
+                            </div>
+                            <div class="music-progress">
+                                <div class="music-progress-bar"></div>
+                            </div>
+                            <div class="time-info">
+                                <span class="current-time">0:00</span>
+                                <span class="total-time">0:00</span>
+                            </div>
+                            <div class="volume-control">
+                                <i class="fas fa-volume-up volume-icon"></i>
+                                <div class="volume-slider">
+                                    <div class="volume-progress"></div>
+                                </div>
+                            </div>
+                            <div class="music-controls">
+                                <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                                <button id="play-btn"><i class="fas fa-play"></i></button>
+                                <button id="next-btn"><i class="fas fa-forward"></i></button>
+                                <button id="loop-btn" title="循环模式: 关闭"><i class="fas fa-sync"></i></button>
+                                <button id="shuffle-btn" title="随机播放"><i class="fas fa-random"></i></button>
+                            </div>
+                            <div class="playlist-toggle">
+                                <button id="playlist-btn"><i class="fas fa-list"></i></button>
+                            </div>
+                            <div class="playlist-container">
+                                <ul class="playlist"></ul>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="live2d-settings">
+                        <h2 class="pixel-text">Live2D 设置</h2>
+                        <div class="settings-container">
+                            <div class="setting-item">
+                                <label for="live2d-display">显示模型</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="live2d-display" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <label for="text-box-display">显示对话框</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="text-box-display" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </aside>
         </div>
         <div id="network-modal" class="network-modal">
@@ -564,11 +564,12 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/highlight.min.js"></script>
+    <script src="/js/lib/highlight.min.js"></script>
     <script src="/js/seasonTheme.js"></script>
     <script src="/js/loading.js"></script>
     <script src="/js/live2dTextBox.js"></script>
     <script src="/js/live2d.js"></script>
+    <script type="module" src="/js/articles.js"></script>
     <script src="/js/showNotification.js"></script>
     <script src="/js/importantNotice.js"></script>
     <script src="/js/smoothScroll.js"></script>
@@ -579,7 +580,6 @@
     <script src="/js/clouds.js"></script>
     <script src="/js/cursorTrail.js"></script>
     <script src="/js/timeline.js"></script>
-    <script type="module" src="/js/articles.js"></script>
     <script src="/js/contact.js"></script>
     <script src="/js/gamesFetch.js"></script>
     <script src="/js/steamStatus.js"></script>
@@ -587,13 +587,13 @@
     <script src="/js/scriptsDownload.js"></script>
     <script src="/js/pongGame.js"></script>
     <script src="/js/weatherWidget.js"></script>
+    <script src="/js/donate.js"></script>
     <script type="module" src="/js/article-network.js"></script>
     <script src="/js/musicPlayer.js"></script>
     <script src="/js/live2dSettings.js"></script>
     <script src="/js/weather-effects.js"></script>
     <script src="/js/pageViews.js"></script>
     <script src="/js/fetchCode.js"></script>
-    <script src="/js/donate.js"></script>
     <script src="/js/detectDevTools.js"></script>
     <script src="/js/lazyLoad.js"></script>
     <script src="/js/main.js"></script>

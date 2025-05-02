@@ -16,9 +16,9 @@ function loadScript(url) {
 }
 async function loadLive2dLibraries() {
     const libraries = [
-        'https://cdn.jsdmirror.com/npm/live2dcubismcore@latest/live2dcubismcore.min.js',
-        'https://cdn.jsdmirror.com/npm/pixi.js@5.3.12/dist/pixi.min.js',
-        'https://cdn.jsdmirror.com/npm/pixi-live2d-display/dist/cubism4.min.js'
+        '/js/lib/live2dcubismcore.min.js',
+        '/js/lib/pixi.min.js',
+        '/js/lib/cubism4.min.js'
     ];
     try {
         for (const url of libraries) {

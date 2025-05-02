@@ -137,13 +137,22 @@
         box-sizing: border-box;
     }
 
+    .sidebar-content {
+        margin-top: 15px;
+    }
+
     .sidebar {
         max-width: 650px;
+        align-self: auto;
     }
 
     .visit-counter-widget {
         max-width: 650px;
         width: 90%;
+        position: static;
+        margin: 20px auto;
+        animation: none;
+        backdrop-filter: none;
     }
 
     .main-content,
@@ -266,13 +275,6 @@
 
     #contact ul li {
         font-size: 14px;
-    }
-
-    .visit-counter-widget {
-        position: static;
-        margin: 20px auto;
-        animation: none;
-        backdrop-filter: none;
     }
 
     .visit-counter-widget::before {

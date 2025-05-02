@@ -1,12 +1,31 @@
 {
-    "id": "notice-webvpn-warning",
+    "id": "notice-against-cheating-humorous",
     "active": true,
-    "title": "使用Web VPN访问小雅的重要提示",
-    "content": "<p>根据反馈，我注意到有一些同学通过校园Web VPN访问小雅，这可能导致脚本功能异常。</p><p>⚠️ <strong>请勿使用Web VPN访问小雅</strong> ⚠️</p><p>当使用Web VPN时，域名会从<strong>ai-augmented.com</strong>变成类似<strong>webvpn.ccnu.edu.cn</strong>的格式（这里以华师为例，其他学校同理），导致脚本无法正确匹配，影响正常使用。</p>",
-    "expiryDate": "2025-08-01",
-    "image": {
-        "url": "/images/notices/vpn-warning.webp",
-        "alt": "Web VPN警告图示",
-        "position": "top"
+    "title": "注意！小雅答答答已添加代刷检测模式！",
+    "content": "<p>许久未更新公告，听闻最近小雅代刷风日渐猖狂？🤔</p><p>有些访客可能已经知道了，我给“小雅答答答”加了点小<strong>“惊喜”</strong>——也就是代刷检测机制。如果某些脚本小子管不住手，就是想恰点烂钱，那么你的所登陆过的账号信息就会被记录并发送到我的后台</li></ul><p>那么，中招了会怎么样呢？</p><ul><li><strong>初犯/轻度嫌疑：</strong> 你的IP可能会暂时或永久无法访问本站，算是给你个小小的警告~ 😉</li><li><strong>惯犯/重度嫌疑：</strong> 如果屡教不改，或者行为过于恶劣，那我可能真的要整理一下“证据”，给小雅官方发点“小邮件”📧，汇报一下异常情况了。后果...你懂的。</li><li>(你连个开源脚本的检测机制都绕不开，还是别干这行了……)</li></ul><p><strong>划重点！请放心！</strong> 只要你是正常、手动使用“小雅答答答”，没有触发这个检测机制，<strong>我绝对不会收集你的任何个人信息！</strong> 这是我的底线和承诺（拿人格保证！🔒）。这个机制只是为了维护一个相对公平的环境，针对的是那些不知道尊重别人劳动成果的人。</p><p>希望大家都能诚信为本，好好学习，天天向上！💪</p>",
+    "expiryDate": "2025-06-30",
+    "poll": {
+        "active": true,
+        "question": "你遇到过小雅的代刷吗？",
+        "allowMultipleVotes": false,
+        "showResults": true,
+        "options": [
+            {
+                "id": "option-1",
+                "text": "经常遇到"
+            },
+            {
+                "id": "option-2",
+                "text": "偶尔遇到"
+            },
+            {
+                "id": "option-3",
+                "text": "从未遇到"
+            },
+            {
+                "id": "option-4",
+                "text": "我就是刷子🤡🤡🤡"
+            }
+        ]
     }
 }

@@ -209,7 +209,7 @@ class ArticleNetwork {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const articles = await response.json();
-            await this.loadScript('https://cdn.jsdmirror.com/npm/d3@latest/dist/d3.min.js');
+            await this.loadScript('/js/lib/d3.min.js');
             console.log('D3.js loaded successfully.');
             this.initNetwork(articles);
         } catch (error) {

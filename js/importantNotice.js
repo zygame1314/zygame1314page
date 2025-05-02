@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const thanksElement = document.createElement('div');
                     thanksElement.className = 'notice-poll-thanks';
-                    thanksElement.textContent = '感谢投票！你的一票，价值连城……好吧，至少价值一票！';
+                    thanksElement.textContent = '感谢你的投票！';
                     pollContainer.insertBefore(thanksElement, pollResult);
 
                     if (pollConfig.showResults) {
