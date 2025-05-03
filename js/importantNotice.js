@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (hasVoted && pollConfig.showResults) {
                     pollSubmitBtn.disabled = true;
                     pollSubmitBtn.textContent = '已投票';
-                    fetchAndDisplayResults(noticeId);
+                    fetchAndDisplayResults(noticeId, pollConfig, pollResult, pollError);
                 }
             })
             .catch(error => {
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     pollContainer.insertBefore(thanksElement, pollResult);
 
                     if (pollConfig.showResults) {
-                        displayResults(data.results);
+                        displayResults(data.results, pollConfig, pollResult);
                     }
 
                     pollSubmitBtn.textContent = '已投票';
@@ -296,24 +296,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
 
-        function fetchAndDisplayResults(noticeId) {
+        function fetchAndDisplayResults(noticeId, pollConfig, pollResultElement, pollErrorElement) {
             fetch(`${API_BASE}/notice/poll-results?id=${noticeId}`)
                 .then(response => {
                     if (!response.ok) throw new Error('获取投票结果失败');
                     return response.json();
                 })
                 .then(data => {
-                    displayResults(data.results);
+                    displayResults(data.results, pollConfig, pollResultElement);
                 })
                 .catch(error => {
                     console.error('获取投票结果错误:', error);
-                    pollError.textContent = '无法加载投票结果';
-                    pollError.style.display = 'block';
+                    pollErrorElement.textContent = '无法加载投票结果';
+                    pollErrorElement.style.display = 'block';
                 });
         }
 
-        function displayResults(results) {
-            if (!results) return;
+        function displayResults(results, pollConfig, pollResultElement) {
+            if (!results || !pollConfig || !pollConfig.options) return;
+
+            const optionOrder = pollConfig.options.map(opt => opt.id);
+
+            results.sort((a, b) => {
+                const indexA = optionOrder.indexOf(a.id);
+                const indexB = optionOrder.indexOf(b.id);
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
 
             const totalVotes = results.reduce((sum, item) => sum + item.count, 0);
 
@@ -336,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
             });
 
-            pollResult.innerHTML = resultHtml;
-            pollResult.style.display = 'block';
+            pollResultElement.innerHTML = resultHtml;
+            pollResultElement.style.display = 'block';
         }
 
         function submitVote(noticeId, selectedOptions) {
