@@ -93,7 +93,7 @@ export async function onRequest(context) {
         if (personaMatch && personaMatch[1] && personaMatch[2]) {
             player.personastate_css_class = personaMatch[1].trim();
             player.personaname = personaMatch[2].trim();
-            player.avatar_border_class = player.personastate_css_class;
+            // player.avatar_border_class = player.personastate_css_class; // 保留从 avatar div 解析的类
         } else {
             const offlineNameMatch = html.match(/<div class="miniprofile_playername">([^<]+)<\/div>/);
             if (offlineNameMatch && offlineNameMatch[1]) {
@@ -120,10 +120,10 @@ export async function onRequest(context) {
             if (richPresenceMatch && richPresenceMatch[1]) {
                 player.rich_presence = richPresenceMatch[1].trim();
             }
-            player.avatar_border_class = 'in-game';
-            player.personastate_css_class = 'in-game';
+            // player.avatar_border_class = 'in-game'; // 保留从 avatar div 解析的类
+            player.personastate_css_class = 'in-game'; // 游戏状态优先
         } else {
-            player.avatar_border_class = player.personastate_css_class;
+            // player.avatar_border_class = player.personastate_css_class; // 保留从 avatar div 解析的类 (无游戏时)
         }
         const videoWebmMatch = html.match(/<source src="([^"]+\.webm)" type="video\/webm">/);
         if (videoWebmMatch && videoWebmMatch[1]) {
