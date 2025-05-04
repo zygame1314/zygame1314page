@@ -21,7 +21,6 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-cache',
             },
         });
     }
@@ -137,7 +136,6 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
             },
         });
     } catch (error) {
@@ -151,7 +149,6 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
             },
         });
     }
