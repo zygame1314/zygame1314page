@@ -135,18 +135,11 @@ export async function onRequest(context) {
         if (videoMp4Match && videoMp4Match[1]) {
             player.background_video_mp4 = videoMp4Match[1];
         }
-        const badgeContainerMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<img src="([^"]+)" class="badge_icon">([\s\S]*?)<\/div>\s*<\/div>/);
-        if (badgeContainerMatch && badgeContainerMatch[1] && badgeContainerMatch[2]) {
-            player.featured_badge_icon = badgeContainerMatch[1];
-            const descriptionHtml = badgeContainerMatch[2];
-            const badgeNameMatch = descriptionHtml.match(/<div class="name">([^<]+)<\/div>/);
-            const badgeXpMatch = descriptionHtml.match(/<div class="xp">([^<]+)<\/div>/);
-            if (badgeNameMatch && badgeNameMatch[1]) {
-                player.featured_badge_name = badgeNameMatch[1].trim();
-            }
-            if (badgeXpMatch && badgeXpMatch[1]) {
-                player.featured_badge_xp = badgeXpMatch[1].trim();
-            }
+        const badgeDetailsMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<img src="([^"]+)" class="badge_icon">\s*<div class="description">\s*<div class="name">([^<]+)<\/div>\s*<div class="xp">([^<]+)<\/div>\s*<\/div>\s*<\/div>/);
+        if (badgeDetailsMatch) {
+            player.featured_badge_icon = badgeDetailsMatch[1];
+            player.featured_badge_name = badgeDetailsMatch[2].trim();
+            player.featured_badge_xp = badgeDetailsMatch[3].trim();
         }
         const levelContainerMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<div class="friendPlayerLevel[^"]*">\s*<span class="friendPlayerLevelNum">(\d+)<\/span>/);
         if (levelContainerMatch && levelContainerMatch[1]) {
