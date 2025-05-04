@@ -9,20 +9,7 @@ export async function onRequest(context) {
             },
         });
     }
-    const cache = caches.default;
-    const cacheKey = new Request(new URL(context.request.url).toString() + '-v2', context.request);
-    let response = await cache.match(cacheKey);
-    if (response) {
-        console.log('Cache hit (v2)');
-        const newHeaders = new Headers(response.headers);
-        newHeaders.set('Access-Control-Allow-Origin', '*');
-        return new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: newHeaders
-        });
-    }
-    console.log('Cache miss (v2)');
+    let response;
     const steamFriendCode = context.env.STEAM_ID_32;
     if (!steamFriendCode) {
         return new Response(JSON.stringify({
@@ -150,7 +137,7 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=60',
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
             },
         });
     } catch (error) {
@@ -164,10 +151,9 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=60',
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
             },
         });
     }
-    context.waitUntil(cache.put(cacheKey, response.clone()));
     return response;
 }
