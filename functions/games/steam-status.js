@@ -33,7 +33,8 @@ export async function onRequest(context) {
                 "x-requested-with": "XMLHttpRequest",
                 "Referer": `https://steamcommunity.com/profiles/${steamFriendCode}/friends/`
             },
-            method: "GET"
+            method: "GET",
+            cache: 'no-store'
         });
         if (!steamResponse.ok) {
             const errorText = await steamResponse.text();
