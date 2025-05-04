@@ -33,8 +33,7 @@ export async function onRequest(context) {
                 "x-requested-with": "XMLHttpRequest",
                 "Referer": `https://steamcommunity.com/profiles/${steamFriendCode}/friends/`
             },
-            method: "GET",
-            cache: 'no-cache'
+            method: "GET"
         });
         if (!steamResponse.ok) {
             const errorText = await steamResponse.text();
@@ -137,9 +136,6 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
             },
         });
     } catch (error) {
@@ -153,9 +149,6 @@ export async function onRequest(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
             },
         });
     }
