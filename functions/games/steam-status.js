@@ -135,21 +135,22 @@ export async function onRequest(context) {
         if (videoMp4Match && videoMp4Match[1]) {
             player.background_video_mp4 = videoMp4Match[1];
         }
-        const featuredContainers = html.matchAll(/<div class="miniprofile_featuredcontainer">([\s\S]*?)<\/div>/g);
-        let containerCount = 0;
+        const featuredContainers = html.matchAll(/<div class="miniprofile_featuredcontainer">([\s\S]*?)<\/div>\s*<\/div>/g);
         for (const match of featuredContainers) {
             const containerHtml = match[1];
-            containerCount++;
-            if (containerCount === 1) {
-                const badgeIconMatch = containerHtml.match(/<img src="([^"]+)" class="badge_icon">/);
-                const badgeNameMatch = containerHtml.match(/<div class="name">\s*([^<]+)\s*<\/div>/);
-                const badgeXpMatch = containerHtml.match(/<div class="xp">\s*([^<]+)\s*<\/div>/);
-                if (badgeIconMatch && badgeIconMatch[1]) player.featured_badge_icon = badgeIconMatch[1];
+            const badgeIconMatch = containerHtml.match(/<img src="([^"]+)" class="badge_icon">/);
+            if (badgeIconMatch && badgeIconMatch[1]) {
+                player.featured_badge_icon = badgeIconMatch[1];
+                const badgeNameMatch = containerHtml.match(/<div class="name">([^<]+)<\/div>/);
+                const badgeXpMatch = containerHtml.match(/<div class="xp">([^<]+)<\/div>/);
                 if (badgeNameMatch && badgeNameMatch[1]) player.featured_badge_name = badgeNameMatch[1].trim();
                 if (badgeXpMatch && badgeXpMatch[1]) player.featured_badge_xp = badgeXpMatch[1].trim();
-            } else if (containerCount === 2) {
+            }
+            else {
                 const levelMatch = containerHtml.match(/<span class="friendPlayerLevelNum">(\d+)<\/span>/);
-                if (levelMatch && levelMatch[1]) player.steam_level = parseInt(levelMatch[1], 10);
+                if (levelMatch && levelMatch[1]) {
+                    player.steam_level = parseInt(levelMatch[1], 10);
+                }
             }
         }
         const responseData = { success: true, player: player };
