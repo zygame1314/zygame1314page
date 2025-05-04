@@ -57,6 +57,7 @@ export async function onRequest(context) {
         const html = await steamResponse.text();
         const player = {
             avatarfull: null,
+            avatar_frame_url: null,
             personaname: null,
             personastate_css_class: 'offline',
             avatar_border_class: 'offline',
@@ -69,8 +70,7 @@ export async function onRequest(context) {
             featured_badge_icon: null,
             featured_badge_name: null,
             featured_badge_xp: null,
-            steam_level: null,
-            avatar_frame_url: null
+            steam_level: null
         };
         const avatarContainerMatch = html.match(/<div class="playersection_avatar\s+([^"]*)">\s*<img src="([^"]+)">/);
         if (avatarContainerMatch && avatarContainerMatch[2]) {
@@ -142,8 +142,8 @@ export async function onRequest(context) {
             containerCount++;
             if (containerCount === 1) {
                 const badgeIconMatch = containerHtml.match(/<img src="([^"]+)" class="badge_icon">/);
-                const badgeNameMatch = containerHtml.match(/<div class="name">([^<]+)<\/div>/);
-                const badgeXpMatch = containerHtml.match(/<div class="xp">([^<]+)<\/div>/);
+                const badgeNameMatch = containerHtml.match(/<div class="name">\s*([^<]+)\s*<\/div>/);
+                const badgeXpMatch = containerHtml.match(/<div class="xp">\s*([^<]+)\s*<\/div>/);
                 if (badgeIconMatch && badgeIconMatch[1]) player.featured_badge_icon = badgeIconMatch[1];
                 if (badgeNameMatch && badgeNameMatch[1]) player.featured_badge_name = badgeNameMatch[1].trim();
                 if (badgeXpMatch && badgeXpMatch[1]) player.featured_badge_xp = badgeXpMatch[1].trim();
