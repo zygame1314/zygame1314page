@@ -414,13 +414,32 @@
                     <section id="steam-status">
                         <h2 class="pixel-text">Steam状态</h2>
                         <div class="steam-status-widget">
+                            <video class="steam-background-video" playsinline autoplay muted loop
+                                style="display: none;">
+                            </video>
+
                             <div class="steam-user-info">
                                 <a href="https://steamcommunity.com/profiles/76561199075833485/" target="_blank">
-                                    <img data-src="" alt="Steam Avatar" class="steam-avatar">
+                                    <img data-src="" alt="Steam Avatar" class="steam-avatar lazy-placeholder">
                                 </a>
                                 <div class="steam-user-details">
                                     <p class="steam-username"></p>
                                     <p class="steam-status"></p>
+                                    <div class="steam-level" style="display: none;">
+                                        <span class="steam-level-icon"></span>
+                                        <span class="steam-level-num"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="steam-details-section">
+
+                                <div class="steam-featured-badge" style="display: none;">
+                                    <img data-src="" alt="Featured Badge" class="steam-badge-icon lazy-placeholder">
+                                    <div class="steam-badge-details">
+                                        <div class="steam-badge-name"></div>
+                                        <div class="steam-badge-xp"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
