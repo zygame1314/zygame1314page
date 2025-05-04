@@ -69,7 +69,8 @@ export async function onRequest(context) {
             featured_badge_icon: null,
             featured_badge_name: null,
             featured_badge_xp: null,
-            steam_level: null
+            steam_level: null,
+            avatar_frame_url: null
         };
         const avatarContainerMatch = html.match(/<div class="playersection_avatar\s+([^"]*)">\s*<img src="([^"]+)">/);
         if (avatarContainerMatch && avatarContainerMatch[2]) {
@@ -89,11 +90,14 @@ export async function onRequest(context) {
                 player.avatar_border_class = offlineAvatarClassMatch[1].trim();
             }
         }
+        const avatarFrameMatch = html.match(/<div class="playersection_avatar_frame">\s*<img src="([^"]+)">/);
+        if (avatarFrameMatch && avatarFrameMatch[1]) {
+            player.avatar_frame_url = avatarFrameMatch[1];
+        }
         const personaMatch = html.match(/<span class="persona\s+([^"]+)">([^<]+)<\/span>/);
         if (personaMatch && personaMatch[1] && personaMatch[2]) {
             player.personastate_css_class = personaMatch[1].trim();
             player.personaname = personaMatch[2].trim();
-            // player.avatar_border_class = player.personastate_css_class; // 保留从 avatar div 解析的类
         } else {
             const offlineNameMatch = html.match(/<div class="miniprofile_playername">([^<]+)<\/div>/);
             if (offlineNameMatch && offlineNameMatch[1]) {
@@ -120,10 +124,8 @@ export async function onRequest(context) {
             if (richPresenceMatch && richPresenceMatch[1]) {
                 player.rich_presence = richPresenceMatch[1].trim();
             }
-            // player.avatar_border_class = 'in-game'; // 保留从 avatar div 解析的类
-            player.personastate_css_class = 'in-game'; // 游戏状态优先
+            player.personastate_css_class = 'in-game';
         } else {
-            // player.avatar_border_class = player.personastate_css_class; // 保留从 avatar div 解析的类 (无游戏时)
         }
         const videoWebmMatch = html.match(/<source src="([^"]+\.webm)" type="video\/webm">/);
         if (videoWebmMatch && videoWebmMatch[1]) {
