@@ -141,10 +141,16 @@ export async function onRequest(context) {
             const badgeIconMatch = containerHtml.match(/<img src="([^"]+)" class="badge_icon">/);
             if (badgeIconMatch && badgeIconMatch[1]) {
                 player.featured_badge_icon = badgeIconMatch[1];
-                const badgeNameMatch = containerHtml.match(/<div class="name">([^<]+)<\/div>/);
-                const badgeXpMatch = containerHtml.match(/<div class="xp">([^<]+)<\/div>/);
-                if (badgeNameMatch && badgeNameMatch[1]) player.featured_badge_name = badgeNameMatch[1].trim();
-                if (badgeXpMatch && badgeXpMatch[1]) player.featured_badge_xp = badgeXpMatch[1].trim();
+                const descriptionMatch = containerHtml.match(/<div class="description">([\s\S]*?)<\/div>/);
+                if (descriptionMatch) {
+                    const descriptionHtml = descriptionMatch[1];
+                    const badgeNameMatch = descriptionHtml.match(/<div class="name">([^<]+)<\/div>/);
+                    const badgeXpMatch = descriptionHtml.match(/<div class="xp">([^<]+)<\/div>/);
+                    if (badgeNameMatch && badgeNameMatch[1])
+                        player.featured_badge_name = badgeNameMatch[1].trim();
+                    if (badgeXpMatch && badgeXpMatch[1])
+                        player.featured_badge_xp = badgeXpMatch[1].trim();
+                }
             }
             else {
                 const levelMatch = containerHtml.match(/<span class="friendPlayerLevelNum">(\d+)<\/span>/);
