@@ -24,7 +24,8 @@ export async function onRequest(context) {
             },
         });
     }
-    const miniprofileUrl = `https://steamcommunity.com/miniprofile/${steamFriendCode}`;
+    const timestamp = Date.now();
+    const miniprofileUrl = `https://steamcommunity.com/miniprofile/${steamFriendCode}?_=${timestamp}`;
     try {
         const steamResponse = await fetch(miniprofileUrl, {
             headers: {
