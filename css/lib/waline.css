@@ -180,7 +180,6 @@
     text-align: center;
     white-space: nowrap;
     cursor: url('/images/cursors/Rath Link.cur'), auto;
-    ;
     user-select: none;
     touch-action: manipulation;
     transition-duration: .4s
@@ -500,9 +499,8 @@
 }
 
 .wl-emoji-popup {
-    position: absolute;
+    margin-top: 10px;
     inset-inline-start: 1.25em;
-    top: 100%;
     z-index: 10;
     display: none;
     width: 100%;
@@ -840,7 +838,6 @@ z .wl-cards .wl-user .verified-icon {
     color: var(--waline-color);
     line-height: 1;
     cursor: url('/images/cursors/Rath Link.cur'), auto;
-    ;
     transition: color .2s ease
 }
 
