@@ -96,5 +96,12 @@
         "date": "2025-05-14",
         "platform": "wechat",
         "message": null
+    },
+    {
+        "name": "*写",
+        "amount": 20.00,
+        "date": "2025-05-14",
+        "platform": "wechat",
+        "message": "感谢前辈造福百姓！"
     }
 ]
