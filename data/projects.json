@@ -78,8 +78,8 @@
         },
         {
             "id": 5,
-            "title": "⚠️ 施工中 ⚠️",
-            "type": "tetris"
+            "title": "施工中",
+            "type": "construction"
         }
     ]
 }

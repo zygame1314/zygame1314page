@@ -310,11 +310,6 @@
     margin-top: 15px;
 }
 
-#tetris-canvas {
-    width: 100%;
-    height: auto;
-}
-
 .pagination {
     text-align: center;
     margin-top: 20px;
@@ -362,4 +357,147 @@
 
 .project-card p::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+}
+
+.construction-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(30, 30, 30, 0.8) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    perspective: 1000px;
+}
+
+.construction-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 80%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-left: 3px solid var(--secondary-color);
+    animation: border-flash 2s infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.construction-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 3s infinite;
+}
+
+.construction-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-right: 15px;
+    animation: pixel-bounce 1.5s infinite;
+}
+
+.construction-title {
+    font-size: 18px;
+    color: var(--primary-color);
+    font-weight: bold;
+    position: relative;
+}
+
+.construction-title::after {
+    content: '...';
+    animation: pixel-arrow 1.5s infinite steps(1);
+}
+
+.blueprint-grid {
+    width: 80%;
+    height: 180px;
+    position: relative;
+    margin-bottom: 20px;
+    border: 2px solid var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    background-image:
+        linear-gradient(var(--theme-bg) 1px, transparent 1px),
+        linear-gradient(90deg, var(--theme-bg) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    animation: gradientShift 10s infinite linear;
+}
+
+.blueprint-item {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    transform-origin: center center;
+    animation: pixel-dance 4s infinite;
+}
+
+.blueprint-item:nth-child(1) {
+    top: 20%;
+    left: 30%;
+    animation-delay: 0s;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.blueprint-item:nth-child(2) {
+    top: 50%;
+    left: 60%;
+    animation-delay: 1s;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.blueprint-item:nth-child(3) {
+    top: 70%;
+    left: 40%;
+    animation-delay: 2s;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.construction-progress {
+    width: 80%;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--primary-color);
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 30%;
+    background: repeating-linear-gradient(45deg,
+            var(--primary-color),
+            var(--primary-color) 10px,
+            var(--secondary-color) 10px,
+            var(--secondary-color) 20px);
+    animation: moveStripes 2s linear infinite;
+}
+
+.construction-status {
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--primary-color);
+    animation: textGlow 2s infinite alternate;
+}
+
+.construction-eta {
+    color: var(--text-color);
+    text-align: center;
+    margin-top: 5px;
+    font-size: 14px;
+    opacity: 0.8;
+    animation: fadeInOut 3s infinite;
 }
