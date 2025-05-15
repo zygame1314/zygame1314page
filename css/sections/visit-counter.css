@@ -463,7 +463,7 @@
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
     font-family: 'zpix';
     font-size: 12px;
-    cursor: pointer;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
     z-index: 998;
 }
