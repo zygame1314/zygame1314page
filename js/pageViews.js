@@ -55,6 +55,30 @@ document.addEventListener('DOMContentLoaded', function () {
     updateWidgetPosition();
     window.addEventListener('load', updateCardHeight);
     updateCardHeight();
+
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'toggle-widget-btn';
+    toggleBtn.className = 'button-style';
+    toggleBtn.innerText = '隐藏挂件';
+
+    toggleBtn.addEventListener('click', () => {
+        if (widget.classList.contains('folded')) {
+            widget.classList.remove('folded');
+            toggleBtn.innerText = '隐藏挂件';
+        } else {
+            widget.classList.add('folded');
+            toggleBtn.innerText = '显示挂件';
+        }
+    });
+
+    widget.appendChild(toggleBtn);
+
+    const card = document.querySelector('.visit-counter-card');
+    card.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'transform') {
+            updateCardHeight();
+        }
+    });
 });
 
 function updateCardHeight() {
@@ -75,14 +99,12 @@ document.getElementById('flip-card').addEventListener('click', function () {
     const widget = document.querySelector('.visit-counter-widget');
     widget.classList.add('flipped');
 
-    setTimeout(updateCardHeight, 300);
 });
 
 document.getElementById('flip-back').addEventListener('click', function () {
     const widget = document.querySelector('.visit-counter-widget');
     widget.classList.remove('flipped');
 
-    setTimeout(updateCardHeight, 300);
 });
 
 function updateCardContentForArticle() {
@@ -90,7 +112,6 @@ function updateCardContentForArticle() {
     const backContent = document.querySelector('.card-back');
 
     widget.classList.add('flipped');
-    setTimeout(updateCardHeight, 300);
 
     backContent.innerHTML = `
         <p id="visit-count">
@@ -136,13 +157,11 @@ function restoreOriginalCardContent() {
     document.getElementById('flip-card').addEventListener('click', function () {
         const widget = document.querySelector('.visit-counter-widget');
         widget.classList.add('flipped');
-        setTimeout(updateCardHeight, 300);
     });
 
     document.getElementById('flip-back').addEventListener('click', function () {
         const widget = document.querySelector('.visit-counter-widget');
         widget.classList.remove('flipped');
-        setTimeout(updateCardHeight, 300);
     });
 
     document.getElementById('visit-count').addEventListener('click', function () {

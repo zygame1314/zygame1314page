@@ -88,25 +88,7 @@
 }
 
 #games h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 15px;
-    cursor: url('/images/cursors/kushala text select.cur'), auto;
-}
-
-#games h2 button {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
-    font-size: 14px;
-    font-family: 'zpix';
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
-}
-
-#games h2 button:hover {
-    color: var(--secondary-color);
 }
 
 .game-item img.default-cover {

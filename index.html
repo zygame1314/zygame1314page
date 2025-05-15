@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/css/sections/timeline.css">
     <link rel="stylesheet" href="/css/sections/about.css">
     <link rel="stylesheet" href="/css/sections/contact.css">
+    <link rel="stylesheet" href="/css/sections/sidebar-nav.css">
     <link rel="stylesheet" href="/css/sections/weather.css">
     <link rel="stylesheet" href="/css/sections/donate.css">
     <link rel="stylesheet" href="/css/sections/site-status.css">
@@ -118,10 +119,13 @@
                         <h3 class="pixel-text notice-title">
                             <i class="fas fa-bullhorn"></i> 公告
                             <div class="notice-controls">
-                                <button class="notice-prev"><i class="fas fa-chevron-left"></i></button>
-                                <button class="notice-autoplay"><i class="fas fa-pause"></i></button>
+                                <button class="notice-prev" aria-label="上一条公告"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <button class="notice-autoplay" aria-label="自动播放公告"><i
+                                        class="fas fa-pause"></i></button>
                                 <span class="notice-page">1/1</span>
-                                <button class="notice-next"><i class="fas fa-chevron-right"></i></button>
+                                <button class="notice-next" aria-label="下一条公告"><i
+                                        class="fas fa-chevron-right"></i></button>
                             </div>
                         </h3>
                         <div class="notice-content-wrapper"></div>
@@ -295,6 +299,7 @@
                 </section>
             </div>
             <aside class="sidebar">
+                <section id="quick-nav" class="sidebar-quick-nav"></section>
                 <div class="sidebar-content">
                     <section id="weather">
                         <h2 class="pixel-text">当前天气</h2>
@@ -338,7 +343,8 @@
                         </div>
                     </section>
                     <section id="donate-button-section">
-                        <button id="donate-button" class="button-style">💖 打赏支持</button>
+                        <h2 class="pixel-text">打赏支持</h2>
+                        <button id="donate-button" class="button-style">💖 点此赞助</button>
                         <div id="day-tip" class="day-tip"></div>
 
                         <div class="donation-list-container">
@@ -362,32 +368,9 @@
                     <section id="scripts-download">
                         <div class="scripts-header">
                             <h2 class="pixel-text">油猴脚本</h2>
-                            <button id="refreshScripts" class="scripts-refresh" title="刷新脚本列表">
+                            <button id="refreshScripts" class="scripts-refresh" title="刷新脚本列表" aria-label="刷新脚本列表">
                                 <i class="fas fa-sync-alt"></i>
                             </button>
-                        </div>
-                        <div class="backup-notice">
-                            <i class="fas fa-info-circle"></i>
-                            <span>这里是备用下载，通过Cloudflare Worker抓取自脚本猫的副本，更新可能不及时。<br>建议优先访问<a
-                                    href="https://scriptcat.org/zh-CN/users/156336"
-                                    target="_blank">脚本猫</a>，情况特殊时再使用这里的备用版本~</span>
-                        </div>
-                        <div class="backup-notice warning-notice">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>如果你访问不了脚本猫，脚本中的依赖库（如 <code>@require</code>）也会失效。<br>下载后请检查脚本头部，将类似
-                                <code>// @require https://scriptcat.org/lib/2770/1.0.0/jszip-min-js.js</code>
-                                的链接替换为公共CDN上的同名库，如 <a href="https://cdnjs.com/" target="_blank">cdnjs</a> 或 <a
-                                    href="https://www.jsdelivr.com/" target="_blank">jsDelivr</a> 的版本。</span>
-                        </div>
-                        <div class="backup-notice tip-notice">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>冷知识：</strong>jsDelivr在国内有多个镜像站，如 <a href="https://cdn.onmicrosoft.cn/"
-                                    target="_blank">渺软公益CDN</a>、<a href="https://cdn.jsdmirror.com/"
-                                    target="_blank">jsdmirror</a> 等等，也许能帮助你突破某结界。</span>
-                        </div>
-                        <div class="backup-notice success-notice">
-                            <i class="fas fa-check-circle"></i>
-                            <span>如果你是第一次在这里下载，不用担心，新版本已经更换成公共CDN了。</span>
                         </div>
                         <div class="scripts-filter">
                             <input type="text" id="scripts-search" placeholder="搜索脚本..." class="scripts-search">
@@ -397,10 +380,7 @@
                         </div>
                     </section>
                     <section id="games">
-                        <h2 class="pixel-text">
-                            热门游戏
-                            <button id="refreshGames" class="pixel-text">刷新</button>
-                        </h2>
+                        <h2 class="pixel-text">热门游戏</h2>
                         <div class="games-list"></div>
                     </section>
                     <section id="steam-games">
@@ -505,6 +485,9 @@
                         </div>
                     </section>
                 </div>
+                <button id="sidebar-toggle" class="sidebar-toggle" aria-label="侧边栏切换">
+                    <i class="fas fa-bars"></i>
+                </button>
             </aside>
         </div>
         <div id="network-modal" class="network-modal">
@@ -601,6 +584,7 @@
     <script src="/js/siteStatus.js"></script>
     <script src="/js/scriptsDownload.js"></script>
     <script src="/js/pongGame.js"></script>
+    <script src="/js/sidebar.js"></script>
     <script src="/js/weatherWidget.js"></script>
     <script src="/js/donate.js"></script>
     <script type="module" src="/js/article-network.js"></script>

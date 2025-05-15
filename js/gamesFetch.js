@@ -153,11 +153,6 @@ function initGamesFetch() {
 
     fetchPopularGames();
 
-    refreshButton.addEventListener('click', () => {
-        showNotification('热门游戏已刷新', 5, 'warning');
-        fetchPopularGames();
-    });
-
     async function fetchRecentlyPlayedGames() {
         try {
             const response = await fetch(`${API_BASE}/games/recent-games`);
