@@ -21,7 +21,16 @@ export async function onRequest(context) {
                 lat = context.request.cf.latitude;
                 lon = context.request.cf.longitude;
             } else {
-                throw new Error('无法获取IP地理位置信息');
+                return new Response(JSON.stringify({
+                    error: 'IP_LOCATION_FAILED',
+                    message: '无法获取IP地理位置信息'
+                }), {
+                    status: 400,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
             }
         }
 

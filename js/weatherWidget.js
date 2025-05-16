@@ -39,12 +39,7 @@ function initWeatherWidget() {
                         savePosition,
                         (error) => {
                             console.warn('浏览器定位失败，将使用服务器IP定位:', error);
-                            if (cachedPosition) {
-                                showNotification('📍 使用上次保存的位置信息', 4, 'info');
-                                resolve(JSON.parse(cachedPosition));
-                            } else {
-                                resolve(null);
-                            }
+                            resolve(null);
                         },
                         options
                     );
@@ -53,11 +48,7 @@ function initWeatherWidget() {
                 }
             } else {
                 console.warn('浏览器不支持定位API，将使用服务器IP定位');
-                if (cachedPosition) {
-                    resolve(JSON.parse(cachedPosition));
-                } else {
-                    resolve(null);
-                }
+                resolve(null);
             }
         });
     }
@@ -67,21 +58,54 @@ function initWeatherWidget() {
             const position = await getCurrentPosition();
             
             let url;
+            let data;
+
             if (position && position.coords) {
                 const { latitude, longitude } = position.coords;
                 url = `${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || '天气 API 错误');
+                }
+                
+                data = await response.json();
             } else {
-                url = `${API_BASE}/weather/weather?useIP=true`;
+                try {
+                    url = `${API_BASE}/weather/weather?useIP=true`;
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error('IP定位失败');
+                    }
+                    
+                    data = await response.json();
+                } catch (ipError) {
+                    console.warn('IP定位失败，尝试使用缓存位置:', ipError);
+                    
+                    const cachedPosition = localStorage.getItem('lastKnownPosition');
+                    if (cachedPosition) {
+                        const parsedPosition = JSON.parse(cachedPosition);
+                        const { latitude, longitude } = parsedPosition.coords;
+                        
+                        showNotification('📍 浏览器定位和IP定位均失败，使用缓存位置', 4, 'warning');
+                        
+                        url = `${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`;
+                        const response = await fetch(url);
+                        
+                        if (!response.ok) {
+                            const error = await response.json();
+                            throw new Error(error.message || '天气 API 错误');
+                        }
+                        
+                        data = await response.json();
+                    } else {
+                        throw new Error('无法获取位置信息');
+                    }
+                }
             }
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || '天气 API 错误');
-            }
-
-            const data = await response.json();
+            
             return data;
         } catch (error) {
             console.error('获取天气数据失败:', error);
@@ -105,6 +129,19 @@ function initWeatherWidget() {
 
         const weatherData = data.weather;
         const locationData = data.location;
+        
+        const cachedPosition = localStorage.getItem('lastKnownPosition');
+        if (!cachedPosition && weatherData.coord) {
+            const position = {
+                coords: {
+                    latitude: weatherData.coord.lat,
+                    longitude: weatherData.coord.lon
+                }
+            };
+            localStorage.setItem('lastKnownPosition', JSON.stringify(position));
+            localStorage.setItem('positionTimestamp', Date.now().toString());
+            console.log('已保存IP定位的位置信息到本地存储');
+        }
 
         const temp = Math.round(weatherData.main.temp);
         const feelsLike = Math.round(weatherData.main.feels_like);
