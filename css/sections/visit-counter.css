@@ -414,7 +414,7 @@
 
 .visit-counter-widget.folded {
     width: 100px !important;
-    height: 100px !important;
+    height: 30px !important;
     background: transparent;
     border: none;
     box-shadow: none;

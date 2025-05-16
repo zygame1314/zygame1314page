@@ -331,7 +331,8 @@
     width: 0;
     padding: .5em;
     background: rgba(0, 0, 0, 0);
-    font-size: .625em
+    font-size: .625em;
+    cursor: url('/images/cursors/kushala text select.cur'), auto
 }
 
 .wl-header-item {
