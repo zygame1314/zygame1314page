@@ -12,8 +12,18 @@ export async function onRequest(context) {
 
     try {
         const url = new URL(context.request.url);
-        const lat = url.searchParams.get('lat');
-        const lon = url.searchParams.get('lon');
+        let lat = url.searchParams.get('lat');
+        let lon = url.searchParams.get('lon');
+        let useIP = url.searchParams.get('useIP') === 'true';
+
+        if (useIP || (!lat && !lon)) {
+            if (context.request.cf && context.request.cf.latitude && context.request.cf.longitude) {
+                lat = context.request.cf.latitude;
+                lon = context.request.cf.longitude;
+            } else {
+                throw new Error('无法获取IP地理位置信息');
+            }
+        }
 
         if (!lat || !lon) {
             throw new Error('缺少经纬度参数');

@@ -7,33 +7,6 @@ function initWeatherWidget() {
         weatherIconElem.src = DEFAULT_ICON_URL;
     }
 
-    async function getLocationByIP() {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-            const response = await fetch('https://ipwho.is', {
-                signal: controller.signal
-            });
-            clearTimeout(timeoutId);
-
-            const data = await response.json();
-
-            if (!data.success) {
-                throw new Error('无法获取位置信息');
-            }
-
-            return {
-                coords: {
-                    latitude: parseFloat(data.latitude) || 39.9042,
-                    longitude: parseFloat(data.longitude) || 116.4074
-                }
-            };
-        } catch (error) {
-            console.error('IP定位失败:', error);
-            throw error;
-        }
-    }
 
     function getCurrentPosition() {
         return new Promise(async (resolve, reject) => {
@@ -64,23 +37,13 @@ function initWeatherWidget() {
                 try {
                     navigator.geolocation.getCurrentPosition(
                         savePosition,
-                        async (error) => {
-                            console.warn('浏览器定位失败，尝试IP定位:', error);
-                            try {
-                                const ipPosition = await getLocationByIP();
-                                savePosition(ipPosition);
-                            } catch (ipError) {
-                                if (cachedPosition) {
-                                    showNotification('📍 使用上次保存的位置信息', 4, 'info');
-                                    resolve(JSON.parse(cachedPosition));
-                                } else {
-                                    resolve({
-                                        coords: {
-                                            latitude: 39.9042,
-                                            longitude: 116.4074
-                                        }
-                                    });
-                                }
+                        (error) => {
+                            console.warn('浏览器定位失败，将使用服务器IP定位:', error);
+                            if (cachedPosition) {
+                                showNotification('📍 使用上次保存的位置信息', 4, 'info');
+                                resolve(JSON.parse(cachedPosition));
+                            } else {
+                                resolve(null);
                             }
                         },
                         options
@@ -89,11 +52,11 @@ function initWeatherWidget() {
                     reject(error);
                 }
             } else {
-                try {
-                    const ipPosition = await getLocationByIP();
-                    savePosition(ipPosition);
-                } catch (error) {
-                    reject(error);
+                console.warn('浏览器不支持定位API，将使用服务器IP定位');
+                if (cachedPosition) {
+                    resolve(JSON.parse(cachedPosition));
+                } else {
+                    resolve(null);
                 }
             }
         });
@@ -102,9 +65,16 @@ function initWeatherWidget() {
     async function getWeatherData() {
         try {
             const position = await getCurrentPosition();
-            const { latitude, longitude } = position.coords;
+            
+            let url;
+            if (position && position.coords) {
+                const { latitude, longitude } = position.coords;
+                url = `${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`;
+            } else {
+                url = `${API_BASE}/weather/weather?useIP=true`;
+            }
 
-            const response = await fetch(`${API_BASE}/weather/weather?lat=${latitude}&lon=${longitude}`);
+            const response = await fetch(url);
 
             if (!response.ok) {
                 const error = await response.json();
