@@ -30,7 +30,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-family: 'zpix', monospace;
-    animation: pixel-arrow 1.5s infinite steps(1);
+    animation: pixel-arrow 1.5s infinite ease;
 }
 
 .sidebar-quick-nav h3::before {

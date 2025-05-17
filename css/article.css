@@ -163,7 +163,7 @@
     inset: -2px;
     background: transparent;
     border: 2px solid var(--primary-color);
-    animation: pixelGlow 2s steps(2) infinite;
+    animation: pixelGlow 2s ease infinite;
     pointer-events: none;
 }
 

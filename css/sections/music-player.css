@@ -16,9 +16,10 @@
 
 .music-controls {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     margin: 15px 0;
 }
 
@@ -103,7 +104,7 @@
 .music-progress-bar {
     height: 100%;
     background: var(--primary-color);
-    transition: width 0.1s steps(20);
+    transition: width 0.1s ease;
 }
 
 .time-info {
@@ -133,7 +134,7 @@
     width: 100%;
     min-height: 100px;
     object-fit: contain;
-    transition: transform 0.3s steps(5);
+    transition: transform 0.3s ease;
 }
 
 .music-cover:hover .cover-img {
@@ -141,7 +142,7 @@
 }
 
 .cover-img.loading {
-    animation: coverLoading 0.3s steps(6) forwards;
+    animation: coverLoading 0.3s ease forwards;
 }
 
 .volume-control {

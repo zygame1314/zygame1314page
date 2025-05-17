@@ -117,6 +117,7 @@ class ArticlesManager {
     setupSearchListener() {
         const searchInput = document.getElementById('article-search');
         const searchButton = document.querySelector('.search-button');
+        const clearSearchButton = document.querySelector('.clear-search-button');
         const suggestions = document.querySelector('.search-suggestions');
         const grid = document.querySelector('.articles-grid');
 
@@ -146,23 +147,6 @@ class ArticlesManager {
             this.renderArticles();
 
             suggestions.style.display = 'none';
-
-            if (this.searchQuery) {
-                setTimeout(() => {
-                    const firstMatch = grid.querySelector('.highlight-text');
-                    if (firstMatch) {
-                        const card = firstMatch.closest('.article-card');
-                        card.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        card.classList.add('search-highlight');
-                        setTimeout(() => {
-                            card.classList.remove('search-highlight');
-                        }, 2000);
-                    }
-                }, 100);
-            }
         };
 
         searchButton.addEventListener('click', handleSearch);
@@ -170,6 +154,14 @@ class ArticlesManager {
             if (e.key === 'Enter') {
                 handleSearch();
             }
+        });
+
+        clearSearchButton.addEventListener('click', () => {
+            searchInput.value = '';
+            this.searchQuery = '';
+            this.currentIndex = 0;
+            this.renderArticles();
+            suggestions.style.display = 'none';
         });
 
         document.querySelector('.clear-history').addEventListener('click', () => {
@@ -250,22 +242,6 @@ class ArticlesManager {
                     this.addToHistory(article.title);
                     this.currentIndex = 0;
                     this.renderArticles();
-
-                    setTimeout(() => {
-                        const grid = document.querySelector('.articles-grid');
-                        const firstMatch = grid.querySelector('.highlight-text');
-                        if (firstMatch) {
-                            const card = firstMatch.closest('.article-card');
-                            card.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                            card.classList.add('search-highlight');
-                            setTimeout(() => {
-                                card.classList.remove('search-highlight');
-                            }, 2000);
-                        }
-                    }, 100);
                 });
 
                 container.appendChild(div);
@@ -414,18 +390,6 @@ class ArticlesManager {
         });
     }
 
-    getFilteredArticles() {
-        if (this.selectedTags.size === 0) {
-            return this.articles;
-        }
-
-        return this.articles.filter(article => {
-            if (!article.tags) return false;
-            return Array.from(this.selectedTags).every(selectedTag =>
-                article.tags.includes(selectedTag)
-            );
-        });
-    }
 
     renderArticles(append = false) {
         const grid = document.querySelector('.articles-grid');
@@ -544,9 +508,7 @@ class ArticlesManager {
         card.className = 'article-card';
 
         const highlightText = (text) => {
-            if (!this.searchQuery) return text;
-            const regex = new RegExp(`(${this.searchQuery})`, 'gi');
-            return text.replace(regex, '<span class="highlight-text">$1</span>');
+            return text;
         };
 
         const tagsHtml = article.tags ?

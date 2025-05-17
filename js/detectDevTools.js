@@ -1,7 +1,9 @@
 let devToolsOpen = false;
+let smallScreenWarningShown = false;
 
 function detectDevTools() {
     const threshold = 160;
+    const minScreenWidth = 360;
 
     if (
         window.outerWidth - window.innerWidth > threshold ||
@@ -13,6 +15,15 @@ function detectDevTools() {
         }
     } else {
         devToolsOpen = false;
+    }
+
+    if (window.innerWidth < minScreenWidth) {
+        if (!smallScreenWarningShown) {
+            smallScreenWarningShown = true;
+            showNotification('你这能看清吗？🔍<br>当前设备屏幕太小，可能影响浏览体验。', 3, 'warning');
+        }
+    } else {
+        smallScreenWarningShown = false;
     }
 }
 

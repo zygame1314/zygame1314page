@@ -47,26 +47,53 @@ class MusicPlayer {
     }
 
     setupTouchEvents() {
+        // Progress bar touch events
         this.progress.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            const touch = e.touches[0];
-            this.setProgress({
-                offsetX: touch.clientX - this.progress.getBoundingClientRect().left
-            });
-        });
+            const initialTouch = e.touches[0];
+            const initialRect = this.progress.getBoundingClientRect();
+            const initialOffsetX = initialTouch.clientX - initialRect.left;
+            this.setProgress({ offsetX: initialOffsetX, clientX: initialTouch.clientX });
 
+            const touchMoveHandler = (moveEvent) => {
+                moveEvent.preventDefault(); // Prevent scrolling while dragging
+                const touch = moveEvent.touches[0];
+                const moveRect = this.progress.getBoundingClientRect();
+                const moveOffsetX = touch.clientX - moveRect.left;
+                this.setProgress({ offsetX: moveOffsetX, clientX: touch.clientX });
+            };
+            const touchEndHandler = () => {
+                document.removeEventListener('touchmove', touchMoveHandler);
+                document.removeEventListener('touchend', touchEndHandler);
+            };
+            document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+            document.addEventListener('touchend', touchEndHandler);
+        }, { passive: false });
+
+        // Volume slider touch events
         this.volumeSlider.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            const touch = e.touches[0];
-            this.setVolume({
-                clientX: touch.clientX
-            });
-        });
+            const initialTouch = e.touches[0];
+            this.setVolume({ clientX: initialTouch.clientX });
 
+            const touchMoveHandler = (moveEvent) => {
+                moveEvent.preventDefault();
+                const touch = moveEvent.touches[0];
+                this.setVolume({ clientX: touch.clientX });
+            };
+            const touchEndHandler = () => {
+                document.removeEventListener('touchmove', touchMoveHandler);
+                document.removeEventListener('touchend', touchEndHandler);
+            };
+            document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+            document.addEventListener('touchend', touchEndHandler);
+        }, { passive: false });
+
+        // Cover image swipe (existing code)
         let touchStartX = 0;
         this.coverImg.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-        });
+        }, { passive: true });
 
         this.coverImg.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
@@ -74,11 +101,10 @@ class MusicPlayer {
 
             if (diff < -50) {
                 this.nextSong();
-            }
-            else if (diff > 50) {
+            } else if (diff > 50) {
                 this.prevSong();
             }
-        });
+        }, { passive: true });
     }
 
     async loadPlaylist() {
@@ -124,14 +150,56 @@ class MusicPlayer {
         this.playBtn.addEventListener('click', () => this.togglePlay());
         this.prevBtn.addEventListener('click', () => this.prevSong());
         this.nextBtn.addEventListener('click', () => this.nextSong());
-        this.progress.addEventListener('click', (e) => this.setProgress(e));
         this.audio.addEventListener('timeupdate', () => this.updateProgress());
         this.audio.addEventListener('ended', () => this.nextSong());
         this.loopBtn.addEventListener('click', () => this.toggleLoop());
         this.shuffleBtn.addEventListener('click', () => this.toggleShuffle());
         this.playlistBtn.addEventListener('click', () => this.togglePlaylist());
-        this.volumeSlider.addEventListener('click', (e) => this.setVolume(e));
         this.volumeIcon.addEventListener('click', () => this.toggleMute());
+
+        // Progress bar mouse drag
+        let isDraggingProgress = false;
+        this.progress.addEventListener('mousedown', (e) => {
+            isDraggingProgress = true;
+            const rect = this.progress.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            this.setProgress({ offsetX: offsetX, clientX: e.clientX });
+
+            const onMouseMove = (moveEvent) => {
+                if (isDraggingProgress) {
+                    const moveRect = this.progress.getBoundingClientRect();
+                    const moveOffsetX = moveEvent.clientX - moveRect.left;
+                    this.setProgress({ offsetX: moveOffsetX, clientX: moveEvent.clientX });
+                }
+            };
+            const onMouseUp = () => {
+                isDraggingProgress = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        // Volume slider mouse drag
+        let isDraggingVolume = false;
+        this.volumeSlider.addEventListener('mousedown', (e) => {
+            isDraggingVolume = true;
+            this.setVolume(e); // setVolume already uses clientX and getBoundingClientRect
+
+            const onMouseMove = (moveEvent) => {
+                if (isDraggingVolume) {
+                    this.setVolume(moveEvent);
+                }
+            };
+            const onMouseUp = () => {
+                isDraggingVolume = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
     }
 
     updateUIForSong(index) {
@@ -611,11 +679,29 @@ class MusicPlayer {
         }
     }
 
-    setProgress(e) {
-        const width = this.progress.clientWidth;
-        const clickX = e.offsetX;
-        const duration = this.audio.duration;
-        this.audio.currentTime = (clickX / width) * duration;
+    setProgress(e) { // e can be a mouse event or an object like { offsetX: number, clientX: number }
+        const rect = this.progress.getBoundingClientRect();
+        let clickX;
+
+        // Prioritize offsetX if it's directly available from the event (e.g. mousedown on the element itself)
+        // otherwise calculate from clientX, which is more robust for document-level mousemove
+        if (typeof e.offsetX === 'number' && e.target === this.progress) {
+            clickX = e.offsetX;
+        } else if (typeof e.clientX === 'number') {
+            clickX = e.clientX - rect.left;
+        } else {
+            // console.error('setProgress called with invalid event data'); // Optional: for debugging
+            return;
+        }
+
+        const width = rect.width;
+        // Ensure duration is a valid number and width is positive to prevent NaN issues
+        if (width > 0 && this.audio.duration && !isNaN(this.audio.duration)) {
+            let newTime = (clickX / width) * this.audio.duration;
+            // Clamp newTime to be within [0, duration]
+            newTime = Math.max(0, Math.min(newTime, this.audio.duration));
+            this.audio.currentTime = newTime;
+        }
     }
 
     formatTime(seconds) {

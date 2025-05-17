@@ -198,7 +198,7 @@
         4px 4px 0 #000,
         inset -3px -3px 0 var(--primary-color),
         inset 3px 3px 0 #FFF;
-    animation: pixel-flash 1s steps(2) infinite;
+    animation: pixel-flash 1s ease infinite;
 }
 
 #flip-back::before,
@@ -236,7 +236,7 @@
     transform: translateY(-50%);
     color: var(--primary-color);
     text-shadow: 2px 2px 0 #000;
-    animation: pixel-arrow 0.5s steps(1) infinite;
+    animation: pixel-arrow 0.5s ease infinite;
 }
 
 .flip-button {
@@ -281,7 +281,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
-    animation: spin 2s steps(4) infinite;
+    animation: spin 2s ease infinite;
 }
 
 .flip-button:hover {
@@ -311,7 +311,7 @@
         4px -4px 0 var(--primary-color),
         -4px 4px 0 var(--primary-color);
     opacity: 0.5;
-    animation: pixel-dance 1s steps(4) infinite;
+    animation: pixel-dance 1s ease infinite;
 }
 
 .button-container {

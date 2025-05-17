@@ -804,20 +804,6 @@
     }
 }
 
-@keyframes highlight-flash {
-    0% {
-        background-color: rgba(255, 204, 0, 0.2);
-    }
-
-    50% {
-        background-color: rgba(255, 204, 0, 0.4);
-    }
-
-    100% {
-        background-color: rgba(255, 204, 0, 0.2);
-    }
-}
-
 @keyframes tag-enter {
     from {
         opacity: 0;

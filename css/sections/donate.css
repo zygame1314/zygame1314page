@@ -73,7 +73,7 @@
     box-shadow:
         4px 4px 0 #ff0000,
         -4px -4px 0 #fff;
-    animation: pixel-bounce 0.6s steps(2) infinite;
+    animation: pixel-bounce 0.6s ease infinite;
     transition: none;
 }
 
@@ -86,7 +86,7 @@
 
 .day-tip.thursday {
     background: var(--error-color);
-    animation: pixel-shake 0.3s steps(2) infinite;
+    animation: pixel-shake 0.3s ease infinite;
 }
 
 .modal {

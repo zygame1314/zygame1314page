@@ -412,7 +412,7 @@
 
 .construction-title::after {
     content: '...';
-    animation: pixel-arrow 1.5s infinite steps(1);
+    animation: pixel-arrow 1.5s infinite ease;
 }
 
 .blueprint-grid {
