@@ -8,9 +8,14 @@ export async function onRequestPost(context) {
 
         const formData = await request.formData();
         const file = formData.get('file');
+        const site = formData.get('site');
 
         if (!file || !(file instanceof File)) {
             throw new Error('未找到有效的图片文件');
+        }
+
+        if (!site || typeof site !== 'string') {
+            throw new Error('未提供有效的网站标识 (site)');
         }
 
         if (!file.type.startsWith('image/')) {
@@ -23,7 +28,7 @@ export async function onRequestPost(context) {
 
         const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 8);
-        const fileName = `comments/${timestamp}-${randomString}.webp`;
+        const fileName = `comments/${site}/${timestamp}-${randomString}.webp`;
 
         const arrayBuffer = await file.arrayBuffer();
 
