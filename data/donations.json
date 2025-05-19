@@ -103,5 +103,19 @@
         "date": "2025-05-14",
         "platform": "wechat",
         "message": "感谢前辈造福百姓！"
+    },
+    {
+        "name": "小马同学",
+        "amount": 5.00,
+        "date": "2025-05-19",
+        "platform": "wechat",
+        "message": null
+    },
+    {
+        "name": "u*k",
+        "amount": 10.00,
+        "date": "2025-05-19",
+        "platform": "wechat",
+        "message": "感谢大佬，我帮两个同桌做了一下题目，被代刷肘击了/::'(，他俩没电脑不然就让他们自己下插件了，我们学号都是相近的。"
     }
 ]
