@@ -560,7 +560,8 @@ class ArticlesManager {
             highlight: true,
             recordIP: true,
             emoji: [
-                'https://img.zygame1314.top/bilibili_tv_emotes',
+                'https://img.zygame1314.top/bilibili_tv',
+                'https://img.zygame1314.top/blobs-gif'
             ],
             imageUploader: async (file) => {
                 const webpBlob = await convertToWebP(file);
@@ -580,8 +581,8 @@ class ArticlesManager {
                         throw new Error('上传失败');
                     }
 
-                    await response.json();
-                    return '[图片]';
+                    const result = await response.json();
+                    return result.url;
                 } catch (error) {
                     console.error('上传图片失败:', error);
                     showNotification('图片上传失败，请重试', 2, 'error');
