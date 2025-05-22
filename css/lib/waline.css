@@ -228,7 +228,6 @@
 
 .wl-comment {
     position: relative;
-    display: flex;
     margin-bottom: .75em
 }
 
@@ -245,8 +244,14 @@
 
 .wl-login-info {
     max-width: 80px;
-    margin-top: .75em;
-    text-align: center
+    margin: 1em auto 0;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
+}
+
+.wl-login-info:hover {
+    transform: translateY(-5px);
 }
 
 .wl-logout-btn {
@@ -255,9 +260,18 @@
     top: -10px;
     padding: 3px;
     border: none;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
     line-height: 0;
     cursor: url('/images/cursors/Rath Link.cur'), auto;
+    transform: scale(1);
+    transition: all 0.25s ease;
+}
+
+.wl-logout-btn:hover {
+    background: rgba(255, 100, 100, 0.2);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 0 8px rgba(255, 100, 100, 0.5);
 }
 
 .wl-avatar {
@@ -266,7 +280,16 @@
     height: var(--waline-avatar-size);
     margin: 0 auto;
     border: var(--waline-border);
-    border-radius: var(--waline-avatar-radius)
+    border-radius: var(--waline-avatar-radius);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.wl-avatar:hover {
+    transform: scale(1.08);
+    border-color: var(--waline-theme-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25),
+        0 0 8px var(--waline-theme-color, #a8dadc);
 }
 
 @media(max-width: 720px) {
@@ -704,7 +727,6 @@ z .wl-cards .wl-user .verified-icon {
 
 .wl-card-item {
     position: relative;
-    display: flex;
     padding: .5em
 }
 
@@ -765,6 +787,7 @@ z .wl-cards .wl-user .verified-icon {
 }
 
 .wl-card .wl-head {
+    margin-bottom: 5px;
     overflow: hidden;
     line-height: 1.5
 }
@@ -801,22 +824,43 @@ z .wl-cards .wl-user .verified-icon {
 
 .wl-card .wl-meta {
     position: relative;
-    line-height: 1
+    line-height: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+    margin-top: 0.3em;
 }
 
 .wl-card .wl-meta>span {
-    display: inline-block;
-    margin-inline-end: .25em;
-    padding: 2px 4px;
-    border-radius: .2em;
+    display: inline-flex;
+    align-items: center;
+    margin-inline-end: 0.35em;
+    padding: 2px 6px;
+    border-radius: 0.75em;
     background: var(--waline-info-bg-color);
     color: var(--waline-info-color);
     font-size: var(--waline-info-font-size);
-    line-height: 1.5
+    line-height: 1.5;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.wl-card .wl-meta>span:hover {
+    transform: translateY(-2px);
+    background: var(--waline-bg-color-hover);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .wl-card .wl-meta>span:empty {
-    display: none
+    display: none;
+}
+
+.wl-card .wl-meta>span::before {
+    content: '•';
+    margin-right: 4px;
+    color: var(--waline-theme-color);
+    font-weight: bold;
 }
 
 .wl-card .wl-comment-actions {
