@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         donationList.innerHTML = '<div class="donation-loading">加载赞助名单中...</div>';
 
-        fetch('/data/donations.json')
+        fetch(`${API_BASE}/api/donations`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('无法加载捐赠记录');

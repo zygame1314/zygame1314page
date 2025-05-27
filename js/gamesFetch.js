@@ -1,6 +1,5 @@
 function initGamesFetch() {
     const gamesListElem = document.querySelector('.games-list');
-    const refreshButton = document.getElementById('refreshGames');
 
     async function fetchPopularGames() {
         gamesListElem.innerHTML = '<p>加载中...</p>';

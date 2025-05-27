@@ -47,7 +47,6 @@ class MusicPlayer {
     }
 
     setupTouchEvents() {
-        // Progress bar touch events
         this.progress.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const initialTouch = e.touches[0];
@@ -56,7 +55,7 @@ class MusicPlayer {
             this.setProgress({ offsetX: initialOffsetX, clientX: initialTouch.clientX });
 
             const touchMoveHandler = (moveEvent) => {
-                moveEvent.preventDefault(); // Prevent scrolling while dragging
+                moveEvent.preventDefault();
                 const touch = moveEvent.touches[0];
                 const moveRect = this.progress.getBoundingClientRect();
                 const moveOffsetX = touch.clientX - moveRect.left;
@@ -70,7 +69,6 @@ class MusicPlayer {
             document.addEventListener('touchend', touchEndHandler);
         }, { passive: false });
 
-        // Volume slider touch events
         this.volumeSlider.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const initialTouch = e.touches[0];
@@ -89,7 +87,6 @@ class MusicPlayer {
             document.addEventListener('touchend', touchEndHandler);
         }, { passive: false });
 
-        // Cover image swipe (existing code)
         let touchStartX = 0;
         this.coverImg.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
@@ -109,17 +106,23 @@ class MusicPlayer {
 
     async loadPlaylist() {
         try {
-            const response = await fetch('/data/playlist.json');
+            const response = await fetch(`${API_BASE}/api/playlist`);
             if (!response.ok) throw new Error('Failed to load playlist');
             const data = await response.json();
-            this.songs = data.songs;
-            this.originalSongs = [...data.songs];
+            
+            this.songs = data.songs.map(song => ({
+                ...song,
+                path: song.path.startsWith('/data/')
+                    ? `/api/resources?path=${encodeURIComponent(song.path.replace('/data/', ''))}`
+                    : song.path
+            }));
+            this.originalSongs = [...this.songs];
         } catch (error) {
             console.error('Error loading playlist:', error);
             this.songs = [{
                 title: 'Hollow(8-bit)',
                 artist: 'Yosh',
-                path: '/data/music/Hollow(8-bit) - Yosh.mp3'
+                path: '/api/resources?path=music/Hollow.webm'
             }];
             this.originalSongs = [...this.songs];
         }
@@ -157,7 +160,6 @@ class MusicPlayer {
         this.playlistBtn.addEventListener('click', () => this.togglePlaylist());
         this.volumeIcon.addEventListener('click', () => this.toggleMute());
 
-        // Progress bar mouse drag
         let isDraggingProgress = false;
         this.progress.addEventListener('mousedown', (e) => {
             isDraggingProgress = true;
@@ -181,11 +183,10 @@ class MusicPlayer {
             document.addEventListener('mouseup', onMouseUp);
         });
 
-        // Volume slider mouse drag
         let isDraggingVolume = false;
         this.volumeSlider.addEventListener('mousedown', (e) => {
             isDraggingVolume = true;
-            this.setVolume(e); // setVolume already uses clientX and getBoundingClientRect
+            this.setVolume(e);
 
             const onMouseMove = (moveEvent) => {
                 if (isDraggingVolume) {
@@ -679,26 +680,21 @@ class MusicPlayer {
         }
     }
 
-    setProgress(e) { // e can be a mouse event or an object like { offsetX: number, clientX: number }
+    setProgress(e) {
         const rect = this.progress.getBoundingClientRect();
         let clickX;
 
-        // Prioritize offsetX if it's directly available from the event (e.g. mousedown on the element itself)
-        // otherwise calculate from clientX, which is more robust for document-level mousemove
         if (typeof e.offsetX === 'number' && e.target === this.progress) {
             clickX = e.offsetX;
         } else if (typeof e.clientX === 'number') {
             clickX = e.clientX - rect.left;
         } else {
-            // console.error('setProgress called with invalid event data'); // Optional: for debugging
             return;
         }
 
         const width = rect.width;
-        // Ensure duration is a valid number and width is positive to prevent NaN issues
         if (width > 0 && this.audio.duration && !isNaN(this.audio.duration)) {
             let newTime = (clickX / width) * this.audio.duration;
-            // Clamp newTime to be within [0, duration]
             newTime = Math.max(0, Math.min(newTime, this.audio.duration));
             this.audio.currentTime = newTime;
         }

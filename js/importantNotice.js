@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('/data/important-notice.json')
+        fetch(`${API_BASE}/api/important-notice`)
             .then(response => response.json())
             .then(data => {
                 const today = new Date();
