@@ -33,10 +33,11 @@ export async function onRequest(context) {
                 "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
                 "x-requested-with": "XMLHttpRequest",
                 "Referer": `https://steamcommunity.com/profiles/${steamFriendCode}/friends/`,
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache"
             },
-            method: "GET",
-            cache: 'no-store'
+            method: "GET"
         });
         if (!steamResponse.ok) {
             const errorText = await steamResponse.text();

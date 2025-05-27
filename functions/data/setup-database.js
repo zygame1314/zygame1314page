@@ -4,7 +4,7 @@ export async function onRequestPost(context) {
     
     try {
         // 创建捐赠表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS donations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
@@ -14,10 +14,10 @@ export async function onRequestPost(context) {
                 message TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         // 创建重要通知表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS important_notices (
                 id TEXT PRIMARY KEY,
                 active BOOLEAN NOT NULL DEFAULT FALSE,
@@ -27,10 +27,10 @@ export async function onRequestPost(context) {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         // 创建普通通知表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS notices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -39,10 +39,10 @@ export async function onRequestPost(context) {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         // 创建播放列表表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS playlist (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -53,10 +53,10 @@ export async function onRequestPost(context) {
                 comment TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         // 创建项目表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS projects (
                 id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
@@ -64,14 +64,14 @@ export async function onRequestPost(context) {
                 github_url TEXT,
                 description TEXT,
                 type TEXT DEFAULT 'normal',
-                actions TEXT, -- JSON string for actions array
+                actions TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         // 创建时间线表
-        await env.DB.exec(`
+        await env.DB.prepare(`
             CREATE TABLE IF NOT EXISTS timeline (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 date TEXT NOT NULL,
@@ -79,7 +79,7 @@ export async function onRequestPost(context) {
                 description TEXT NOT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
-        `);
+        `).run();
 
         return new Response(JSON.stringify({
             success: true,
