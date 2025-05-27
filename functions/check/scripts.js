@@ -12,7 +12,7 @@ export async function onRequestOptions() {
 
 export async function onRequestGet(context) {
   const { env } = context;
-  const bucket = env.SCRIPT_BUCKET;
+  const bucket = env.R2_BUCKET;
 
   const createJsonResponse = (body, status) => {
     const headers = new Headers({ 'Content-Type': 'application/json', ...corsHeaders });

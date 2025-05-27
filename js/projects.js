@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
             isLoading = true;
             const response = await fetch(`${API_BASE}/getdata/projects?page=${page}&limit=${itemsPerPage}`);
             const data = await response.json();
-            
+
             isLoading = false;
-            
+
             if (data.pagination) {
                 currentPage = data.pagination.page;
                 totalPages = data.pagination.totalPages;
             }
-            
+
             return data.projects || [];
         } catch (error) {
             isLoading = false;
@@ -69,74 +69,46 @@ document.addEventListener('DOMContentLoaded', function () {
         return card;
     }
 
-    async function initProjects() {
+
+    async function displayProjectsPage(page) {
+        if (isLoading) return;
         const projectList = document.querySelector('.project-list');
-        
-        projectList.innerHTML = '<div class="projects-loading">加载项目中...</div>';
-        
-        const projects = await loadProjects(1);
-
-        projectList.innerHTML = '';
-
-        if (projects.length === 0) {
-            projectList.innerHTML = '<div class="projects-empty">暂无项目数据</div>';
+        if (!projectList) {
+            console.error('.project-list element not found');
             return;
         }
 
-        projects.forEach(project => {
-            const card = renderProjectCard(project);
-            projectList.appendChild(card);
+        const existingCards = projectList.querySelectorAll('.project-card.visible');
+        existingCards.forEach(card => {
+            card.classList.remove('visible');
+            card.classList.add('exiting');
         });
 
-        initPagination();
-    }
+        setTimeout(async () => {
+            projectList.innerHTML = '';
 
-    function initNoticeControls() {
-        const wrapper = document.querySelector('.notice-content-wrapper');
-        const notices = document.querySelectorAll('.notice-content');
-        const prevBtn = document.querySelector('.notice-prev');
-        const nextBtn = document.querySelector('.notice-next');
-        const pageText = document.querySelector('.notice-page');
-        let currentPage = 0;
-
-        function updatePageNumber() {
-            pageText.textContent = `${currentPage + 1}/${notices.length}`;
-        }
-
-        function showPage(index) {
-            const notices = document.querySelectorAll('.notice-content');
-            notices.forEach((notice, i) => {
-                if (i === index) {
-                    notice.classList.add('active');
-                    notice.style.transform = 'translateX(0)';
-                } else {
-                    notice.classList.remove('active');
-                    notice.style.transform = i < index ? 'translateX(-100%)' : 'translateX(100%)';
-                }
+            const projects = await loadProjects(page);
+            projects.forEach(project => {
+                const card = renderProjectCard(project);
+                projectList.appendChild(card);
+                card.style.display = 'none';
+                requestAnimationFrame(() => {
+                    card.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        card.classList.add('visible');
+                    });
+                });
             });
-            currentPage = index;
-            updatePageNumber();
-        }
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 0) {
-                showPage(currentPage - 1);
-            }
-        });
 
-        nextBtn.addEventListener('click', () => {
-            if (currentPage < notices.length - 1) {
-                showPage(currentPage + 1);
-            }
-        });
-
-        updatePageNumber();
+            updatePaginationUI();
+        }, 300);
     }
 
-    initNoticeControls();
-
-    function initPagination() {
+    function updatePaginationUI() {
         const paginationContainer = document.querySelector('.pagination');
-        
+        if (!paginationContainer) {
+            return;
+        }
         paginationContainer.innerHTML = '';
 
         if (totalPages <= 1) {
@@ -154,64 +126,75 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             button.addEventListener('click', function () {
-                if (isLoading) return;
-                
-                const pageNumber = parseInt(this.dataset.page);
-                if (pageNumber === currentPage) return;
-
-                showPage(pageNumber);
+                const pageNum = parseInt(this.dataset.page);
+                if (pageNum !== currentPage && !isLoading) {
+                    displayProjectsPage(pageNum);
+                }
             });
-
             paginationContainer.appendChild(button);
         }
     }
 
-    async function showPage(pageNumber) {
-        if (isLoading) return;
+    function initNoticeControls() {
+        const wrapper = document.querySelector('.notice-content-wrapper');
+        if (!wrapper) return;
 
-        const projectList = document.querySelector('.project-list');
-        const projectCards = Array.from(projectList.querySelectorAll('.project-card'));
+        const notices = document.querySelectorAll('.notice-content');
+        const prevBtn = document.querySelector('.notice-prev');
+        const nextBtn = document.querySelector('.notice-next');
+        const pageText = document.querySelector('.notice-page');
 
-        projectCards.forEach(card => {
-            if (card.classList.contains('visible')) {
-                card.classList.add('exiting');
-                card.classList.remove('visible');
+        if (!prevBtn || !nextBtn || !pageText) {
+            if (pageText && notices.length === 0) pageText.textContent = "0/0";
+            return;
+        }
+
+        let currentNoticePage = 0;
+
+        function updateNoticePageNumber() {
+            if (notices.length > 0) {
+                pageText.textContent = `${currentNoticePage + 1}/${notices.length}`;
+            } else {
+                pageText.textContent = "0/0";
+            }
+        }
+
+        function showNoticePageAtIndex(index) {
+            if (notices.length === 0) return;
+
+            notices.forEach((notice, i) => {
+                if (i === index) {
+                    notice.classList.add('active');
+                    notice.style.transform = 'translateX(0)';
+                } else {
+                    notice.classList.remove('active');
+                    notice.style.transform = i < index ? 'translateX(-100%)' : 'translateX(100%)';
+                }
+            });
+            currentNoticePage = index;
+            updateNoticePageNumber();
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentNoticePage > 0) {
+                showNoticePageAtIndex(currentNoticePage - 1);
             }
         });
 
-        setTimeout(async () => {
-            projectList.innerHTML = '<div class="projects-loading">加载项目中...</div>';
-
-            const projects = await loadProjects(pageNumber);
-
-            projectList.innerHTML = '';
-
-            if (projects.length === 0) {
-                projectList.innerHTML = '<div class="projects-empty">暂无项目数据</div>';
-                return;
+        nextBtn.addEventListener('click', () => {
+            if (currentNoticePage < notices.length - 1) {
+                showNoticePageAtIndex(currentNoticePage + 1);
             }
+        });
 
-            projects.forEach(project => {
-                const card = renderProjectCard(project);
-                projectList.appendChild(card);
-            });
-
-            const allButtons = document.querySelectorAll('.pagination-button');
-            allButtons.forEach(btn => btn.classList.remove('active'));
-            const activeButton = document.querySelector(`[data-page="${currentPage}"]`);
-            if (activeButton) {
-                activeButton.classList.add('active');
-            }
-
-            const newCards = Array.from(projectList.querySelectorAll('.project-card'));
-            newCards.forEach(card => {
-                requestAnimationFrame(() => {
-                    card.classList.add('visible');
-                });
-            });
-
-        }, 300);
+        if (notices.length > 0) {
+            showNoticePageAtIndex(0);
+        } else {
+            updateNoticePageNumber();
+        }
     }
 
-    initProjects();
+    initNoticeControls();
+    displayProjectsPage(1);
 });
+
