@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var donateModal = document.getElementById('donate-modal');
     var closeButton = document.querySelector('.donate-close-button');
     let allDonations = [];
-    let currentDisplayCount = 10;
-    const incrementAmount = 10;
+    let currentPage = 1;
+    let totalPages = 1;
+    let isLoading = false;
+    const pageSize = 10;
 
     function openModal() {
         donateModal.style.display = 'flex';
@@ -84,21 +86,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function renderDonations() {
+    function renderDonations(donations, isLoadMore = false) {
         const donationList = document.querySelector('.donation-list');
         if (!donationList) return;
 
-        donationList.innerHTML = '';
+        if (!isLoadMore) {
+            donationList.innerHTML = '';
+            allDonations = [];
+        }
 
-        if (!allDonations || allDonations.length === 0) {
-            donationList.innerHTML = '<div class="donation-empty">暂无捐赠记录，成为第一个支持者吧！</div>';
+        if (!donations || donations.length === 0) {
+            if (!isLoadMore) {
+                donationList.innerHTML = '<div class="donation-empty">暂无捐赠记录，成为第一个支持者吧！</div>';
+            }
             return;
         }
 
-        const displayLimit = Math.min(allDonations.length, currentDisplayCount);
-        const displayedDonations = allDonations.slice(0, displayLimit);
+        allDonations = allDonations.concat(donations);
 
-        displayedDonations.forEach((donation, index) => {
+        donations.forEach((donation, index) => {
             const donationItem = document.createElement('div');
             donationItem.className = 'donation-item';
 
@@ -112,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 donationItem.classList.add('amount-small');
             }
 
-            if (index === 0) {
+            if (!isLoadMore && index === 0) {
                 donationItem.classList.add('highlighted');
             }
 
@@ -131,17 +137,26 @@ document.addEventListener('DOMContentLoaded', function () {
             donationList.appendChild(donationItem);
         });
 
-        if (allDonations.length > displayLimit) {
+        const existingLoadMore = donationList.querySelector('.load-more-container');
+        if (existingLoadMore) {
+            existingLoadMore.remove();
+        }
+
+        if (currentPage < totalPages) {
             const loadMoreContainer = document.createElement('div');
             loadMoreContainer.className = 'load-more-container';
 
             const loadMoreBtn = document.createElement('button');
             loadMoreBtn.className = 'load-more-button';
-            loadMoreBtn.innerHTML = `<i class="fas fa-angle-down"></i> 显示更多 (${allDonations.length - displayLimit}条)`;
+            loadMoreBtn.innerHTML = `<i class="fas fa-angle-down"></i> 加载更多`;
+
+            if (isLoading) {
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 加载中...';
+            }
 
             loadMoreBtn.addEventListener('click', function () {
-                currentDisplayCount += incrementAmount;
-                renderDonations();
+                loadMoreDonations();
             });
 
             loadMoreContainer.appendChild(loadMoreBtn);
@@ -153,28 +168,73 @@ document.addEventListener('DOMContentLoaded', function () {
         const donationList = document.querySelector('.donation-list');
         if (!donationList) return;
 
+        isLoading = true;
         donationList.innerHTML = '<div class="donation-loading">加载赞助名单中...</div>';
 
-        fetch(`${API_BASE}/data/donations`)
+        fetch(`${API_BASE}/getdata/donations?page=1&limit=${pageSize}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('无法加载捐赠记录');
                 }
                 return response.json();
             })
-            .then(donations => {
-                if (!donations || donations.length === 0) {
+            .then(result => {
+                isLoading = false;
+
+                if (!result.data || result.data.length === 0) {
                     donationList.innerHTML = '<div class="donation-empty">暂无捐赠记录，成为第一个支持者吧！</div>';
                     return;
                 }
 
-                allDonations = donations.sort((a, b) => new Date(b.date) - new Date(a.date));
+                currentPage = result.pagination.page;
+                totalPages = result.pagination.totalPages;
 
-                renderDonations();
+                renderDonations(result.data, false);
             })
             .catch(error => {
+                isLoading = false;
                 console.error('加载捐赠记录失败:', error);
                 donationList.innerHTML = '<div class="donation-empty">加载捐赠记录失败，请稍后再试</div>';
+            });
+    }
+
+    function loadMoreDonations() {
+        if (isLoading || currentPage >= totalPages) return;
+
+        isLoading = true;
+        const nextPage = currentPage + 1;
+
+        const loadMoreBtn = document.querySelector('.load-more-button');
+        if (loadMoreBtn) {
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 加载中...';
+        }
+
+        fetch(`${API_BASE}/getdata/donations?page=${nextPage}&limit=${pageSize}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('无法加载更多捐赠记录');
+                }
+                return response.json();
+            })
+            .then(result => {
+                isLoading = false;
+
+                if (result.data && result.data.length > 0) {
+                    currentPage = result.pagination.page;
+                    totalPages = result.pagination.totalPages;
+
+                    renderDonations(result.data, true);
+                }
+            })
+            .catch(error => {
+                isLoading = false;
+                console.error('加载更多捐赠记录失败:', error);
+
+                if (loadMoreBtn) {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = '<i class="fas fa-angle-down"></i> 加载更多';
+                }
             });
     }
 

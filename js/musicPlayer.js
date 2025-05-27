@@ -106,7 +106,7 @@ class MusicPlayer {
 
     async loadPlaylist() {
         try {
-            const response = await fetch(`${API_BASE}/data/playlist`);
+            const response = await fetch(`${API_BASE}/getdata/playlist`);
             if (!response.ok) {
                 console.error(`Failed to load playlist. Status: ${response.status}`);
                 throw new Error('Failed to load playlist');

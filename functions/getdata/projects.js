@@ -1,13 +1,24 @@
 export async function onRequestGet(context) {
-    const { env } = context;
+    const { env, request } = context;
 
     try {
+        const url = new URL(request.url);
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = parseInt(url.searchParams.get('limit')) || 4;
+        const offset = (page - 1) * limit;
+
+        const { results: countResults } = await env.DB.prepare(`
+            SELECT COUNT(*) as total FROM projects
+        `).all();
+        const total = countResults[0].total;
+
         const { results } = await env.DB.prepare(`
-            SELECT id, title, image_url as imageUrl, github_url as githubUrl, 
+            SELECT id, title, image_url as imageUrl, github_url as githubUrl,
                    description, type, actions
             FROM projects
             ORDER BY id ASC
-        `).all();
+            LIMIT ? OFFSET ?
+        `).bind(limit, offset).all();
 
         const projects = results.map(project => ({
             id: project.id,
@@ -19,8 +30,20 @@ export async function onRequestGet(context) {
             actions: project.actions ? JSON.parse(project.actions) : null
         }));
 
+        const totalPages = Math.ceil(total / limit);
+        const hasNext = page < totalPages;
+        const hasPrev = page > 1;
+
         return new Response(JSON.stringify({
-            projects: projects
+            projects: projects,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages,
+                hasNext,
+                hasPrev
+            }
         }), {
             status: 200,
             headers: {

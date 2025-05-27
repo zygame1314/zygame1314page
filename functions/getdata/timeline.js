@@ -1,15 +1,38 @@
 export async function onRequestGet(context) {
-    const { env } = context;
+    const { env, request } = context;
 
     try {
+        const url = new URL(request.url);
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = parseInt(url.searchParams.get('limit')) || 10;
+        const offset = (page - 1) * limit;
+
+        const { results: countResults } = await env.DB.prepare(`
+            SELECT COUNT(*) as total FROM timeline
+        `).all();
+        const total = countResults[0].total;
+
         const { results } = await env.DB.prepare(`
             SELECT date, title, description
             FROM timeline
             ORDER BY date DESC
-        `).all();
+            LIMIT ? OFFSET ?
+        `).bind(limit, offset).all();
+
+        const totalPages = Math.ceil(total / limit);
+        const hasNext = page < totalPages;
+        const hasPrev = page > 1;
 
         return new Response(JSON.stringify({
-            milestones: results
+            milestones: results,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages,
+                hasNext,
+                hasPrev
+            }
         }), {
             status: 200,
             headers: {

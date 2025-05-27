@@ -1,10 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
-    async function loadProjects() {
+    let currentPage = 1;
+    let totalPages = 1;
+    let isLoading = false;
+    const itemsPerPage = 4;
+
+    async function loadProjects(page = 1) {
         try {
-            const response = await fetch(`${API_BASE}/data/projects`);
+            isLoading = true;
+            const response = await fetch(`${API_BASE}/getdata/projects?page=${page}&limit=${itemsPerPage}`);
             const data = await response.json();
-            return data.projects;
+            
+            isLoading = false;
+            
+            if (data.pagination) {
+                currentPage = data.pagination.page;
+                totalPages = data.pagination.totalPages;
+            }
+            
+            return data.projects || [];
         } catch (error) {
+            isLoading = false;
             console.error('加载项目数据失败:', error);
             return [];
         }
@@ -56,7 +71,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function initProjects() {
         const projectList = document.querySelector('.project-list');
-        const projects = await loadProjects();
+        
+        projectList.innerHTML = '<div class="projects-loading">加载项目中...</div>';
+        
+        const projects = await loadProjects(1);
+
+        projectList.innerHTML = '';
+
+        if (projects.length === 0) {
+            projectList.innerHTML = '<div class="projects-empty">暂无项目数据</div>';
+            return;
+        }
 
         projects.forEach(project => {
             const card = renderProjectCard(project);
@@ -110,13 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
     initNoticeControls();
 
     function initPagination() {
-        const itemsPerPage = 4;
-        const projectList = document.querySelector('.project-list');
-        const projectCards = Array.from(projectList.querySelectorAll('.project-card'));
-        const totalItems = projectCards.length;
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-
         const paginationContainer = document.querySelector('.pagination');
+        
+        paginationContainer.innerHTML = '';
+
+        if (totalPages <= 1) {
+            return;
+        }
 
         for (let i = 1; i <= totalPages; i++) {
             const button = document.createElement('button');
@@ -124,27 +149,28 @@ document.addEventListener('DOMContentLoaded', function () {
             button.dataset.page = i;
             button.textContent = i;
 
-            if (i === 1) {
+            if (i === currentPage) {
                 button.classList.add('active');
             }
 
             button.addEventListener('click', function () {
-                const allButtons = paginationContainer.querySelectorAll('.pagination-button');
-                allButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
+                if (isLoading) return;
+                
+                const pageNumber = parseInt(this.dataset.page);
+                if (pageNumber === currentPage) return;
 
-                showPage(parseInt(this.dataset.page), itemsPerPage, projectCards);
+                showPage(pageNumber);
             });
 
             paginationContainer.appendChild(button);
         }
-
-        showPage(1, itemsPerPage, projectCards);
     }
 
-    function showPage(pageNumber, itemsPerPage, projectCards) {
-        const startIndex = (pageNumber - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
+    async function showPage(pageNumber) {
+        if (isLoading) return;
+
+        const projectList = document.querySelector('.project-list');
+        const projectCards = Array.from(projectList.querySelectorAll('.project-card'));
 
         projectCards.forEach(card => {
             if (card.classList.contains('visible')) {
@@ -153,20 +179,37 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        setTimeout(() => {
-            projectCards.forEach(card => {
-                card.classList.remove('exiting');
-                card.style.display = 'none';
+        setTimeout(async () => {
+            projectList.innerHTML = '<div class="projects-loading">加载项目中...</div>';
+
+            const projects = await loadProjects(pageNumber);
+
+            projectList.innerHTML = '';
+
+            if (projects.length === 0) {
+                projectList.innerHTML = '<div class="projects-empty">暂无项目数据</div>';
+                return;
+            }
+
+            projects.forEach(project => {
+                const card = renderProjectCard(project);
+                projectList.appendChild(card);
             });
 
-            projectCards.forEach((card, index) => {
-                if (index >= startIndex && index < endIndex) {
-                    card.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        card.classList.add('visible');
-                    });
-                }
+            const allButtons = document.querySelectorAll('.pagination-button');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            const activeButton = document.querySelector(`[data-page="${currentPage}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+
+            const newCards = Array.from(projectList.querySelectorAll('.project-card'));
+            newCards.forEach(card => {
+                requestAnimationFrame(() => {
+                    card.classList.add('visible');
+                });
             });
+
         }, 300);
     }
 
