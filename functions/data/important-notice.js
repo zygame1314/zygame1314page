@@ -1,7 +1,6 @@
-// 获取重要通知API
 export async function onRequestGet(context) {
     const { env } = context;
-    
+
     try {
         const { results } = await env.DB.prepare(`
             SELECT id, active, title, content, expiry_date as expiryDate
@@ -19,22 +18,20 @@ export async function onRequestGet(context) {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'Cache-Control': 'public, max-age=60' // 缓存1分钟
+                    'Cache-Control': 'public, max-age=60'
                 }
             });
         }
 
         const notice = results[0];
-        
-        // 检查是否过期
+
         if (notice.expiryDate && new Date(notice.expiryDate) < new Date()) {
-            // 自动设置为非活跃状态
             await env.DB.prepare(`
                 UPDATE important_notices 
                 SET active = 0 
                 WHERE id = ?
             `).bind(notice.id).run();
-            
+
             return new Response(JSON.stringify({
                 active: false
             }), {
@@ -69,13 +66,12 @@ export async function onRequestGet(context) {
     }
 }
 
-// 更新重要通知
 export async function onRequestPut(context) {
     const { env, request } = context;
-    
+
     try {
         const { id, active, title, content, expiryDate } = await request.json();
-        
+
         await env.DB.prepare(`
             INSERT OR REPLACE INTO important_notices (id, active, title, content, expiry_date, updated_at)
             VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)

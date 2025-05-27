@@ -24,7 +24,7 @@ class NoticeManager {
 
     async loadNotices() {
         try {
-            const response = await fetch(`${API_BASE}/api/notices`);
+            const response = await fetch(`${API_BASE}/data/notices`);
             const data = await response.json();
             this.notices = data.notices;
             this.updateDisplay();

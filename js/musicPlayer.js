@@ -106,24 +106,29 @@ class MusicPlayer {
 
     async loadPlaylist() {
         try {
-            const response = await fetch(`${API_BASE}/api/playlist`);
-            if (!response.ok) throw new Error('Failed to load playlist');
+            const response = await fetch(`${API_BASE}/data/playlist`);
+            if (!response.ok) {
+                console.error(`Failed to load playlist. Status: ${response.status}`);
+                throw new Error('Failed to load playlist');
+            }
+
             const data = await response.json();
-            
+
             this.songs = data.songs.map(song => ({
-                ...song,
-                path: song.path.startsWith('/data/')
-                    ? `/api/resources?path=${encodeURIComponent(song.path.replace('/data/', ''))}`
-                    : song.path
+                ...song
             }));
+
             this.originalSongs = [...this.songs];
+
         } catch (error) {
             console.error('Error loading playlist:', error);
-            this.songs = [{
-                title: 'Hollow(8-bit)',
-                artist: 'Yosh',
-                path: '/api/resources?path=music/Hollow.webm'
-            }];
+            this.songs = [
+                {
+                    title: '播放列表加载失败',
+                    artist: '请检查网络连接或稍后再试',
+                    path: ''
+                }
+            ];
             this.originalSongs = [...this.songs];
         }
     }

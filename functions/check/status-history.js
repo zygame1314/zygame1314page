@@ -1,8 +1,8 @@
 export async function onRequest(context) {
     try {
-        const DB = context.env.STATUS_DB;
+        const DB = context.env.DB;
         if (!DB) {
-            throw new Error('未找到 STATUS_DB 数据库绑定，请在 Cloudflare Pages 设置中检查 D1 绑定');
+            throw new Error('未找到 DB 数据库绑定，请在 Cloudflare Pages 设置中检查 D1 绑定');
         }
 
         const url = new URL(context.request.url);

@@ -1,4 +1,4 @@
-const R2_PUBLIC_URL_BASE = 'https://script.zygame1314.top';
+const R2_PUBLIC_URL_BASE = 'https://bucket.zygame1314.top/script';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

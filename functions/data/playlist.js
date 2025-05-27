@@ -1,7 +1,6 @@
-// 获取播放列表API
 export async function onRequestGet(context) {
     const { env } = context;
-    
+
     try {
         const { results } = await env.DB.prepare(`
             SELECT title, artist, path, cover, yt_link as ytLink, comment
@@ -16,7 +15,7 @@ export async function onRequestGet(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=1800' // 缓存30分钟
+                'Cache-Control': 'public, max-age=1800'
             }
         });
 
@@ -33,13 +32,12 @@ export async function onRequestGet(context) {
     }
 }
 
-// 添加新歌曲
 export async function onRequestPost(context) {
     const { env, request } = context;
-    
+
     try {
         const { title, artist, path, cover, ytLink, comment } = await request.json();
-        
+
         const { meta } = await env.DB.prepare(`
             INSERT INTO playlist (title, artist, path, cover, yt_link, comment)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -69,18 +67,17 @@ export async function onRequestPost(context) {
     }
 }
 
-// 删除歌曲
 export async function onRequestDelete(context) {
     const { env, request } = context;
-    
+
     try {
         const url = new URL(request.url);
         const id = url.searchParams.get('id');
-        
+
         if (!id) {
             throw new Error('缺少歌曲ID');
         }
-        
+
         await env.DB.prepare(`
             DELETE FROM playlist WHERE id = ?
         `).bind(id).run();

@@ -1,7 +1,6 @@
-// 获取捐赠数据API
 export async function onRequestGet(context) {
     const { env } = context;
-    
+
     try {
         const { results } = await env.DB.prepare(`
             SELECT name, amount, date, platform, message
@@ -14,7 +13,7 @@ export async function onRequestGet(context) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=300' // 缓存5分钟
+                'Cache-Control': 'public, max-age=300'
             }
         });
 
@@ -31,13 +30,12 @@ export async function onRequestGet(context) {
     }
 }
 
-// 添加新的捐赠记录
 export async function onRequestPost(context) {
     const { env, request } = context;
-    
+
     try {
         const { name, amount, date, platform, message } = await request.json();
-        
+
         const { meta } = await env.DB.prepare(`
             INSERT INTO donations (name, amount, date, platform, message)
             VALUES (?, ?, ?, ?, ?)

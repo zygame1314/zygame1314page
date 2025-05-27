@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     async function loadProjects() {
         try {
-            const response = await fetch(`${API_BASE}/api/projects`);
+            const response = await fetch(`${API_BASE}/data/projects`);
             const data = await response.json();
             return data.projects;
         } catch (error) {

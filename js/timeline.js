@@ -1,6 +1,6 @@
 async function loadTimeline() {
     try {
-        const response = await fetch(`${API_BASE}/api/timeline`);
+        const response = await fetch(`${API_BASE}/data/timeline`);
         const data = await response.json();
 
         data.milestones.sort((a, b) => {

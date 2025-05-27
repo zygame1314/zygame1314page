@@ -1,6 +1,6 @@
 let app;
 let currentModel;
-const modelBasePath = '/data/live2d/';
+const modelBasePath = 'https://bucket.zygame1314.top/static/live2d/';
 const modelName = 'knight';
 const modelJsonPath = `${modelBasePath}${modelName}/${modelName}.model3.json`;
 const canvasContainer = document.getElementById('L2dCanvas');
