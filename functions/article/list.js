@@ -1,3 +1,4 @@
+
 export async function onRequest(context) {
     const { request, env } = context;
 
@@ -33,11 +34,55 @@ export async function onRequest(context) {
             const { results } = await stmt.all();
 
             if (results && results.length > 0) {
-                const articles = results.map(article => ({
-                    ...article,
-                    tags: article.tags ? JSON.parse(article.tags) : [],
-                    aiAssistants: article.aiAssistants ? JSON.parse(article.aiAssistants) : []
-                }));
+                const articles = results.map(article => {
+                    let parsedTags = [];
+                    try {
+                        if (typeof article.tags === 'string' && article.tags.trim() !== '') {
+                            const potentialTagsArray = JSON.parse(article.tags);
+                            if (Array.isArray(potentialTagsArray)) {
+                                parsedTags = potentialTagsArray;
+                            } else if (typeof potentialTagsArray === 'string') {
+                                parsedTags = [potentialTagsArray];
+                            }
+                        } else if (Array.isArray(article.tags)) {
+                            parsedTags = article.tags;
+                        }
+                    } catch (e) {
+                        if (typeof article.tags === 'string' && article.tags.trim() !== '') {
+                            console.warn(`将文章 ID "${article.id}" 的 tags "${article.tags}" 作为单项处理。`);
+                            parsedTags = [article.tags];
+                        } else {
+                            console.warn(`无法解析或处理文章 ID "${article.id}" 的 tags: ${article.tags}`, e);
+                        }
+                    }
+
+                    let parsedAiAssistants = [];
+                    try {
+                        if (typeof article.aiAssistants === 'string' && article.aiAssistants.trim() !== '') {
+                            const potentialAiArray = JSON.parse(article.aiAssistants);
+                            if (Array.isArray(potentialAiArray)) {
+                                parsedAiAssistants = potentialAiArray;
+                            } else if (typeof potentialAiArray === 'string') {
+                                parsedAiAssistants = [potentialAiArray];
+                            }
+                        } else if (Array.isArray(article.aiAssistants)) {
+                            parsedAiAssistants = article.aiAssistants;
+                        }
+                    } catch (e) {
+                        if (typeof article.aiAssistants === 'string' && article.aiAssistants.trim() !== '') {
+                            console.warn(`将文章 ID "${article.id}" 的 aiAssistants "${article.aiAssistants}" 作为单项处理。`);
+                            parsedAiAssistants = [article.aiAssistants];
+                        } else {
+                            console.warn(`无法解析或处理文章 ID "${article.id}" 的 aiAssistants: ${article.aiAssistants}`, e);
+                        }
+                    }
+
+                    return {
+                        ...article,
+                        tags: parsedTags,
+                        aiAssistants: parsedAiAssistants
+                    };
+                });
 
                 return new Response(JSON.stringify(articles), {
                     headers: {
@@ -54,7 +99,7 @@ export async function onRequest(context) {
                 });
             }
         } catch (e) {
-            console.error('从 D1 获取文章时出错:', e.message, e.stack);
+            console.error('从 D1 获取文章时出错 (顶层捕获):', e.message, e.stack);
             return new Response(`获取文章时出错: ${e.message}`, {
                 status: 500,
                 headers: {
@@ -74,7 +119,6 @@ export async function onRequest(context) {
             }
         });
     }
-
 
     return new Response('方法不允许 (Method Not Allowed)', {
         status: 405,
