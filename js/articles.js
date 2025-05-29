@@ -466,7 +466,7 @@ class ArticlesManager {
 
     async loadArticles() {
         try {
-            const response = await fetch('/articles/index.json');
+            const response = await fetch('/article/index');
             if (!response.ok) {
                 throw new Error('无法加载文章列表');
             }
