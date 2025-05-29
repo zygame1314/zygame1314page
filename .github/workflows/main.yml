@@ -38,15 +38,13 @@ jobs:
 
           let urls = [];
 
-          // 1. 添加主页 (index.html)
           urls.push({
-            loc: \`${BASE_URL}/\`, // 假设 index.html 对应网站根目录
+            loc: \`${BASE_URL}/\`,
             changefreq: 'daily',
             priority: '1.0',
-            lastmod: new Date().toISOString().split('T')[0] // 使用当前日期作为最后修改日期
+            lastmod: new Date().toISOString().split('T')[0]
           });
 
-          // 2. 从 articles/content/ 目录添加文章页面
           try {
             if (fs.existsSync(articlesDir)) {
               const articleFiles = fs.readdirSync(articlesDir).filter(file => file.endsWith('.html'));
@@ -54,10 +52,10 @@ jobs:
                 const articleId = path.basename(file, '.html');
                 const stats = fs.statSync(path.join(articlesDir, file));
                 urls.push({
-                  loc: \`\${BASE_URL}/article/\${articleId}\`, // 根据您的文章路由结构
+                  loc: \`\${BASE_URL}/article/\${articleId}\`,
                   changefreq: 'weekly',
                   priority: '0.8',
-                  lastmod: stats.mtime.toISOString().split('T')[0] // 使用文件的实际修改日期
+                  lastmod: stats.mtime.toISOString().split('T')[0]
                 });
               });
             } else {
@@ -67,7 +65,6 @@ jobs:
             console.error(\`读取文章目录时出错: \${error.message}\`);
           }
 
-          // 3. 生成 sitemap.xml 内容
           const sitemapContent = \`<?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
