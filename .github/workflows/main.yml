@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 可以根据需要调整 Node.js 版本
+          node-version: '20' # 根据需要调整 Node.js 版本
 
       - name: Create sitemap generation script
         run: |
