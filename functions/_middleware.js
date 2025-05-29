@@ -16,24 +16,25 @@ export async function onRequest(context) {
   console.log(`[Middleware] Is Crawler: ${isCrawler}`);
 
   if (isCrawler && pathname.startsWith('/article/')) {
-    console.log(`[Middleware] Crawler detected for article path.`);
+    console.log(`[Middleware] Crawler detected for article path: ${pathname}`);
     const articleId = pathname.substring('/article/'.length).split('?')[0].split('#')[0];
     console.log(`[Middleware] Extracted Article ID: ${articleId}`);
 
     if (articleId && !articleId.includes('..') && !articleId.includes('/')) {
       try {
-        const articleAssetPath = `/articles/content/${articleId}.html`;
-        console.log(`[Middleware] Attempting to fetch asset: ${articleAssetPath}`);
+        const articleAssetRelativePath = `/articles/content/${articleId}.html`;
+        console.log(`[Middleware] Attempting to fetch asset from relative path: ${articleAssetRelativePath}`);
 
-        const assetRequestUrl = new URL(articleAssetPath, "https://placeholder.com");
-        const articleResponse = await env.ASSETS.fetch(new Request(assetRequestUrl.pathname, {
-        }));
+        const assetFullUrl = new URL(articleAssetRelativePath, url.origin).toString();
 
+        console.log(`[Middleware] Constructed full URL for asset fetch: ${assetFullUrl}`);
 
-        console.log(`[Middleware] Asset fetch status: ${articleResponse.status}`);
+        const articleResponse = await env.ASSETS.fetch(new Request(assetFullUrl));
+
+        console.log(`[Middleware] Asset fetch status for ${assetFullUrl}: ${articleResponse.status}`);
 
         if (articleResponse.ok) {
-          console.log(`[Middleware] Asset fetched successfully. Returning pre-rendered content.`);
+          console.log(`[Middleware] Asset ${assetFullUrl} fetched successfully. Returning pre-rendered content.`);
           const responseHeaders = new Headers(articleResponse.headers);
           responseHeaders.set('Content-Type', 'text/html; charset=utf-8');
           return new Response(articleResponse.body, {
@@ -41,15 +42,16 @@ export async function onRequest(context) {
             status: 200
           });
         } else if (articleResponse.status === 404) {
-          console.log(`[Middleware] Article asset not found: ${articleAssetPath}`);
+          console.log(`[Middleware] Article asset not found at ${assetFullUrl}. Will call next() to allow SPA fallback or 404 from static.`);
         } else {
-          console.error(`[Middleware] Error fetching article asset: ${articleAssetPath}, status: ${articleResponse.status}`);
+          console.error(`[Middleware] Error fetching article asset ${assetFullUrl}, status: ${articleResponse.status}. Will call next().`);
         }
       } catch (error) {
-        console.error(`[Middleware] Exception during asset fetch for article ${articleId}:`, error);
+        console.error(`[Middleware] Exception during asset fetch for article ID ${articleId} (path ${pathname}):`, error.message, error.stack);
+        console.error(`[Middleware] Attempted to fetch: ${articleAssetRelativePath} relative to ${url.origin}`);
       }
     } else {
-      console.log(`[Middleware] Invalid Article ID: ${articleId}`);
+      console.log(`[Middleware] Invalid Article ID extracted: '${articleId}' from path: ${pathname}. Will call next().`);
     }
   } else {
     console.log(`[Middleware] Not a crawler or not an article path. Passing to next handler.`);
