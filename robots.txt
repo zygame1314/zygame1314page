@@ -1,0 +1,27 @@
+# robots.txt for 个人主页
+# 这个文件告诉搜索引擎爬虫哪些内容可以访问
+
+User-agent: *
+
+# 允许访问主要内容
+Allow: /
+Allow: /articles/
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# 禁止访问后端功能目录
+Disallow: /functions/
+Disallow: /custom/
+
+# 禁止访问特定文件类型
+Disallow: /*.woff2$
+Disallow: /*.cur$
+Disallow: /*.ani$
+Disallow: /*.crs$
+
+# 网站地图位置
+Sitemap: https://blog.zygame1314.site/sitemap.xml
+
+# 爬取延迟（可选，防止过于频繁的请求）
+Crawl-delay: 1
