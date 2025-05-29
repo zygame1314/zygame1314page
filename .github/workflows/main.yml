@@ -39,7 +39,7 @@ jobs:
           let urls = [];
 
           urls.push({
-            loc: \`${BASE_URL}/\`,
+            loc: `${BASE_URL}/`,
             changefreq: 'daily',
             priority: '1.0',
             lastmod: new Date().toISOString().split('T')[0]
@@ -52,37 +52,37 @@ jobs:
                 const articleId = path.basename(file, '.html');
                 const stats = fs.statSync(path.join(articlesDir, file));
                 urls.push({
-                  loc: \`\${BASE_URL}/article/\${articleId}\`,
+                  loc: `${BASE_URL}/article/${articleId}`,
                   changefreq: 'weekly',
                   priority: '0.8',
                   lastmod: stats.mtime.toISOString().split('T')[0]
                 });
               });
             } else {
-              console.warn(\`警告：文章目录 '\${articlesDir}' 未找到。\`);
+              console.warn(`警告：文章目录 '${articlesDir}' 未找到。`);
             }
           } catch (error) {
-            console.error(\`读取文章目录时出错: \${error.message}\`);
+            console.error(`读取文章目录时出错: ${error.message}`);
           }
 
-          const sitemapContent = \`<?xml version="1.0" encoding="UTF-8"?>
+          const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-            \${urls.map(url => \`
+            ${urls.map(url => `
             <url>
-              <loc>\${url.loc}</loc>
-              <changefreq>\${url.changefreq}</changefreq>
-              <priority>\${url.priority}</priority>
-              \${url.lastmod ? \`<lastmod>\${url.lastmod}</lastmod>\` : ''}
-            </url>\`).join('')}
-          </urlset>\`;
+              <loc>${url.loc}</loc>
+              <changefreq>${url.changefreq}</changefreq>
+              <priority>${url.priority}</priority>
+              ${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ''}
+            </url>`).join('')}
+          </urlset>`;
 
           try {
             fs.writeFileSync(sitemapPath, sitemapContent.trim());
-            console.log(\`站点地图已成功生成于: \${sitemapPath}\`);
+            console.log(`站点地图已成功生成于: ${sitemapPath}`);
           } catch (error) {
-            console.error(\`写入站点地图时出错: \${error.message}\`);
+            console.error(`写入站点地图时出错: ${error.message}`);
             process.exit(1);
           }
           EOF
