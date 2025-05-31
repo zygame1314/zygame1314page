@@ -1,4 +1,8 @@
 function initPongGame() {
+    if (window.innerWidth < 1200) {
+        return;
+    }
+    
     const canvas = document.getElementById('pongGame');
     const ctx = canvas.getContext('2d');
 

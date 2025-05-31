@@ -1,5 +1,11 @@
 class WeatherEffects {
     constructor() {
+        if (window.innerWidth < 1200) {
+            this.disabled = true;
+            return;
+        }
+        
+        this.disabled = false;
         this.container = document.querySelector('.background-elements');
         this.cloudContainer = document.querySelector('.cloud-container');
         this.effectIntervals = [];
@@ -8,7 +14,7 @@ class WeatherEffects {
     }
 
     async setWeatherEffect(weatherCode) {
-        if (this.isTransitioning) return;
+        if (this.disabled || this.isTransitioning) return;
         this.isTransitioning = true;
 
         await this.fadeOutEffects();
