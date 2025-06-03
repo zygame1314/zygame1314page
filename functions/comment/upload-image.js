@@ -38,7 +38,7 @@ export async function onRequestPost(context) {
             },
         });
 
-        const imageUrl = `https://img.zygame1314.top/${fileName}`;
+        const imageUrl = `https://bucket.zygame1314.top/${fileName}`;
 
         return new Response(
             JSON.stringify({
