@@ -28,17 +28,17 @@ export async function onRequestPost(context) {
 
         const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 8);
-        const fileName = `comments/${site}/${timestamp}-${randomString}.webp`;
+        const r2ObjectKey = `static/comments/${site}/${timestamp}-${randomString}.webp`;
 
         const arrayBuffer = await file.arrayBuffer();
 
-        await env.R2_BUCKET.put(fileName, arrayBuffer, {
+        await env.R2_BUCKET.put(r2ObjectKey, arrayBuffer, {
             httpMetadata: {
                 contentType: 'image/webp',
             },
         });
 
-        const imageUrl = `https://bucket.zygame1314.top/static/${fileName}`;
+        const imageUrl = `https://bucket.zygame1314.top/${r2ObjectKey}`;
 
         return new Response(
             JSON.stringify({
