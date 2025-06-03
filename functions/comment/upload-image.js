@@ -2,7 +2,7 @@ export async function onRequestPost(context) {
     try {
         const { request, env } = context;
 
-        if (!env.IMAGES_BUCKET) {
+        if (!env.DB) {
             throw new Error('未配置 R2 存储桶');
         }
 
@@ -32,7 +32,7 @@ export async function onRequestPost(context) {
 
         const arrayBuffer = await file.arrayBuffer();
 
-        await env.IMAGES_BUCKET.put(fileName, arrayBuffer, {
+        await env.DB.put(fileName, arrayBuffer, {
             httpMetadata: {
                 contentType: 'image/webp',
             },
