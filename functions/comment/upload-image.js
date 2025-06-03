@@ -2,7 +2,7 @@ export async function onRequestPost(context) {
     try {
         const { request, env } = context;
 
-        if (!env.DB) {
+        if (!env.R2_BUCKET) {
             throw new Error('未配置 R2 存储桶');
         }
 
@@ -32,13 +32,13 @@ export async function onRequestPost(context) {
 
         const arrayBuffer = await file.arrayBuffer();
 
-        await env.DB.put(fileName, arrayBuffer, {
+        await env.R2_BUCKET.put(fileName, arrayBuffer, {
             httpMetadata: {
                 contentType: 'image/webp',
             },
         });
 
-        const imageUrl = `https://bucket.zygame1314.top/${fileName}`;
+        const imageUrl = `https://bucket.zygame1314.top/static/${fileName}`;
 
         return new Response(
             JSON.stringify({
