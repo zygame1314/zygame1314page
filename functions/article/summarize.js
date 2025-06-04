@@ -64,7 +64,7 @@ async function handlePost(context) {
                         'Authorization': `Bearer ${env.SILICONFLOW_API_KEY}`,
                     },
                     body: JSON.stringify({
-                        model: "Qwen/Qwen2.5-7B-Instruct",
+                        model: "Qwen/Qwen3-8B",
                         messages: [
                             {
                                 role: "user",
@@ -84,6 +84,7 @@ async function handlePost(context) {
                             }
                         ],
                         max_tokens: 2048,
+                        enable_thinking: false,
                         temperature: 0.7,
                         top_p: 0.95,
                         stream: true
