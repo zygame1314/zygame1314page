@@ -60,33 +60,141 @@
     transform: scale(1.1);
 }
 
-.activation-code-style {
-    font-size: 16px;
-    line-height: 2;
+.afdian-link-style {
+    font-size: 15px;
+    line-height: 1.6;
     color: var(--text-color);
     margin: 15px 0;
-    padding: 15px;
-    background: rgba(var(--primary-color-rgb), 0.05);
-    border-left: 3px solid var(--primary-color);
-    border-radius: 0 4px 4px 0;
-    cursor: url('/images/cursors/kushala text select.cur'), auto;
+    padding: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 106, 84, 0.1) 0%,
+            rgba(255, 165, 0, 0.08) 50%,
+            rgba(255, 69, 0, 0.1) 100%);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    text-align: center;
     width: 100%;
-    margin: 10px 0;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
 }
 
-#activation-code-value {
-    color: var(--primary-color);
-    font-weight: bold;
+.afdian-link-style::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.afdian-link-style:hover::before {
+    left: 100%;
+}
+
+.afdian-link-style::after {
+    content: '💖';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 14px;
+    opacity: 0.6;
+    animation: heartbeat 2s ease-in-out infinite;
+    z-index: 2;
+}
+
+.afdian-link-style .afdian-content {
+    position: relative;
+    z-index: 3;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.afdian-link-style .afdian-icon {
     font-size: 18px;
-    background-color: var(--theme-bg);
-    padding: 2px 6px;
-    border-radius: 3px;
+    color: #ff6a54;
+    filter: drop-shadow(0 0 4px rgba(255, 106, 84, 0.6));
+    animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.afdian-link-style .afdian-text {
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.afdian-link-style a {
+    color: #ff6a54;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 6px 12px;
+    background: linear-gradient(45deg,
+            rgba(255, 106, 84, 0.2) 0%,
+            rgba(255, 165, 0, 0.15) 100%);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 106, 84, 0.3);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
     box-shadow:
-        1px 1px 0 rgba(0, 0, 0, 0.3),
-        -1px -1px 0 var(--secondary-color);
+        0 2px 8px rgba(255, 106, 84, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.afdian-link-style a::before {
+    content: '☕';
+    font-size: 14px;
+    animation: float 2s ease-in-out infinite;
+}
+
+.afdian-link-style a:hover {
+    background: linear-gradient(45deg,
+            #ff6a54 0%,
+            #ff8c42 50%,
+            #ffa500 100%);
+    color: white;
     text-shadow:
-        1px 1px 0 rgba(0, 0, 0, 0.5),
-        -1px -1px 0 var(--secondary-color);
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow:
+        0 6px 20px rgba(255, 106, 84, 0.4),
+        0 0 15px rgba(255, 165, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.afdian-link-style a:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow:
+        0 3px 10px rgba(255, 106, 84, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.afdian-link-style:hover {
+    background: linear-gradient(135deg,
+            rgba(255, 106, 84, 0.15) 0%,
+            rgba(255, 165, 0, 0.12) 50%,
+            rgba(255, 69, 0, 0.15) 100%);
+    border-color: rgba(255, 106, 84, 0.4);
+    transform: translateY(-1px);
+    box-shadow:
+        0 4px 12px rgba(255, 106, 84, 0.2),
+        0 0 20px rgba(255, 165, 0, 0.1);
 }
 
 .warning-message {

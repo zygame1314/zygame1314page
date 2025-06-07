@@ -505,6 +505,7 @@
 }
 
 @keyframes pixel-pulse {
+
     0%,
     70%,
     100% {
@@ -998,5 +999,32 @@
 
     100% {
         left: 100%;
+    }
+}
+
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 4px rgba(255, 106, 84, 0.6));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 8px rgba(255, 106, 84, 0.9));
     }
 }
