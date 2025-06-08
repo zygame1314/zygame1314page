@@ -110,6 +110,13 @@ function restoreOriginalCardContent() {
                 <a href="https://afdian.com/a/zygame1314" target="_blank" rel="noopener noreferrer">爱发电</a>
             </div>
         </div>
+        <div class="pickup-address-style">
+            <div class="pickup-content">
+                <span class="pickup-icon">📦</span>
+                <span class="pickup-text">提货地址：</span>
+                <a href="https://xiaoya-get.zygame1314.top" target="_blank" rel="noopener noreferrer">xiaoya-get.zygame1314.top</a>
+            </div>
+        </div>
         <div class="button-container">
             <button id="flip-card" class="button-style flip-button">访问次数</button>
         </div>
