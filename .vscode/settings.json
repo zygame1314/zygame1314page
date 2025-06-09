@@ -16,5 +16,6 @@
     "liveServer.settings.ignoreFiles": [
         ".git/*",
         "node_modules/*"
-    ]
+    ],
+    "liveServer.settings.port": 5502
 }

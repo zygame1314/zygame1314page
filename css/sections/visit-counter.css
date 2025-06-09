@@ -844,3 +844,139 @@
         top: auto;
     }
 }
+.script-update-prompt-style {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 15px 0;
+    padding: 0;
+    background: linear-gradient(135deg,
+            rgba(84, 168, 255, 0.1) 0%,
+            rgba(0, 123, 255, 0.08) 50%,
+            rgba(0, 86, 179, 0.1) 100%);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+
+.script-update-prompt-style::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.15),
+            transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.script-update-prompt-style:hover::before {
+    left: 100%;
+}
+
+.script-update-prompt-style::after {
+    content: '🎉';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+    animation: pulse 2.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+.script-update-prompt-style .prompt-content {
+    position: relative;
+    z-index: 3;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.script-update-prompt-style .prompt-icon {
+    font-size: 18px;
+    color: #54a8ff;
+    filter: drop-shadow(0 0 4px rgba(84, 168, 255, 0.6));
+    animation: glow-pulse 2.5s ease-in-out infinite alternate;
+}
+
+.script-update-prompt-style .prompt-text {
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.script-update-prompt-style a.scroll-to-scripts {
+    color: #54a8ff;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 5px 10px;
+    background: linear-gradient(45deg,
+            rgba(84, 168, 255, 0.2) 0%,
+            rgba(0, 123, 255, 0.15) 100%);
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(84, 168, 255, 0.3);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(4px);
+    box-shadow:
+        0 2px 8px rgba(84, 168, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.script-update-prompt-style a.scroll-to-scripts::before {
+    content: '🚀';
+    font-size: 13px;
+    animation: float 2.2s ease-in-out infinite;
+}
+
+.script-update-prompt-style a.scroll-to-scripts:hover {
+    background: linear-gradient(45deg,
+            #54a8ff 0%,
+            #2a8dff 50%,
+            #007bff 100%);
+    color: white;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow:
+        0 6px 20px rgba(84, 168, 255, 0.4),
+        0 0 15px rgba(0, 123, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.script-update-prompt-style a.scroll-to-scripts:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow:
+        0 3px 10px rgba(84, 168, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.script-update-prompt-style:hover {
+    background: linear-gradient(135deg,
+            rgba(84, 168, 255, 0.15) 0%,
+            rgba(0, 123, 255, 0.12) 50%,
+            rgba(0, 86, 179, 0.15) 100%);
+    border-color: rgba(84, 168, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow:
+        0 4px 12px rgba(84, 168, 255, 0.2),
+        0 0 20px rgba(0, 123, 255, 0.1);
+}
