@@ -64,6 +64,41 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCardHeight();
         }
     });
+const visitCounterWidget = document.querySelector('.visit-counter-widget');
+if (visitCounterWidget) {
+    visitCounterWidget.addEventListener('click', function(event) {
+        const scriptLink = event.target.closest('a.scroll-to-scripts');
+        if (scriptLink) {
+            event.preventDefault();
+            event.stopPropagation();
+            const sidebarContent = document.querySelector('.sidebar-content');
+            const targetElement = document.querySelector('#scripts-download');
+            if (sidebarContent && targetElement) {
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar && !sidebar.classList.contains('active') && window.innerWidth <= 768) {
+                    const toggleBtn = document.getElementById('sidebar-toggle');
+                    if (toggleBtn) toggleBtn.click();
+                    setTimeout(() => {
+                        sidebarContent.scrollTo({ top: targetElement.offsetTop - 10, behavior: 'smooth' });
+                    }, 300);
+                } else {
+                    sidebarContent.scrollTo({ top: targetElement.offsetTop - 10, behavior: 'smooth' });
+                }
+            }
+            return;
+        }
+        const contactLink = event.target.closest('a.scroll-to-contact');
+        if (contactLink) {
+            event.preventDefault();
+            event.stopPropagation();
+            const targetElement2 = document.querySelector('#contact');
+            if (targetElement2) {
+                targetElement2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            return;
+        }
+    });
+}
 });
 function updateCardHeight() {
     const frontContent = document.querySelector('.card-front');
@@ -103,18 +138,19 @@ function restoreOriginalCardContent() {
     const frontContent = document.querySelector('.card-front');
     const backContent = document.querySelector('.card-back');
     frontContent.innerHTML = `
-        <div class="afdian-link-style">
-            <div class="afdian-content">
-                <span class="afdian-icon">🔑</span>
-                <span class="afdian-text">获取激活码请前往</span>
-                <a href="https://afdian.com/a/zygame1314" target="_blank" rel="noopener noreferrer">爱发电</a>
-            </div>
-        </div>
-        <div class="pickup-address-style">
-            <div class="pickup-content">
-                <span class="pickup-icon">📦</span>
-                <span class="pickup-text">提货地址：</span>
-                <a href="https://xiaoya-get.zygame1314.top" target="_blank" rel="noopener noreferrer">xiaoya-get.zygame1314.top</a>
+        <div class="activation-info">
+            <h4 class="activation-title">激活码获取流程</h4>
+            <ol class="activation-steps">
+                <li>前往 <a href="https://afdian.com/a/zygame1314" target="_blank" rel="noopener noreferrer">爱发电</a> 购买。</li>
+                <li>使用订单号在 <a href="https://xiaoya-get.zygame1314.top" target="_blank" rel="noopener noreferrer">提货页面</a> 提货。</li>
+                <li>获取激活码后即可使用。</li>
+            </ol>
+            <div class="warning-message">
+                <div class="warning-header">重要提示</div>
+                <div class="warning-content">
+                    <p>由于爱发电客服效率问题，我的认证暂未通过，无法自动回复您的爱发电私信，我通常也不会查看。</p>
+                    <p>如有任何疑问或紧急事务，请直接添加我的<a href="#contact" class="scroll-to-contact">联系方式</a>进行沟通。</p>
+                </div>
             </div>
         </div>
         <div class="button-container">

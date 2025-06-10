@@ -535,18 +535,18 @@
 
 @keyframes gentlePulse {
     0% {
-        transform: scale(1.2);
-        filter: brightness(1.8);
+        transform: scale(1);
+        filter: brightness(1);
     }
 
     50% {
-        transform: scale(1.25);
-        filter: brightness(2);
+        transform: scale(1.1);
+        filter: brightness(1.5);
     }
 
     100% {
-        transform: scale(1.2);
-        filter: brightness(1.8);
+        transform: scale(1);
+        filter: brightness(1);
     }
 }
 
@@ -1001,7 +1001,6 @@
         left: 100%;
     }
 }
-
 
 @keyframes heartbeat {
 
