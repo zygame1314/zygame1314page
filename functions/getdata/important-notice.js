@@ -10,12 +10,13 @@ export async function onRequestGet(context) {
             FROM important_notices
             WHERE active = 1
             ORDER BY created_at DESC
-            LIMIT 1
+            LIMIT 3
         `).all();
 
         if (results.length === 0) {
             return new Response(JSON.stringify({
-                active: false
+                active: false,
+                notices: []
             }), {
                 status: 200,
                 headers: {
@@ -26,44 +27,46 @@ export async function onRequestGet(context) {
             });
         }
 
-        const rawNotice = results[0];
+        const notices = [];
+        const expiredIds = [];
 
-        const notice = {
-            id: rawNotice.id,
-            active: rawNotice.active,
-            title: rawNotice.title,
-            content: rawNotice.content,
-            expiryDate: rawNotice.expiryDate,
-            image: (rawNotice.image_url || rawNotice.image_alt || rawNotice.image_position || rawNotice.image_width || rawNotice.image_height) ? {
-                url: rawNotice.image_url,
-                alt: rawNotice.image_alt,
-                position: rawNotice.image_position,
-                width: rawNotice.image_width,
-                height: rawNotice.image_height
-            } : null,
-            poll: rawNotice.poll_config ? JSON.parse(rawNotice.poll_config) : null
-        };
+        for (const rawNotice of results) {
+            const notice = {
+                id: rawNotice.id,
+                active: rawNotice.active,
+                title: rawNotice.title,
+                content: rawNotice.content,
+                expiryDate: rawNotice.expiryDate,
+                image: (rawNotice.image_url || rawNotice.image_alt || rawNotice.image_position || rawNotice.image_width || rawNotice.image_height) ? {
+                    url: rawNotice.image_url,
+                    alt: rawNotice.image_alt,
+                    position: rawNotice.image_position,
+                    width: rawNotice.image_width,
+                    height: rawNotice.image_height
+                } : null,
+                poll: rawNotice.poll_config ? JSON.parse(rawNotice.poll_config) : null
+            };
 
-        if (notice.expiryDate && new Date(notice.expiryDate) < new Date()) {
+            if (notice.expiryDate && new Date(notice.expiryDate) < new Date()) {
+                expiredIds.push(notice.id);
+            } else {
+                notices.push(notice);
+            }
+        }
+
+        if (expiredIds.length > 0) {
+            const placeholders = expiredIds.map(() => '?').join(',');
             await env.DB.prepare(`
-                UPDATE important_notices 
-                SET active = 0 
-                WHERE id = ?
-            `).bind(notice.id).run();
-
-            return new Response(JSON.stringify({
-                active: false
-            }), {
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Cache-Control': 'public, max-age=60'
-                }
-            });
+                UPDATE important_notices
+                SET active = 0
+                WHERE id IN (${placeholders})
+            `).bind(...expiredIds).run();
         }
 
-        return new Response(JSON.stringify(notice), {
+        return new Response(JSON.stringify({
+            active: notices.length > 0,
+            notices: notices
+        }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
