@@ -85,20 +85,18 @@
     margin-left: 8px;
 }
 
+.steam-username-level-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
 .steam-username {
     font-family: 'zpix';
     font-size: 0.9em;
-    margin: 0 0 5px 0;
     color: #ffffff;
     text-shadow: 2px 2px 0 #000;
-    display: block;
-}
-
-.steam-status-level-row {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    margin-top: 4px;
 }
 
 .steam-status {

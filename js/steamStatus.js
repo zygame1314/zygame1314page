@@ -161,27 +161,32 @@ function initSteamStatus() {
                 statusText = '离线';
             }
             const userDetails = statusWidget.querySelector('.steam-user-details');
-            let statusLevelRow = userDetails ? userDetails.querySelector('.steam-status-level-row') : null;
+            const usernameElement = userDetails.querySelector('.steam-username');
+            const levelContainer = statusWidget.querySelector('.steam-level');
 
-            if (userDetails && !statusLevelRow) {
-                statusLevelRow = document.createElement('div');
-                statusLevelRow.className = 'steam-status-level-row';
-                const usernameElement = userDetails.querySelector('.steam-username');
-                if (usernameElement && usernameElement.nextSibling) {
-                    userDetails.insertBefore(statusLevelRow, usernameElement.nextSibling);
-                } else if (usernameElement) {
-                    userDetails.appendChild(statusLevelRow);
+            let usernameLevelContainer = userDetails.querySelector('.steam-username-level-container');
+            if (!usernameLevelContainer) {
+                usernameLevelContainer = document.createElement('div');
+                usernameLevelContainer.className = 'steam-username-level-container';
+                if (usernameElement) {
+                    usernameElement.parentNode.insertBefore(usernameLevelContainer, usernameElement);
+                    usernameLevelContainer.appendChild(usernameElement);
+                } else {
+                    userDetails.prepend(usernameLevelContainer);
                 }
-                else {
-                    userDetails.appendChild(statusLevelRow);
-                }
+            }
+            
+            if (levelContainer && levelContainer.parentNode !== usernameLevelContainer) {
+                usernameLevelContainer.appendChild(levelContainer);
             }
 
             if (status) {
                 status.textContent = statusText;
                 status.className = `steam-status ${statusClass}`;
-                if (statusLevelRow && status.parentNode !== statusLevelRow) {
-                    statusLevelRow.appendChild(status);
+                if (usernameLevelContainer.nextSibling) {
+                    userDetails.insertBefore(status, usernameLevelContainer.nextSibling);
+                } else {
+                    userDetails.appendChild(status);
                 }
             }
 
@@ -218,7 +223,6 @@ function initSteamStatus() {
                     gameInfoElement.remove();
                 }
             }
-            const levelContainer = statusWidget.querySelector('.steam-level');
             if (levelElement && levelContainer && player.steam_level !== null) {
                 const level = parseInt(player.steam_level, 10);
                 levelElement.textContent = level;
@@ -237,15 +241,8 @@ function initSteamStatus() {
 
                 levelContainer.style.display = 'flex';
 
-                if (statusLevelRow && levelContainer.parentNode !== statusLevelRow) {
-                    statusLevelRow.appendChild(levelContainer);
-                }
-
             } else if (levelContainer) {
                 levelContainer.style.display = 'none';
-                if (statusLevelRow && levelContainer.parentNode !== statusLevelRow) {
-                    statusLevelRow.appendChild(levelContainer);
-                }
             }
 
 
