@@ -367,6 +367,10 @@
     transition: transform 0.6s;
     min-height: 100px;
     transform-style: preserve-3d;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 5px;
+    box-sizing: border-box;
 }
 
 .card-back {

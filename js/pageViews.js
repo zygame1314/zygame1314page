@@ -106,7 +106,10 @@ function updateCardHeight() {
     const widget = document.querySelector('.visit-counter-widget');
     const card = document.querySelector('.visit-counter-card');
     const isFlipped = widget.classList.contains('flipped');
-    const height = isFlipped ? backContent.scrollHeight : frontContent.scrollHeight;
+    const content = isFlipped ? backContent : frontContent;
+    const contentHeight = content.scrollHeight;
+    const maxHeight = 500;
+    const height = Math.min(contentHeight, maxHeight);
     card.style.height = `${height}px`;
     widget.style.height = `${height}px`;
 }
