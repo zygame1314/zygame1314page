@@ -13,7 +13,7 @@ class MusicPlayer {
         this.volume = 1;
         this.initializeElements();
         this.setupAudioAnalyzer();
-        this.createRhythmDots();
+        this.createVisualizer();
         this.setupMobileLayout();
         this.loadPlaylist().then(() => {
             this.initializePlaylist();
@@ -294,185 +294,97 @@ class MusicPlayer {
         this.analyser.connect(this.audioContext.destination);
     }
 
-    createRhythmDots() {
-        if (!this.isMobileDevice()) {
-            this.createVisualizer('left');
-            this.createVisualizer('right');
-        }
+    createVisualizer() {
+        if (this.isMobileDevice()) return;
 
-        this.frequencyToColor = (frequency) => {
-            const hue = Math.floor((frequency / 255) * 360);
-            return `hsl(${hue}, 80%, 60%)`;
-        };
-
+        this.createSpectrum('left');
+        this.createSpectrum('right');
         this.animateRhythm();
     }
 
-    createVisualizer(side) {
+    createSpectrum(side) {
         const visualizer = document.createElement('div');
         visualizer.className = `audio-visualizer ${side}`;
 
-        const container = document.createElement('div');
-        container.className = 'spectrum-container';
-        visualizer.appendChild(container);
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('class', 'spectrum-svg');
 
-        const particleContainer = document.createElement('div');
-        particleContainer.className = 'particle-container';
-        container.appendChild(particleContainer);
+        const path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('class', 'spectrum-path');
+        svg.appendChild(path);
 
-        const particleCount = this.isMobileDevice() ? 60 : 120;
-        this[`${side}Particles`] = [];
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'audio-particle';
-            particle.style.top = `${Math.random() * 100}%`;
-            particleContainer.appendChild(particle);
-
-            this[`${side}Particles`].push({
-                element: particle,
-                active: false,
-                size: 2 + Math.random() * 4,
-                speed: 2 + Math.random() * 6,
-                life: 0,
-                maxLife: 20 + Math.floor(Math.random() * 40),
-                frequency: 0,
-                y: Math.random() * 100
-            });
-        }
-
+        visualizer.appendChild(svg);
         document.body.appendChild(visualizer);
 
-        if (!this[`${side}Visualizer`]) {
-            this[`${side}Visualizer`] = visualizer;
-        }
+        this[`${side}Visualizer`] = visualizer;
+        this[`${side}Path`] = path;
     }
 
-    frequencyToColor(frequency) {
-        if (frequency < 50) {
-            return `rgb(${frequency / 2}, 0, ${100 + frequency})`;
-        } else if (frequency < 100) {
-            return `rgb(0, ${frequency}, ${180 + frequency / 4})`;
-        } else if (frequency < 150) {
-            return `rgb(0, ${150 + frequency / 2}, ${100 + (150 - frequency)})`;
-        } else if (frequency < 200) {
-            return `rgb(${(frequency - 150) * 5}, ${220}, ${Math.max(0, 200 - frequency)})`;
-        } else {
-            return `rgb(${255}, ${Math.max(0, 255 - (frequency - 200) * 2)}, ${Math.min(255, (frequency - 200) * 3)})`;
-        }
+    frequencyToColor(i, total, energy) {
+        const hue = (i / total) * 360;
+        const saturation = 90;
+        const lightness = Math.min(40 + (energy / 255) * 40, 80);
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
 
     animateRhythm() {
-        const updateRhythm = () => {
+        const update = () => {
             if (this.isPlaying && !this.isMobileDevice()) {
                 this.analyser.getByteFrequencyData(this.dataArray);
-
-                if (this.leftVisualizer && this.leftParticles) {
-                    this.updateParticles('left', this.leftParticles);
-                }
-
-                if (this.rightVisualizer && this.rightParticles) {
-                    this.updateParticles('right', this.rightParticles);
-                }
-            } else if (this.isPlaying && this.isMobileDevice()) {
-                this.analyser.getByteFrequencyData(this.dataArray);
+                this.updateSpectrum('left', this.leftPath);
+                this.updateSpectrum('right', this.rightPath);
             } else {
-                if (this.leftParticles) {
-                    this.leftParticles.forEach(p => {
-                        p.active = false;
-                        p.element.classList.remove('active');
-                        p.element.style.opacity = '0';
-                    });
-                }
-
-                if (this.rightParticles) {
-                    this.rightParticles.forEach(p => {
-                        p.active = false;
-                        p.element.classList.remove('active');
-                        p.element.style.opacity = '0';
-                    });
-                }
+                if (this.leftPath) this.resetSpectrum('left', this.leftPath);
+                if (this.rightPath) this.resetSpectrum('right', this.rightPath);
             }
-
-            requestAnimationFrame(updateRhythm);
+            requestAnimationFrame(update);
         };
-
-        requestAnimationFrame(updateRhythm);
+        update();
     }
 
-    updateParticles(side, particles) {
-        const isLeft = side === 'left';
-        const frequencies = [...this.dataArray];
-        const freqChunks = [];
+    updateSpectrum(side, path) {
+        if (!path) return;
+        const visualizer = this[`${side}Visualizer`];
+        if (!visualizer) return;
 
-        const chunkSize = Math.floor(frequencies.length / 8);
-        for (let i = 0; i < 8; i++) {
-            const start = i * chunkSize;
-            const chunk = frequencies.slice(start, start + chunkSize);
-            const avg = chunk.reduce((sum, val) => sum + val, 0) / chunk.length;
-            freqChunks.push(avg);
-        }
+        const { width, height } = visualizer.getBoundingClientRect();
+        const bufferLength = this.analyser.frequencyBinCount;
 
-        const activationThreshold = 30;
-
-        for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-
-            if (!p.active) {
-                const freqIndex = Math.floor(Math.random() * freqChunks.length);
-                const freqValue = freqChunks[freqIndex];
-
-                if (freqValue > activationThreshold && Math.random() * 255 < freqValue * 0.7) {
-                    p.active = true;
-                    p.life = 0;
-                    p.y = 10 + Math.random() * 80;
-                    p.frequency = freqValue;
-                    p.element.style.transform = 'translateX(0)';
-                    p.element.classList.add('active');
-
-                    const size = (2 + (freqValue / 255) * 6);
-                    p.element.style.width = `${size}px`;
-                    p.element.style.height = `${size}px`;
-                    p.element.style.top = `${p.y}%`;
-
-                    if (isLeft) {
-                        p.element.style.left = '0';
-                        p.element.style.right = 'auto';
-                    } else {
-                        p.element.style.right = '0';
-                        p.element.style.left = 'auto';
-                    }
-
-                    const color = this.frequencyToColor(freqValue);
-                    p.element.style.backgroundColor = color;
-                    p.element.style.boxShadow = `0 0 ${3 + (freqValue / 255) * 8}px ${color}`;
-                    p.element.style.opacity = '1';
-                }
+        let d = '';
+        if (side === 'left') {
+            d = `M 0,${height}`;
+            for (let i = 0; i < bufferLength; i++) {
+                const y = (i / bufferLength) * height;
+                const x = (this.dataArray[i] / 255) * width;
+                d += ` L ${x},${height - y}`;
             }
-            else {
-                p.life++;
-
-                const lifeRatio = p.life / p.maxLife;
-                const distance = p.life * ((p.frequency / 255) * p.speed + 1);
-
-                const opacity = Math.max(0, 1 - Math.pow(lifeRatio, 1.5));
-
-                if (isLeft) {
-                    p.element.style.transform = `translateX(${distance}px)`;
-                } else {
-                    p.element.style.transform = `translateX(-${distance}px)`;
-                }
-
-                p.element.style.opacity = opacity.toString();
-
-                if (p.life >= p.maxLife || opacity <= 0.05) {
-                    p.active = false;
-                    p.element.classList.remove('active');
-                    p.element.style.opacity = '0';
-                    p.element.style.transform = 'translateX(0)';
-                }
+            d += ` L 0,0 Z`;
+        } else {
+            d = `M ${width},${height}`;
+            for (let i = 0; i < bufferLength; i++) {
+                const y = (i / bufferLength) * height;
+                const x = (this.dataArray[i] / 255) * width;
+                d += ` L ${width - x},${height - y}`;
             }
+            d += ` L ${width},0 Z`;
         }
+        path.setAttribute('d', d);
+    }
+
+    resetSpectrum(side, path) {
+        if (!path) return;
+        const visualizer = this[`${side}Visualizer`];
+        if (!visualizer) return;
+        const { width, height } = visualizer.getBoundingClientRect();
+
+        let d = '';
+        if (side === 'left') {
+            d = `M 0,${height} L 0,0 Z`;
+        } else {
+            d = `M ${width},${height} L ${width},0 Z`;
+        }
+        path.setAttribute('d', d);
     }
 
     async playSong() {
@@ -500,7 +412,7 @@ class MusicPlayer {
 
                 const song = this.songs[this.currentSong];
                 if (song.comment && window.showLive2dNotification) {
-                    window.showLive2dNotification(song.comment);
+                    window.showLive2dNotification(song.comment, null, song.expression || null);
                 }
 
                 this.isLoaded = true;

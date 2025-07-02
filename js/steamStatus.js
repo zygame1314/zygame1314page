@@ -307,16 +307,22 @@ function initSteamStatus() {
             }
             const mouseEnterListener = function () {
                 let message = '';
+                let expression = null;
                 const currentStatusClass = statusClass;
+
                 if (currentStatusClass === 'in-game') {
                     message = `主人正在玩 ${player.game_name} 呢！${player.rich_presence ? `(${player.rich_presence})` : ''}`;
+                    expression = L2D_EXPRESSIONS.SUNGLASSES;
                 } else if (currentStatusClass === 'online') {
                     message = `看来主人在线上呢，要去聊聊吗？`;
+                    expression = L2D_EXPRESSIONS.BAG;
                 } else {
                     message = `主人现在不在线呢，也许有其他事要做吧~`;
+                    expression = L2D_EXPRESSIONS.CONFUSED;
                 }
+
                 if (message && window.showLive2dNotification) {
-                    showLive2dNotification(message);
+                    showLive2dNotification(message, null, expression);
                 }
             };
             statusWidget.addEventListener("mouseenter", mouseEnterListener);
@@ -333,8 +339,8 @@ function initSteamStatus() {
                 const gameInfoElement = statusWidget.querySelector('.steam-game-info');
                 if (gameInfoElement) gameInfoElement.remove();
             }
-            if (window.showNotification) {
-                showNotification(`Steam状态更新失败: ${error.message}`, 5, 'error');
+            if (window.showLive2dNotification) {
+                showLive2dNotification(`Steam状态更新失败了...`, null, L2D_EXPRESSIONS.ANNOYED);
             }
             stopUpdates();
         }

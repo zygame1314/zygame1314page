@@ -164,9 +164,9 @@ class SiteStatus {
         document.querySelectorAll('.status-item').forEach(item => {
             item.addEventListener('site-status-hover', (e) => {
                 const { status, responseTime, site } = e.detail;
-                const message = this.getStatusMessage(site, status, responseTime);
+                const { message, expression } = this.getStatusMessage(site, status, responseTime);
                 if (typeof window.showLive2dNotification === 'function') {
-                    window.showLive2dNotification(message);
+                    window.showLive2dNotification(message, null, expression);
                 }
             });
         });
@@ -179,55 +179,77 @@ class SiteStatus {
 
     getStatusMessage(site, status, responseTime) {
         const getSpeedComment = (rt) => {
-            if (!rt) return '';
-            if (rt < 100) return '，超快！✨';
-            if (rt < 500) return '，还不错呢～';
-            if (rt < 1000) return '，还可以接受啦';
-            if (rt < 3000) return '，有点慢呢，凑合凑活吧';
-            return '，好像有点卡的说...';
+            if (!rt) return { text: '', expression: null };
+            if (rt < 100) return { text: '，超快！✨', expression: L2D_EXPRESSIONS.STARRY_EYES };
+            if (rt < 500) return { text: '，还不错呢～', expression: null };
+            if (rt < 1000) return { text: '，还可以接受啦', expression: L2D_EXPRESSIONS.CONFUSED };
+            if (rt < 3000) return { text: '，有点慢呢，凑合凑活吧', expression: L2D_EXPRESSIONS.DIZZY };
+            return { text: '，好像有点卡的说...', expression: L2D_EXPRESSIONS.SPEECHLESS };
         };
+
+        const speedData = getSpeedComment(responseTime);
+        const speedComment = speedData.text;
+        let expression = speedData.expression;
 
         const messages = {
             '主站': {
                 online: [
-                    `主站状态良好！响应时间${responseTime}ms${getSpeedComment(responseTime)}`,
-                    `主站运行正常，${responseTime}ms的响应速度${getSpeedComment(responseTime)}`,
-                    `主站一切正常${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '，放心访问吧！'}`
+                    `主站状态良好！响应时间${responseTime}ms${speedComment}`,
+                    `主站运行正常，${responseTime}ms的响应速度${speedComment}`,
+                    `主站一切正常${responseTime ? `，${responseTime}ms${speedComment}` : '，放心访问吧！'}`
                 ],
-                offline: [
-                    "啊哦，主站似乎遇到了一些小问题...",
-                    "主站暂时不在线，让我们稍等一下~",
-                    "主人！主站好像出故障了！"
-                ]
+                offline: {
+                    messages: [
+                        "啊哦，主站似乎遇到了一些小问题...",
+                        "主站暂时不在线，让我们稍等一下~",
+                        "主人！主站好像出故障了！"
+                    ],
+                    expression: L2D_EXPRESSIONS.ANNOYED
+                }
             },
             '源站': {
                 online: [
-                    `源站运行正常！${responseTime}ms${getSpeedComment(responseTime)}`,
-                    `源站状态良好，${responseTime}ms的响应速度${getSpeedComment(responseTime)}`,
-                    `源站准备就绪${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '！'}`
+                    `源站运行正常！${responseTime}ms${speedComment}`,
+                    `源站状态良好，${responseTime}ms的响应速度${speedComment}`,
+                    `源站准备就绪${responseTime ? `，${responseTime}ms${speedComment}` : '！'}`
                 ],
-                offline: [
-                    "源站暂时失联了，不过不用担心~",
-                    "源站似乎在开小差呢...",
-                    "源站遇到了一些技术问题，主人应该正在处理~"
-                ]
+                offline: {
+                    messages: [
+                        "源站暂时失联了，不过不用担心~",
+                        "源站似乎在开小差呢...",
+                        "源站遇到了一些技术问题，主人应该正在处理~"
+                    ],
+                    expression: L2D_EXPRESSIONS.SURPRISED
+                }
             },
             'CDN': {
                 online: [
-                    `CDN工作正常！${responseTime}ms${getSpeedComment(responseTime)}`,
-                    `CDN加速中，${responseTime}ms的速度${getSpeedComment(responseTime)}`,
-                    `CDN运转良好${responseTime ? `，${responseTime}ms${getSpeedComment(responseTime)}` : '～'}`
+                    `CDN工作正常！${responseTime}ms${speedComment}`,
+                    `CDN加速中，${responseTime}ms的速度${speedComment}`,
+                    `CDN运转良好${responseTime ? `，${responseTime}ms${speedComment}` : '～'}`
                 ],
-                offline: [
-                    "CDN似乎出了点问题，可能会影响加载速度...",
-                    "CDN暂时不可用，网站访问可能会变慢~",
-                    "CDN连接不上了，让主人看看是怎么回事~"
-                ]
+                offline: {
+                    messages: [
+                        "CDN似乎出了点问题，可能会影响加载速度...",
+                        "CDN暂时不可用，网站访问可能会变慢~",
+                        "CDN连接不上了，让主人看看是怎么回事~"
+                    ],
+                    expression: L2D_EXPRESSIONS.CONFUSED
+                }
             }
         };
 
-        const statusMessages = messages[site][status.toLowerCase()];
-        return statusMessages[Math.floor(Math.random() * statusMessages.length)];
+        const statusData = messages[site][status.toLowerCase()];
+        let message;
+
+        if (status.toLowerCase() === 'online') {
+            message = statusData[Math.floor(Math.random() * statusData.length)];
+        } else {
+            message = statusData.messages[Math.floor(Math.random() * statusData.messages.length)];
+            expression = statusData.expression;
+        }
+
+        return { message, expression };
     }
 
     getSiteName(url) {
@@ -266,6 +288,9 @@ class SiteStatus {
                 </span>
             </div>
         `;
+        if (typeof window.showLive2dNotification === 'function') {
+            window.showLive2dNotification("获取站点状态失败了，呜...", null, L2D_EXPRESSIONS.DIZZY);
+        }
     }
 
     updateChart() {

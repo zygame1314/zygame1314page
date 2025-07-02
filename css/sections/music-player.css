@@ -263,7 +263,7 @@
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 180px;
+    width: 40px;
     z-index: 9998;
     pointer-events: none;
     display: flex;
@@ -278,48 +278,14 @@
     right: 0;
 }
 
-.spectrum-container {
-    height: 70vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 2px;
-    position: relative;
-}
-
-.particle-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+.spectrum-svg {
     width: 100%;
     height: 100%;
-    overflow: visible;
 }
 
-.audio-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    transform-origin: center;
-    opacity: 0;
-    pointer-events: none;
-    box-shadow: 0 0 4px currentColor;
-    transition: opacity 0.1s ease-out;
-}
-
-.audio-particle.active {
-    opacity: 1;
-}
-
-.audio-visualizer.left .audio-particle {
-    left: 0;
-    transform-origin: left center;
-}
-
-.audio-visualizer.right .audio-particle {
-    right: 0;
-    transform-origin: right center;
+.spectrum-path {
+    fill: url(#wave-gradient);
+    transition: d 0.05s linear;
+    stroke: var(--primary-color);
+    stroke-width: 1px;
 }

@@ -1,9 +1,21 @@
 let app;
 let currentModel;
 const modelBasePath = 'https://bucket.zygame1314.top/static/live2d/';
-const modelName = 'knight';
+const modelName = 'Doro';
 const modelJsonPath = `${modelBasePath}${modelName}/${modelName}.model3.json`;
 const canvasContainer = document.getElementById('L2dCanvas');
+window.L2D_EXPRESSIONS = {
+    ANNOYED: 'Exp1',
+    SPEECHLESS: 'Exp2',
+    SURPRISED: 'Exp3',
+    CONFUSED: 'Exp4',
+    SUNGLASSES: 'Exp5',
+    BAG: 'Exp6',
+    DIZZY: 'Exp7',
+    STARRY_EYES: 'Exp8',
+    TONGUE_OUT: 'TongueOut',
+    HIGHLIGHT_OFF: 'HighlightOFF'
+};
 function loadScript(url) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -72,8 +84,6 @@ async function initializeLive2D() {
         app.renderer.view.style.width = '300px';
         app.renderer.view.style.height = '300px';
         currentModel = await PIXI.live2d.Live2DModel.from(modelJsonPath, {
-            idleMotionGroup: 'Idle',
-            autoInteract: true,
             onError: (e) => {
                 console.error("加载 Live2D 模型时出错:", e);
                 if (typeof showLive2dNotification === 'function') {
@@ -81,24 +91,22 @@ async function initializeLive2D() {
                 }
             }
         });
+        currentModel.motion('Idle');
+        currentModel.autoInteract = true;
         if (!currentModel) {
             throw new Error("Live2DModel.from 返回了 undefined 或 null。");
         }
         console.log("模型加载成功:", currentModel);
         app.stage.addChild(currentModel);
         handleResize();
-        if (typeof showLive2dNotification === 'function') {
-            showTimeGreeting();
-        } else {
-            console.warn("模型加载时 showLive2dNotification 尚未准备好。");
-            setTimeout(() => {
-                if (typeof showLive2dNotification === 'function') {
-                    showTimeGreeting();
-                } else {
-                    console.error("showLive2dNotification 仍然无法用于问候。");
-                }
-            }, 500);
-        }
+
+        setTimeout(() => {
+            if (typeof showLive2dNotification === 'function') {
+                showTimeGreeting();
+            } else {
+                console.error("showLive2dNotification 函数在延迟后仍然不可用。");
+            }
+        }, 500);
         window.addEventListener('resize', handleResize);
         window.live2dApp = app;
         window.live2dModel = currentModel;
@@ -132,7 +140,7 @@ function handleResize() {
     const scaleX = viewWidth / modelWidth;
     const scaleY = viewHeight / modelHeight;
     const scale = Math.min(scaleX, scaleY) * 0.8;
-    currentModel.scale.set(scale);
+    currentModel.scale.set(-scale, scale);
     currentModel.x = viewWidth / 2;
     currentModel.y = viewHeight / 2;
     currentModel.anchor.set(0.5, 0.5);
@@ -147,34 +155,45 @@ function showTimeGreeting() {
     const weekDay = new Date().getDay();
     const isWeekend = weekDay === 0 || weekDay === 6;
     let greeting = "";
+    let expression = L2D_EXPRESSIONS.SUNGLASSES;
     if (hour < 3) {
         greeting = "夜深人静，还不休息吗？熬夜对身体不好哦";
+        expression = L2D_EXPRESSIONS.ANNOYED;
     } else if (hour < 6) {
         greeting = "这个点还醒着？是修仙中吗？";
+        expression = L2D_EXPRESSIONS.SURPRISED;
     } else if (hour < 9) {
         greeting = isWeekend ?
             "周末还这么早？悠闲地享受早餐吧~" :
             "早安！新的一天也要充满干劲呢！";
+        expression = L2D_EXPRESSIONS.STARRY_EYES;
     } else if (hour < 11) {
         greeting = isWeekend ?
             "上午好！今天有什么有趣的计划吗？" :
             "上午好！工作别太累了，来杯咖啡提提神？";
+        expression = L2D_EXPRESSIONS.BAG;
     } else if (hour < 13) {
         greeting = "午饭时间到了！想吃点什么呢？";
+        expression = L2D_EXPRESSIONS.TONGUE_OUT;
     } else if (hour < 15) {
         greeting = "午后时光最容易犯困了，记得喝点水提提神~";
+        expression = L2D_EXPRESSIONS.DIZZY;
     } else if (hour < 17) {
         greeting = hour === 15 ?
             "下午茶时间！要来块小蛋糕吗？" :
             "下午好！工作注意适当休息哦~";
+        expression = L2D_EXPRESSIONS.CONFUSED;
     } else if (hour < 19) {
         greeting = "快到晚饭时间啦！今天过得开心吗？";
+        expression = L2D_EXPRESSIONS.STARRY_EYES;
     } else if (hour < 22) {
         greeting = "晚上好！忙碌了一天，记得放松一下~";
+        expression = L2D_EXPRESSIONS.SUNGLASSES;
     } else {
         greeting = "已经这么晚了，早点休息吧，熬夜会变丑的！";
+        expression = L2D_EXPRESSIONS.SPEECHLESS;
     }
-    showLive2dNotification(greeting, 3000);
+    showLive2dNotification(greeting, 3000, expression);
 }
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLive2D);

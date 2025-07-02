@@ -103,30 +103,40 @@ function initGamesFetch() {
 
             gameItem.addEventListener("mouseenter", function () {
                 let message = '';
+                let expression = L2D_EXPRESSIONS.SUNGLASSES;
                 const price = game.final_price / 100;
 
                 if (price === 0) {
                     message = `${game.name}是免费游戏哦！快来玩玩看吧~`;
+                    expression = L2D_EXPRESSIONS.STARRY_EYES;
                 } else if (game.discounted) {
                     const discount = game.discount_percent;
                     if (discount === 100) {
                         message = `太好了！${game.name}现在免费送！赶快领取吧！`;
+                        expression = L2D_EXPRESSIONS.STARRY_EYES;
                     } else if (discount >= 75) {
                         message = `哇！${game.name}居然打${discount}%的折扣！这也太划算了吧！`;
+                        expression = L2D_EXPRESSIONS.SURPRISED;
                     } else if (discount >= 50) {
                         message = `${game.name}现在半价呢，要不要考虑下？`;
+                        expression = L2D_EXPRESSIONS.CONFUSED;
                     } else {
                         message = `${game.name}打折了呢，优惠${discount}%，感兴趣吗？`;
+                        expression = L2D_EXPRESSIONS.BAG;
                     }
                 } else {
                     if (price <= 30) {
                         message = `${game.name}这么便宜！很适合体验一下呢~`;
+                        expression = L2D_EXPRESSIONS.STARRY_EYES;
                     } else if (price <= 100) {
                         message = `${game.name}价格适中，可以试试哦！`;
+                        expression = L2D_EXPRESSIONS.SUNGLASSES;
                     } else if (price <= 200) {
                         message = `${game.name}不便宜呢，不过品质应该有保证吧（大概）~`;
+                        expression = L2D_EXPRESSIONS.DIZZY;
                     } else {
                         message = `${game.name}...好贵的样子，但可能是超级大作！`;
+                        expression = L2D_EXPRESSIONS.SPEECHLESS;
                     }
                 }
 
@@ -134,7 +144,7 @@ function initGamesFetch() {
                     message += ' 还支持手柄游玩呢！';
                 }
 
-                showLive2dNotification(message);
+                showLive2dNotification(message, null, expression);
             });
 
             gameInfo.appendChild(gameTitle);
@@ -238,19 +248,24 @@ function initGamesFetch() {
                 const playtime = parseInt(this.dataset.playtime || 0);
 
                 let message = '';
+                let expression = L2D_EXPRESSIONS.SUNGLASSES;
                 if (playtime === 0) {
                     message = `诶~${gameName}都快长草了，主人是不是把它遗忘在角落了？`;
+                    expression = L2D_EXPRESSIONS.ANNOYED;
                 } else if (playtime < 60) {
                     message = `最近就玩了${playtime}分钟的${gameName}？看来主人最近很忙呢~`;
+                    expression = L2D_EXPRESSIONS.CONFUSED;
                 } else if (playtime < 600) {
                     const hours = Math.floor(playtime / 60);
                     message = `${gameName}最近玩了${hours}小时呢，主人似乎挺投入的嘛！`;
+                    expression = L2D_EXPRESSIONS.BAG;
                 } else {
                     const hours = Math.floor(playtime / 60);
                     message = `${gameName}最近已经玩了${hours}小时了！看得出来主人真的很喜欢这个游戏呢~`;
+                    expression = L2D_EXPRESSIONS.STARRY_EYES;
                 }
 
-                showLive2dNotification(message);
+                showLive2dNotification(message, null, expression);
             });
 
             gameItem.appendChild(gameImage);

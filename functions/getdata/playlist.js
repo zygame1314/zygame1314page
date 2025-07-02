@@ -3,7 +3,7 @@ export async function onRequestGet(context) {
 
     try {
         const { results } = await env.DB.prepare(`
-            SELECT title, artist, path, cover, yt_link as ytLink, comment
+            SELECT title, artist, path, cover, yt_link as ytLink, comment, expression
             FROM playlist
             ORDER BY id ASC
         `).all();
@@ -36,12 +36,12 @@ export async function onRequestPost(context) {
     const { env, request } = context;
 
     try {
-        const { title, artist, path, cover, ytLink, comment } = await request.json();
+        const { title, artist, path, cover, ytLink, comment, expression } = await request.json();
 
         const { meta } = await env.DB.prepare(`
-            INSERT INTO playlist (title, artist, path, cover, yt_link, comment)
-            VALUES (?, ?, ?, ?, ?, ?)
-        `).bind(title, artist, path, cover, ytLink, comment).run();
+            INSERT INTO playlist (title, artist, path, cover, yt_link, comment, expression)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `).bind(title, artist, path, cover, ytLink, comment, expression).run();
 
         return new Response(JSON.stringify({
             success: true,

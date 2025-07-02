@@ -144,16 +144,35 @@ function restoreOriginalCardContent() {
         <div class="activation-info">
             <h4 class="activation-title">激活码获取流程</h4>
             <ol class="activation-steps">
-                <li>前往 <a href="https://afdian.com/a/zygame1314" target="_blank" rel="noopener noreferrer">爱发电</a> 购买。</li>
-                <li>使用订单号在 <a href="https://xiaoya-get.zygame1314.top" target="_blank" rel="noopener noreferrer">提货页面</a> 提货。</li>
-                <li>获取激活码后即可使用。</li>
+                <li>前往 <a href="https://afdian.com/a/zygame1314" target="_blank"
+                        rel="noopener noreferrer">爱发电</a> 购买所需服务。</li>
+                <li>购买后，使用你的爱发电<span class="highlight-action">订单号</span>前往<a
+                        href="https://xiaoya-get.zygame1314.top" target="_blank"
+                        rel="noopener noreferrer">提货页面</a> 提取激活码。</li>
+                <li>获取激活码后，按照脚本提示激活使用。</li>
             </ol>
+            <div class="friendly-reminder"
+                style="font-size: 0.9em; margin-top: 10px; padding: 10px; background-color: var(--theme-bg); border-radius: 5px;">
+                <i class="fas fa-lightbulb"
+                    style="color: #17a2b8; margin-right: 5px;"></i><strong>友情提示：</strong>
+                建议先点开上面的“提货页面”试试看。如果那个页面都打不开，那后面的步骤就别折腾咯，大概率是你的网络问题。换个网络环境，或者施展一下“魔法”也许能解决哦！(ง •̀_•́)ง
+            </div>
             <div class="warning-message">
-                <div class="warning-header">重要提示</div>
+                <div class="warning-header"><i class="fas fa-exclamation-triangle"></i> 重要提示</div>
                 <div class="warning-content">
-                    <p>由于爱发电客服效率问题，我的认证暂未通过，无法自动回复您的爱发电私信，我通常也不会查看。</p>
-                    <p>如有任何疑问或紧急事务，请直接添加我的<a href="#contact" class="scroll-to-contact">联系方式</a>进行沟通。</p>
+                    目前我的创作者认证已通过，<span class="highlight-action">下单后会自动回复提货流程</span>，但我本人依然基本不看爱发电私信。
+                    <br>
+                    如有任何疑问或需要帮助，请<span class="highlight-action">不要</span>通过爱发电私信，直接添加我的 <a href="#contact"
+                        class="scroll-to-contact">联系方式</a> 沟通。
                 </div>
+            </div>
+        </div>
+        <div class="script-update-prompt-style">
+            <div class="prompt-content">
+                <span class="prompt-icon">💡</span>
+                <span class="prompt-text">“小雅答答答”脚本有更新啦！快去</span>
+                <a href="javascript:void(0)" class="scroll-to-scripts">油猴脚本区</a>
+                <span class="prompt-text">看看吧！</span>
             </div>
         </div>
         <div class="button-container">
