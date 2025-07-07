@@ -204,7 +204,7 @@ class ArticleNetwork {
     }
     async loadData() {
         try {
-            const response = await fetch('/articles/index.json');
+            const response = await fetch(`${API_BASE}/article/list`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -923,7 +923,7 @@ class ArticleNetwork {
     }
     async handleNodeClick(node) {
         if (node.type === 'article') {
-            const response = await fetch('/articles/index.json');
+            const response = await fetch('/article/list');
             const articles = await response.json();
             const article = articles.find(a => a.id === node.id);
             if (article) {
