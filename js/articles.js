@@ -573,7 +573,7 @@ class ArticlesManager {
                 formData.append('site', site);
 
                 try {
-                    const response = await fetch('https://blog.zygame1314.site/comment/upload-image', {
+                    const response = await fetch('https://api.zygame1314.site/comment/upload-image', {
                         method: 'POST',
                         body: formData
                     });
@@ -1168,7 +1168,7 @@ class ArticlesManager {
                 summaryContent.innerHTML = '';
                 let generatedSummary = '';
 
-                const response = await fetch('https://blog.zygame1314.site/article/summarize', {
+                const response = await fetch('https://api.zygame1314.site/article/summarize', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
