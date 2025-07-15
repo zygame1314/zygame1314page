@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.zygame1314.site';
+const API_BASE = 'https://blog.zygame1314.site';
 document.addEventListener('DOMContentLoaded', function () {
     window.loadingComplete.then(() => {
         if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
