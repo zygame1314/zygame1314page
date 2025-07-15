@@ -254,11 +254,11 @@ class SiteStatus {
 
     getSiteName(url) {
         switch (url) {
-            case 'https://api.zygame1314.site':
+            case 'https://blog.zygame1314.site':
                 return '主站';
             case 'https://zygame1314page.pages.dev':
                 return '源站';
-            case 'https://cdn.jsdmirror.com/gh/jquery/jquery/dist/jquery.min.js':
+            case 'https://shell.cdn1.vip':
                 return 'CDN';
             default:
                 return '未知站点';
