@@ -191,7 +191,7 @@ function initGamesFetch() {
             gameItem.classList.add('game-item');
 
             const gameImage = document.createElement('img');
-            gameImage.setAttribute('data-src', `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/library_600x900_schinese.jpg`);
+            gameImage.setAttribute('data-src', `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/library_600x900_schinese.jpg`);
             gameImage.alt = game.name || '未知游戏';
 
             gameImage.dataset.width = 600;
@@ -204,7 +204,7 @@ function initGamesFetch() {
                 const currentSrc = this.getAttribute('data-src');
 
                 if (currentSrc.includes('library_600x900_schinese.jpg')) {
-                    const newSrc = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_600x900.jpg`;
+                    const newSrc = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900.jpg`;
                     this.setAttribute('data-src', newSrc);
 
                     if (window.reloadLazyImage) {

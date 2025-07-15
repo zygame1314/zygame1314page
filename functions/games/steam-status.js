@@ -136,6 +136,18 @@ export async function onRequest(context) {
             player.steam_level = parseInt(levelContainerMatch[1], 10);
         }
         const responseData = { success: true, player: player };
+
+        function replaceCdnUrl(obj) {
+            for (const key in obj) {
+                if (typeof obj[key] === 'string') {
+                    obj[key] = obj[key].replace(/https:\/\/cdn\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com');
+                } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    replaceCdnUrl(obj[key]);
+                }
+            }
+        }
+        replaceCdnUrl(responseData);
+
         response = new Response(JSON.stringify(responseData), {
             headers: {
                 'Content-Type': 'application/json',
