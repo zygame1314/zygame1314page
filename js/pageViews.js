@@ -147,7 +147,7 @@ function restoreOriginalCardContent() {
                 <li>前往 <a href="https://afdian.com/a/zygame1314" target="_blank"
                         rel="noopener noreferrer">爱发电</a> 购买所需服务。</li>
                 <li>购买后，使用你的爱发电<span class="highlight-action">订单号</span>前往<a
-                        href="https://xiaoya-get.zygame1314.top" target="_blank"
+                        href="https://xiaoya-get.zygame1314.site" target="_blank"
                         rel="noopener noreferrer">提货页面</a> 提取激活码。</li>
                 <li>获取激活码后，按照脚本提示激活使用。</li>
             </ol>
