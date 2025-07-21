@@ -140,7 +140,7 @@ export async function onRequest(context) {
             for (const key in obj) {
                 if (typeof obj[key] === 'string') {
                     obj[key] = obj[key].replace(/https:\/\/cdn\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com')
-                                       .replace(/https:\/\/shared\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com');
+                                       .replace(/https:\/\/shared\.cloudflare\.steamstatic\.com/g, 'https://shared.akamai.steamstatic.com');
                 } else if (typeof obj[key] === 'object' && obj[key] !== null) {
                     replaceCdnUrl(obj[key]);
                 }
