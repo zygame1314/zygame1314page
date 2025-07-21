@@ -100,7 +100,7 @@ export async function onRequest(context) {
         if (gameSectionMatch) {
             const gameLogoMatch = html.match(/<img class="game_logo" src="([^"]+)">/);
             if (gameLogoMatch && gameLogoMatch[1]) {
-                player.game_logo = gameLogoMatch[1];
+                player.game_logo = gameLogoMatch[1].replace('capsule_184x69.jpg', 'header.jpg');
             }
             const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
             if (gameStateMatch && gameStateMatch[1]) {
@@ -136,18 +136,17 @@ export async function onRequest(context) {
             player.steam_level = parseInt(levelContainerMatch[1], 10);
         }
         const responseData = { success: true, player: player };
-
         function replaceCdnUrl(obj) {
             for (const key in obj) {
                 if (typeof obj[key] === 'string') {
-                    obj[key] = obj[key].replace(/https:\/\/cdn\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com');
+                    obj[key] = obj[key].replace(/https:\/\/cdn\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com')
+                                       .replace(/https:\/\/shared\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com');
                 } else if (typeof obj[key] === 'object' && obj[key] !== null) {
                     replaceCdnUrl(obj[key]);
                 }
             }
         }
         replaceCdnUrl(responseData);
-
         response = new Response(JSON.stringify(responseData), {
             headers: {
                 'Content-Type': 'application/json',
