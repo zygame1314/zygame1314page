@@ -1,59 +1,38 @@
-const R2_PUBLIC_URL_BASE = 'https://bucket.zygame1314.site';
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
   'Access-Control-Allow-Headers': '*',
 };
 
-export async function onRequestOptions() {
+export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
 export async function onRequestGet(context) {
   const { env } = context;
-  const bucket = env.R2_BUCKET;
-
-  const createJsonResponse = (body, status) => {
-    const headers = new Headers({ 'Content-Type': 'application/json', ...corsHeaders });
-    if (status === 200) { headers.set('Cache-Control', 'public, max-age=60'); }
-    return new Response(JSON.stringify(body), { status, headers });
-  };
-
-  if (!bucket) { return createJsonResponse({ error: 'R2 bucket not bound' }, 500); }
-  if (!R2_PUBLIC_URL_BASE) { return createJsonResponse({ error: 'Server config error: R2 URL base missing' }, 500); }
 
   try {
-    const listed = await bucket.list({});
-    const scriptsData = [];
+    const stmt = env.DB.prepare("SELECT name, version, size, uploaded_at, download_url FROM scripts ORDER BY name ASC");
+    const { results } = await stmt.all();
 
-    for (const obj of listed.objects) {
-      if (!obj.key.endsWith('.user.js')) { continue; }
+    const responseBody = JSON.stringify(results, null, 2);
+    const headers = new Headers({
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Cache-Control': 'public, max-age=300',
+      ...corsHeaders
+    });
 
-      const head = await bucket.head(obj.key);
-      if (!head) continue;
-
-      const publicUrl = `${R2_PUBLIC_URL_BASE.replace(/\/$/, '')}/${obj.key}`;
-
-      const version = head.customMetadata?.scriptVersion || 'N/A';
-
-      scriptsData.push({
-        key: obj.key,
-        name: head.customMetadata?.scriptName || obj.key,
-        version: version,
-        size: head.size,
-        uploaded: head.uploaded.toISOString(),
-        etag: head.httpEtag,
-        downloadUrl: publicUrl
-      });
-    }
-
-    scriptsData.sort((a, b) => a.name.localeCompare(b.name));
-
-    return createJsonResponse(scriptsData, 200);
+    return new Response(responseBody, { status: 200, headers });
 
   } catch (error) {
-    console.error('Error listing R2 bucket:', error);
-    return createJsonResponse({ error: 'Failed to retrieve script list from R2' }, 500);
+    console.error("Failed to fetch scripts from D1:", error);
+
+    const errorBody = JSON.stringify({ error: "Failed to retrieve script list." });
+    const headers = new Headers({
+      'Content-Type': 'application/json;charset=UTF-8',
+      ...corsHeaders
+    });
+    
+    return new Response(errorBody, { status: 500, headers });
   }
 }
