@@ -80,30 +80,32 @@ function renderMilestones(milestones, isLoadMore = false) {
     if (!isLoadMore) {
         timelineContainer.innerHTML = '';
         allMilestones = [];
+        const timelineLine = document.createElement('div');
+        timelineLine.className = 'timeline-line';
+        timelineContainer.appendChild(timelineLine);
+    } else {
+        const existingFuture = timelineContainer.querySelector('.future-milestone');
+        if (existingFuture) existingFuture.remove();
+        const existingLoadMore = timelineContainer.querySelector('.load-more-container');
+        if (existingLoadMore) existingLoadMore.remove();
     }
 
     allMilestones = allMilestones.concat(milestones);
 
-    const existingFuture = timelineContainer.querySelector('.future-milestone');
-    const existingLoadMore = timelineContainer.querySelector('.load-more-container');
-    if (existingFuture) existingFuture.remove();
-    if (existingLoadMore) existingLoadMore.remove();
-
-    milestones.forEach(milestone => {
-        const milestoneHTML = `
-            <div class="milestone">
-                <div class="milestone-dot"></div>
-                <div class="milestone-content">
-                    <span class="date">${milestone.date}</span>
-                    <h3>${milestone.title}</h3>
-                    <p class="milestone-description">
-                        ${milestone.description}
-                    </p>
-                </div>
+    const milestonesHTML = milestones.map(milestone => `
+        <div class="milestone">
+            <div class="milestone-dot"></div>
+            <div class="milestone-content">
+                <span class="date">${milestone.date}</span>
+                <h3>${milestone.title}</h3>
+                <p class="milestone-description">
+                    ${milestone.description}
+                </p>
             </div>
-        `;
-        timelineContainer.innerHTML += milestoneHTML;
-    });
+        </div>
+    `).join('');
+
+    timelineContainer.insertAdjacentHTML('beforeend', milestonesHTML);
 
     const futureMilestoneHTML = `
         <div class="milestone future-milestone">
@@ -114,7 +116,7 @@ function renderMilestones(milestones, isLoadMore = false) {
             </div>
         </div>
     `;
-    timelineContainer.innerHTML += futureMilestoneHTML;
+    timelineContainer.insertAdjacentHTML('beforeend', futureMilestoneHTML);
 
     if (currentPage < totalPages) {
         const loadMoreHTML = `
@@ -124,9 +126,13 @@ function renderMilestones(milestones, isLoadMore = false) {
                 </button>
             </div>
         `;
-        timelineContainer.innerHTML += loadMoreHTML;
-
+        timelineContainer.insertAdjacentHTML('beforeend', loadMoreHTML);
         document.getElementById('load-more-btn').addEventListener('click', loadMoreTimeline);
+    }
+
+    const timelineLine = timelineContainer.querySelector('.timeline-line');
+    if (timelineLine) {
+        timelineLine.style.height = `${timelineContainer.scrollHeight}px`;
     }
 
     addMilestoneInteractions();

@@ -23,21 +23,18 @@
     border: 2px solid var(--background-color);
 }
 
-.milestone-timeline::before {
-    content: '';
-    position: fixed;
-    left: 60px;
-    top: 55%;
-    bottom: auto;
-    height: 600px;
+.timeline-line {
+    position: absolute;
+    left: 26px;
+    top: 0;
     width: 4px;
-    transform: translateY(-50%);
     background: repeating-linear-gradient(to bottom,
             var(--primary-color) 0,
             var(--primary-color) 8px,
             transparent 8px,
             transparent 16px);
     z-index: 0;
+    transition: height 0.3s ease;
 }
 
 .milestone {
@@ -207,4 +204,19 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     animation: shine 2s infinite;
     z-index: -1;
+}
+
+.timeline-loading,
+.timeline-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 16px;
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.milestone-timeline {
+    min-height: 100px;
 }
