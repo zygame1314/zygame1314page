@@ -26,6 +26,11 @@ export async function onRequestPost(context) {
             throw new Error('上传的图片必须是WebP格式');
         }
 
+        const maxSize = 2 * 1024 * 1024;
+        if (file.size > maxSize) {
+            throw new Error('图片文件大小不能超过2MB');
+        }
+
         const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 8);
         const r2ObjectKey = `static/comments/${site}/${timestamp}-${randomString}.webp`;
