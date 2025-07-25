@@ -256,7 +256,7 @@ class SiteStatus {
         switch (url) {
             case 'https://blog.zygame1314.site':
                 return '主站';
-            case 'https://zygame1314page.pages.dev':
+            case 'https://api.zygame1314-666.top':
                 return '源站';
             case 'https://shell.cdn1.vip':
                 return 'CDN';
