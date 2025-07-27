@@ -179,11 +179,10 @@
 
 .steam-game-name {
     width: 100%;
-    font-weight: 500;
+    font-weight: bold;
     text-align: center;
     padding-bottom: 5px;
     border-bottom: 1px dotted rgba(102, 192, 244, 0.3);
-    cursor: default;
     position: relative;
     line-height: 1.4;
 }
@@ -208,8 +207,8 @@
     padding: 4px 8px;
     border-radius: 3px;
     font-size: 0.9em;
-    white-space: normal;
-    max-width: 200px;
+    white-space: nowrap;
+    max-width: 300px;
     text-align: center;
     z-index: 10;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -224,6 +223,12 @@
     border-radius: 3px;
     transition: transform 0.2s ease, border-color 0.2s ease;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.steam-game-thumbnail-link {
+    display: block;
+    line-height: 0;
+    cursor: url('/images/cursors/Rath Link.cur'), auto;
 }
 
 .steam-game-thumbnail:hover {

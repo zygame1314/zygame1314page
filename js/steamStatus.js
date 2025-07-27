@@ -201,13 +201,18 @@ function initSteamStatus() {
                     </div>
                 `;
                 if (player.game_logo) {
+                    const storeUrl = player.appId ? `https://store.steampowered.com/app/${player.appId}` : '#';
+                    const linkStart = player.appId ? `<a href="${storeUrl}" target="_blank" rel="noopener noreferrer" class="steam-game-thumbnail-link">` : '';
+                    const linkEnd = player.appId ? '</a>' : '';
                     gameInfoContent += `
+                        ${linkStart}
                         <img
                             class="steam-game-thumbnail lazy-placeholder"
                             data-src="${player.game_logo}"
                             src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
                             alt="${player.game_name}"
                         />
+                        ${linkEnd}
                     `;
                 }
                 gameInfoElement.innerHTML = gameInfoContent;

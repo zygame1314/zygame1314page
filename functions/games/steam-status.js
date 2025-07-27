@@ -52,6 +52,7 @@ export async function onRequest(context) {
             personastate_css_class: 'offline',
             avatar_border_class: 'offline',
             game_logo: null,
+            appId: null,
             game_state: null,
             game_name: null,
             rich_presence: null,
@@ -101,6 +102,7 @@ export async function onRequest(context) {
             const gameLogoMatch = html.match(/<img class="game_logo" src="[^"]*\/apps\/(\d+)\/[^"]*">/);
             if (gameLogoMatch && gameLogoMatch[1]) {
                 const appId = gameLogoMatch[1];
+                player.appId = appId;
                 const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header_schinese.jpg`;
                 const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`;
 
