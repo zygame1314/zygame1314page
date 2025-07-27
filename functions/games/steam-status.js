@@ -98,7 +98,7 @@ export async function onRequest(context) {
         }
         const gameSectionMatch = html.includes('miniprofile_gamesection');
         if (gameSectionMatch) {
-            const gameLogoMatch = html.match(/<img class="game_logo" src="https:\/\/shared\.akamai\.steamstatic\.com\/store_item_assets\/steam\/apps\/(\d+)\/[^"]+">/);
+            const gameLogoMatch = html.match(/<img class="game_logo" src="[^"]*\/apps\/(\d+)\/[^"]*">/);
             if (gameLogoMatch && gameLogoMatch[1]) {
                 const appId = gameLogoMatch[1];
                 const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header_schinese.jpg`;
