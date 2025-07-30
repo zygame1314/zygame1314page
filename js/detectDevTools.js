@@ -1,30 +1,35 @@
-let devToolsOpen = false;
-let smallScreenWarningShown = false;
-
-function detectDevTools() {
-    const threshold = 160;
+(function() {
+    let devToolsOpen = false;
+    let smallScreenWarningShown = false;
+    const devToolsThreshold = 160;
     const minScreenWidth = 360;
 
-    if (
-        window.outerWidth - window.innerWidth > threshold ||
-        window.outerHeight - window.innerHeight > threshold
-    ) {
-        if (!devToolsOpen) {
+    function checkStatus() {
+        const isDevToolsCurrentlyOpen = (window.outerWidth - window.innerWidth > devToolsThreshold) ||
+                                        (window.outerHeight - window.innerHeight > devToolsThreshold);
+
+        if (isDevToolsCurrentlyOpen && !devToolsOpen) {
             devToolsOpen = true;
-            showNotification('你选择了红色药丸 💊<br>欢迎进入代码的真实世界！🌐<br>不要迷失在`console.log`里...', 3, 'info');
+            if (typeof showNotification === 'function') {
+                showNotification('你选择了红色药丸 💊<br>欢迎进入代码的真实世界！🌐<br>不要迷失在`console.log`里...', 3, 'info');
+            }
+        } else if (!isDevToolsCurrentlyOpen) {
+            devToolsOpen = false;
         }
-    } else {
-        devToolsOpen = false;
-    }
 
-    if (window.innerWidth < minScreenWidth) {
-        if (!smallScreenWarningShown) {
+        const isScreenSmall = window.innerWidth < minScreenWidth;
+
+        if (isScreenSmall && !smallScreenWarningShown) {
             smallScreenWarningShown = true;
-            showNotification('你这能看清吗？🔍<br>当前设备屏幕太小，可能影响浏览体验。', 3, 'warning');
+            if (typeof showNotification === 'function') {
+                showNotification('你这能看清吗？🔍<br>当前设备屏幕太小，可能影响浏览体验。', 3, 'warning');
+            }
+        } else if (!isScreenSmall) {
+            smallScreenWarningShown = false;
         }
-    } else {
-        smallScreenWarningShown = false;
     }
-}
 
-setInterval(detectDevTools, 1000);
+    window.addEventListener('resize', checkStatus);
+
+    checkStatus();
+})();
