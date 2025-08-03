@@ -55,7 +55,7 @@
                 <h4><i class="fas fa-sitemap"></i> 我的博客架构</h4>
                 <ul>
                     <li><strong>应用部署：</strong>Cloudflare Pages 负责托管我的博客应用（一个半静态博客，部分内容由 Cloudflare Functions 动态生成）。我为这个
-                        Pages 项目绑定了一个自定义域名：<code>api.zygame1314-666.top</code>，这个域名主要作为后端 API 和 CDN 的源站。</li>
+                        Pages 项目绑定了一个自定义域名：<code>api.zygame1314.site</code>，这个域名主要作为后端 API 和 CDN 的源站。</li>
                     <li><strong>用户访问域名：</strong>访客通过 <code>blog.zygame1314.site</code> 访问博客。</li>
                     <li><strong>CDN 加速：</strong><code>blog.zygame1314.site</code> 使用又拍云 CDN 进行加速，特别是优化国内访问体验。</li>
                     <li><strong>回源逻辑（最初的痛点）：</strong>起初，在又拍云 CDN 的配置里，我将回源地址设置为了 Cloudflare Pages 为项目提供的默认域名，即 <span
@@ -71,16 +71,16 @@
             <p>
                 <strong>调整措施与深层解读：</strong> 我的调整是将又拍云 CDN 的回源地址从之前的 <span
                     class="secure-code">https://zygame1314page.pages.dev/</span> <strong>明确更改为</strong>我在 Cloudflare
-                Pages 上为该项目设置的自定义域名 <code>api.zygame1314-666.top</code>。这一招果然奏效！
+                Pages 上为该项目设置的自定义域名 <code>api.zygame1314.site</code>。这一招果然奏效！
             </p>
             <p>
                 为什么这样调整就有效了呢？我分析有两层原因：
             </p>
             <ul>
-                <li><strong>自定义域名的“正统性”：</strong> <code>api.zygame1314-666.top</code> 作为 Cloudflare Pages
+                <li><strong>自定义域名的“正统性”：</strong> <code>api.zygame1314.site</code> 作为 Cloudflare Pages
                     项目的自定义域名，它本身就是该项目的“官方”访问地址之一，Cloudflare 不会再将其重定向到 <code>.pages.dev</code>。这是技术层面的直接原因。</li>
                 <li><strong>搜索引擎的“亲缘关系”判断（我的猜测）：</strong> 更为微妙的一点可能是，当必应爬虫通过 <code>blog.zygame1314.site</code>
-                    访问，感知到内容实际来源于 <code>api.zygame1314-666.top</code>
+                    访问，感知到内容实际来源于 <code>api.zygame1314.site</code>
                     时，由于这两个域名（<code>blog.<strong>zygame1314.site</strong></code> 和
                     <code>api.<strong>zygame1314.site</strong></code>）都属于同一个主域名
                     <code>zygame1314.site</code>，必应可能认为这是一种“内部的”、“合理的”资源指向，而不是一个跳往通用第三方平台域名（如
@@ -201,7 +201,7 @@ export async function onRequest(context) {
         
         // 使用 request.url.origin 来确保我们总是基于当前请求的域名构造 URL
         // 例如，如果通过 blog.zygame1314.site 访问，origin 就是 https://blog.zygame1314.site
-        // 如果是通过 api.zygame1314-666.top 访问（例如CDN回源），origin 就是 https://api.zygame1314-666.top
+        // 如果是通过 api.zygame1314.site 访问（例如CDN回源），origin 就是 https://api.zygame1314.site
         // env.ASSETS.fetch 需要一个完整的 URL 或一个 Request 对象。
         const assetFullUrl = new URL(articleAssetRelativePath, url.origin).toString();
         console.log(`[中间件信息] 构建的静态资源完整URL: ${assetFullUrl}`);
