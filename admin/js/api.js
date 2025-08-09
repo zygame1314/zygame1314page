@@ -177,7 +177,7 @@ class API {
 
     importantNotices = {
         getList: async () => {
-            return this.get('/getdata/important-notice');
+            return this.get('/getdata/important-notice?admin=true');
         },
 
         update: async (notice) => {

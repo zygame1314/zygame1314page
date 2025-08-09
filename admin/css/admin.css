@@ -1185,8 +1185,8 @@ body {
 }
 
 .status-value.offline {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: var(--danger-color);
+    background-color: rgba(100, 116, 139, 0.1);
+    color: var(--text-muted);
 }
 
 .data-list {
@@ -1272,7 +1272,7 @@ body {
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: 0.5rem;
+    left: 0.45rem;
     top: 0;
     bottom: -2rem;
     width: 2px;
@@ -1360,8 +1360,54 @@ body {
 }
 
 .notice-actions {
-    margin-top: 1rem;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.75rem;
     justify-content: flex-end;
+}
+
+.form-group-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-group-toggle label[for] {
+    margin-bottom: 0;
+}
+
+.form-group-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.form-group-toggle .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    background-color: #ccc;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group-toggle .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+    top: 3px;
+    left: 4px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.form-group-toggle input:checked + .toggle-switch {
+    background-color: var(--success-color);
+}
+
+.form-group-toggle input:checked + .toggle-switch::after {
+    transform: translateX(21px);
 }

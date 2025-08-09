@@ -21,7 +21,7 @@ export async function requireAuth(context) {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return new Response(JSON.stringify({ error: '未授权：缺少凭证' }), { status: 401 });
     }
-    const token = authHeader.split(' ');
+    const token = authHeader.split(' ')[1];
     try {
         const JWT_SECRET = env.JWT_SECRET;
         if (!JWT_SECRET) {

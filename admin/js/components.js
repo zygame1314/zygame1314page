@@ -381,7 +381,7 @@ class Components {
 
             fields.forEach(field => {
                 const formGroup = Utils.domUtils.createElement('div', {
-                    className: 'form-group'
+                    className: `form-group ${field.className || ''}`.trim()
                 });
 
                 if (field.label) {
@@ -430,6 +430,14 @@ class Components {
                         });
                         if (field.accept) input.accept = field.accept;
                         if (field.multiple) input.multiple = true;
+                        break;
+                    case 'checkbox':
+                        input = Utils.domUtils.createElement('input', {
+                            type: 'checkbox',
+                            name: field.name,
+                            id: field.name,
+                        });
+                        input.checked = field.checked || false;
                         break;
                     default:
                         input = Utils.domUtils.createElement('input', {

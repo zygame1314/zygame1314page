@@ -3,65 +3,53 @@ class AdminSystem {
         this.currentSection = 'dashboard';
         this.cache = new Map();
         this.searchHandlers = new Map();
-        
         this.donationsCache = [];
         this.musicCache = [];
         this.projectsCache = [];
         this.noticesCache = [];
         this.timelineCache = [];
-        
         this.init();
     }
-
     async init() {
         await this.checkAuth();
         this.setupEventListeners();
+        this.removeDuplicateNavItems();
         this.setupNavigation();
         this.setupModals();
         this.loadDashboard();
     }
-
     async checkAuth() {
         const token = localStorage.getItem('authToken');
         if (!token) {
             window.location.href = 'login.html';
             return;
         }
-
         try {
             const response = await fetch('https://api.zygame1314.site/auth', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-
             if (!response.ok) {
                 throw new Error('Token validation failed');
             }
-
             const result = await response.json();
             if (!result.success) {
                 throw new Error(result.error || 'Invalid token');
             }
-            
             console.log('Authentication successful for user:', result.user);
-
         } catch (error) {
             localStorage.removeItem('authToken');
             window.location.href = 'login.html';
         }
     }
-
     setupEventListeners() {
         const sidebarToggle = document.getElementById('sidebarToggle');
         const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
-        
         sidebarToggle?.addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('collapsed');
         });
-
         mobileSidebarToggle?.addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('show');
         });
-
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -71,7 +59,6 @@ class AdminSystem {
                 }
             });
         });
-
         document.querySelectorAll('.view-all-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -81,7 +68,6 @@ class AdminSystem {
                 }
             });
         });
-
         document.querySelectorAll('.quick-action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const title = btn.getAttribute('title');
@@ -92,7 +78,6 @@ class AdminSystem {
                 }
             });
         });
-
         document.getElementById('logoutBtn')?.addEventListener('click', () => {
             Components.modal.confirm(
                 '确认退出',
@@ -104,18 +89,29 @@ class AdminSystem {
             );
         });
     }
-
+    removeDuplicateNavItems() {
+        const navLinks = document.querySelectorAll('.sidebar .nav-link');
+        const seenSections = new Set();
+        navLinks.forEach(link => {
+            const section = link.dataset.section;
+            if (section) {
+                if (seenSections.has(section)) {
+                    link.parentElement.remove();
+                } else {
+                    seenSections.add(section);
+                }
+            }
+        });
+    }
     setupNavigation() {
         this.updateBreadcrumb('仪表盘');
     }
-
     setupModals() {
         document.querySelectorAll('.modal-close').forEach(closeBtn => {
             closeBtn.addEventListener('click', () => {
                 Components.modal.hide();
             });
         });
-
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
@@ -124,17 +120,14 @@ class AdminSystem {
             });
         });
     }
-
     navigateToSection(section) {
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
         });
         document.querySelector(`[data-section="${section}"]`)?.parentElement.classList.add('active');
-
         document.querySelectorAll('.content-section').forEach(sec => {
             sec.classList.remove('active');
         });
-
         const targetSection = document.getElementById(`${section}-section`);
         if (targetSection) {
             targetSection.classList.add('active');
@@ -143,7 +136,6 @@ class AdminSystem {
             this.loadSectionData(section);
         }
     }
-
     getSectionTitle(section) {
         const titles = {
             dashboard: '仪表盘',
@@ -158,14 +150,12 @@ class AdminSystem {
         };
         return titles[section] || section;
     }
-
     updateBreadcrumb(title) {
         const breadcrumb = document.querySelector('.breadcrumb-item');
         if (breadcrumb) {
             breadcrumb.textContent = title;
         }
     }
-
     async loadSectionData(section) {
         switch (section) {
             case 'dashboard':
@@ -197,49 +187,40 @@ class AdminSystem {
                 break;
         }
     }
-
     refreshCurrentSection() {
         this.cache.clear();
         this.loadSectionData(this.currentSection);
         Components.notification.success('数据已刷新');
     }
-
     async loadDashboard() {
         try {
             const stats = await api.getStatistics();
             this.updateStatistics(stats);
-
             const donations = await api.donations.getList(1, 5);
             this.updateRecentDonations(donations.data || []);
-
         } catch (error) {
             Components.notification.error('加载仪表盘数据失败');
             console.error('Dashboard load error:', error);
         }
     }
-
     updateStatistics(stats) {
         document.getElementById('total-donations').textContent = stats.totalDonations;
         document.getElementById('total-songs').textContent = stats.totalSongs;
         document.getElementById('total-projects').textContent = stats.totalProjects;
         document.getElementById('total-notices').textContent = stats.totalNotices;
     }
-
     updateRecentDonations(donations) {
         const container = document.getElementById('recent-donations');
         if (!container) return;
-
         if (donations.length === 0) {
             container.innerHTML = '<div class="empty-state">暂无捐献记录</div>';
             return;
         }
-
         container.innerHTML = '';
         donations.forEach(donation => {
             const item = Utils.domUtils.createElement('div', {
                 className: 'data-item'
             });
-
             item.innerHTML = `
                 <div class="data-item-info">
                     <div class="data-item-title">${donation.name || '匿名'}</div>
@@ -247,20 +228,15 @@ class AdminSystem {
                 </div>
                 <div class="data-item-value">¥${Utils.formatMoney(donation.amount)}</div>
             `;
-
             container.appendChild(item);
         });
     }
-
     async loadDonations() {
         const currentPage = parseInt(Utils.getUrlParam('donation_page')) || 1;
-        
         try {
             Components.loading.show('donationsTableBody', '加载捐献数据...');
-            
             const data = await api.donations.getList(currentPage, 10);
             this.renderDonationsTable(data.data || []);
-            
             if (data.pagination) {
                 Components.pagination.create(
                     'donationsPagination',
@@ -272,31 +248,28 @@ class AdminSystem {
                     }
                 );
             }
-
             this.setupDonationActions();
-
         } catch (error) {
             Components.notification.error('加载捐献数据失败');
             console.error('Donations load error:', error);
         }
     }
-
     renderDonationsTable(donations) {
         const columns = [
             { key: 'name', title: '捐献者' },
-            { 
-                key: 'amount', 
+            {
+                key: 'amount',
                 title: '金额',
                 render: (value) => `¥${Utils.formatMoney(value)}`
             },
             { key: 'platform', title: '平台' },
-            { 
-                key: 'date', 
+            {
+                key: 'date',
                 title: '日期',
                 render: (value) => Utils.formatDate(value, 'YYYY-MM-DD HH:mm')
             },
-            { 
-                key: 'message', 
+            {
+                key: 'message',
                 title: '留言',
                 render: (value) => Utils.truncateText(value || '无', 50)
             },
@@ -315,19 +288,41 @@ class AdminSystem {
                 `
             }
         ];
-
         this.cache.set('donations-current', donations);
-
-        Components.table.create('donationsTableBody', columns, donations, {
-            emptyText: '暂无捐献记录'
-        });
+        const tbody = document.getElementById('donationsTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        if (donations.length === 0) {
+            const emptyRow = Utils.domUtils.createElement('tr');
+            const emptyCell = Utils.domUtils.createElement('td', {
+                textContent: '暂无捐献记录',
+                colspan: columns.length.toString()
+            });
+            emptyCell.style.textAlign = 'center';
+            emptyCell.style.padding = '2rem';
+            emptyCell.style.color = 'var(--text-muted)';
+            emptyRow.appendChild(emptyCell);
+            tbody.appendChild(emptyRow);
+        } else {
+            donations.forEach(row => {
+                const tr = Utils.domUtils.createElement('tr');
+                columns.forEach(column => {
+                    const td = Utils.domUtils.createElement('td');
+                    if (column.render) {
+                        td.innerHTML = column.render(row[column.key], row);
+                    } else {
+                        td.textContent = row[column.key] || '';
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
     }
-
     setupDonationActions() {
         document.getElementById('addDonationBtn')?.addEventListener('click', () => {
             this.showDonationForm();
         });
-
         const searchInput = document.getElementById('donationSearch');
         if (searchInput && !this.searchHandlers.has('donation')) {
             const searchHandler = Utils.debounce(async (e) => {
@@ -341,13 +336,11 @@ class AdminSystem {
             searchInput.addEventListener('input', searchHandler);
             this.searchHandlers.set('donation', searchHandler);
         }
-
         const platformFilter = document.getElementById('platformFilter');
         platformFilter?.addEventListener('change', async (e) => {
             const platform = e.target.value;
             await this.filterDonationsByPlatform(platform);
         });
-
         document.querySelectorAll('.action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -360,11 +353,9 @@ class AdminSystem {
             });
         });
     }
-
     showDonationForm(donation = null) {
         const isEdit = !!donation;
         const title = isEdit ? '编辑捐献记录' : '添加捐献记录';
-
         const fields = [
             {
                 name: 'name',
@@ -411,9 +402,7 @@ class AdminSystem {
                 rows: 3
             }
         ];
-
         const form = Components.formBuilder.create(fields);
-
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '添加',
             onSave: async () => {
@@ -424,7 +413,6 @@ class AdminSystem {
                     platform: [Utils.validation.rules.required],
                     date: [Utils.validation.rules.required]
                 };
-
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
@@ -446,7 +434,6 @@ class AdminSystem {
             }
         });
     }
-
     editDonation(id) {
         const cachedData = this.cache.get('donations-current');
         if (cachedData) {
@@ -458,7 +445,6 @@ class AdminSystem {
         }
         Components.notification.warning('未找到要编辑的记录');
     }
-
     deleteDonation(id) {
         Components.modal.confirm(
             '确认删除',
@@ -474,7 +460,6 @@ class AdminSystem {
             }
         );
     }
-
     async searchDonations(query) {
         try {
             const results = await api.search(query, 'donations');
@@ -484,31 +469,25 @@ class AdminSystem {
             console.error('Search error:', error);
         }
     }
-
     async filterDonationsByPlatform(platform) {
         Components.notification.info('筛选功能开发中...');
     }
-
     async loadMusic() {
         try {
             Components.loading.show('musicGrid', '加载音乐数据...');
-            
             const data = await api.music.getPlaylist();
             const songs = data.songs || [];
             this.musicCache = songs;
             this.renderMusicGrid(songs);
             this.setupMusicActions();
-
         } catch (error) {
             Components.notification.error('加载音乐数据失败');
             console.error('Music load error:', error);
         }
     }
-
     renderMusicGrid(songs) {
         const container = document.getElementById('musicGrid');
         if (!container) return;
-
         if (songs.length === 0) {
             Components.emptyState.show('musicGrid', {
                 icon: 'fas fa-music',
@@ -521,13 +500,11 @@ class AdminSystem {
             });
             return;
         }
-
         container.innerHTML = '';
         songs.forEach(song => {
             const musicCard = Utils.domUtils.createElement('div', {
                 className: 'music-card'
             });
-
             musicCard.innerHTML = `
                 <div class="music-cover" style="background-image: url('${song.cover || '/images/default-music.jpg'}')">
                     <div class="music-overlay">
@@ -550,16 +527,13 @@ class AdminSystem {
                     </div>
                 </div>
             `;
-
             container.appendChild(musicCard);
         });
     }
-
     setupMusicActions() {
         document.getElementById('addMusicBtn')?.addEventListener('click', () => {
             this.showMusicForm();
         });
-
         const searchInput = document.getElementById('musicSearch');
         if (searchInput && !this.searchHandlers.has('music')) {
             const searchHandler = Utils.debounce(async (e) => {
@@ -573,19 +547,17 @@ class AdminSystem {
             searchInput.addEventListener('input', searchHandler);
             this.searchHandlers.set('music', searchHandler);
         }
-
         document.querySelectorAll('.edit-music').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const songId = btn.dataset.id;
-                const song = this.musicCache?.find(s => s.id == songId);
-                if (song) {
+                const songData = btn.dataset.song;
+                if (songData) {
+                    const song = JSON.parse(songData);
                     this.showMusicForm(song);
                 } else {
                     Components.notification.error('找不到音乐数据');
                 }
             });
         });
-
         document.querySelectorAll('.delete-music').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.dataset.id;
@@ -593,11 +565,9 @@ class AdminSystem {
             });
         });
     }
-
     showMusicForm(song = null) {
         const isEdit = !!song;
         const title = isEdit ? '编辑音乐' : '添加音乐';
-
         const fields = [
             {
                 name: 'title',
@@ -653,9 +623,7 @@ class AdminSystem {
                 placeholder: '可选的表情符号'
             }
         ];
-
         const form = Components.formBuilder.create(fields);
-
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '添加',
             onSave: async () => {
@@ -665,7 +633,6 @@ class AdminSystem {
                     artist: [Utils.validation.rules.required],
                     path: [Utils.validation.rules.required]
                 };
-
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
@@ -687,7 +654,6 @@ class AdminSystem {
             }
         });
     }
-
     deleteMusic(id) {
         Components.modal.confirm(
             '确认删除',
@@ -703,7 +669,6 @@ class AdminSystem {
             }
         );
     }
-
     async searchMusic(query) {
         try {
             const results = await api.search(query, 'music');
@@ -713,27 +678,22 @@ class AdminSystem {
             console.error('Search error:', error);
         }
     }
-
     async loadProjects() {
         try {
             Components.loading.show('projectsGrid', '加载项目数据...');
-            
             const data = await api.projects.getList(1, 50);
             const projects = data.projects || [];
             this.projectsCache = projects;
             this.renderProjectsGrid(projects);
             this.setupProjectActions();
-
         } catch (error) {
             Components.notification.error('加载项目数据失败');
             console.error('Projects load error:', error);
         }
     }
-
     renderProjectsGrid(projects) {
         const container = document.getElementById('projectsGrid');
         if (!container) return;
-
         if (projects.length === 0) {
             Components.emptyState.show('projectsGrid', {
                 icon: 'fas fa-code',
@@ -746,13 +706,11 @@ class AdminSystem {
             });
             return;
         }
-
         container.innerHTML = '';
         projects.forEach(project => {
             const projectCard = Utils.domUtils.createElement('div', {
                 className: 'project-card'
             });
-
             projectCard.innerHTML = `
                 <div class="project-image" style="background-image: url('${project.imageUrl || '/images/default-project.jpg'}')"></div>
                 <div class="project-content">
@@ -772,28 +730,24 @@ class AdminSystem {
                     </div>
                 </div>
             `;
-
             container.appendChild(projectCard);
         });
     }
-
     setupProjectActions() {
         document.getElementById('addProjectBtn')?.addEventListener('click', () => {
             this.showProjectForm();
         });
-
         document.querySelectorAll('.edit-project').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const projectId = btn.dataset.id;
-                const project = this.projectsCache?.find(p => p.id == projectId);
-                if (project) {
+                const projectData = btn.dataset.project;
+                if (projectData) {
+                    const project = JSON.parse(projectData);
                     this.showProjectForm(project);
                 } else {
                     Components.notification.error('找不到项目数据');
                 }
             });
         });
-
         document.querySelectorAll('.delete-project').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.dataset.id;
@@ -801,11 +755,9 @@ class AdminSystem {
             });
         });
     }
-
     showProjectForm(project = null) {
         const isEdit = !!project;
         const title = isEdit ? '编辑项目' : '添加项目';
-
         const fields = [
             {
                 name: 'id',
@@ -859,9 +811,7 @@ class AdminSystem {
                 ]
             }
         ];
-
         const form = Components.formBuilder.create(fields);
-
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '添加',
             onSave: async () => {
@@ -871,7 +821,6 @@ class AdminSystem {
                     title: [Utils.validation.rules.required],
                     description: [Utils.validation.rules.required]
                 };
-
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
@@ -886,7 +835,6 @@ class AdminSystem {
             }
         });
     }
-
     deleteProject(id) {
         Components.modal.confirm(
             '确认删除',
@@ -902,27 +850,22 @@ class AdminSystem {
             }
         );
     }
-
     async loadNotices() {
         try {
             Components.loading.show('noticesList', '加载公告数据...');
-            
             const data = await api.notices.getList();
             const notices = data.notices || [];
             this.noticesCache = notices;
             this.renderNoticesList(notices);
             this.setupNoticeActions();
-
         } catch (error) {
             Components.notification.error('加载公告数据失败');
             console.error('Notices load error:', error);
         }
     }
-
     renderNoticesList(notices) {
         const container = document.getElementById('noticesList');
         if (!container) return;
-
         if (notices.length === 0) {
             Components.emptyState.show('noticesList', {
                 icon: 'fas fa-bullhorn',
@@ -935,13 +878,11 @@ class AdminSystem {
             });
             return;
         }
-
         container.innerHTML = '';
         notices.forEach((notice, index) => {
             const noticeItem = Utils.domUtils.createElement('div', {
                 className: 'notice-item'
             });
-
             noticeItem.innerHTML = `
                 <div class="notice-header">
                     <i class="notice-icon ${notice.icon || 'fas fa-info-circle'}"></i>
@@ -956,31 +897,43 @@ class AdminSystem {
                     </div>
                 </div>
                 <div class="notice-content">
-                    ${Array.isArray(notice.content) ? notice.content.join('<br>') : notice.content}
+                    ${
+                        Array.isArray(notice.content)
+                        ? notice.content.map(item => {
+                            const description = item.description ? `<p class="notice-description">${item.description}</p>` : '';
+                            const highlightClass = item.highlight ? 'highlight' : '';
+                            return `
+                                <div class="notice-detail-item ${item.type || 'info'} ${highlightClass}">
+                                    ${item.icon ? `<i class="notice-detail-icon ${item.icon}"></i>` : ''}
+                                    <div class="notice-detail-text">
+                                        <strong>${item.text || ''}</strong>
+                                        ${description}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')
+                        : notice.content
+                    }
                 </div>
             `;
-
             container.appendChild(noticeItem);
         });
     }
-
     setupNoticeActions() {
         document.getElementById('addNoticeBtn')?.addEventListener('click', () => {
             this.showNoticeForm();
         });
-
         document.querySelectorAll('.edit-notice').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const noticeId = btn.dataset.id;
-                const notice = this.noticesCache?.find(n => n.id == noticeId);
-                if (notice) {
+                const noticeData = btn.dataset.notice;
+                if (noticeData) {
+                    const notice = JSON.parse(noticeData);
                     this.showNoticeForm(notice);
                 } else {
                     Components.notification.error('找不到公告数据');
                 }
             });
         });
-
         document.querySelectorAll('.delete-notice').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const index = btn.dataset.index;
@@ -988,11 +941,9 @@ class AdminSystem {
             });
         });
     }
-
     showNoticeForm(notice = null) {
         const isEdit = !!notice;
         const title = isEdit ? '编辑公告' : '添加公告';
-
         const fields = [
             {
                 name: 'title',
@@ -1015,15 +966,13 @@ class AdminSystem {
                 label: '公告内容',
                 type: 'textarea',
                 required: true,
-                value: Array.isArray(notice?.content) ? notice.content.join('\n') : (notice?.content || ''),
+                value: '',
                 placeholder: '请输入公告内容，每行一段',
                 rows: 5,
                 help: '每行内容将作为一段显示'
             }
         ];
-
         const form = Components.formBuilder.create(fields);
-
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '添加',
             onSave: async () => {
@@ -1032,18 +981,21 @@ class AdminSystem {
                     title: [Utils.validation.rules.required],
                     content: [Utils.validation.rules.required]
                 };
-
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
-                        const contentArray = result.data.content.split('\n').filter(line => line.trim());
-                        
+                        let contentData;
+                        try {
+                            contentData = JSON.parse(result.data.content);
+                        } catch (e) {
+                            Components.notification.error('公告内容不是有效的JSON格式。');
+                            return;
+                        }
                         const noticeData = {
                             title: result.data.title,
                             icon: result.data.icon,
-                            content: contentArray
+                            content: contentData
                         };
-
                         if (isEdit) {
                             await api.notices.update({
                                 id: notice.id,
@@ -1061,8 +1013,13 @@ class AdminSystem {
                 }
             }
         });
+        if (isEdit && notice?.content) {
+            const contentTextarea = document.querySelector('#modal textarea[name="content"]');
+            if (contentTextarea) {
+                contentTextarea.value = JSON.stringify(notice.content, null, 2);
+            }
+        }
     }
-
     deleteNotice(index) {
         Components.modal.confirm(
             '确认删除',
@@ -1076,27 +1033,22 @@ class AdminSystem {
             }
         );
     }
-
     async loadTimeline() {
         try {
             Components.loading.show('timelineContainer', '加载时间线数据...');
-            
             const data = await api.timeline.getList(1, 50);
             const milestones = data.milestones || [];
             this.timelineCache = milestones;
             this.renderTimeline(milestones);
             this.setupTimelineActions();
-
         } catch (error) {
             Components.notification.error('加载时间线数据失败');
             console.error('Timeline load error:', error);
         }
     }
-
     renderTimeline(milestones) {
         const container = document.getElementById('timelineContainer');
         if (!container) return;
-
         if (milestones.length === 0) {
             Components.emptyState.show('timelineContainer', {
                 icon: 'fas fa-history',
@@ -1109,13 +1061,11 @@ class AdminSystem {
             });
             return;
         }
-
         container.innerHTML = '';
         milestones.forEach((milestone, index) => {
             const timelineItem = Utils.domUtils.createElement('div', {
                 className: 'timeline-item'
             });
-
             timelineItem.innerHTML = `
                 <div class="timeline-content">
                     <div class="timeline-date">${Utils.formatDate(milestone.date)}</div>
@@ -1131,28 +1081,24 @@ class AdminSystem {
                     </div>
                 </div>
             `;
-
             container.appendChild(timelineItem);
         });
     }
-
     setupTimelineActions() {
         document.getElementById('addTimelineBtn')?.addEventListener('click', () => {
             this.showTimelineForm();
         });
-
         document.querySelectorAll('.edit-timeline').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const milestoneId = btn.dataset.id;
-                const milestone = this.timelineCache?.find(m => m.id == milestoneId);
-                if (milestone) {
+                const milestoneData = btn.dataset.milestone;
+                if (milestoneData) {
+                    const milestone = JSON.parse(milestoneData);
                     this.showTimelineForm(milestone);
                 } else {
                     Components.notification.error('找不到时间节点数据');
                 }
             });
         });
-
         document.querySelectorAll('.delete-timeline').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.dataset.id;
@@ -1160,11 +1106,9 @@ class AdminSystem {
             });
         });
     }
-
     showTimelineForm(milestone = null) {
         const isEdit = !!milestone;
         const title = isEdit ? '编辑时间节点' : '添加时间节点';
-
         const fields = [
             {
                 name: 'date',
@@ -1187,14 +1131,12 @@ class AdminSystem {
                 label: '描述',
                 type: 'textarea',
                 required: true,
-                value: milestone?.description || '',
+                value: '',
                 placeholder: '请输入详细描述',
                 rows: 3
             }
         ];
-
         const form = Components.formBuilder.create(fields);
-
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '添加',
             onSave: async () => {
@@ -1204,7 +1146,6 @@ class AdminSystem {
                     title: [Utils.validation.rules.required],
                     description: [Utils.validation.rules.required]
                 };
-
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
@@ -1216,7 +1157,6 @@ class AdminSystem {
                         } else {
                             await api.timeline.add(result.data);
                         }
-                        
                         Components.modal.hide();
                         Components.notification.success(isEdit ? '时间节点已更新' : '时间节点已添加');
                         await this.loadTimeline();
@@ -1226,8 +1166,13 @@ class AdminSystem {
                 }
             }
         });
+        if (isEdit && milestone?.description) {
+            const descriptionTextarea = document.querySelector('#modal textarea[name="description"]');
+            if (descriptionTextarea) {
+                descriptionTextarea.value = milestone.description;
+            }
+        }
     }
-
     deleteTimeline(id) {
         Components.modal.confirm(
             '确认删除',
@@ -1243,15 +1188,12 @@ class AdminSystem {
             }
         );
     }
-
     async loadArticles() {
         const currentPage = parseInt(Utils.getUrlParam('article_page')) || 1;
         try {
             Components.loading.show('articlesGrid', '加载文章数据...');
-            
             const data = await api.articles.getList(currentPage, 10);
             this.renderArticlesGrid(data.data || []);
-            
             if (data.pagination) {
                 Components.pagination.create(
                     'articlesPagination',
@@ -1263,19 +1205,15 @@ class AdminSystem {
                     }
                 );
             }
-
             this.setupArticleActions();
-
         } catch (error) {
             Components.notification.error('加载文章数据失败');
             console.error('Articles load error:', error);
         }
     }
-
     renderArticlesGrid(articles) {
         const container = document.getElementById('articlesGrid');
         if (!container) return;
-
         if (articles.length === 0) {
             Components.emptyState.show('articlesGrid', {
                 icon: 'fas fa-book',
@@ -1288,13 +1226,11 @@ class AdminSystem {
             });
             return;
         }
-
         container.innerHTML = '';
         articles.forEach(article => {
             const articleCard = Utils.domUtils.createElement('div', {
                 className: 'project-card'
             });
-
             articleCard.innerHTML = `
                 <div class="project-content">
                     <div class="project-title">${article.title}</div>
@@ -1314,11 +1250,9 @@ class AdminSystem {
                     </div>
                 </div>
             `;
-
             container.appendChild(articleCard);
         });
     }
-    
         async loadImportantNotices() {
             try {
                 Components.loading.show('importantNoticesList', '加载重要公告...');
@@ -1329,11 +1263,9 @@ class AdminSystem {
                 Components.notification.error('加载重要公告失败: ' + error.message);
             }
         }
-    
         renderImportantNotices(notices) {
             const container = document.getElementById('importantNoticesList');
             if (!container) return;
-    
             if (notices.length === 0) {
                 Components.emptyState.show('importantNoticesList', {
                     icon: 'fas fa-exclamation-triangle',
@@ -1346,13 +1278,11 @@ class AdminSystem {
                 });
                 return;
             }
-    
             container.innerHTML = '';
             notices.forEach(notice => {
                 const noticeEl = Utils.domUtils.createElement('div', { className: 'notice-item' });
-                const statusClass = notice.active ? 'online' : '';
+                const statusClass = notice.active ? 'online' : 'offline';
                 const statusText = notice.active ? '生效中' : '已禁用';
-    
                 noticeEl.innerHTML = `
                     <div class="notice-header">
                         <div class="notice-title">${notice.title}</div>
@@ -1369,12 +1299,10 @@ class AdminSystem {
                 container.appendChild(noticeEl);
             });
         }
-    
         setupImportantNoticeActions() {
             document.getElementById('addImportantNoticeBtn')?.addEventListener('click', () => {
                 this.showImportantNoticeForm();
             });
-    
             document.querySelectorAll('.edit-important-notice').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.currentTarget.dataset.id;
@@ -1388,19 +1316,16 @@ class AdminSystem {
                 });
             });
         }
-    
         showImportantNoticeForm(notice = null) {
             const isEdit = !!notice;
             const title = isEdit ? '编辑重要公告' : '添加重要公告';
-    
             const fields = [
                 { name: 'id', label: 'ID', type: 'text', value: notice?.id || `notice_${Date.now()}`, required: true, help: '唯一标识符，创建后不建议修改' },
-                { name: 'active', label: '是否激活', type: 'checkbox', checked: notice ? notice.active : true },
+                { name: 'active', label: '是否激活', type: 'checkbox', checked: notice ? notice.active : true, className: 'form-group-toggle' },
                 { name: 'title', label: '标题', type: 'text', value: notice?.title || '', required: true },
-                { name: 'content', label: '内容', type: 'textarea', value: notice?.content || '', required: true, rows: 4 },
+                { name: 'content', label: '内容', type: 'textarea', value: '', required: true, rows: 4 },
                 { name: 'expiryDate', label: '过期时间', type: 'datetime-local', value: notice?.expiryDate ? Utils.formatDate(notice.expiryDate, 'YYYY-MM-DD HH:mm').replace(' ', 'T') : '' },
             ];
-    
             const form = Components.formBuilder.create(fields);
             Components.modal.show(title, form.outerHTML, {
                 saveText: isEdit ? '更新' : '添加',
@@ -1409,7 +1334,9 @@ class AdminSystem {
                     const result = Components.formBuilder.validate(modalForm, { title: [], content: [] });
                     if (result.isValid) {
                         try {
-                            await api.importantNotices.update(result.data);
+                            const data = result.data;
+                            data.active = modalForm.querySelector('[name="active"]').checked;
+                            await api.importantNotices.update(data);
                             Components.modal.hide();
                             Components.notification.success('重要公告已保存');
                             this.loadImportantNotices();
@@ -1419,20 +1346,30 @@ class AdminSystem {
                     }
                 }
             });
+            const activeCheckbox = document.querySelector('#modal form [name="active"]');
+            if (activeCheckbox) {
+                const toggleSwitch = document.createElement('label');
+                toggleSwitch.setAttribute('for', 'active');
+                toggleSwitch.className = 'toggle-switch';
+                activeCheckbox.insertAdjacentElement('afterend', toggleSwitch);
+            }
+            if (isEdit && notice?.content) {
+                const contentTextarea = document.querySelector('#modal textarea[name="content"]');
+                if (contentTextarea) {
+                    contentTextarea.value = notice.content;
+                }
+            }
         }
-
     setupArticleActions() {
         document.getElementById('addArticleBtn')?.addEventListener('click', () => {
             this.showArticleForm();
         });
-
         document.querySelectorAll('.edit-article').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.dataset.id;
                 this.editArticle(id);
             });
         });
-
         document.querySelectorAll('.delete-article').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.dataset.id;
@@ -1440,18 +1377,15 @@ class AdminSystem {
             });
         });
     }
-
     async showArticleForm(article = null) {
         const isEdit = !!article;
         const title = isEdit ? '编辑文章' : '添加新文章';
-
         const fields = [
             { name: 'title', label: '标题', type: 'text', required: true, value: article?.title || '' },
             { name: 'category', label: '分类', type: 'text', value: article?.category || '' },
             { name: 'tags', label: '标签', type: 'text', value: article?.tags || '', help: '用逗号分隔' },
             { name: 'content', label: '内容 (Markdown)', type: 'textarea', required: true, value: article?.content || '', rows: 15 }
         ];
-
         const form = Components.formBuilder.create(fields);
         Components.modal.show(title, form.outerHTML, {
             saveText: isEdit ? '更新' : '创建',
@@ -1462,7 +1396,6 @@ class AdminSystem {
                     content: [Utils.validation.rules.required]
                 };
                 const result = Components.formBuilder.validate(modalForm, validationRules);
-
                 if (result.isValid) {
                     try {
                         const articleData = { ...result.data };
@@ -1482,7 +1415,6 @@ class AdminSystem {
             }
         });
     }
-
     async editArticle(id) {
         try {
             const article = await api.articles.getById(id);
@@ -1495,7 +1427,6 @@ class AdminSystem {
             Components.notification.error('加载文章失败: ' + error.message);
         }
     }
-
     deleteArticle(id) {
         Components.modal.confirm(
             '确认删除',
@@ -1511,14 +1442,11 @@ class AdminSystem {
             }
         );
     }
-
     async loadSettings() {
         Components.notification.info('设置功能开发中');
     }
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     window.adminSystem = new AdminSystem();
 });
-
 window.AdminSystem = AdminSystem;
