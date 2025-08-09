@@ -1,6 +1,6 @@
 class API {
     constructor() {
-        this.baseURL = '/functions';
+        this.baseURL = 'https://api.zygame1314.site';
         this.defaultHeaders = {
             'Content-Type': 'application/json',
         };
@@ -23,7 +23,6 @@ class API {
             const response = await fetch(`${this.baseURL}${url}`, config);
             
             if (response.status === 401) {
-                // Token is invalid or expired, redirect to login
                 localStorage.removeItem('authToken');
                 window.location.href = 'login.html';
                 return;
@@ -178,7 +177,6 @@ class API {
 
     importantNotices = {
         getList: async () => {
-            // Note: The backend returns all active notices, not paginated.
             return this.get('/getdata/important-notice');
         },
 

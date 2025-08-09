@@ -29,7 +29,7 @@ class AdminSystem {
         }
 
         try {
-            const response = await fetch('/functions/auth', {
+            const response = await fetch('https://api.zygame1314.site/auth', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -1254,7 +1254,7 @@ class AdminSystem {
             
             if (data.pagination) {
                 Components.pagination.create(
-                    'articlesPagination', // Assume you have a div with this id
+                    'articlesPagination',
                     data.pagination.page,
                     data.pagination.totalPages,
                     (page) => {
@@ -1292,7 +1292,7 @@ class AdminSystem {
         container.innerHTML = '';
         articles.forEach(article => {
             const articleCard = Utils.domUtils.createElement('div', {
-                className: 'project-card' // Reusing project-card style
+                className: 'project-card'
             });
 
             articleCard.innerHTML = `
