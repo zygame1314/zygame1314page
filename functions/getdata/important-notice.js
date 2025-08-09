@@ -145,3 +145,31 @@ export async function onRequestPut(context) {
         });
     }
 }
+export async function onRequestDelete(context) {
+    const authError = await requireAuth(context);
+    if (authError) return authError;
+
+    const { env, request } = context;
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+        return new Response(JSON.stringify({ error: '缺少ID' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+    }
+
+    try {
+        await env.DB.prepare('DELETE FROM important_notices WHERE id = ?').bind(id).run();
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+    } catch (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+    }
+}

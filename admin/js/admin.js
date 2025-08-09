@@ -477,7 +477,7 @@ class AdminSystem {
             Components.loading.show('musicGrid', '加载音乐数据...');
             const data = await api.music.getPlaylist();
             const songs = data.songs || [];
-            this.musicCache = songs;
+            this.cache.set('music', songs);
             this.renderMusicGrid(songs);
             this.setupMusicActions();
         } catch (error) {
@@ -518,7 +518,7 @@ class AdminSystem {
                     <div class="music-artist">${song.artist}</div>
                     ${song.ytLink ? `<a href="${song.ytLink}" target="_blank" class="yt-link">YouTube</a>` : ''}
                     <div class="music-actions">
-                        <button class="btn btn-sm edit-music" data-song='${JSON.stringify(song)}'>
+                        <button class="btn btn-sm edit-music" data-id="${song.id}">
                             <i class="fas fa-edit"></i> 编辑
                         </button>
                         <button class="btn btn-sm btn-danger delete-music" data-id="${song.id}">
@@ -549,12 +549,17 @@ class AdminSystem {
         }
         document.querySelectorAll('.edit-music').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const songData = btn.dataset.song;
-                if (songData) {
-                    const song = JSON.parse(songData);
-                    this.showMusicForm(song);
+                const id = e.currentTarget.dataset.id;
+                const cachedData = this.cache.get('music');
+                if (cachedData) {
+                    const song = cachedData.find(s => s.id == id);
+                    if (song) {
+                        this.showMusicForm(song);
+                    } else {
+                        Components.notification.error('在缓存中找不到该音乐。');
+                    }
                 } else {
-                    Components.notification.error('找不到音乐数据');
+                    Components.notification.error('音乐缓存未找到，请尝试刷新页面。');
                 }
             });
         });
@@ -683,7 +688,7 @@ class AdminSystem {
             Components.loading.show('projectsGrid', '加载项目数据...');
             const data = await api.projects.getList(1, 50);
             const projects = data.projects || [];
-            this.projectsCache = projects;
+            this.cache.set('projects', projects);
             this.renderProjectsGrid(projects);
             this.setupProjectActions();
         } catch (error) {
@@ -718,7 +723,7 @@ class AdminSystem {
                     <div class="project-description">${project.description || '暂无描述'}</div>
                     <div class="project-type">${project.type || 'normal'}</div>
                     <div class="project-actions">
-                        <button class="btn btn-sm edit-project" data-project='${JSON.stringify(project)}'>
+                        <button class="btn btn-sm edit-project" data-id="${project.id}">
                             <i class="fas fa-edit"></i> 编辑
                         </button>
                         <button class="btn btn-sm btn-danger delete-project" data-id="${project.id}">
@@ -739,12 +744,17 @@ class AdminSystem {
         });
         document.querySelectorAll('.edit-project').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const projectData = btn.dataset.project;
-                if (projectData) {
-                    const project = JSON.parse(projectData);
-                    this.showProjectForm(project);
+                const id = e.currentTarget.dataset.id;
+                const cachedData = this.cache.get('projects');
+                if (cachedData) {
+                    const project = cachedData.find(p => p.id == id);
+                    if (project) {
+                        this.showProjectForm(project);
+                    } else {
+                        Components.notification.error('在缓存中找不到该项目。');
+                    }
                 } else {
-                    Components.notification.error('找不到项目数据');
+                    Components.notification.error('项目缓存未找到，请尝试刷新页面。');
                 }
             });
         });
@@ -834,6 +844,13 @@ class AdminSystem {
                 }
             }
         });
+
+        if (isEdit && project?.description) {
+            const descriptionTextarea = document.querySelector('#modal textarea[name="description"]');
+            if (descriptionTextarea) {
+                descriptionTextarea.value = project.description;
+            }
+        }
     }
     deleteProject(id) {
         Components.modal.confirm(
@@ -855,7 +872,7 @@ class AdminSystem {
             Components.loading.show('noticesList', '加载公告数据...');
             const data = await api.notices.getList();
             const notices = data.notices || [];
-            this.noticesCache = notices;
+            this.cache.set('notices', notices);
             this.renderNoticesList(notices);
             this.setupNoticeActions();
         } catch (error) {
@@ -888,7 +905,7 @@ class AdminSystem {
                     <i class="notice-icon ${notice.icon || 'fas fa-info-circle'}"></i>
                     <div class="notice-title">${notice.title}</div>
                     <div class="notice-actions">
-                        <button class="action-btn edit edit-notice" title="编辑" data-notice='${JSON.stringify(notice)}'>
+                        <button class="action-btn edit edit-notice" title="编辑" data-id="${notice.id}">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="action-btn delete delete-notice" title="删除" data-index="${index}">
@@ -925,19 +942,24 @@ class AdminSystem {
         });
         document.querySelectorAll('.edit-notice').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const noticeData = btn.dataset.notice;
-                if (noticeData) {
-                    const notice = JSON.parse(noticeData);
-                    this.showNoticeForm(notice);
+                const id = e.currentTarget.dataset.id;
+                const cachedData = this.cache.get('notices');
+                if (cachedData) {
+                    const notice = cachedData.find(n => n.id == id);
+                    if (notice) {
+                        this.showNoticeForm(notice);
+                    } else {
+                        Components.notification.error('在缓存中找不到该公告。');
+                    }
                 } else {
-                    Components.notification.error('找不到公告数据');
+                    Components.notification.error('公告缓存未找到，请尝试刷新页面。');
                 }
             });
         });
         document.querySelectorAll('.delete-notice').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const index = btn.dataset.index;
-                this.deleteNotice(index);
+                const id = e.currentTarget.dataset.id;
+                this.deleteNotice(id);
             });
         });
     }
@@ -1020,13 +1042,15 @@ class AdminSystem {
             }
         }
     }
-    deleteNotice(index) {
+    deleteNotice(id) {
         Components.modal.confirm(
             '确认删除',
             '确定要删除这条公告吗？此操作不可撤销。',
             async () => {
                 try {
-                    Components.notification.info('删除功能开发中...');
+                    await api.notices.delete(id);
+                    Components.notification.success('公告已删除');
+                    await this.loadNotices();
                 } catch (error) {
                     Components.notification.error('删除失败：' + error.message);
                 }
@@ -1038,7 +1062,7 @@ class AdminSystem {
             Components.loading.show('timelineContainer', '加载时间线数据...');
             const data = await api.timeline.getList(1, 50);
             const milestones = data.milestones || [];
-            this.timelineCache = milestones;
+            this.cache.set('timeline', milestones);
             this.renderTimeline(milestones);
             this.setupTimelineActions();
         } catch (error) {
@@ -1072,7 +1096,7 @@ class AdminSystem {
                     <div class="timeline-title">${milestone.title}</div>
                     <div class="timeline-description">${milestone.description}</div>
                     <div class="timeline-actions" style="margin-top: 1rem;">
-                        <button class="btn btn-sm edit-timeline" data-milestone='${JSON.stringify(milestone)}'>
+                        <button class="btn btn-sm edit-timeline" data-id="${milestone.id}">
                             <i class="fas fa-edit"></i> 编辑
                         </button>
                         <button class="btn btn-sm btn-danger delete-timeline" data-id="${milestone.id}">
@@ -1090,12 +1114,17 @@ class AdminSystem {
         });
         document.querySelectorAll('.edit-timeline').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const milestoneData = btn.dataset.milestone;
-                if (milestoneData) {
-                    const milestone = JSON.parse(milestoneData);
-                    this.showTimelineForm(milestone);
+                const id = e.currentTarget.dataset.id;
+                const cachedData = this.cache.get('timeline');
+                if (cachedData) {
+                    const milestone = cachedData.find(m => m.id == id);
+                    if (milestone) {
+                        this.showTimelineForm(milestone);
+                    } else {
+                        Components.notification.error('在缓存中找不到该时间节点。');
+                    }
                 } else {
-                    Components.notification.error('找不到时间节点数据');
+                    Components.notification.error('时间线缓存未找到，请尝试刷新页面。');
                 }
             });
         });
@@ -1193,7 +1222,9 @@ class AdminSystem {
         try {
             Components.loading.show('articlesGrid', '加载文章数据...');
             const data = await api.articles.getList(currentPage, 10);
-            this.renderArticlesGrid(data.data || []);
+            const articles = data.data || [];
+            this.cache.set('articles', articles);
+            this.renderArticlesGrid(articles);
             if (data.pagination) {
                 Components.pagination.create(
                     'articlesPagination',
@@ -1257,7 +1288,9 @@ class AdminSystem {
             try {
                 Components.loading.show('importantNoticesList', '加载重要公告...');
                 const data = await api.importantNotices.getList();
-                this.renderImportantNotices(data.notices || []);
+                const notices = data.notices || [];
+                this.cache.set('important-notices', notices);
+                this.renderImportantNotices(notices);
                 this.setupImportantNoticeActions();
             } catch (error) {
                 Components.notification.error('加载重要公告失败: ' + error.message);
@@ -1289,6 +1322,7 @@ class AdminSystem {
                         <div class="notice-actions">
                             <span class="status-value ${statusClass}">${statusText}</span>
                             <button class="action-btn edit-important-notice" title="编辑" data-id="${notice.id}"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-important-notice" title="删除" data-id="${notice.id}"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                     <div class="notice-content">
@@ -1304,15 +1338,26 @@ class AdminSystem {
                 this.showImportantNoticeForm();
             });
             document.querySelectorAll('.edit-important-notice').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
+                btn.addEventListener('click', (e) => {
                     const id = e.currentTarget.dataset.id;
-                    const notices = (await api.importantNotices.getList()).notices;
-                    const notice = notices.find(n => n.id == id);
-                    if (notice) {
-                        this.showImportantNoticeForm(notice);
+                    const cachedNotices = this.cache.get('important-notices');
+                    if (cachedNotices) {
+                        const notice = cachedNotices.find(n => n.id == id);
+                        if (notice) {
+                            this.showImportantNoticeForm(notice);
+                        } else {
+                            Components.notification.error('在缓存中找不到该公告，数据可能已过期。');
+                        }
                     } else {
-                        Components.notification.error('找不到该公告');
+                        Components.notification.error('公告缓存未找到，请尝试刷新页面。');
                     }
+                });
+            });
+
+            document.querySelectorAll('.delete-important-notice').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.id;
+                    this.deleteImportantNotice(id);
                 });
             });
         }
@@ -1359,6 +1404,22 @@ class AdminSystem {
                     contentTextarea.value = notice.content;
                 }
             }
+        }
+
+        deleteImportantNotice(id) {
+            Components.modal.confirm(
+                '确认删除',
+                '确定要删除这条重要公告吗？此操作不可撤销。',
+                async () => {
+                    try {
+                        await api.importantNotices.delete(id);
+                        Components.notification.success('重要公告已删除');
+                        await this.loadImportantNotices();
+                    } catch (error) {
+                        Components.notification.error('删除失败：' + error.message);
+                    }
+                }
+            );
         }
     setupArticleActions() {
         document.getElementById('addArticleBtn')?.addEventListener('click', () => {
@@ -1416,7 +1477,17 @@ class AdminSystem {
         });
     }
     async editArticle(id) {
+        const cachedArticles = this.cache.get('articles');
+        if (cachedArticles) {
+            const article = cachedArticles.find(a => a.id == id);
+            if (article) {
+                this.showArticleForm(article);
+                return;
+            }
+        }
+
         try {
+            Components.notification.info('正在从服务器获取完整的文章数据...');
             const article = await api.articles.getById(id);
             if (article) {
                 this.showArticleForm(article);

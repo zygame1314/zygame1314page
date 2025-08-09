@@ -182,6 +182,9 @@ class API {
 
         update: async (notice) => {
             return this.put('/getdata/important-notice', notice);
+        },
+        delete: async (id) => {
+            return this.delete('/getdata/important-notice', { id });
         }
     };
 
