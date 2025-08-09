@@ -222,7 +222,7 @@ body {
     transition: var(--transition);
 }
 
-.sidebar.collapsed + .main-content {
+.main-content.collapsed {
     margin-left: var(--sidebar-collapsed);
 }
 
@@ -1053,6 +1053,10 @@ body {
         margin-left: 0;
     }
     
+    #sidebarToggle {
+        display: none;
+    }
+
     .mobile-sidebar-toggle {
         display: block;
     }
@@ -1410,4 +1414,50 @@ body {
 
 .form-group-toggle input:checked + .toggle-switch::after {
     transform: translateX(21px);
+}
+
+/* Collapsed Sidebar Styles */
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .brand h2,
+.sidebar.collapsed .user-details,
+.sidebar.collapsed .logout-btn span {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+}
+
+
+.sidebar.collapsed .logout-btn {
+    justify-content: center;
+}
+
+.sidebar.collapsed .brand i {
+    margin-right: 0;
+}
+
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Below sidebar (1000), above everything else */
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
 }

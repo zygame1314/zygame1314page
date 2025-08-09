@@ -44,11 +44,22 @@ class AdminSystem {
     setupEventListeners() {
         const sidebarToggle = document.getElementById('sidebarToggle');
         const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+
         sidebarToggle?.addEventListener('click', () => {
-            document.querySelector('.sidebar').classList.toggle('collapsed');
+            sidebar.classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('collapsed');
         });
+
         mobileSidebarToggle?.addEventListener('click', () => {
-            document.querySelector('.sidebar').classList.toggle('show');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        overlay?.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
         });
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -433,6 +444,13 @@ class AdminSystem {
                 }
             }
         });
+
+        if (isEdit && donation?.message) {
+            const messageTextarea = document.querySelector('#modal textarea[name="message"]');
+            if (messageTextarea) {
+                messageTextarea.value = donation.message;
+            }
+        }
     }
     editDonation(id) {
         const cachedData = this.cache.get('donations-current');

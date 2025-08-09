@@ -129,8 +129,8 @@ export async function onRequestPut(context) {
         }
 
         await env.DB.prepare(`
-            UPDATE projects 
-            SET title = ?, imageUrl = ?, githubUrl = ?, description = ?, type = ?, actions = ?
+            UPDATE projects
+            SET title = ?, image_url = ?, github_url = ?, description = ?, type = ?, actions = ?, updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
         `).bind(
             title,
