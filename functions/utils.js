@@ -1,6 +1,6 @@
 const a = (s) => new TextEncoder().encode(s);
 const b = (s) => btoa(s).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-const sign = (p, k) => crypto.subtle.sign('HMAC', k, p).then(s => b(String.fromCharCode(...new Uint8Array(s))));
+const sign = (p, k) => crypto.subtle.sign('HMAC', k, a(p)).then(s => b(String.fromCharCode(...new Uint8Array(s))));
 export async function verifyToken(token, secret) {
     try {
         const [h, p, s] = token.split('.');
