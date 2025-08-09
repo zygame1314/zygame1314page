@@ -51,7 +51,7 @@ export async function onRequestGet(context) {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return new Response(JSON.stringify({ error: '未授权' }), { status: 401 });
     }
-    const token = authHeader.split(' ');
+    const token = authHeader.split(' ')[1];
     try {
         const JWT_SECRET = env.JWT_SECRET;
         if (!JWT_SECRET) throw new Error("JWT secret not configured");
