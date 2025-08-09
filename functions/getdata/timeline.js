@@ -1,3 +1,5 @@
+import { requireAuth } from '../utils.js';
+
 export async function onRequestGet(context) {
     const { env, request } = context;
 
@@ -13,7 +15,7 @@ export async function onRequestGet(context) {
         const total = countResults[0].total;
 
         const { results } = await env.DB.prepare(`
-            SELECT date, title, description
+            SELECT id, date, title, description
             FROM timeline
             ORDER BY date DESC
             LIMIT ? OFFSET ?
@@ -56,6 +58,9 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {
@@ -91,6 +96,9 @@ export async function onRequestPost(context) {
 }
 
 export async function onRequestPut(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {
@@ -126,6 +134,9 @@ export async function onRequestPut(context) {
 }
 
 export async function onRequestDelete(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {

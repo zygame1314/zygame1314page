@@ -1,3 +1,5 @@
+import { requireAuth } from '../utils.js';
+
 export async function onRequestGet(context) {
     const { env, request } = context;
 
@@ -67,6 +69,9 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {
@@ -109,7 +114,62 @@ export async function onRequestPost(context) {
     }
 }
 
+export async function onRequestPut(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
+    const { env, request } = context;
+
+    try {
+        const data = await request.json();
+        const { id, title, imageUrl, githubUrl, description, type, actions } = data;
+
+        if (!id || !title || !description) {
+            throw new Error('缺少必需字段');
+        }
+
+        await env.DB.prepare(`
+            UPDATE projects 
+            SET title = ?, imageUrl = ?, githubUrl = ?, description = ?, type = ?, actions = ?
+            WHERE id = ?
+        `).bind(
+            title,
+            imageUrl,
+            githubUrl,
+            description,
+            type || 'normal',
+            actions ? JSON.stringify(actions) : null,
+            id
+        ).run();
+
+        return new Response(JSON.stringify({
+            success: true,
+            message: '项目已更新'
+        }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+
+    } catch (error) {
+        return new Response(JSON.stringify({
+            error: error.message
+        }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
+}
+
 export async function onRequestDelete(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {

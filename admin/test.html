@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理系统测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+        }
+        
+        .results {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>管理系统 API 测试</h1>
+    
+    <div class="test-section">
+        <h2>捐献记录 API 测试</h2>
+        <button class="test-button" onclick="testDonations()">测试捐献记录</button>
+        <div id="donations-result" class="results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>音乐播放列表 API 测试</h2>
+        <button class="test-button" onclick="testMusic()">测试音乐列表</button>
+        <div id="music-result" class="results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>项目管理 API 测试</h2>
+        <button class="test-button" onclick="testProjects()">测试项目管理</button>
+        <div id="projects-result" class="results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>公告管理 API 测试</h2>
+        <button class="test-button" onclick="testNotices()">测试公告管理</button>
+        <div id="notices-result" class="results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>时间线 API 测试</h2>
+        <button class="test-button" onclick="testTimeline()">测试时间线</button>
+        <div id="timeline-result" class="results"></div>
+    </div>
+
+    <script>
+        class TestAPI {
+            constructor() {
+                this.baseURL = '/functions';
+            }
+
+            async request(url, options = {}) {
+                try {
+                    const response = await fetch(`${this.baseURL}${url}`, {
+                        headers: { 'Content-Type': 'application/json' },
+                        ...options
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return await response.json();
+                } catch (error) {
+                    throw error;
+                }
+            }
+
+            async get(url, params = {}) {
+                const urlWithParams = new URL(`${this.baseURL}${url}`, window.location.origin);
+                Object.keys(params).forEach(key => {
+                    if (params[key] !== null && params[key] !== undefined) {
+                        urlWithParams.searchParams.append(key, params[key]);
+                    }
+                });
+                return this.request(urlWithParams.pathname + urlWithParams.search);
+            }
+
+            async post(url, data) {
+                return this.request(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+            }
+
+            async put(url, data) {
+                return this.request(url, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+            }
+
+            async delete(url, params) {
+                const urlWithParams = new URL(`${this.baseURL}${url}`, window.location.origin);
+                Object.keys(params).forEach(key => {
+                    urlWithParams.searchParams.append(key, params[key]);
+                });
+                return this.request(urlWithParams.pathname + urlWithParams.search, {
+                    method: 'DELETE'
+                });
+            }
+        }
+
+        const api = new TestAPI();
+
+        function logResult(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const status = isSuccess ? 'SUCCESS' : 'ERROR';
+            const className = isSuccess ? 'success' : 'error';
+            
+            element.innerHTML += `<span class="${className}">[${timestamp}] ${status}: ${message}</span>\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function testDonations() {
+            const resultId = 'donations-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                logResult(resultId, '正在测试获取捐献记录列表...');
+                const list = await api.get('/getdata/donations');
+                logResult(resultId, `获取捐献记录成功，共 ${list.donations?.length || 0} 条记录`);
+                
+                
+            } catch (error) {
+                logResult(resultId, `测试失败: ${error.message}`, false);
+            }
+        }
+
+        async function testMusic() {
+            const resultId = 'music-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                logResult(resultId, '正在测试获取音乐播放列表...');
+                const list = await api.get('/getdata/playlist');
+                logResult(resultId, `获取音乐列表成功，共 ${list.songs?.length || 0} 首歌曲`);
+                
+            } catch (error) {
+                logResult(resultId, `测试失败: ${error.message}`, false);
+            }
+        }
+
+        async function testProjects() {
+            const resultId = 'projects-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                logResult(resultId, '正在测试获取项目列表...');
+                const list = await api.get('/getdata/projects');
+                logResult(resultId, `获取项目列表成功，共 ${list.projects?.length || 0} 个项目`);
+                
+            } catch (error) {
+                logResult(resultId, `测试失败: ${error.message}`, false);
+            }
+        }
+
+        async function testNotices() {
+            const resultId = 'notices-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                logResult(resultId, '正在测试获取公告列表...');
+                const list = await api.get('/getdata/notices');
+                logResult(resultId, `获取公告列表成功，共 ${list.notices?.length || 0} 条公告`);
+                
+            } catch (error) {
+                logResult(resultId, `测试失败: ${error.message}`, false);
+            }
+        }
+
+        async function testTimeline() {
+            const resultId = 'timeline-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                logResult(resultId, '正在测试获取时间线...');
+                const list = await api.get('/getdata/timeline');
+                logResult(resultId, `获取时间线成功，共 ${list.milestones?.length || 0} 个节点`);
+                
+            } catch (error) {
+                logResult(resultId, `测试失败: ${error.message}`, false);
+            }
+        }
+    </script>
+</body>
+</html>

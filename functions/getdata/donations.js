@@ -1,3 +1,5 @@
+import { requireAuth } from '../utils.js';
+
 export async function onRequestGet(context) {
     const { env, request } = context;
 
@@ -13,7 +15,7 @@ export async function onRequestGet(context) {
         const total = countResults[0].total;
 
         const { results } = await env.DB.prepare(`
-            SELECT name, amount, date, platform, message
+            SELECT id, name, amount, date, platform, message
             FROM donations
             ORDER BY date DESC
             LIMIT ? OFFSET ?
@@ -56,6 +58,9 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
     const { env, request } = context;
 
     try {
@@ -71,6 +76,90 @@ export async function onRequestPost(context) {
             id: meta.last_row_id
         }), {
             status: 201,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+
+    } catch (error) {
+        return new Response(JSON.stringify({
+            error: error.message
+        }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
+}
+
+export async function onRequestPut(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
+    const { env, request } = context;
+    try {
+        const { id, name, amount, date, platform, message } = await request.json();
+        if (!id) {
+            return new Response(JSON.stringify({ error: 'ID is required for updating' }), { 
+                status: 400,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            });
+        }
+
+        const { meta } = await env.DB.prepare(`
+            UPDATE donations
+            SET name = ?, amount = ?, date = ?, platform = ?, message = ?
+            WHERE id = ?
+        `).bind(name, amount, date, platform, message, id).run();
+
+        if (meta.changes === 0) {
+            return new Response(JSON.stringify({ error: 'Donation not found or no changes made' }), { 
+                status: 404,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            });
+        }
+
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+    } catch (error) {
+        return new Response(JSON.stringify({ error: error.message }), { 
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+    }
+}
+
+export async function onRequestDelete(context) {
+    const authResponse = await requireAuth(context);
+    if (authResponse) return authResponse;
+
+    const { env, request } = context;
+
+    try {
+        const url = new URL(request.url);
+        const id = url.searchParams.get('id');
+
+        if (!id) {
+            throw new Error('缺少捐献记录ID');
+        }
+
+        const { meta } = await env.DB.prepare(`
+            DELETE FROM donations WHERE id = ?
+        `).bind(id).run();
+
+        if (meta.changes === 0) {
+            throw new Error('未找到要删除的记录');
+        }
+
+        return new Response(JSON.stringify({
+            success: true
+        }), {
+            status: 200,
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
