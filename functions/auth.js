@@ -1,6 +1,6 @@
 const a = (s) => new TextEncoder().encode(s)
 const b = (s) => btoa(s).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
-const sign = (p, k) => crypto.subtle.sign('HMAC', k, p).then(s => b(String.fromCharCode(...new Uint8Array(s))))
+const sign = (p, k) => crypto.subtle.sign('HMAC', k, a(p)).then(s => b(String.fromCharCode(...new Uint8Array(s))))
 const _alg = 'HS256'
 async function createToken(data, secret) {
     const i = { alg: _alg, typ: 'JWT' }
@@ -42,8 +42,7 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: '用户名或密码错误' }), { status: 401 });
         }
     } catch (error) {
-        console.error('Auth Error:', error);
-        return new Response(JSON.stringify({ error: '服务器内部错误', details: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: '服务器内部错误' }), { status: 500 });
     }
 }
 export async function onRequestGet(context) {
