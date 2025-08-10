@@ -522,8 +522,8 @@ class AdminSystem {
             musicCard.innerHTML = `
                 <div class="music-cover" style="background-image: url('${song.cover || '/images/default-music.jpg'}')">
                     <div class="music-overlay">
-                        <button class="play-btn" title="播放">
-                            <i class="fas fa-play"></i>
+                        <button class="play-btn" title="播放" data-path="${song.path}">
+                            <span class="play-icon"></span>
                         </button>
                     </div>
                 </div>
@@ -561,6 +561,12 @@ class AdminSystem {
             searchInput.addEventListener('input', searchHandler);
             this.searchHandlers.set('music', searchHandler);
         }
+        document.querySelectorAll('.play-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const path = e.currentTarget.dataset.path;
+                this.playMusic(path, e.currentTarget);
+            });
+        });
         document.querySelectorAll('.edit-music').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.currentTarget.dataset.id;
@@ -695,6 +701,35 @@ class AdminSystem {
         } catch (error) {
             Components.notification.error('搜索失败');
             console.error('Search error:', error);
+        }
+    }
+    playMusic(path, button) {
+        let audioPlayer = window.audioPlayer;
+        if (!audioPlayer) {
+            audioPlayer = new Audio();
+            window.audioPlayer = audioPlayer;
+        }
+
+        const allPlayButtons = document.querySelectorAll('.play-btn');
+        const isCurrentlyPlaying = button.classList.contains('playing');
+
+        allPlayButtons.forEach(btn => {
+            btn.classList.remove('playing');
+            btn.querySelector('.play-icon').classList.remove('paused');
+        });
+
+        if (isCurrentlyPlaying) {
+            audioPlayer.pause();
+        } else {
+            audioPlayer.src = path;
+            audioPlayer.play();
+            button.classList.add('playing');
+            button.querySelector('.play-icon').classList.add('paused');
+
+            audioPlayer.onended = () => {
+                button.classList.remove('playing');
+                button.querySelector('.play-icon').classList.remove('paused');
+            };
         }
     }
     async loadProjects() {
@@ -1334,6 +1369,28 @@ class AdminSystem {
                 const noticeEl = Utils.domUtils.createElement('div', { className: 'notice-item' });
                 const statusClass = notice.active ? 'online' : 'offline';
                 const statusText = notice.active ? '生效中' : '已禁用';
+
+                let imageHtml = '';
+                if (notice.image && notice.image.url) {
+                    imageHtml = `
+                        <div class="notice-image-container">
+                            <img src="${notice.image.url}" alt="${notice.image.alt || '公告图片'}" style="max-width: 100%; height: auto; margin-top: 1rem;">
+                        </div>
+                    `;
+                }
+
+                let pollHtml = '';
+                if (notice.poll && notice.poll.active) {
+                    pollHtml = `
+                        <div class="notice-poll-container" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                            <strong>投票: ${notice.poll.question}</strong>
+                            <ul>
+                                ${notice.poll.options.map(opt => `<li>${opt.text}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
                 noticeEl.innerHTML = `
                     <div class="notice-header">
                         <div class="notice-title">${notice.title}</div>
@@ -1345,7 +1402,9 @@ class AdminSystem {
                     </div>
                     <div class="notice-content">
                         <p>${notice.content}</p>
-                        <small>过期时间: ${notice.expiryDate ? Utils.formatDate(notice.expiryDate) : '无'}</small>
+                        ${imageHtml}
+                        ${pollHtml}
+                        <small style="display: block; margin-top: 1rem; opacity: 0.7;">过期时间: ${notice.expiryDate ? Utils.formatDate(notice.expiryDate) : '无'}</small>
                     </div>
                 `;
                 container.appendChild(noticeEl);
@@ -1382,23 +1441,73 @@ class AdminSystem {
         showImportantNoticeForm(notice = null) {
             const isEdit = !!notice;
             const title = isEdit ? '编辑重要公告' : '添加重要公告';
+
             const fields = [
-                { name: 'id', label: 'ID', type: 'text', value: notice?.id || `notice_${Date.now()}`, required: true, help: '唯一标识符，创建后不建议修改' },
+                { type: 'divider', label: '基础信息' },
+                { name: 'id', label: 'ID', type: 'text', value: notice?.id || `notice_${Date.now()}`, required: true, help: '唯一标识符，创建后不建议修改', readonly: isEdit },
                 { name: 'active', label: '是否激活', type: 'checkbox', checked: notice ? notice.active : true, className: 'form-group-toggle' },
                 { name: 'title', label: '标题', type: 'text', value: notice?.title || '', required: true },
-                { name: 'content', label: '内容', type: 'textarea', value: '', required: true, rows: 4 },
+                { name: 'content', label: '内容', type: 'textarea', value: notice?.content || '', required: true, rows: 4 },
                 { name: 'expiryDate', label: '过期时间', type: 'datetime-local', value: notice?.expiryDate ? Utils.formatDate(notice.expiryDate, 'YYYY-MM-DD HH:mm').replace(' ', 'T') : '' },
+                
+                { type: 'divider', label: '图片设置' },
+                { name: 'imageUrl', label: '图片URL', type: 'text', value: notice?.image?.url || '' },
+                { name: 'imageAlt', label: '图片描述', type: 'text', value: notice?.image?.alt || '' },
+                { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'center', options: [{value: 'left', label: '左'}, {value: 'right', label: '右'}, {value: 'center', label: '中'}] },
+                { name: 'imageWidth', label: '图片宽度', type: 'text', value: notice?.image?.width || '', placeholder: '例如: 100px 或 50%' },
+                { name: 'imageHeight', label: '图片高度', type: 'text', value: notice?.image?.height || '', placeholder: '例如: 100px 或 auto' },
+
+                { type: 'divider', label: '投票设置' },
+                { name: 'pollActive', label: '开启投票', type: 'checkbox', checked: notice?.poll?.active || false, className: 'form-group-toggle' },
+                { name: 'pollQuestion', label: '投票问题', type: 'text', value: notice?.poll?.question || '' },
+                { name: 'pollOptions', label: '投票选项', type: 'textarea', value: notice?.poll?.options ? notice.poll.options.map(o => o.text).join('\n') : '', help: '每行一个选项', rows: 4 },
             ];
+
             const form = Components.formBuilder.create(fields);
             Components.modal.show(title, form.outerHTML, {
                 saveText: isEdit ? '更新' : '添加',
                 onSave: async () => {
                     const modalForm = document.querySelector('#modal form');
                     const result = Components.formBuilder.validate(modalForm, { title: [], content: [] });
+                    
                     if (result.isValid) {
                         try {
                             const data = result.data;
                             data.active = modalForm.querySelector('[name="active"]').checked;
+                            
+                            if (data.imageUrl) {
+                                data.image = {
+                                    url: data.imageUrl,
+                                    alt: data.imageAlt,
+                                    position: data.imagePosition,
+                                    width: data.imageWidth,
+                                    height: data.imageHeight,
+                                };
+                            } else {
+                                data.image = null;
+                            }
+                            delete data.imageUrl;
+                            delete data.imageAlt;
+                            delete data.imagePosition;
+                            delete data.imageWidth;
+                            delete data.imageHeight;
+
+                            const pollActive = modalForm.querySelector('[name="pollActive"]').checked;
+                            const pollQuestion = data.pollQuestion;
+                            const pollOptions = data.pollOptions.split('\n').filter(o => o.trim() !== '');
+
+                            if (pollActive && pollQuestion && pollOptions.length > 0) {
+                                data.poll = {
+                                    active: true,
+                                    question: pollQuestion,
+                                    options: pollOptions.map((o, index) => ({ id: index, text: o.trim(), votes: 0 }))
+                                };
+                            } else {
+                                data.poll = null;
+                            }
+                            delete data.pollQuestion;
+                            delete data.pollOptions;
+                            
                             await api.importantNotices.update(data);
                             Components.modal.hide();
                             Components.notification.success('重要公告已保存');
@@ -1409,17 +1518,14 @@ class AdminSystem {
                     }
                 }
             });
-            const activeCheckbox = document.querySelector('#modal form [name="active"]');
-            if (activeCheckbox) {
-                const toggleSwitch = document.createElement('label');
-                toggleSwitch.setAttribute('for', 'active');
-                toggleSwitch.className = 'toggle-switch';
-                activeCheckbox.insertAdjacentElement('afterend', toggleSwitch);
-            }
-            if (isEdit && notice?.content) {
+
+            if (isEdit) {
                 const contentTextarea = document.querySelector('#modal textarea[name="content"]');
-                if (contentTextarea) {
-                    contentTextarea.value = notice.content;
+                if (contentTextarea && notice.content) contentTextarea.value = notice.content;
+                
+                const pollOptionsTextarea = document.querySelector('#modal textarea[name="pollOptions"]');
+                if (pollOptionsTextarea && notice.poll?.options) {
+                    pollOptionsTextarea.value = notice.poll.options.map(o => o.text).join('\n');
                 }
             }
         }

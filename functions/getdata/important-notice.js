@@ -10,11 +10,32 @@ export async function onRequestGet(context) {
             const authError = await requireAuth(context);
             if (authError) return authError;
 
-            const { results } = await env.DB.prepare(`
-                SELECT id, active, title, content, expiry_date as expiryDate FROM important_notices ORDER BY created_at DESC
+            const { results: rawNotices } = await env.DB.prepare(`
+                SELECT
+                    id, active, title, content, expiry_date as expiryDate,
+                    image_url, image_alt, image_position, image_width, image_height,
+                    poll_config
+                FROM important_notices
+                ORDER BY created_at DESC
             `).all();
+
+            const notices = (rawNotices || []).map(rawNotice => ({
+                id: rawNotice.id,
+                active: rawNotice.active,
+                title: rawNotice.title,
+                content: rawNotice.content,
+                expiryDate: rawNotice.expiryDate,
+                image: (rawNotice.image_url || rawNotice.image_alt || rawNotice.image_position || rawNotice.image_width || rawNotice.image_height) ? {
+                    url: rawNotice.image_url,
+                    alt: rawNotice.image_alt,
+                    position: rawNotice.image_position,
+                    width: rawNotice.image_width,
+                    height: rawNotice.image_height
+                } : null,
+                poll: rawNotice.poll_config ? JSON.parse(rawNotice.poll_config) : null
+            }));
             
-            return new Response(JSON.stringify({ notices: results || [] }), {
+            return new Response(JSON.stringify({ notices }), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
             });

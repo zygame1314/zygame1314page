@@ -380,9 +380,23 @@ class Components {
             const form = Utils.domUtils.createElement('form');
 
             fields.forEach(field => {
-                const formGroup = Utils.domUtils.createElement('div', {
-                    className: `form-group ${field.className || ''}`.trim()
-                });
+               if (field.type === 'divider') {
+                   const divider = Utils.domUtils.createElement('div', {
+                       className: 'form-divider'
+                   });
+                   divider.textContent = field.label || '';
+                   divider.style.marginTop = '2rem';
+                   divider.style.marginBottom = '1rem';
+                   divider.style.fontWeight = 'bold';
+                   divider.style.borderBottom = '1px solid var(--border-color)';
+                   divider.style.paddingBottom = '0.5rem';
+                   form.appendChild(divider);
+                   return;
+               }
+
+               const formGroup = Utils.domUtils.createElement('div', {
+                   className: `form-group ${field.className || ''}`.trim()
+               });
 
                 if (field.label) {
                     const label = Utils.domUtils.createElement('label', {

@@ -3,33 +3,39 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f2f5;
 }
 
 .login-container {
     width: 100%;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login-box {
-    max-width: 400px;
+    max-width: 420px;
+    width: 100%;
     margin: 0 auto;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: var(--surface-color);
+    border: 2px solid var(--border-dark);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-pixel);
     overflow: hidden;
 }
 
 .login-header {
-    background: #007bff;
+    background: var(--primary-color);
     color: white;
     padding: 20px;
     text-align: center;
+    border-bottom: 2px solid var(--border-dark);
 }
 
 .login-header h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 .login-header .fa-cog {
@@ -41,14 +47,15 @@ body {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .form-group label {
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 8px;
-    color: #555;
-    font-weight: bold;
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
 .form-group .fa-user,
@@ -59,9 +66,19 @@ body {
 .form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 2px inset var(--border-dark);
+    border-radius: var(--border-radius);
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'zpix', sans-serif;
+    font-size: 1rem;
+    transition: var(--transition);
     box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    background: #e0e0e0;
 }
 
 .btn-block {
@@ -71,12 +88,13 @@ body {
 }
 
 .error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    padding: 10px;
-    margin-top: 15px;
+    color: var(--danger-color);
+    background-color: rgba(231, 76, 60, 0.1);
+    border: 1px solid var(--danger-color);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    margin-top: 20px;
     text-align: center;
-    display: none; /* Hidden by default */
+    display: none;
+    font-weight: 500;
 }
