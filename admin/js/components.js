@@ -130,7 +130,6 @@ class Components {
                 newCancel.addEventListener('click', () => this.hide());
             }
 
-            // Clear previous listeners to prevent duplication
             const newModalBody = modalBody.cloneNode(true);
             modalBody.parentNode.replaceChild(newModalBody, modalBody);
             
@@ -142,6 +141,22 @@ class Components {
                         if (fileInput) {
                             fileInput.click();
                         }
+                    }
+                }
+
+                if (e.target && e.target.matches('.remove-key-value-item, .remove-key-value-item *')) {
+                    const item = e.target.closest('.key-value-item');
+                    if (item) {
+                        item.remove();
+                    }
+                }
+
+                if (e.target && e.target.matches('.add-key-value-item')) {
+                    const editor = e.target.closest('.key-value-editor');
+                    if (editor) {
+                        const itemsContainer = editor.querySelector('.key-value-items');
+                        const newItem = Components.formBuilder.createItem();
+                        itemsContainer.appendChild(newItem);
                     }
                 }
             });
@@ -181,6 +196,8 @@ class Components {
 
                         if (response.ok && result.success) {
                             preview.src = result.url;
+                            preview.classList.remove('no-image');
+                            preview.style.display = '';
                             hiddenInput.value = result.url;
                             Components.notification.success('图片上传成功');
                         } else {
@@ -191,6 +208,49 @@ class Components {
                     } finally {
                         uploadButton.textContent = '选择图片';
                         uploadButton.disabled = false;
+                    }
+                }
+            });
+
+            newModalBody.addEventListener('change', async (e) => {
+                if (e.target && e.target.matches('.audio-uploader input[type="file"]')) {
+                    const uploader = e.target.closest('.audio-uploader');
+                    const file = e.target.files[0];
+                    if (!file || !uploader) return;
+
+                    const statusDiv = uploader.querySelector('.upload-status');
+                    const hiddenInput = uploader.querySelector('input[type="hidden"]');
+                    const fileInput = uploader.querySelector('input[type="file"]');
+
+                    statusDiv.textContent = '正在上传...';
+                    fileInput.disabled = true;
+
+                    try {
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        const response = await fetch('https://api.zygame1314.site/upload-audio', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                            }
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            hiddenInput.value = result.path;
+                            statusDiv.textContent = `上传成功: ${result.path}`;
+                            Components.notification.success('音频上传成功');
+                        } else {
+                            throw new Error(result.error || '上传失败');
+                        }
+                    } catch (error) {
+                        statusDiv.textContent = `上传失败: ${error.message}`;
+                        Components.notification.error(`上传失败: ${error.message}`);
+                    } finally {
+                        fileInput.disabled = false;
                     }
                 }
             });
@@ -517,9 +577,17 @@ class Components {
                         const uploaderContainer = this.createImageUploader(field);
                         formGroup.appendChild(uploaderContainer);
                         break;
-                    case 'file':
-                        input = Utils.domUtils.createElement('input', {
-                            type: 'file',
+                    case 'key-value-editor':
+                        const editorContainer = this.createKeyValueEditor(field);
+                        formGroup.appendChild(editorContainer);
+                       break;
+                   case 'audio-upload':
+                       const audioUploaderContainer = this.createAudioUploader(field);
+                       formGroup.appendChild(audioUploaderContainer);
+                       break;
+                   case 'file':
+                       input = Utils.domUtils.createElement('input', {
+                           type: 'file',
                             name: field.name,
                             id: field.name
                         });
@@ -572,11 +640,17 @@ class Components {
 
         createImageUploader(field) {
             const container = Utils.domUtils.createElement('div', { className: 'image-uploader' });
+            const hasImage = !!field.value;
+
             const preview = Utils.domUtils.createElement('img', {
-                src: field.value || 'https://bucket.zygame1314.site/static/images/default-project.jpg',
+                src: field.value || '',
                 alt: '图片预览',
-                className: 'image-preview'
+                className: `image-preview ${!hasImage ? 'no-image' : ''}`
             });
+             if (!hasImage) {
+                preview.style.display = 'none';
+            }
+
             const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'image/*', style: 'display: none;' });
             const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择图片', className: 'btn btn-secondary' });
             const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
@@ -592,6 +666,62 @@ class Components {
             return container;
         },
 
+        createKeyValueEditor(field) {
+            const container = Utils.domUtils.createElement('div', { className: 'key-value-editor', 'data-name': field.name });
+            const itemsContainer = Utils.domUtils.createElement('div', { className: 'key-value-items' });
+            const addButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '添加操作', className: 'btn btn-secondary btn-sm add-key-value-item' });
+
+            const createItem = (item = {}) => {
+                const itemElement = Utils.domUtils.createElement('div', { className: 'key-value-item' });
+                itemElement.innerHTML = `
+                    <div class="key-value-inputs">
+                        <input type="text" class="form-control" data-key="text" placeholder="按钮文字" value="${item.text || ''}">
+                        <input type="text" class="form-control" data-key="url" placeholder="URL" value="${item.url || ''}">
+                        <select class="form-control" data-key="type">
+                            <option value="primary" ${item.type === 'primary' ? 'selected' : ''}>主按钮</option>
+                            <option value="secondary" ${item.type === 'secondary' ? 'selected' : ''}>次按钮</option>
+                            <option value="external" ${item.type === 'external' ? 'selected' : ''}>外部链接</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm remove-key-value-item">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                return itemElement;
+            };
+
+            const initialValue = field.value ? (typeof field.value === 'string' ? JSON.parse(field.value) : field.value) : [];
+            if (Array.isArray(initialValue) && initialValue.length > 0) {
+                initialValue.forEach(item => itemsContainer.appendChild(createItem(item)));
+            } else {
+                itemsContainer.appendChild(createItem());
+            }
+
+            container.appendChild(itemsContainer);
+            container.appendChild(addButton);
+
+            return container;
+        },
+
+        createItem(item = {}) {
+            const itemElement = Utils.domUtils.createElement('div', { className: 'key-value-item' });
+            itemElement.innerHTML = `
+                <div class="key-value-inputs">
+                    <input type="text" class="form-control" data-key="text" placeholder="按钮文字" value="${item.text || ''}">
+                    <input type="text" class="form-control" data-key="url" placeholder="URL" value="${item.url || ''}">
+                    <select class="form-control" data-key="type">
+                        <option value="primary" ${item.type === 'primary' ? 'selected' : ''}>主按钮</option>
+                        <option value="secondary" ${item.type === 'secondary' ? 'selected' : ''}>次按钮</option>
+                        <option value="external" ${item.type === 'external' ? 'selected' : ''}>外部链接</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm remove-key-value-item">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            return itemElement;
+        },
+
         getFormData(form) {
             const formData = new FormData(form);
             const data = {};
@@ -605,6 +735,69 @@ class Components {
                 if (hiddenInput) {
                     data[hiddenInput.name] = hiddenInput.value;
                 }
+            });
+
+            form.querySelectorAll('.key-value-editor').forEach(editor => {
+                const name = editor.dataset.name;
+                const items = [];
+                editor.querySelectorAll('.key-value-item').forEach(item => {
+                    const text = item.querySelector('[data-key="text"]').value;
+                    const url = item.querySelector('[data-key="url"]').value;
+                    const type = item.querySelector('[data-key="type"]').value;
+                    if (text && url) {
+                        items.push({ text, url, type });
+                    }
+                });
+                data[name] = JSON.stringify(items);
+            });
+            
+            return data;
+        },
+
+        createAudioUploader(field) {
+            const container = Utils.domUtils.createElement('div', { className: 'audio-uploader' });
+            const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'audio/*' });
+            const statusDiv = Utils.domUtils.createElement('div', { className: 'upload-status' });
+            statusDiv.textContent = field.value ? `当前文件: ${field.value}` : '未选择文件';
+            statusDiv.style.marginTop = '0.5rem';
+            statusDiv.style.fontSize = '0.8rem';
+            statusDiv.style.color = 'var(--text-muted)';
+            
+            const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
+
+            container.appendChild(fileInput);
+            container.appendChild(statusDiv);
+            container.appendChild(hiddenInput);
+            return container;
+        },
+
+        getFormData(form) {
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            form.querySelectorAll('.image-uploader, .audio-uploader').forEach(uploader => {
+                const hiddenInput = uploader.querySelector('input[type="hidden"]');
+                if (hiddenInput) {
+                    data[hiddenInput.name] = hiddenInput.value;
+                }
+            });
+
+            form.querySelectorAll('.key-value-editor').forEach(editor => {
+                const name = editor.dataset.name;
+                const items = [];
+                editor.querySelectorAll('.key-value-item').forEach(item => {
+                    const text = item.querySelector('[data-key="text"]').value;
+                    const url = item.querySelector('[data-key="url"]').value;
+                    const type = item.querySelector('[data-key="type"]').value;
+                    if (text && url) {
+                        items.push({ text, url, type });
+                    }
+                });
+                data[name] = JSON.stringify(items);
             });
             
             return data;
@@ -743,6 +936,26 @@ style.textContent = `
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    .key-value-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .key-value-inputs {
+        display: flex;
+        flex-grow: 1;
+        gap: 0.5rem;
+    }
+
+    .key-value-inputs .form-control {
+        flex: 1;
+    }
+    .image-preview.no-image {
+        display: none;
     }
 `;
 document.head.appendChild(style);

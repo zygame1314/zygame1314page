@@ -611,11 +611,11 @@ class AdminSystem {
             },
             {
                 name: 'path',
-                label: '音频文件路径',
-                type: 'text',
+                label: '音频文件',
+                type: 'audio-upload',
                 required: true,
                 value: song?.path || '',
-                placeholder: '/music/song.mp3'
+                help: '上传或修改音频文件。'
             },
             {
                 name: 'cover',
@@ -777,6 +777,7 @@ class AdminSystem {
                         <button class="btn btn-sm btn-danger delete-project" data-id="${project.id}">
                             <i class="fas fa-trash"></i> 删除
                         </button>
+                        ${(project.actions || []).map(action => `<a href="${action.url}" target="_blank" class="btn btn-sm">${action.text}</a>`).join('')}
                         ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="btn btn-sm">
                             <i class="fab fa-github"></i> GitHub
                         </a>` : ''}
@@ -867,6 +868,12 @@ class AdminSystem {
                     { value: 'open-source', label: '开源项目' },
                     { value: 'commercial', label: '商业项目' }
                 ]
+            },
+            {
+                name: 'actions',
+                label: '操作按钮',
+                type: 'key-value-editor',
+                value: project?.actions || []
             }
         ];
         const form = Components.formBuilder.create(fields);
@@ -882,10 +889,27 @@ class AdminSystem {
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
-                        if (isEdit) {
-                            await api.projects.update(result.data);
+                        const projectData = result.data;
+                        if (projectData.actions) {
+                            try {
+                                const actions = JSON.parse(projectData.actions);
+                                if (!Array.isArray(actions) || actions.length === 0) {
+                                    Components.notification.error('必须至少包含一个操作按钮。');
+                                    return;
+                                }
+                                projectData.actions = actions;
+                            } catch (e) {
+                                Components.notification.error('操作按钮数据格式无效。');
+                                return;
+                            }
                         } else {
-                            await api.projects.add(result.data);
+                            projectData.actions = [];
+                        }
+
+                        if (isEdit) {
+                            await api.projects.update(projectData);
+                        } else {
+                            await api.projects.add(projectData);
                         }
                         Components.modal.hide();
                         Components.notification.success(isEdit ? '项目已更新' : '项目已添加');
@@ -1452,7 +1476,7 @@ class AdminSystem {
                 { type: 'divider', label: '图片设置' },
                 { name: 'imageUrl', label: '图片', type: 'image-upload', value: notice?.image?.url || '', uploadContext: 'notices' },
                 { name: 'imageAlt', label: '图片描述', type: 'text', value: notice?.image?.alt || '' },
-                { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'center', options: [{value: 'left', label: '左'}, {value: 'right', label: '右'}, {value: 'center', label: '中'}] },
+                { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'top', options: [{value: 'top', label: '上'}, {value: 'bottom', label: '下'}, {value: 'left', label: '左'}, {value: 'right', label: '右'}] },
                 { name: 'imageWidth', label: '图片宽度', type: 'text', value: notice?.image?.width || '', placeholder: '例如: 100px 或 50%' },
                 { name: 'imageHeight', label: '图片高度', type: 'text', value: notice?.image?.height || '', placeholder: '例如: 100px 或 auto' },
 
