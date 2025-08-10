@@ -28,6 +28,14 @@ export default defineConfig({
         {
           src: 'js/lib',
           dest: 'js'
+        },
+        {
+          src: 'css/lib',
+          dest: 'css'
+        },
+        {
+          src: 'articles',
+          dest: ''
         }
       ]
     })

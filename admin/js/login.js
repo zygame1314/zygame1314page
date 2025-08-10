@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (result.success && result.token) {
                 localStorage.setItem('authToken', result.token);
-                window.location.href = 'index.html';
+                window.location.href = '/admin/index.html';
             } else {
                 throw new Error('无效的响应');
             }
