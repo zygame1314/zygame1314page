@@ -12,8 +12,7 @@
 │  │  ├─ components.js
 │  │  ├─ login.js
 │  │  └─ utils.js
-│  ├─ login.html
-│  └─ test.html
+│  └─ login.html
 ├─ articles
 │  └─ content
 │     ├─ activation-code-mechanism.html
@@ -86,6 +85,7 @@
 │  │  ├─ has-voted.js
 │  │  ├─ poll-results.js
 │  │  └─ vote.js
+│  ├─ upload-audio.js
 │  ├─ upload-image.js
 │  ├─ utils.js
 │  ├─ weather
@@ -134,8 +134,11 @@
 │  ├─ typingEffect.js
 │  ├─ weather-effects.js
 │  └─ weatherWidget.js
+├─ package-lock.json
+├─ package.json
 ├─ robots.txt
 ├─ sitemap.xml
+├─ vite.config.js
 └─ zpix.woff2
 
 ```

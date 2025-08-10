@@ -1,31 +1,10 @@
-name: Generate Sitemap
-
-on:
-  push:
-    branches:
-      - main # 如果主分支不是 main，修改这里
-
-jobs:
-  generate_sitemap:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # 允许 action 提交更改
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20' # 根据需要调整 Node.js 版本
-
       - name: Create sitemap generation script
         run: |
           mkdir -p .github/scripts
           cat << 'EOF' > .github/scripts/generate-sitemap.js
-          const fs = require('fs');
-          const path = require('path');
+          // 将 require 改为 import
+          import fs from 'fs';
+          import path from 'path';
 
           const BASE_URL = process.env.BASE_URL;
           if (!BASE_URL) {
@@ -91,13 +70,3 @@ jobs:
         run: node .github/scripts/generate-sitemap.js
         env:
           BASE_URL: ${{ secrets.SITE_BASE_URL }}
-
-      - name: Commit sitemap
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "docs: 自动生成 sitemap.xml"
-          file_pattern: sitemap.xml # 确保只提交 sitemap.xml
-          commit_user_name: GitHub Actions Bot # 可选
-          commit_user_email: actions@github.com # 可选
-          commit_author: GitHub Actions Bot <actions@github.com> # 可选
-
