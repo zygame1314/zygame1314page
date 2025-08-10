@@ -8,11 +8,11 @@ export async function onRequestGet(context) {
     try {
         if (id) {
             const { results } = await env.DB.prepare(`
-                SELECT id, title, content, created_at as createdAt, updated_at as updatedAt, tags, category
+                SELECT id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants, contentUrl
                 FROM articles WHERE id = ?
             `).bind(id).all();
             
-            const article = results;
+            const article = results[0];
             if (!article) {
                 return new Response(JSON.stringify({ error: 'Article not found' }), { status: 404 });
             }
@@ -29,9 +29,9 @@ export async function onRequestGet(context) {
             const total = countResults[0].total;
 
             const { results } = await env.DB.prepare(`
-                SELECT id, title, created_at as createdAt, updated_at as updatedAt, tags, category
+                SELECT id, title, date, excerpt, thumbnail, tags
                 FROM articles
-                ORDER BY created_at DESC
+                ORDER BY date DESC
                 LIMIT ? OFFSET ?
             `).bind(limit, offset).all();
             
@@ -56,17 +56,17 @@ export async function onRequestPost(context) {
     
     const { env, request } = context;
     try {
-        const { title, content, tags, category } = await request.json();
-        if (!title || !content) {
-            return new Response(JSON.stringify({ error: 'Title and content are required' }), { status: 400 });
+        const { id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants } = await request.json();
+        if (!id || !title || !date || !contentUrl) {
+            return new Response(JSON.stringify({ error: 'ID, title, date, and contentUrl are required' }), { status: 400 });
         }
 
-        const { meta } = await env.DB.prepare(`
-            INSERT INTO articles (title, content, tags, category)
-            VALUES (?, ?, ?, ?)
-        `).bind(title, content, tags, category).run();
+        await env.DB.prepare(`
+            INSERT INTO articles (id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants).run();
 
-        return new Response(JSON.stringify({ success: true, id: meta.last_row_id }), { status: 201 });
+        return new Response(JSON.stringify({ success: true, id: id }), { status: 201 });
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
@@ -78,16 +78,16 @@ export async function onRequestPut(context) {
 
     const { env, request } = context;
     try {
-        const { id, title, content, tags, category } = await request.json();
-        if (!id || !title || !content) {
-            return new Response(JSON.stringify({ error: 'ID, title, and content are required' }), { status: 400 });
+        const { id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants } = await request.json();
+        if (!id || !title || !date || !contentUrl) {
+            return new Response(JSON.stringify({ error: 'ID, title, date, and contentUrl are required' }), { status: 400 });
         }
 
         const { meta } = await env.DB.prepare(`
-            UPDATE articles 
-            SET title = ?, content = ?, tags = ?, category = ?, updated_at = CURRENT_TIMESTAMP
+            UPDATE articles
+            SET title = ?, date = ?, excerpt = ?, thumbnail = ?, contentUrl = ?, tags = ?, aiAssistants = ?
             WHERE id = ?
-        `).bind(title, content, tags, category, id).run();
+        `).bind(title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants, id).run();
 
         if (meta.changes === 0) {
             return new Response(JSON.stringify({ error: 'Article not found or no changes made' }), { status: 404 });

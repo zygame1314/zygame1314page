@@ -1278,18 +1278,18 @@ class AdminSystem {
         container.innerHTML = '';
         articles.forEach(article => {
             const articleCard = Utils.domUtils.createElement('div', {
-                className: 'project-card'
+                className: 'article-card'
             });
             articleCard.innerHTML = `
-                <div class="project-content">
-                    <div class="project-title">${article.title}</div>
-                    <div class="project-meta" style="margin: 1rem 0; color: var(--text-muted); font-size: 0.875rem;">
-                        <span><i class="fas fa-calendar-alt"></i> 创建于: ${Utils.formatDate(article.createdAt)}</span>
-                        <span style="margin-left: 1rem;"><i class="fas fa-sync-alt"></i> 更新于: ${Utils.formatDate(article.updatedAt)}</span>
-                        ${article.category ? `<span style="margin-left: 1rem;"><i class="fas fa-folder"></i> ${article.category}</span>` : ''}
-                        ${article.tags ? `<span style="margin-left: 1rem;"><i class="fas fa-tags"></i> ${article.tags}</span>` : ''}
+                ${article.thumbnail ? `<div class="article-thumbnail" style="background-image: url('${article.thumbnail}')"></div>` : ''}
+                <div class="article-content">
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-excerpt">${article.excerpt || '暂无摘要'}</div>
+                    <div class="article-meta">
+                        <span><i class="fas fa-calendar-alt"></i> ${Utils.formatDate(article.date)}</span>
+                        ${article.tags ? `<span><i class="fas fa-tags"></i> ${article.tags}</span>` : ''}
                     </div>
-                    <div class="project-actions">
+                    <div class="article-actions">
                         <button class="btn btn-sm edit-article" data-id="${article.id}">
                             <i class="fas fa-edit"></i> 编辑
                         </button>
@@ -1460,10 +1460,14 @@ class AdminSystem {
         const isEdit = !!article;
         const title = isEdit ? '编辑文章' : '添加新文章';
         const fields = [
+            { name: 'id', label: 'ID (Slug)', type: 'text', required: true, value: article?.id || '', placeholder: 'e.g., my-first-article', readonly: isEdit, help: '文章的唯一标识符，通常是URL的一部分。创建后不可修改。' },
             { name: 'title', label: '标题', type: 'text', required: true, value: article?.title || '' },
-            { name: 'category', label: '分类', type: 'text', value: article?.category || '' },
+            { name: 'date', label: '发布日期', type: 'date', required: true, value: article ? Utils.formatDate(article.date, 'YYYY-MM-DD') : Utils.formatDate(new Date(), 'YYYY-MM-DD') },
+            { name: 'contentUrl', label: '内容文件URL', type: 'text', required: true, value: article?.contentUrl || '', placeholder: '/articles/my-first-article.md', help: '指向Markdown文件的路径。' },
+            { name: 'excerpt', label: '摘要', type: 'textarea', value: article?.excerpt || '', rows: 3 },
+            { name: 'thumbnail', label: '缩略图URL', type: 'text', value: article?.thumbnail || '', placeholder: '/images/thumbnails/my-first-article.png' },
             { name: 'tags', label: '标签', type: 'text', value: article?.tags || '', help: '用逗号分隔' },
-            { name: 'content', label: '内容 (Markdown)', type: 'textarea', required: true, value: article?.content || '', rows: 15 }
+            { name: 'aiAssistants', label: 'AI助手', type: 'text', value: article?.aiAssistants || '', placeholder: 'e.g., ChatGPT, Copilot', help: '用逗号分隔使用了的AI助手' }
         ];
         const form = Components.formBuilder.create(fields);
         Components.modal.show(title, form.outerHTML, {
@@ -1471,15 +1475,19 @@ class AdminSystem {
             onSave: async () => {
                 const modalForm = document.querySelector('#modal form');
                 const validationRules = {
+                    id: [Utils.validation.rules.required],
                     title: [Utils.validation.rules.required],
-                    content: [Utils.validation.rules.required]
+                    date: [Utils.validation.rules.required],
+                    contentUrl: [Utils.validation.rules.required]
                 };
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
                         const articleData = { ...result.data };
+                        articleData.tags = articleData.tags.split(',').map(t => t.trim()).join(',');
+                        articleData.aiAssistants = articleData.aiAssistants.split(',').map(t => t.trim()).join(',');
+
                         if (isEdit) {
-                            articleData.id = article.id;
                             await api.articles.update(articleData);
                         } else {
                             await api.articles.add(articleData);
@@ -1493,6 +1501,11 @@ class AdminSystem {
                 }
             }
         });
+        
+        if (article?.excerpt) {
+            const excerptTextarea = document.querySelector('#modal textarea[name="excerpt"]');
+            if (excerptTextarea) excerptTextarea.value = article.excerpt;
+        }
     }
     async editArticle(id) {
         const cachedArticles = this.cache.get('articles');

@@ -1358,7 +1358,6 @@ body {
     transform: translateX(21px);
 }
 
-/* Collapsed Sidebar Styles */
 .sidebar.collapsed .nav-link span,
 .sidebar.collapsed .brand h2,
 .sidebar.collapsed .user-details,
@@ -1393,7 +1392,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999; /* Below sidebar (1000), above everything else */
+    z-index: 999;
     display: none;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -1402,4 +1401,74 @@ body {
 .sidebar-overlay.show {
     display: block;
     opacity: 1;
+}
+
+.article-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.article-thumbnail {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--bg-color);
+    flex-shrink: 0;
+}
+
+.article-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.article-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.article-excerpt {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.article-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.article-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
 }
