@@ -7,7 +7,6 @@ export async function onRequestGet(context) {
 
     try {
         if (id) {
-            // Get a single article
             const { results } = await env.DB.prepare(`
                 SELECT id, title, content, created_at as createdAt, updated_at as updatedAt, tags, category
                 FROM articles WHERE id = ?
@@ -20,7 +19,6 @@ export async function onRequestGet(context) {
             return new Response(JSON.stringify(article));
 
         } else {
-            // Get a list of articles with pagination
             const page = parseInt(url.searchParams.get('page')) || 1;
             const limit = parseInt(url.searchParams.get('limit')) || 10;
             const offset = (page - 1) * limit;
@@ -28,7 +26,7 @@ export async function onRequestGet(context) {
             const { results: countResults } = await env.DB.prepare(`
                 SELECT COUNT(*) as total FROM articles
             `).all();
-            const total = countResults.total;
+            const total = countResults[0].total;
 
             const { results } = await env.DB.prepare(`
                 SELECT id, title, created_at as createdAt, updated_at as updatedAt, tags, category

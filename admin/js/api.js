@@ -122,12 +122,8 @@ class API {
             return this.get('/getdata/projects', { page, limit });
         },
 
-        save: async (project) => {
-            if (project.id && typeof project.id === 'string' && project.id.trim()) {
-                return this.put('/getdata/projects', project);
-            } else {
-                return this.post('/getdata/projects', project);
-            }
+        add: async (project) => {
+            return this.post('/getdata/projects', project);
         },
 
         update: async (project) => {
@@ -265,54 +261,32 @@ class API {
     };
 
     articles = {
-        getList: async () => {
-            try {
-                const data = await this.get('/article/list');
-                return {
-                    articles: Array.isArray(data) ? data : []
-                };
-            
-                articles = {
-                    getList: async (page = 1, limit = 10) => {
-                        return this.get('/getdata/articles', { page, limit });
-                    },
-            
-                    getById: async (id) => {
-                        return this.get('/getdata/articles', { id });
-                    },
-            
-                    add: async (article) => {
-                        return this.post('/getdata/articles', article);
-                    },
-            
-                    update: async (article) => {
-                        return this.put('/getdata/articles', article);
-                    },
-            
-                    delete: async (id) => {
-                        return this.delete('/getdata/articles', { id });
-                    }
-                };
-            } catch (error) {
-                console.error('Failed to get articles:', error);
-                return { articles: [] };
-            }
+        getList: async (page = 1, limit = 10) => {
+            return this.get('/getdata/articles', { page, limit });
+        },
+
+        getById: async (id) => {
+            return this.get('/getdata/articles', { id });
+        },
+
+        add: async (article) => {
+            return this.post('/getdata/articles', article);
+        },
+
+        update: async (article) => {
+            return this.put('/getdata/articles', article);
+        },
+
+        delete: async (id) => {
+            return this.delete('/getdata/articles', { id });
+        },
+
+        getPublicList: async () => {
+            return this.get('/article/list');
         },
 
         getSummary: async (articleId) => {
             return this.get('/article/summarize', { id: articleId });
-        },
-
-        add: async (article) => {
-            return this.post('/article/add', article);
-        },
-
-        update: async (article) => {
-            return this.put('/article/update', article);
-        },
-
-        delete: async (id) => {
-            return this.delete('/article/delete', { id });
         }
     };
 

@@ -278,35 +278,6 @@ body {
     gap: 1rem;
 }
 
-.notification-bell {
-    position: relative;
-    padding: 0.5rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.notification-bell:hover {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-}
-
-.notification-count {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: var(--danger-color);
-    color: white;
-    font-size: 0.75rem;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-}
 
 .quick-actions {
     display: flex;
@@ -1233,35 +1204,6 @@ body {
     color: var(--primary-color);
 }
 
-.settings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 1.5rem;
-}
-
-.settings-card {
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-}
-
-.settings-card .card-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.settings-card .card-header h3 {
-    margin: 0;
-    color: var(--text-primary);
-    font-size: 1.125rem;
-    font-weight: 600;
-}
-
-.settings-card .card-content {
-    padding: 1.5rem;
-}
 
 .timeline-container {
     padding: 1.5rem;

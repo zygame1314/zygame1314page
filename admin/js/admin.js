@@ -157,7 +157,6 @@ class AdminSystem {
             timeline: '时间线管理',
             'important-notices': '重要公告管理',
             articles: '文章管理',
-            settings: '系统设置'
         };
         return titles[section] || section;
     }
@@ -192,9 +191,6 @@ class AdminSystem {
                 break;
             case 'important-notices':
                 await this.loadImportantNotices();
-                break;
-            case 'settings':
-                await this.loadSettings();
                 break;
         }
     }
@@ -852,7 +848,11 @@ class AdminSystem {
                 const result = Components.formBuilder.validate(modalForm, validationRules);
                 if (result.isValid) {
                     try {
-                        await api.projects.save(result.data);
+                        if (isEdit) {
+                            await api.projects.update(result.data);
+                        } else {
+                            await api.projects.add(result.data);
+                        }
                         Components.modal.hide();
                         Components.notification.success(isEdit ? '项目已更新' : '项目已添加');
                         await this.loadProjects();
@@ -926,7 +926,7 @@ class AdminSystem {
                         <button class="action-btn edit edit-notice" title="编辑" data-id="${notice.id}">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="action-btn delete delete-notice" title="删除" data-index="${index}">
+                        <button class="action-btn delete delete-notice" title="删除" data-id="${notice.id}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -1530,9 +1530,6 @@ class AdminSystem {
                 }
             }
         );
-    }
-    async loadSettings() {
-        Components.notification.info('设置功能开发中');
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
