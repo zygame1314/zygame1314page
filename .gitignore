@@ -1,0 +1,11 @@
+# Dependencies
+/node_modules
+
+# Build artifacts
+/dist
+
+# Vite
+.vite/
+
+# IDE
+.vscode/
