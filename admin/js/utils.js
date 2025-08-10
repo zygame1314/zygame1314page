@@ -123,6 +123,12 @@ class Utils {
         window.history.pushState({}, '', url);
     }
 
+    static removeUrlParam(name) {
+        const url = new URL(window.location);
+        url.searchParams.delete(name);
+        window.history.pushState({}, '', url);
+    }
+
     static async copyToClipboard(text) {
         try {
             await navigator.clipboard.writeText(text);

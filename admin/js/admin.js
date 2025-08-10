@@ -3,6 +3,7 @@ class AdminSystem {
         this.currentSection = 'dashboard';
         this.cache = new Map();
         this.searchHandlers = new Map();
+        this.filterHandlers = new Map();
         this.donationsCache = [];
         this.musicCache = [];
         this.projectsCache = [];
@@ -347,10 +348,14 @@ class AdminSystem {
             this.searchHandlers.set('donation', searchHandler);
         }
         const platformFilter = document.getElementById('platformFilter');
-        platformFilter?.addEventListener('change', async (e) => {
-            const platform = e.target.value;
-            await this.filterDonationsByPlatform(platform);
-        });
+        if (platformFilter && !this.filterHandlers.has('donation_platform')) {
+            const filterHandler = async (e) => {
+                const platform = e.target.value;
+                await this.filterDonationsByPlatform(platform);
+            };
+            platformFilter.addEventListener('change', filterHandler);
+            this.filterHandlers.set('donation_platform', filterHandler);
+        }
         document.querySelectorAll('.action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
