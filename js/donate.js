@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 document.addEventListener('DOMContentLoaded', function () {
     var donateButton = document.getElementById('donate-button');
     var donateModal = document.getElementById('donate-modal');

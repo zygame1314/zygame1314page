@@ -1,4 +1,5 @@
-function initGamesFetch() {
+import { API_BASE } from './config.js';
+export function initGamesFetch() {
     const gamesListElem = document.querySelector('.games-list');
 
     async function fetchPopularGames() {

@@ -9,6 +9,13 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         admin: resolve(__dirname, 'admin/index.html'),
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
+      }
     },
   },
   plugins: [
@@ -17,6 +24,10 @@ export default defineConfig({
         {
           src: 'functions',
           dest: ''
+        },
+        {
+          src: 'js/lib',
+          dest: 'js'
         }
       ]
     })

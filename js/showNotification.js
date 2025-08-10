@@ -1,4 +1,4 @@
-function showNotification(message, duration, type) {
+export function showNotification(message, duration, type) {
     const container = document.getElementById('notification-container');
 
     const notification = document.createElement('div');
@@ -65,6 +65,6 @@ function showNotification(message, duration, type) {
     });
 }
 
-function closeNotification(notification) {
+export function closeNotification(notification) {
     notification.classList.add('exit');
 }

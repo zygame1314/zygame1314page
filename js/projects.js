@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 1;
     let totalPages = 1;

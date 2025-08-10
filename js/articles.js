@@ -1,4 +1,8 @@
 import { init } from '/js/lib/waline.js';
+import { API_BASE } from './config.js';
+import { showNotification } from './showNotification.js';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 
 if (!document.querySelector('link[href*="@waline"]')) {
     document.head.insertAdjacentHTML('beforeend',
@@ -612,8 +616,14 @@ class ArticlesManager {
     async loadLanguage(language) {
         if (!hljs.getLanguage(language)) {
             try {
-                await import(`https://cdn.jsdmirror.com/gh/highlightjs/cdn-release@latest/build/languages/${language}.min.js`);
-                return true;
+                const languages = import.meta.glob('/node_modules/highlight.js/es/languages/*.js');
+                const langPath = `/node_modules/highlight.js/es/languages/${language}.js`;
+                if (languages[langPath]) {
+                    const langModule = await languages[langPath]();
+                    hljs.registerLanguage(language, langModule.default);
+                    return true;
+                }
+                return false;
             } catch (error) {
                 console.warn(`语言包 ${language} 加载失败:`, error);
                 return false;

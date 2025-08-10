@@ -1,4 +1,4 @@
-function initParallax() {
+export function initParallax() {
     const header = document.querySelector('header');
 
     function handleScroll() {

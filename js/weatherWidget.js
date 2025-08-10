@@ -1,4 +1,7 @@
-function initWeatherWidget() {
+import { showNotification } from './showNotification.js';
+import { API_BASE } from './config.js';
+import { WeatherEffects } from './weather-effects.js';
+export function initWeatherWidget() {
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
     const DEFAULT_ICON_URL = 'https://openweathermap.org/img/wn/01d@2x.png';

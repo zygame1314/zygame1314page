@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 class SiteStatus {
     constructor() {
         this.statusHistory = [];

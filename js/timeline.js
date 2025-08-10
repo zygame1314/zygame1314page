@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 let allMilestones = [];
 let currentPage = 1;
 let totalPages = 1;

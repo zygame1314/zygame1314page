@@ -1,4 +1,6 @@
-class WeatherEffects {
+import { initClouds } from './clouds.js';
+
+export class WeatherEffects {
     constructor() {
         if (window.innerWidth < 1200) {
             this.disabled = true;

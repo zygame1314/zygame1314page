@@ -1,3 +1,4 @@
+import { showNotification } from './showNotification.js';
 const pageUrl = window.location.pathname;
 document.getElementById('visit-count').addEventListener('click', function () {
     showNotification('经验 + 3 ♪(´▽｀)', 3, 'success');

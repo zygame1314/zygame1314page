@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.zygame1314.site';
+import { API_BASE } from './config.js';
 document.addEventListener('DOMContentLoaded', function () {
     window.loadingComplete.then(() => {
         if (window.location.pathname === '/' || window.location.pathname === '/index.html') {

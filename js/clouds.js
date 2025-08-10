@@ -1,4 +1,4 @@
-function initClouds(count = 15) {
+export function initClouds(count = 15) {
     const cloudContainer = document.querySelector('.cloud-container');
     const cloudImages = [
         'https://bucket.zygame1314.site/static/images/cloud-image1.webp',

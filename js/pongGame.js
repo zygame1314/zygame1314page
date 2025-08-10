@@ -1,4 +1,4 @@
-function initPongGame() {
+export function initPongGame() {
     if (window.innerWidth < 1200) {
         return;
     }

@@ -1,3 +1,4 @@
+import { showNotification } from './showNotification.js';
 (function() {
     let devToolsOpen = false;
     let smallScreenWarningShown = false;

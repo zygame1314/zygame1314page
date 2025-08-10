@@ -1,4 +1,4 @@
-function initCursorTrail() {
+export function initCursorTrail() {
     const cursorTrail = document.createElement('div');
     cursorTrail.classList.add('cursor-trail');
     document.body.appendChild(cursorTrail);

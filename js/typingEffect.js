@@ -1,4 +1,4 @@
-function initTypingEffect() {
+export function initTypingEffect() {
     const tagline = document.querySelector('.typing-effect');
     const text = tagline.textContent.replace('\\n', '\n');
     tagline.textContent = '';

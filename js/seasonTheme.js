@@ -1,3 +1,4 @@
+import { showNotification } from './showNotification.js';
 const GREETINGS = {
     spring: "您的春日好运正在派件，请注意查收<br>（打工人的DNA动了）🌸<br>戳我查看春日限定皮肤→",
     summer: "空调WIFI冰西瓜，葛优同款沙发 ☀️<br>温馨提示：本季节容易触发『汗蒸模式』🫠",

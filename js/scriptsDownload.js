@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 document.addEventListener('DOMContentLoaded', function () {
     const scriptsListContainer = document.querySelector('.scripts-list');
     const refreshButton = document.getElementById('refreshScripts');

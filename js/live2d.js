@@ -1,3 +1,4 @@
+import { showNotification } from './showNotification.js';
 let app;
 let currentModel;
 const modelBasePath = 'https://bucket.zygame1314.site/static/live2d/';

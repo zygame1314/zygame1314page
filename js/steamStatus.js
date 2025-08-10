@@ -1,3 +1,4 @@
+import { API_BASE } from './config.js';
 function initSteamStatus() {
     let updateInterval = null;
     let userLastActive = Date.now();
