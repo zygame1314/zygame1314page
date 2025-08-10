@@ -44,7 +44,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .article-card:hover {
@@ -185,7 +185,7 @@
 }
 
 .filter-tag {
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     padding: 4px 12px;
     background: rgba(26, 26, 26, 0.9);
     border: 1px solid var(--primary-color);
@@ -243,7 +243,7 @@
     color: var(--primary-color);
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
     font-family: zpix;
     font-size: 1rem;
@@ -423,7 +423,7 @@
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
     transition: all 0.15s ease;
-    cursor: url('/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/kushala text select.cur'), auto;
 }
 
 .search-input:focus {
@@ -509,7 +509,7 @@
     background: none;
     border: none;
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     padding: 4px;
     transition: all 0.15s ease;
 }
@@ -531,7 +531,7 @@
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
     font-size: 0.8rem;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     clip-path: polygon(0 2px, 2px 0,
             calc(100% - 2px) 0, 100% 2px,
             100% calc(100% - 2px), calc(100% - 2px) 100%,
@@ -556,7 +556,7 @@
     border: 2px solid var(--primary-color);
     flex-shrink: 0;
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     font-family: zpix;
     box-shadow: 4px 4px 0 var(--primary-color);
     transition: all 0.15s ease;
@@ -587,7 +587,7 @@
     border: 2px solid var(--primary-color);
     flex-shrink: 0;
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     font-family: zpix;
     box-shadow: 4px 4px 0 var(--primary-color);
     transition: all 0.15s ease;

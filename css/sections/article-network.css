@@ -14,7 +14,7 @@
     background: #1d1d1d;
     border: none;
     color: white;
-    cursor: url('/images/cursors/Rath pointer.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath pointer.cur'), auto;
     font-family: 'zpix';
     font-size: 15px;
     box-shadow:
@@ -188,7 +188,7 @@
     background: #1d1d1d;
     border: none;
     color: white;
-    cursor: url('/images/cursors/black diablos diagnal resize II.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/black diablos diagnal resize II.cur'), auto;
     font-family: 'zpix';
     z-index: 2;
     padding: 0 8px;
@@ -266,7 +266,7 @@
     height: 32px;
     background: #1d1d1d;
     border: none;
-    cursor: url('/images/cursors/Rath pointer.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath pointer.cur'), auto;
     z-index: 1001;
     box-shadow:
         inset -2px -2px 0 0 #000,

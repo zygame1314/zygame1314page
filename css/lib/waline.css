@@ -81,7 +81,7 @@
     color: var(--waline-theme-color);
     text-decoration: none;
     word-break: break-word;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 [data-waline] a:hover {
@@ -179,7 +179,7 @@
     line-height: 1.5;
     text-align: center;
     white-space: nowrap;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     user-select: none;
     touch-action: manipulation;
     transition-duration: .4s
@@ -195,7 +195,7 @@
     border-color: var(--waline-border-color);
     background: var(--waline-disable-bg-color);
     color: var(--waline-disable-color);
-    cursor: url('/images/cursors/Rado Unavailable.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rado Unavailable.cur'), auto;
 }
 
 .wl-btn.primary {
@@ -215,7 +215,7 @@
     border-color: var(--waline-border-color);
     background: var(--waline-disable-bg-color);
     color: var(--waline-disable-color);
-    cursor: url('/images/cursors/Rado Unavailable.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rado Unavailable.cur'), auto;
 }
 
 .wl-loading {
@@ -239,7 +239,7 @@
     border: none;
     background: rgba(0, 0, 0, 0);
     line-height: 1;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-login-info {
@@ -263,7 +263,7 @@
     background: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     line-height: 0;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transform: scale(1);
     transition: all 0.25s ease;
 }
@@ -355,7 +355,7 @@
     padding: .5em;
     background: rgba(0, 0, 0, 0);
     font-size: .625em;
-    cursor: url('/images/cursors/kushala text select.cur'), auto
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/kushala text select.cur'), auto
 }
 
 .wl-header-item {
@@ -405,7 +405,7 @@
     background: rgba(0, 0, 0, 0);
     font-size: .875em;
     font-family: "zpix";
-    cursor: url('/images/cursors/kushala text select.cur'), auto
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/kushala text select.cur'), auto
 }
 
 .wl-editor,
@@ -473,7 +473,7 @@
     background: rgba(0, 0, 0, 0);
     color: var(--waline-color);
     font-size: 16px;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-action:hover {
@@ -550,7 +550,7 @@
     font-size: inherit;
     line-height: 2;
     text-align: center;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-emoji-popup button:hover {
@@ -674,7 +674,7 @@
     border-width: 2px;
     border-style: solid;
     border-color: #fff;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-gif-popup img:hover {
@@ -882,7 +882,7 @@ z .wl-cards .wl-user .verified-icon {
     background: rgba(0, 0, 0, 0);
     color: var(--waline-color);
     line-height: 1;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transition: color .2s ease
 }
 
@@ -912,7 +912,7 @@ z .wl-cards .wl-user .verified-icon {
 .wl-card .wl-content.expand {
     overflow: hidden;
     max-height: 8em;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-card .wl-content.expand::before {
@@ -1071,7 +1071,7 @@ z .wl-cards .wl-user .verified-icon {
     display: inline-block;
     color: var(--waline-info-color);
     font-size: .75em;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-sort li.active {
@@ -1124,7 +1124,7 @@ z .wl-cards .wl-user .verified-icon {
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
 .wl-reaction-item:hover img,
@@ -1299,7 +1299,7 @@ z .wl-cards .wl-user .verified-icon {
 }
 
 .wl-content .token.entity {
-    cursor: url('/images/cursors/jag help elect.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/jag help elect.cur'), auto;
 }
 
 .wl-content .token.inserted {

@@ -184,7 +184,7 @@
 
 .uptime-chart svg circle {
     transition: all 0.3s ease;
-    cursor: url('/images/cursors/jag help select.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/jag help select.cur'), auto;
     r: 3;
 }
 
@@ -220,7 +220,7 @@
     border-radius: 0;
     font-size: 0.8rem;
     font-family: 'zpix';
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transition: background-color 0.1s linear, border-color 0.1s linear;
     image-rendering: pixelated;
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);

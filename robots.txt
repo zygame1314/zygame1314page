@@ -8,7 +8,7 @@ Allow: /
 Allow: /articles/
 Allow: /css/
 Allow: /js/
-Allow: /images/
+Allow: https://bucket.zygame1314.site/static/images/
 
 # 禁止访问后端功能目录
 Disallow: /functions/

@@ -1,9 +1,9 @@
 function initClouds(count = 15) {
     const cloudContainer = document.querySelector('.cloud-container');
     const cloudImages = [
-        '/images/cloud-image1.webp',
-        '/images/cloud-image2.webp',
-        '/images/cloud-image3.webp'
+        'https://bucket.zygame1314.site/static/images/cloud-image1.webp',
+        'https://bucket.zygame1314.site/static/images/cloud-image2.webp',
+        'https://bucket.zygame1314.site/static/images/cloud-image3.webp'
     ];
 
     const verticalSections = 4;

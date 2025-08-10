@@ -26,7 +26,7 @@
 
 .slider {
     position: absolute;
-    cursor: url('/images/cursors/Rathian and Rathalos Alternate select.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rathian and Rathalos Alternate select.cur'), auto;
     top: 0;
     left: 0;
     right: 0;
@@ -76,5 +76,5 @@ input:active+.slider:before {
 }
 
 .setting-item label:first-child {
-    cursor: url('/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/kushala text select.cur'), auto;
 }

@@ -27,7 +27,7 @@
     background: none;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
     font-size: 16px;
     padding: 8px 12px;
@@ -97,7 +97,7 @@
     height: 8px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
 }
 
@@ -155,7 +155,7 @@
 
 .volume-icon {
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
 }
 
@@ -163,7 +163,7 @@
     flex: 1;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
     position: relative;
 }
@@ -195,7 +195,7 @@
 
 .playlist li {
     padding: 8px 12px;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s ease-in-out,
@@ -221,7 +221,7 @@
     background: none;
     border: none;
     color: var(--primary-color);
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     ;
     padding: 5px;
 }

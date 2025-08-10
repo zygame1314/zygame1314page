@@ -33,19 +33,19 @@ function initGamesFetch() {
                 gameImage.setAttribute('data-src', game.background_image);
                 gameImage.classList.add('fixed-ratio');
             } else {
-                gameImage.setAttribute('data-src', '/images/default-game-cover.webp');
+                gameImage.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-game-cover.webp');
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
 
             gameImage.onerror = function () {
-                if (this.getAttribute('data-src') === '/images/default-game-cover.webp') {
+                if (this.getAttribute('data-src') === 'https://bucket.zygame1314.site/static/images/default-game-cover.webp') {
                     this.classList.add('default-cover');
                     return;
                 }
 
                 console.log(`图片加载失败，切换到默认封面: ${this.getAttribute('data-src')}`);
-                this.setAttribute('data-src', '/images/default-game-cover.webp');
+                this.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-game-cover.webp');
                 this.classList.add('default-cover');
 
                 const newSrc = this.getAttribute('data-src');
@@ -212,7 +212,7 @@ function initGamesFetch() {
                     }
                 }
                 else if (currentSrc.includes('library_600x900.jpg')) {
-                    const defaultSrc = '/images/default-game-cover.webp';
+                    const defaultSrc = 'https://bucket.zygame1314.site/static/images/default-game-cover.webp';
                     this.setAttribute('data-src', defaultSrc);
                     this.classList.add('default-cover');
 
@@ -220,7 +220,7 @@ function initGamesFetch() {
                         window.reloadLazyImage(this);
                     }
                 }
-                else if (currentSrc === '/images/default-game-cover.webp') {
+                else if (currentSrc === 'https://bucket.zygame1314.site/static/images/default-game-cover.webp') {
                     this.classList.remove('lazy-placeholder');
                     this.classList.add('lazy-error');
                 }

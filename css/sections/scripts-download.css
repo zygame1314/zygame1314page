@@ -91,7 +91,7 @@
     border: none;
     color: var(--primary-color);
     font-size: 0.9rem;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transition: all 0.3s ease;
     margin-left: 0.5rem;
 }
@@ -135,7 +135,7 @@
 
 .scripts-search {
     font-family: 'zpix';
-    cursor: url('/images/cursors/kushala text select.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/kushala text select.cur'), auto;
     padding: 0.5rem;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid var(--primary-color);

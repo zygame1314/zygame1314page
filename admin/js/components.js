@@ -436,6 +436,10 @@ class Components {
                             input.appendChild(optionEl);
                         });
                         break;
+                    case 'image-upload':
+                        const uploaderContainer = this.createImageUploader(field);
+                        formGroup.appendChild(uploaderContainer);
+                        break;
                     case 'file':
                         input = Utils.domUtils.createElement('input', {
                             type: 'file',
@@ -464,11 +468,12 @@ class Components {
                         break;
                 }
 
-                if (field.required) {
-                    input.required = true;
+                if (input) {
+                    if (field.required) {
+                        input.required = true;
+                    }
+                    formGroup.appendChild(input);
                 }
-
-                formGroup.appendChild(input);
 
                 if (field.help) {
                     const help = Utils.domUtils.createElement('small', {
@@ -486,6 +491,63 @@ class Components {
             });
 
             return form;
+        },
+
+        createImageUploader(field) {
+            const container = Utils.domUtils.createElement('div', { className: 'image-uploader' });
+            const preview = Utils.domUtils.createElement('img', {
+                src: field.value || 'https://bucket.zygame1314.site/static/images/default-project.jpg',
+                alt: '图片预览',
+                className: 'image-preview'
+            });
+            const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'image/*', style: 'display: none;' });
+            const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择图片', className: 'btn btn-secondary' });
+            const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
+
+            uploadButton.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                uploadButton.textContent = '正在上传...';
+                uploadButton.disabled = true;
+
+                try {
+                    const compressedFile = await Utils.imageUtils.compressAndConvertToWebP(file);
+                    const formData = new FormData();
+                    formData.append('file', compressedFile);
+                    if (field.uploadContext) {
+                        formData.append('context', field.uploadContext);
+                    }
+
+                    const response = await fetch('/functions/upload-image', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        preview.src = result.url;
+                        hiddenInput.value = result.url;
+                        Components.notification.success('图片上传成功');
+                    } else {
+                        throw new Error(result.error || '上传失败');
+                    }
+                } catch (error) {
+                    Components.notification.error(`上传失败: ${error.message}`);
+                } finally {
+                    uploadButton.textContent = '选择图片';
+                    uploadButton.disabled = false;
+                }
+            });
+
+            container.append(preview, uploadButton, fileInput, hiddenInput);
+            return container;
         },
 
         getFormData(form) {

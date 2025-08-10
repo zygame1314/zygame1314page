@@ -389,8 +389,7 @@ class AdminSystem {
                 options: [
                     { value: '', label: '请选择平台' },
                     { value: 'alipay', label: '支付宝' },
-                    { value: 'wechat', label: '微信支付' },
-                    { value: 'afdian', label: '爱发电' }
+                    { value: 'wechat', label: '微信支付' }
                 ]
             },
             {
@@ -520,7 +519,7 @@ class AdminSystem {
                 className: 'music-card'
             });
             musicCard.innerHTML = `
-                <div class="music-cover" style="background-image: url('${song.cover || '/images/default-music.jpg'}')">
+                <div class="music-cover" style="background-image: url('${song.cover || 'https://bucket.zygame1314.site/static/images/default-music.jpg'}')">
                     <div class="music-overlay">
                         <button class="play-btn" title="播放" data-path="${song.path}">
                             <span class="play-icon"></span>
@@ -620,10 +619,10 @@ class AdminSystem {
             },
             {
                 name: 'cover',
-                label: '封面图片路径',
-                type: 'text',
+                label: '封面图片',
+                type: 'image-upload',
                 value: song?.cover || '',
-                placeholder: '/images/cover.jpg'
+                uploadContext: 'music'
             },
             {
                 name: 'ytLink',
@@ -766,7 +765,7 @@ class AdminSystem {
                 className: 'project-card'
             });
             projectCard.innerHTML = `
-                <div class="project-image" style="background-image: url('${project.imageUrl || '/images/default-project.jpg'}')"></div>
+                <div class="project-image" style="background-image: url('${project.imageUrl || 'https://bucket.zygame1314.site/static/images/default-project.jpg'}')"></div>
                 <div class="project-content">
                     <div class="project-title">${project.title}</div>
                     <div class="project-description">${project.description || '暂无描述'}</div>
@@ -845,10 +844,10 @@ class AdminSystem {
             },
             {
                 name: 'imageUrl',
-                label: '项目图片URL',
-                type: 'text',
+                label: '项目图片',
+                type: 'image-upload',
                 value: project?.imageUrl || '',
-                placeholder: '/images/project.jpg'
+                uploadContext: 'projects'
             },
             {
                 name: 'githubUrl',
@@ -1451,7 +1450,7 @@ class AdminSystem {
                 { name: 'expiryDate', label: '过期时间', type: 'datetime-local', value: notice?.expiryDate ? Utils.formatDate(notice.expiryDate, 'YYYY-MM-DD HH:mm').replace(' ', 'T') : '' },
                 
                 { type: 'divider', label: '图片设置' },
-                { name: 'imageUrl', label: '图片URL', type: 'text', value: notice?.image?.url || '' },
+                { name: 'imageUrl', label: '图片', type: 'image-upload', value: notice?.image?.url || '', uploadContext: 'notices' },
                 { name: 'imageAlt', label: '图片描述', type: 'text', value: notice?.image?.alt || '' },
                 { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'center', options: [{value: 'left', label: '左'}, {value: 'right', label: '右'}, {value: 'center', label: '中'}] },
                 { name: 'imageWidth', label: '图片宽度', type: 'text', value: notice?.image?.width || '', placeholder: '例如: 100px 或 50%' },
@@ -1601,7 +1600,7 @@ class AdminSystem {
             { name: 'date', label: '发布日期', type: 'date', required: true, value: article ? Utils.formatDate(article.date, 'YYYY-MM-DD') : Utils.formatDate(new Date(), 'YYYY-MM-DD') },
             { name: 'contentUrl', label: '内容文件URL', type: 'text', required: true, value: article?.contentUrl || '', placeholder: '/articles/my-first-article.md', help: '指向Markdown文件的路径。' },
             { name: 'excerpt', label: '摘要', type: 'textarea', value: article?.excerpt || '', rows: 3 },
-            { name: 'thumbnail', label: '缩略图URL', type: 'text', value: article?.thumbnail || '', placeholder: '/images/thumbnails/my-first-article.png' },
+            { name: 'thumbnail', label: '缩略图', type: 'image-upload', value: article?.thumbnail || '', uploadContext: 'articles' },
             { name: 'tags', label: '标签', type: 'text', value: article?.tags || '', help: '用逗号分隔' },
             { name: 'aiAssistants', label: 'AI助手', type: 'text', value: article?.aiAssistants || '', placeholder: 'e.g., ChatGPT, Copilot', help: '用逗号分隔使用了的AI助手' }
         ];

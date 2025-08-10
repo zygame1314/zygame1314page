@@ -386,6 +386,41 @@ class Utils {
             };
         }
     };
+    static imageUtils = {
+        async compressAndConvertToWebP(file, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+
+                        ctx.drawImage(img, 0, 0);
+
+                        canvas.toBlob(
+                            (blob) => {
+                                if (blob) {
+                                    resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".webp"), { type: 'image/webp' }));
+                                } else {
+                                    reject(new Error('无法将Canvas转换为Blob'));
+                                }
+                            },
+                            'image/webp',
+                            quality
+                        );
+                    };
+                    img.onerror = (error) => reject(error);
+                };
+                reader.onerror = (error) => reject(error);
+            });
+        }
+    };
 
     static validation = {
         rules: {

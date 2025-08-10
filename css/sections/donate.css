@@ -20,7 +20,7 @@
     display: block;
     width: calc(100% - 30px);
     text-align: center;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     border-radius: 3px;
 }
 
@@ -170,7 +170,7 @@
     top: 10px;
     font-size: 28px;
     font-weight: bold;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transition: transform 0.2s ease, color 0.2s ease;
     text-shadow:
         1px 1px 0 #000,
@@ -443,7 +443,7 @@
     font-family: 'zpix';
     font-size: 12px;
     padding: 4px 10px;
-    cursor: url('/images/cursors/Rath Link.cur'), auto;
+    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transition: all 0.2s ease;
     border-radius: 3px;
     display: inline-flex;
