@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页管理系统</title>
+    <link rel="icon" href="https://bucket.zygame1314.site/static/images/web-icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdmirror.com/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  <script type="module" crossorigin src="/assets/admin-Csoi3vXn.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/animations-BWIQC-bF.js">
+  <link rel="stylesheet" crossorigin href="/assets/animations-B6KZG_uB.css">
+  <link rel="stylesheet" crossorigin href="/assets/admin-BO2ITvVW.css">
+</head>
+<body>
+    <div class="pixel-stars"></div>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <i class="fas fa-cog"></i>
+                    <h2>管理系统</h2>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <ul class="nav-links">
+                    <li class="nav-item active">
+                        <a href="#dashboard" class="nav-link" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>仪表盘</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#donations" class="nav-link" data-section="donations">
+                            <i class="fas fa-heart"></i>
+                            <span>捐献管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#music" class="nav-link" data-section="music">
+                            <i class="fas fa-music"></i>
+                            <span>音乐管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#projects" class="nav-link" data-section="projects">
+                            <i class="fas fa-code"></i>
+                            <span>项目管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#notices" class="nav-link" data-section="notices">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>公告管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#important-notices" class="nav-link" data-section="important-notices">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>重要公告</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#timeline" class="nav-link" data-section="timeline">
+                            <i class="fas fa-history"></i>
+                            <span>时间线管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#articles" class="nav-link" data-section="articles">
+                            <i class="fas fa-book"></i>
+                            <span>文章管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">zygame1314</span>
+                        <span class="user-role">管理员</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="sidebar-overlay"></div>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item active">仪表盘</span>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" title="刷新数据">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="quick-action-btn" title="返回主站">
+                            <i class="fas fa-home"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <section id="dashboard-section" class="content-section active">
+                    <div class="section-header">
+                        <h1>仪表盘</h1>
+                        <p>欢迎来到个人主页管理系统</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-donations">0</h3>
+                                <p>总捐献次数</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-songs">0</h3>
+                                <p>音乐曲目</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-projects">0</h3>
+                                <p>项目数量</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-notices">0</h3>
+                                <p>公告数量</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>最近捐献</h3>
+                                <button class="view-all-btn" data-section="donations">
+                                    查看全部 <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div id="recent-donations" class="data-list">
+                                    <div class="loading">加载中...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="donations-section" class="content-section">
+                    <div class="section-header">
+                        <h1>捐献管理</h1>
+                        <button class="btn btn-primary" id="addDonationBtn">
+                            <i class="fas fa-plus"></i> 添加捐献记录
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="search-bar">
+                                <input type="text" placeholder="搜索捐献者..." id="donationSearch">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="filter-controls">
+                                <select id="platformFilter">
+                                    <option value="">所有平台</option>
+                                    <option value="alipay">支付宝</option>
+                                    <option value="wechat">微信</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="donationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>捐献者</th>
+                                        <th>金额</th>
+                                        <th>平台</th>
+                                        <th>日期</th>
+                                        <th>留言</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="donationsTableBody">
+                                    <tr>
+                                        <td colspan="6" class="loading">加载中...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="donationsPagination"></div>
+                    </div>
+                </section>
+
+                <section id="music-section" class="content-section">
+                    <div class="section-header">
+                        <h1>音乐管理</h1>
+                        <button class="btn btn-primary" id="addMusicBtn">
+                            <i class="fas fa-plus"></i> 添加音乐
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="search-bar">
+                                <input type="text" placeholder="搜索歌曲或艺术家..." id="musicSearch">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="music-grid" id="musicGrid">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="projects-section" class="content-section">
+                    <div class="section-header">
+                        <h1>项目管理</h1>
+                        <button class="btn btn-primary" id="addProjectBtn">
+                            <i class="fas fa-plus"></i> 添加项目
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="projects-grid" id="projectsGrid">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="notices-section" class="content-section">
+                    <div class="section-header">
+                        <h1>公告管理</h1>
+                        <button class="btn btn-primary" id="addNoticeBtn">
+                            <i class="fas fa-plus"></i> 添加公告
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="notices-list" id="noticesList">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="timeline-section" class="content-section">
+                    <div class="section-header">
+                        <h1>时间线管理</h1>
+                        <button class="btn btn-primary" id="addTimelineBtn">
+                            <i class="fas fa-plus"></i> 添加时间节点
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="timeline-container" id="timelineContainer">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="important-notices-section" class="content-section">
+                    <div class="section-header">
+                        <h1>重要公告管理</h1>
+                        <button class="btn btn-primary" id="addImportantNoticeBtn">
+                            <i class="fas fa-plus"></i> 添加重要公告
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="important-notices-list" id="importantNoticesList">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="articles-section" class="content-section">
+                    <div class="section-header">
+                        <h1>文章管理</h1>
+                        <button class="btn btn-primary" id="addArticleBtn">
+                            <i class="fas fa-plus"></i> 添加文章
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="articles-grid" id="articlesGrid">
+                            <div class="loading">加载中...</div>
+                        </div>
+                        <div class="pagination" id="articlesPagination"></div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">标题</h2>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">取消</button>
+                <button class="btn btn-primary" id="modalSave">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3 id="confirmTitle">确认操作</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">确定要执行此操作吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="confirmCancel">取消</button>
+                <button class="btn btn-danger" id="confirmOk">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notifications" class="notifications"></div>
+
+</body>
+</html>
