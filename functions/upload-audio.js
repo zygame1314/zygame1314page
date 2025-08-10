@@ -25,8 +25,11 @@ export async function onRequestPost(context) {
             throw new Error('未找到有效的音频文件');
         }
 
-        if (!file.type.startsWith('audio/')) {
-            throw new Error('仅支持音频文件上传');
+        const isAudioType = file.type.startsWith('audio/');
+        const isWebmExtension = file.name.toLowerCase().endsWith('.webm');
+
+        if (!isAudioType && !isWebmExtension) {
+            throw new Error('文件格式无效，仅支持 WebM 音频文件');
         }
 
         const maxSize = 20 * 1024 * 1024;
@@ -43,7 +46,7 @@ export async function onRequestPost(context) {
 
         await env.R2_BUCKET.put(r2ObjectKey, arrayBuffer, {
             httpMetadata: {
-                contentType: file.type,
+                contentType: 'audio/webm',
                 cacheControl: 'public, max-age=31536000',
             },
         });

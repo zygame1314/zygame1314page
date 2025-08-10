@@ -112,18 +112,6 @@ class Components {
                 newSave.addEventListener('click', options.onSave);
             }
 
-            modalBody.addEventListener('click', (e) => {
-                if (e.target && e.target.matches('.image-uploader .btn')) {
-                    const uploader = e.target.closest('.image-uploader');
-                    if (uploader) {
-                        const fileInput = uploader.querySelector('input[type="file"]');
-                        if (fileInput) {
-                            fileInput.click();
-                        }
-                    }
-                }
-            });
-
             if (options.onCancel) {
                 newCancel.addEventListener('click', options.onCancel);
             } else {
@@ -134,8 +122,8 @@ class Components {
             modalBody.parentNode.replaceChild(newModalBody, modalBody);
             
             newModalBody.addEventListener('click', (e) => {
-                if (e.target && e.target.matches('.image-uploader .btn')) {
-                    const uploader = e.target.closest('.image-uploader');
+                if (e.target && (e.target.matches('.image-uploader .btn') || e.target.matches('.audio-uploader .btn'))) {
+                    const uploader = e.target.closest('.image-uploader, .audio-uploader');
                     if (uploader) {
                         const fileInput = uploader.querySelector('input[type="file"]');
                         if (fileInput) {
@@ -210,9 +198,7 @@ class Components {
                         uploadButton.disabled = false;
                     }
                 }
-            });
 
-            newModalBody.addEventListener('change', async (e) => {
                 if (e.target && e.target.matches('.audio-uploader input[type="file"]')) {
                     const uploader = e.target.closest('.audio-uploader');
                     const file = e.target.files[0];
@@ -220,10 +206,17 @@ class Components {
 
                     const statusDiv = uploader.querySelector('.upload-status');
                     const hiddenInput = uploader.querySelector('input[type="hidden"]');
-                    const fileInput = uploader.querySelector('input[type="file"]');
+                    const uploadButton = uploader.querySelector('.btn');
+
+                    if (file.type !== 'audio/webm' && !file.name.toLowerCase().endsWith('.webm')) {
+                        Components.notification.error('文件格式无效', '请上传 WebM (.webm) 格式的音频文件。');
+                        e.target.value = '';
+                        return;
+                    }
 
                     statusDiv.textContent = '正在上传...';
-                    fileInput.disabled = true;
+                    uploadButton.disabled = true;
+                    uploadButton.textContent = '上传中...';
 
                     try {
                         const formData = new FormData();
@@ -250,7 +243,8 @@ class Components {
                         statusDiv.textContent = `上传失败: ${error.message}`;
                         Components.notification.error(`上传失败: ${error.message}`);
                     } finally {
-                        fileInput.disabled = false;
+                        uploadButton.disabled = false;
+                        uploadButton.textContent = '选择文件';
                     }
                 }
             });
@@ -722,41 +716,11 @@ class Components {
             return itemElement;
         },
 
-        getFormData(form) {
-            const formData = new FormData(form);
-            const data = {};
-            
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-
-            form.querySelectorAll('.image-uploader').forEach(uploader => {
-                const hiddenInput = uploader.querySelector('input[type="hidden"]');
-                if (hiddenInput) {
-                    data[hiddenInput.name] = hiddenInput.value;
-                }
-            });
-
-            form.querySelectorAll('.key-value-editor').forEach(editor => {
-                const name = editor.dataset.name;
-                const items = [];
-                editor.querySelectorAll('.key-value-item').forEach(item => {
-                    const text = item.querySelector('[data-key="text"]').value;
-                    const url = item.querySelector('[data-key="url"]').value;
-                    const type = item.querySelector('[data-key="type"]').value;
-                    if (text && url) {
-                        items.push({ text, url, type });
-                    }
-                });
-                data[name] = JSON.stringify(items);
-            });
-            
-            return data;
-        },
-
         createAudioUploader(field) {
             const container = Utils.domUtils.createElement('div', { className: 'audio-uploader' });
-            const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'audio/*' });
+            const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'audio/webm', style: 'display: none;' });
+            const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择文件', className: 'btn btn-secondary' });
+            
             const statusDiv = Utils.domUtils.createElement('div', { className: 'upload-status' });
             statusDiv.textContent = field.value ? `当前文件: ${field.value}` : '未选择文件';
             statusDiv.style.marginTop = '0.5rem';
@@ -765,6 +729,7 @@ class Components {
             
             const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
 
+            container.appendChild(uploadButton);
             container.appendChild(fileInput);
             container.appendChild(statusDiv);
             container.appendChild(hiddenInput);

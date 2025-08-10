@@ -642,9 +642,22 @@ class AdminSystem {
             {
                 name: 'expression',
                 label: '表情',
-                type: 'text',
+                type: 'select',
                 value: song?.expression || '',
-                placeholder: '可选的表情符号'
+                options: [
+                    { value: '', label: '无表情' },
+                    { value: 'Exp1', label: '恼怒' },
+                    { value: 'Exp2', label: '无语' },
+                    { value: 'Exp3', label: '惊讶' },
+                    { value: 'Exp4', label: '困惑' },
+                    { value: 'Exp5', label: '墨镜' },
+                    { value: 'Exp6', label: '袋子' },
+                    { value: 'Exp7', label: '眩晕' },
+                    { value: 'Exp8', label: '星星眼' },
+                    { value: 'TongueOut', label: '吐舌头' },
+                    { value: 'HighlightOFF', label: '失去高光' }
+                ],
+                help: '选择一个在播放此音乐时触发的Live2D表情。'
             }
         ];
         const form = Components.formBuilder.create(fields);
@@ -677,6 +690,21 @@ class AdminSystem {
                 }
             }
         });
+
+        if (isEdit) {
+            if (song.comment) {
+                const commentTextarea = document.querySelector('#modal textarea[name="comment"]');
+                if (commentTextarea) {
+                    commentTextarea.value = song.comment;
+                }
+            }
+            if (song.expression) {
+                const expressionSelect = document.querySelector('#modal select[name="expression"]');
+                if (expressionSelect) {
+                    expressionSelect.value = song.expression;
+                }
+            }
+        }
     }
     deleteMusic(id) {
         Components.modal.confirm(
