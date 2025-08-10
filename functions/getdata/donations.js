@@ -8,18 +8,30 @@ export async function onRequestGet(context) {
         const page = parseInt(url.searchParams.get('page')) || 1;
         const limit = parseInt(url.searchParams.get('limit')) || 10;
         const offset = (page - 1) * limit;
+        const platformFilter = url.searchParams.get('platform');
 
-        const { results: countResults } = await env.DB.prepare(`
-            SELECT COUNT(*) as total FROM donations
-        `).all();
+        let whereClause = '';
+        const params = [];
+
+        if (platformFilter) {
+            whereClause = 'WHERE platform = ?';
+            params.push(platformFilter);
+        }
+
+        const countQuery = `SELECT COUNT(*) as total FROM donations ${whereClause}`;
+        const { results: countResults } = await env.DB.prepare(countQuery).bind(...params).all();
         const total = countResults[0].total;
 
-        const { results } = await env.DB.prepare(`
+        const dataQuery = `
             SELECT id, name, amount, date, platform, message
             FROM donations
+            ${whereClause}
             ORDER BY date DESC
             LIMIT ? OFFSET ?
-        `).bind(limit, offset).all();
+        `;
+        
+        const dataParams = [...params, limit, offset];
+        const { results } = await env.DB.prepare(dataQuery).bind(...dataParams).all();
 
         const totalPages = Math.ceil(total / limit);
         const hasNext = page < totalPages;

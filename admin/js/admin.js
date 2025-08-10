@@ -238,12 +238,15 @@ class AdminSystem {
             container.appendChild(item);
         });
     }
-    async loadDonations() {
+    async loadDonations(platform = null) {
         const currentPage = parseInt(Utils.getUrlParam('donation_page')) || 1;
+        const currentPlatform = platform === null ? (Utils.getUrlParam('platform') || '') : platform;
+
         try {
             Components.loading.show('donationsTableBody', '加载捐献数据...');
-            const data = await api.donations.getList(currentPage, 10);
+            const data = await api.donations.getList(currentPage, 10, currentPlatform || null);
             this.renderDonationsTable(data.data || []);
+            
             if (data.pagination) {
                 Components.pagination.create(
                     'donationsPagination',
@@ -251,7 +254,7 @@ class AdminSystem {
                     data.pagination.totalPages,
                     (page) => {
                         Utils.setUrlParam('donation_page', page);
-                        this.loadDonations();
+                        this.loadDonations(currentPlatform);
                     }
                 );
             }
@@ -483,7 +486,13 @@ class AdminSystem {
         }
     }
     async filterDonationsByPlatform(platform) {
-        Components.notification.info('筛选功能开发中...');
+        Utils.setUrlParam('donation_page', 1);
+        if (platform) {
+            Utils.setUrlParam('platform', platform);
+        } else {
+            Utils.removeUrlParam('platform');
+        }
+        await this.loadDonations(platform);
     }
     async loadMusic() {
         try {

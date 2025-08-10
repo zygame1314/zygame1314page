@@ -82,8 +82,12 @@ class API {
     }
 
     donations = {
-        getList: async (page = 1, limit = 10) => {
-            return this.get('/getdata/donations', { page, limit });
+        getList: async (page = 1, limit = 10, platform = null) => {
+            const params = { page, limit };
+            if (platform) {
+                params.platform = platform;
+            }
+            return this.get('/getdata/donations', params);
         },
 
         add: async (donation) => {
