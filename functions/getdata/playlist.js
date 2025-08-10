@@ -10,8 +10,18 @@ export async function onRequestGet(context) {
             ORDER BY id ASC
         `).all();
 
+        const songs = results.map(song => {
+            if (song.path && song.path.startsWith('/')) {
+                song.path = `https://bucket.zygame1314.site${song.path}`;
+            }
+            if (song.cover && song.cover.startsWith('/')) {
+                song.cover = `https://bucket.zygame1314.site${song.cover}`;
+            }
+            return song;
+        });
+
         return new Response(JSON.stringify({
-            songs: results
+            songs: songs
         }), {
             status: 200,
             headers: {

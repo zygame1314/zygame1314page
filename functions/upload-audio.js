@@ -58,7 +58,7 @@ export async function onRequestPost(context) {
             JSON.stringify({
                 success: true,
                 url: audioUrl,
-                path: audioPath 
+                path: audioUrl
             }),
             {
                 headers: {
