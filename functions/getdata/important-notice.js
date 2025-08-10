@@ -122,7 +122,7 @@ export async function onRequestPut(context) {
         const imageWidth = image && image.width ? image.width : null;
         const imageHeight = image && image.height ? image.height : null;
 
-        const pollConfig = poll && poll.active ? JSON.stringify(poll) : null;
+        const pollConfig = poll ? JSON.stringify(poll) : null;
 
         await env.DB.prepare(`
             INSERT OR REPLACE INTO important_notices

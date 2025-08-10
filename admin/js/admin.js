@@ -1493,18 +1493,35 @@ class AdminSystem {
                             delete data.imageHeight;
 
                             const pollActive = modalForm.querySelector('[name="pollActive"]').checked;
-                            const pollQuestion = data.pollQuestion;
-                            const pollOptions = data.pollOptions.split('\n').filter(o => o.trim() !== '');
+                            const pollQuestion = data.pollQuestion.trim();
+                            const pollOptionsText = data.pollOptions.trim();
+                            const newPollOptions = pollOptionsText.split('\n').map(o => o.trim()).filter(Boolean);
 
-                            if (pollActive && pollQuestion && pollOptions.length > 0) {
+                            if (pollActive && (!pollQuestion || newPollOptions.length === 0)) {
+                                Components.notification.error('开启投票后，必须填写投票问题和至少一个选项。');
+                                return;
+                            }
+
+                            if (pollQuestion && newPollOptions.length > 0) {
+                                const existingPoll = notice?.poll || {};
+                                const existingOptionsMap = new Map((existingPoll.options || []).map(opt => [opt.text, opt]));
+
                                 data.poll = {
-                                    active: true,
+                                    active: pollActive,
                                     question: pollQuestion,
-                                    options: pollOptions.map((o, index) => ({ id: index, text: o.trim(), votes: 0 }))
+                                    options: newPollOptions.map((text, index) => {
+                                        const existingOption = existingOptionsMap.get(text);
+                                        return {
+                                            id: existingOption?.id || index,
+                                            text: text,
+                                            votes: existingOption?.votes || 0
+                                        };
+                                    })
                                 };
                             } else {
                                 data.poll = null;
                             }
+
                             delete data.pollQuestion;
                             delete data.pollOptions;
                             
@@ -1528,6 +1545,19 @@ class AdminSystem {
                     pollOptionsTextarea.value = notice.poll.options.map(o => o.text).join('\n');
                 }
             }
+
+            document.querySelectorAll('#modal .form-group-toggle').forEach(group => {
+                const checkbox = group.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    const toggleSwitch = document.createElement('label');
+                    toggleSwitch.setAttribute('for', checkbox.id);
+                    toggleSwitch.className = 'toggle-switch';
+                    
+                    if (!group.querySelector('.toggle-switch')) {
+                        checkbox.insertAdjacentElement('afterend', toggleSwitch);
+                    }
+                }
+            });
         }
 
         deleteImportantNotice(id) {
