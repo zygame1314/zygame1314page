@@ -20,7 +20,7 @@ export async function onRequestPost(context) {
 
         const formData = await request.formData();
         const file = formData.get('file');
-        const context = formData.get('context') || 'general';
+        const uploadContext = formData.get('context') || 'general';
 
         if (!file || !(file instanceof File)) {
             throw new Error('未找到有效的图片文件');
@@ -39,9 +39,9 @@ export async function onRequestPost(context) {
         const randomString = Math.random().toString(36).substring(2, 8);
         
         const validContexts = ['music', 'projects', 'articles', 'notices', 'general'];
-        const uploadContext = validContexts.includes(context) ? context : 'general';
+        const finalContext = validContexts.includes(uploadContext) ? uploadContext : 'general';
 
-        const r2ObjectKey = `static/images/${uploadContext}/${timestamp}-${randomString}.webp`;
+        const r2ObjectKey = `static/images/${finalContext}/${timestamp}-${randomString}.webp`;
 
         const arrayBuffer = await file.arrayBuffer();
 

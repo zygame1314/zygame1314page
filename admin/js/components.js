@@ -112,11 +112,88 @@ class Components {
                 newSave.addEventListener('click', options.onSave);
             }
 
+            modalBody.addEventListener('click', (e) => {
+                if (e.target && e.target.matches('.image-uploader .btn')) {
+                    const uploader = e.target.closest('.image-uploader');
+                    if (uploader) {
+                        const fileInput = uploader.querySelector('input[type="file"]');
+                        if (fileInput) {
+                            fileInput.click();
+                        }
+                    }
+                }
+            });
+
             if (options.onCancel) {
                 newCancel.addEventListener('click', options.onCancel);
             } else {
                 newCancel.addEventListener('click', () => this.hide());
             }
+
+            // Clear previous listeners to prevent duplication
+            const newModalBody = modalBody.cloneNode(true);
+            modalBody.parentNode.replaceChild(newModalBody, modalBody);
+            
+            newModalBody.addEventListener('click', (e) => {
+                if (e.target && e.target.matches('.image-uploader .btn')) {
+                    const uploader = e.target.closest('.image-uploader');
+                    if (uploader) {
+                        const fileInput = uploader.querySelector('input[type="file"]');
+                        if (fileInput) {
+                            fileInput.click();
+                        }
+                    }
+                }
+            });
+
+            newModalBody.addEventListener('change', async (e) => {
+                if (e.target && e.target.matches('.image-uploader input[type="file"]')) {
+                    const uploader = e.target.closest('.image-uploader');
+                    const file = e.target.files[0];
+                    if (!file || !uploader) return;
+
+                    const uploadButton = uploader.querySelector('.btn');
+                    const preview = uploader.querySelector('.image-preview');
+                    const hiddenInput = uploader.querySelector('input[type="hidden"]');
+
+                    uploadButton.textContent = '正在上传...';
+                    uploadButton.disabled = true;
+
+                    try {
+                        const compressedFile = await Utils.imageUtils.compressAndConvertToWebP(file);
+                        const formData = new FormData();
+                        formData.append('file', compressedFile);
+                        
+                        const uploadContext = uploader.dataset.context;
+                        if (uploadContext) {
+                            formData.append('context', uploadContext);
+                        }
+
+                        const response = await fetch('https://api.zygame1314.site/upload-image', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                            }
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            preview.src = result.url;
+                            hiddenInput.value = result.url;
+                            Components.notification.success('图片上传成功');
+                        } else {
+                            throw new Error(result.error || '上传失败');
+                        }
+                    } catch (error) {
+                        Components.notification.error(`上传失败: ${error.message}`);
+                    } finally {
+                        uploadButton.textContent = '选择图片';
+                        uploadButton.disabled = false;
+                    }
+                }
+            });
 
             modal.classList.add('show');
             this.current = modal;
@@ -504,49 +581,14 @@ class Components {
             const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择图片', className: 'btn btn-secondary' });
             const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
 
-            uploadButton.addEventListener('click', () => fileInput.click());
+            if (field.uploadContext) {
+                container.dataset.context = field.uploadContext;
+            }
 
-            fileInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                uploadButton.textContent = '正在上传...';
-                uploadButton.disabled = true;
-
-                try {
-                    const compressedFile = await Utils.imageUtils.compressAndConvertToWebP(file);
-                    const formData = new FormData();
-                    formData.append('file', compressedFile);
-                    if (field.uploadContext) {
-                        formData.append('context', field.uploadContext);
-                    }
-
-                    const response = await fetch('/functions/upload-image', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                        }
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok && result.success) {
-                        preview.src = result.url;
-                        hiddenInput.value = result.url;
-                        Components.notification.success('图片上传成功');
-                    } else {
-                        throw new Error(result.error || '上传失败');
-                    }
-                } catch (error) {
-                    Components.notification.error(`上传失败: ${error.message}`);
-                } finally {
-                    uploadButton.textContent = '选择图片';
-                    uploadButton.disabled = false;
-                }
-            });
-
-            container.append(preview, uploadButton, fileInput, hiddenInput);
+            container.appendChild(preview);
+            container.appendChild(uploadButton);
+            container.appendChild(fileInput);
+            container.appendChild(hiddenInput);
             return container;
         },
 
@@ -557,6 +599,13 @@ class Components {
             for (let [key, value] of formData.entries()) {
                 data[key] = value;
             }
+
+            form.querySelectorAll('.image-uploader').forEach(uploader => {
+                const hiddenInput = uploader.querySelector('input[type="hidden"]');
+                if (hiddenInput) {
+                    data[hiddenInput.name] = hiddenInput.value;
+                }
+            });
             
             return data;
         },
