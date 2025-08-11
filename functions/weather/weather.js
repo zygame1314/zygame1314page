@@ -1,4 +1,7 @@
-export async function onRequest(context) {
+export function onRequestOptions(context) {
+  return new Response(null, { status: 204 });
+}
+export async function onRequestGet(context) {
     try {
         const url = new URL(context.request.url);
         const lat = url.searchParams.get('lat');

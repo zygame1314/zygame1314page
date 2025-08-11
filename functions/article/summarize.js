@@ -1,35 +1,24 @@
-export async function onRequest(context) {
-    if (context.request.method === "POST") {
-        return await handlePost(context);
-    }
-
-    return new Response("Method Not Allowed", { status: 405 });
+export function onRequestOptions(context) {
+  return new Response(null, { status: 204 });
 }
-
-async function handlePost(context) {
+export async function onRequestPost(context) {
     try {
         const { request, env } = context;
-
         if (!env.SILICONFLOW_API_KEY) {
             throw new Error('未配置SILICONFLOW API密钥');
         }
-
         const { articleContent, title } = await request.json();
-
         if (!articleContent || !title) {
             throw new Error('缺少必要的文章内容或标题');
         }
-
         const truncatedContent = articleContent.length > 12000
             ? articleContent.substring(0, 12000) + '...'
             : articleContent;
-
         const transformer = new TransformStream({
             async transform(chunk, controller) {
                 controller.enqueue(chunk);
             }
         });
-
         const response = new Response(transformer.readable, {
             headers: {
                 'Content-Type': 'text/event-stream',
@@ -37,12 +26,9 @@ async function handlePost(context) {
                 'Connection': 'keep-alive',
             }
         });
-
         const writer = transformer.writable.getWriter();
         const encoder = new TextEncoder();
-
         writer.write(encoder.encode('event: start\ndata: {"message": "开始生成摘要"}\n\n'));
-
         (async function () {
             try {
                 const apiResponse = await fetch(`https://api.siliconflow.cn/v1/chat/completions`, {
@@ -63,9 +49,7 @@ async function handlePost(context) {
                                     3. 突出最有价值的信息
                                     4. 使用技术准确但通俗易懂的语言
                                     5. 适当使用Markdown标记关键术语（如**关键词**）
-                                    
                                     请直接给出总结内容，不要包含任何引导语如"以下是总结"等。
-                                    
                                     文章标题: ${title}
                                     文章内容: 
                                     ${truncatedContent}`
@@ -78,39 +62,30 @@ async function handlePost(context) {
                         stream: true
                     })
                 });
-
                 if (!apiResponse.ok) {
                     throw new Error(`API调用失败: ${apiResponse.status}`);
                 }
-
                 const reader = apiResponse.body.getReader();
                 const decoder = new TextDecoder();
                 let buffer = '';
-
                 while (true) {
                     const { done, value } = await reader.read();
-
                     if (done) {
                         await writer.write(encoder.encode('event: end\ndata: {"message": "摘要生成完成"}\n\n'));
                         await writer.close();
                         break;
                     }
-
                     buffer += decoder.decode(value, { stream: true });
-
                     if (buffer.includes('\n')) {
                         const lines = buffer.split('\n');
                         buffer = lines.pop() || '';
-
                         for (const line of lines) {
                             if (line.startsWith('data: ')) {
                                 try {
                                     const data = line.slice(6);
                                     if (data === '[DONE]') continue;
-
                                     const json = JSON.parse(data);
                                     const content = json.choices?.[0]?.delta?.content;
-
                                     if (content) {
                                         await writer.write(encoder.encode(`event: token\ndata: ${JSON.stringify({ content })}\n\n`));
                                     }
@@ -126,7 +101,6 @@ async function handlePost(context) {
                 await writer.close();
             }
         })();
-
         return response;
     } catch (error) {
         return new Response(JSON.stringify({

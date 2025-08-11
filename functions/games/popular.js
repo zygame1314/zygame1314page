@@ -1,20 +1,17 @@
-export async function onRequest(context) {
-
+export function onRequestOptions(context) {
+  return new Response(null, { status: 204 });
+}
+export async function onRequestGet(context) {
     const gamesPerPage = 5;
-
     try {
         const response = await fetch(
             'https://store.steampowered.com/api/featuredcategories?cc=cn&l=schinese'
         );
-
         if (!response.ok) {
             throw new Error(`Steam API Error: ${response.status}`);
         }
-
         const data = await response.json();
-
         const topSellers = data.top_sellers?.items || [];
-
         const popularGames = topSellers
             .slice(0, gamesPerPage)
             .map(game => ({
@@ -30,7 +27,6 @@ export async function onRequest(context) {
                 linux_available: game.linux_available,
                 controller_support: game.controller_support
             }));
-
         return new Response(JSON.stringify({
             results: popularGames,
             count: popularGames.length
@@ -39,7 +35,6 @@ export async function onRequest(context) {
                 'Content-Type': 'application/json'
             }
         });
-
     } catch (error) {
         console.error('Steam API Error:', error);
         return new Response(JSON.stringify({

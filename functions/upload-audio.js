@@ -1,58 +1,46 @@
 import { verifyToken } from './utils';
-
+export function onRequestOptions(context) {
+  return new Response(null, { status: 204 });
+}
 export async function onRequestPost(context) {
     try {
         const { request, env } = context;
-
         const token = request.headers.get('Authorization')?.split(' ')[1];
         if (!token) {
             throw new Error('未提供授权令牌');
         }
-
         const userData = await verifyToken(token, env.JWT_SECRET);
         if (!userData) {
             throw new Error('无效或过期的令牌');
         }
-
         if (!env.R2_BUCKET) {
             throw new Error('未配置 R2 存储桶');
         }
-
         const formData = await request.formData();
         const file = formData.get('file');
-
         if (!file || !(file instanceof File)) {
             throw new Error('未找到有效的音频文件');
         }
-
         const isAudioType = file.type.startsWith('audio/');
         const isWebmExtension = file.name.toLowerCase().endsWith('.webm');
-
         if (!isAudioType && !isWebmExtension) {
             throw new Error('文件格式无效，仅支持 WebM 音频文件');
         }
-
         const maxSize = 20 * 1024 * 1024;
         if (file.size > maxSize) {
             throw new Error('音频文件大小不能超过20MB');
         }
-
         const timestamp = Date.now();
         const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-        
         const r2ObjectKey = `static/music/${timestamp}-${cleanFileName}`;
-
         const arrayBuffer = await file.arrayBuffer();
-
         await env.R2_BUCKET.put(r2ObjectKey, arrayBuffer, {
             httpMetadata: {
                 contentType: 'audio/webm',
                 cacheControl: 'public, max-age=31536000',
             },
         });
-
         const audioUrl = `https://bucket.zygame1314.site/${r2ObjectKey}`;
-
         return new Response(
             JSON.stringify({
                 success: true,
@@ -67,7 +55,6 @@ export async function onRequestPost(context) {
         );
     } catch (error) {
         console.error('上传音频错误:', error);
-
         return new Response(
             JSON.stringify({
                 success: false,

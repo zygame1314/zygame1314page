@@ -1,4 +1,7 @@
-export async function onRequest(context) {
+export function onRequestOptions(context) {
+  return new Response(null, { status: 204 });
+}
+export async function onRequestGet(context) {
     let response;
     const steamFriendCode = context.env.STEAM_ID_32;
     if (!steamFriendCode) {
@@ -53,35 +56,35 @@ export async function onRequest(context) {
             steam_level: null
         };
         const avatarContainerMatch = html.match(/<div class="playersection_avatar\s+([^"]*)">\s*<img src="([^"]+)">/);
-        if (avatarContainerMatch && avatarContainerMatch[2]) {
-            player.avatarfull = avatarContainerMatch[2];
-            const classes = avatarContainerMatch[1].split(' ');
+        if (avatarContainerMatch && avatarContainerMatch) {
+            player.avatarfull = avatarContainerMatch;
+            const classes = avatarContainerMatch.split(' ');
             const borderClass = classes.find(cls => cls.startsWith('border_color_'));
             if (borderClass) {
                 player.avatar_border_class = borderClass.replace('border_color_', '');
             }
         } else {
             const avatarMatch = html.match(/<div class="playersection_avatar[^"]*">\s*<img src="([^"]+)">/);
-            if (avatarMatch && avatarMatch[1]) {
-                player.avatarfull = avatarMatch[1];
+            if (avatarMatch && avatarMatch) {
+                player.avatarfull = avatarMatch;
             }
             const offlineAvatarClassMatch = html.match(/<div class="playersection_avatar\s+border_color_([^"]+)">/);
-            if (offlineAvatarClassMatch && offlineAvatarClassMatch[1]) {
-                player.avatar_border_class = offlineAvatarClassMatch[1].trim();
+            if (offlineAvatarClassMatch && offlineAvatarClassMatch) {
+                player.avatar_border_class = offlineAvatarClassMatch.trim();
             }
         }
         const avatarFrameMatch = html.match(/<div class="playersection_avatar_frame">\s*<img src="([^"]+)">/);
-        if (avatarFrameMatch && avatarFrameMatch[1]) {
-            player.avatar_frame_url = avatarFrameMatch[1];
+        if (avatarFrameMatch && avatarFrameMatch) {
+            player.avatar_frame_url = avatarFrameMatch;
         }
         const personaMatch = html.match(/<span class="persona\s+([^"]+)">([^<]+)<\/span>/);
-        if (personaMatch && personaMatch[1] && personaMatch[2]) {
-            player.personastate_css_class = personaMatch[1].trim();
-            player.personaname = personaMatch[2].trim();
+        if (personaMatch && personaMatch && personaMatch) {
+            player.personastate_css_class = personaMatch.trim();
+            player.personaname = personaMatch.trim();
         } else {
             const offlineNameMatch = html.match(/<div class="miniprofile_playername">([^<]+)<\/div>/);
-            if (offlineNameMatch && offlineNameMatch[1]) {
-                player.personaname = offlineNameMatch[1].trim();
+            if (offlineNameMatch && offlineNameMatch) {
+                player.personaname = offlineNameMatch.trim();
                 player.personastate_css_class = 'offline';
                 player.avatar_border_class = 'offline';
             }
@@ -89,12 +92,11 @@ export async function onRequest(context) {
         const gameSectionMatch = html.includes('miniprofile_gamesection');
         if (gameSectionMatch) {
             const gameLogoMatch = html.match(/<img class="game_logo" src="[^"]*\/apps\/(\d+)\/[^"]*">/);
-            if (gameLogoMatch && gameLogoMatch[1]) {
-                const appId = gameLogoMatch[1];
+            if (gameLogoMatch && gameLogoMatch) {
+                const appId = gameLogoMatch;
                 player.appId = appId;
                 const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header_schinese.jpg`;
                 const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`;
-
                 try {
                     const headResponse = await fetch(chineseHeaderUrl, { method: 'HEAD' });
                     if (headResponse.ok) {
@@ -107,37 +109,37 @@ export async function onRequest(context) {
                 }
             }
             const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
-            if (gameStateMatch && gameStateMatch[1]) {
-                player.game_state = gameStateMatch[1].trim();
+            if (gameStateMatch && gameStateMatch) {
+                player.game_state = gameStateMatch.trim();
             }
             const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
-            if (gameNameMatch && gameNameMatch[1]) {
-                player.game_name = gameNameMatch[1].trim();
+            if (gameNameMatch && gameNameMatch) {
+                player.game_name = gameNameMatch.trim();
             }
             const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
-            if (richPresenceMatch && richPresenceMatch[1]) {
-                player.rich_presence = richPresenceMatch[1].trim();
+            if (richPresenceMatch && richPresenceMatch) {
+                player.rich_presence = richPresenceMatch.trim();
             }
             player.personastate_css_class = 'in-game';
         } else {
         }
         const videoWebmMatch = html.match(/<source src="([^"]+\.webm)" type="video\/webm">/);
-        if (videoWebmMatch && videoWebmMatch[1]) {
-            player.background_video_webm = videoWebmMatch[1];
+        if (videoWebmMatch && videoWebmMatch) {
+            player.background_video_webm = videoWebmMatch;
         }
         const videoMp4Match = html.match(/<source src="([^"]+\.mp4)" type="video\/mp4">/);
-        if (videoMp4Match && videoMp4Match[1]) {
-            player.background_video_mp4 = videoMp4Match[1];
+        if (videoMp4Match && videoMp4Match) {
+            player.background_video_mp4 = videoMp4Match;
         }
         const badgeDetailsMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<img src="([^"]+)" class="badge_icon">\s*<div class="description">\s*<div class="name">([^<]+)<\/div>\s*<div class="xp">([^<]+)<\/div>\s*<\/div>\s*<\/div>/);
         if (badgeDetailsMatch) {
-            player.featured_badge_icon = badgeDetailsMatch[1];
-            player.featured_badge_name = badgeDetailsMatch[2].trim();
-            player.featured_badge_xp = badgeDetailsMatch[3].trim();
+            player.featured_badge_icon = badgeDetailsMatch;
+            player.featured_badge_name = badgeDetailsMatch.trim();
+            player.featured_badge_xp = badgeDetailsMatch.trim();
         }
         const levelContainerMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<div class="friendPlayerLevel[^"]*">\s*<span class="friendPlayerLevelNum">(\d+)<\/span>/);
-        if (levelContainerMatch && levelContainerMatch[1]) {
-            player.steam_level = parseInt(levelContainerMatch[1], 10);
+        if (levelContainerMatch && levelContainerMatch) {
+            player.steam_level = parseInt(levelContainerMatch, 10);
         }
         const responseData = { success: true, player: player };
         function replaceCdnUrl(obj) {
