@@ -1,4 +1,4 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestPost(context) {
@@ -22,7 +22,6 @@ export async function onRequestPost(context) {
         const response = new Response(transformer.readable, {
             headers: {
                 'Content-Type': 'text/event-stream',
-                'Cache-Control': 'no-cache',
                 'Connection': 'keep-alive',
             }
         });

@@ -1,4 +1,4 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
@@ -51,8 +51,7 @@ export async function onRequestGet(context) {
         recentGamesData.response.games = gamesWithDetails;
         response = new Response(JSON.stringify(recentGamesData), {
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'public, max-age=300',
+                'Content-Type': 'application/json'
             }
         });
     } catch (error) {
@@ -63,8 +62,7 @@ export async function onRequestGet(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'public, max-age=60',
+                'Content-Type': 'application/json'
             }
         });
     }

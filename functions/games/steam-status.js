@@ -1,4 +1,4 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
@@ -11,7 +11,9 @@ export async function onRequestGet(context) {
             message: 'STEAM_ID_32 environment variable is not set.',
         }), {
             status: 500,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
         });
     }
     const timestamp = Date.now();
@@ -36,82 +38,111 @@ export async function onRequestGet(context) {
         }
         const html = await steamResponse.text();
         const player = {
-            avatarfull: null, avatar_frame_url: null, personaname: null,
-            personastate_css_class: 'offline', avatar_border_class: 'offline',
-            game_logo: null, appId: null, game_state: null, game_name: null,
-            rich_presence: null, background_video_webm: null, background_video_mp4: null,
-            featured_badge_icon: null, featured_badge_name: null, featured_badge_xp: null,
+            avatarfull: null,
+            avatar_frame_url: null,
+            personaname: null,
+            personastate_css_class: 'offline',
+            avatar_border_class: 'offline',
+            game_logo: null,
+            appId: null,
+            game_state: null,
+            game_name: null,
+            rich_presence: null,
+            background_video_webm: null,
+            background_video_mp4: null,
+            featured_badge_icon: null,
+            featured_badge_name: null,
+            featured_badge_xp: null,
             steam_level: null
         };
         const avatarContainerMatch = html.match(/<div class="playersection_avatar\s+([^"]*)">\s*<img src="([^"]+)">/);
-        if (avatarContainerMatch) {
-            player.avatarfull = avatarContainerMatch;
-            const classes = avatarContainerMatch.split(' ');
+        if (avatarContainerMatch && avatarContainerMatch[2]) {
+            player.avatarfull = avatarContainerMatch[2];
+            const classes = avatarContainerMatch[1].split(' ');
             const borderClass = classes.find(cls => cls.startsWith('border_color_'));
             if (borderClass) {
                 player.avatar_border_class = borderClass.replace('border_color_', '');
             }
         } else {
             const avatarMatch = html.match(/<div class="playersection_avatar[^"]*">\s*<img src="([^"]+)">/);
-            if (avatarMatch) {
-                player.avatarfull = avatarMatch;
+            if (avatarMatch && avatarMatch[1]) {
+                player.avatarfull = avatarMatch[1];
             }
             const offlineAvatarClassMatch = html.match(/<div class="playersection_avatar\s+border_color_([^"]+)">/);
-            if (offlineAvatarClassMatch) {
-                player.avatar_border_class = offlineAvatarClassMatch.trim();
+            if (offlineAvatarClassMatch && offlineAvatarClassMatch[1]) {
+                player.avatar_border_class = offlineAvatarClassMatch[1].trim();
             }
         }
         const avatarFrameMatch = html.match(/<div class="playersection_avatar_frame">\s*<img src="([^"]+)">/);
-        if (avatarFrameMatch) {
-            player.avatar_frame_url = avatarFrameMatch;
+        if (avatarFrameMatch && avatarFrameMatch[1]) {
+            player.avatar_frame_url = avatarFrameMatch[1];
         }
         const personaMatch = html.match(/<span class="persona\s+([^"]+)">([^<]+)<\/span>/);
-        if (personaMatch) {
-            player.personastate_css_class = personaMatch.trim();
-            player.personaname = personaMatch.trim();
+        if (personaMatch && personaMatch[1] && personaMatch[2]) {
+            player.personastate_css_class = personaMatch[1].trim();
+            player.personaname = personaMatch[2].trim();
         } else {
             const offlineNameMatch = html.match(/<div class="miniprofile_playername">([^<]+)<\/div>/);
-            if (offlineNameMatch) {
-                player.personaname = offlineNameMatch.trim();
+            if (offlineNameMatch && offlineNameMatch[1]) {
+                player.personaname = offlineNameMatch[1].trim();
                 player.personastate_css_class = 'offline';
                 player.avatar_border_class = 'offline';
             }
         }
-        if (html.includes('miniprofile_gamesection')) {
+        const gameSectionMatch = html.includes('miniprofile_gamesection');
+        if (gameSectionMatch) {
             const gameLogoMatch = html.match(/<img class="game_logo" src="[^"]*\/apps\/(\d+)\/[^"]*">/);
-            if (gameLogoMatch) {
-                const appId = gameLogoMatch;
+            if (gameLogoMatch && gameLogoMatch[1]) {
+                const appId = gameLogoMatch[1];
                 player.appId = appId;
                 const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header_schinese.jpg`;
                 const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`;
+
                 try {
                     const headResponse = await fetch(chineseHeaderUrl, { method: 'HEAD' });
-                    player.game_logo = headResponse.ok ? chineseHeaderUrl : defaultHeaderUrl;
+                    if (headResponse.ok) {
+                        player.game_logo = chineseHeaderUrl;
+                    } else {
+                        player.game_logo = defaultHeaderUrl;
+                    }
                 } catch (e) {
                     player.game_logo = defaultHeaderUrl;
                 }
             }
             const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
-            if (gameStateMatch) player.game_state = gameStateMatch.trim();
+            if (gameStateMatch && gameStateMatch[1]) {
+                player.game_state = gameStateMatch[1].trim();
+            }
             const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
-            if (gameNameMatch) player.game_name = gameNameMatch.trim();
+            if (gameNameMatch && gameNameMatch[1]) {
+                player.game_name = gameNameMatch[1].trim();
+            }
             const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
-            if (richPresenceMatch) player.rich_presence = richPresenceMatch.trim();
+            if (richPresenceMatch && richPresenceMatch[1]) {
+                player.rich_presence = richPresenceMatch[1].trim();
+            }
             player.personastate_css_class = 'in-game';
+        } else {
         }
         const videoWebmMatch = html.match(/<source src="([^"]+\.webm)" type="video\/webm">/);
-        if (videoWebmMatch) player.background_video_webm = videoWebmMatch;
-        const videoMp4Match = html.match(/<source src="([^"]+\.mp4)" type="video\/mp4">/);
-        if (videoMp4Match) player.background_video_mp4 = videoMp4Match;
-        const badgeDetailsMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<img src="([^"]+)" class="badge_icon">[\s\S]*?<div class="name">([^<]+)<\/div>\s*<div class="xp">([^<]+)<\/div>/);
-        if (badgeDetailsMatch) {
-            player.featured_badge_icon = badgeDetailsMatch;
-            player.featured_badge_name = badgeDetailsMatch.trim();
-            player.featured_badge_xp = badgeDetailsMatch.trim();
+        if (videoWebmMatch && videoWebmMatch[1]) {
+            player.background_video_webm = videoWebmMatch[1];
         }
-        const levelContainerMatch = html.match(/<div class="friendPlayerLevel[^"]*">\s*<span class="friendPlayerLevelNum">(\d+)<\/span>/);
-        if (levelContainerMatch) player.steam_level = parseInt(levelContainerMatch, 10);
-        const responseData = { success: true, player };
+        const videoMp4Match = html.match(/<source src="([^"]+\.mp4)" type="video\/mp4">/);
+        if (videoMp4Match && videoMp4Match[1]) {
+            player.background_video_mp4 = videoMp4Match[1];
+        }
+        const badgeDetailsMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<img src="([^"]+)" class="badge_icon">\s*<div class="description">\s*<div class="name">([^<]+)<\/div>\s*<div class="xp">([^<]+)<\/div>\s*<\/div>\s*<\/div>/);
+        if (badgeDetailsMatch) {
+            player.featured_badge_icon = badgeDetailsMatch[1];
+            player.featured_badge_name = badgeDetailsMatch[2].trim();
+            player.featured_badge_xp = badgeDetailsMatch[3].trim();
+        }
+        const levelContainerMatch = html.match(/<div class="miniprofile_featuredcontainer">\s*<div class="friendPlayerLevel[^"]*">\s*<span class="friendPlayerLevelNum">(\d+)<\/span>/);
+        if (levelContainerMatch && levelContainerMatch[1]) {
+            player.steam_level = parseInt(levelContainerMatch[1], 10);
+        }
+        const responseData = { success: true, player: player };
         function replaceCdnUrl(obj) {
             for (const key in obj) {
                 if (typeof obj[key] === 'string') {
@@ -124,7 +155,9 @@ export async function onRequestGet(context) {
         }
         replaceCdnUrl(responseData);
         response = new Response(JSON.stringify(responseData), {
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
         });
     } catch (error) {
         console.error('Steam MiniProfile Fetch/Parse Error:', error);
@@ -134,7 +167,9 @@ export async function onRequestGet(context) {
             message: error.message,
         }), {
             status: 500,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
         });
     }
     return response;

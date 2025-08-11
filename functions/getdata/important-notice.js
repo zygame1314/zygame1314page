@@ -1,6 +1,6 @@
 import { requireAuth } from '../utils.js';
-export function onRequestOptions(context) {
-  return new Response(null, { status: 204 });
+export function onRequestOptions() {
+    return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
     const { env, request } = context;
@@ -51,7 +51,9 @@ export async function onRequestGet(context) {
             if (results.length === 0) {
                 return new Response(JSON.stringify({ active: false, notices: [] }), {
                     status: 200,
-                    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' }
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
             }
             const notices = [];
@@ -88,7 +90,9 @@ export async function onRequestGet(context) {
             }
             return new Response(JSON.stringify({ active: notices.length > 0, notices: notices }), {
                 status: 200,
-                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' }
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
         }
     } catch (error) {

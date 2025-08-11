@@ -1,5 +1,5 @@
 import { requireAuth } from '../utils.js';
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {

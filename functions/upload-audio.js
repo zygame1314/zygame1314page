@@ -1,5 +1,5 @@
 import { verifyToken } from './utils';
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestPost(context) {
@@ -36,8 +36,7 @@ export async function onRequestPost(context) {
         const arrayBuffer = await file.arrayBuffer();
         await env.R2_BUCKET.put(r2ObjectKey, arrayBuffer, {
             httpMetadata: {
-                contentType: 'audio/webm',
-                cacheControl: 'public, max-age=31536000',
+                contentType: 'audio/webm'
             },
         });
         const audioUrl = `https://bucket.zygame1314.site/${r2ObjectKey}`;

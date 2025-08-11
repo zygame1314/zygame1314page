@@ -1,5 +1,5 @@
 import { requireAuth } from '../utils.js';
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
@@ -24,8 +24,7 @@ export async function onRequestGet(context) {
         }), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'public, max-age=1800'
+                'Content-Type': 'application/json'
             }
         });
     } catch (error) {

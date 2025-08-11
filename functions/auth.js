@@ -19,7 +19,7 @@ async function verifyToken(token, secret) {
         throw new Error('Invalid token')
     }
 }
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestPost(context) {

@@ -1,4 +1,4 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
@@ -45,8 +45,7 @@ export async function onRequestGet(context) {
             }
             return new Response(JSON.stringify(allData), {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
+                    'Content-Type': 'application/json'
                 }
             });
         }
@@ -58,15 +57,13 @@ export async function onRequestGet(context) {
         if (!allData || allData.length === 0) {
             return new Response(JSON.stringify([]), {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
+                    'Content-Type': 'application/json'
                 }
             });
         }
         return new Response(JSON.stringify(allData), {
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+                'Content-Type': 'application/json'
             }
         });
     } catch (error) {
@@ -77,8 +74,7 @@ export async function onRequestGet(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+                'Content-Type': 'application/json'
             }
         });
     }

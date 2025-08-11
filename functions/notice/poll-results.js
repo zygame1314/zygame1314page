@@ -1,10 +1,9 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
     const headers = {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=60"
+        "Content-Type": "application/json"
     };
     try {
         const url = new URL(context.request.url);

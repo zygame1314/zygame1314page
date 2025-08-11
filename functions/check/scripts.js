@@ -1,4 +1,4 @@
-export function onRequestOptions(context) {
+export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
@@ -16,8 +16,7 @@ export async function onRequestGet(context) {
     }));
     const responseBody = JSON.stringify(transformedResults, null, 2);
     const headers = new Headers({
-      'Content-Type': 'application/json;charset=UTF-8',
-      'Cache-Control': 'public, max-age=300',
+      'Content-Type': 'application/json;charset=UTF-8'
     });
     return new Response(responseBody, { status: 200, headers });
   } catch (error) {
