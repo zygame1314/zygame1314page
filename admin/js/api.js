@@ -24,7 +24,7 @@ class API {
             
             if (response.status === 401) {
                 localStorage.removeItem('authToken');
-                window.location.href = 'login.html';
+                window.location.href = '/admin/login';
                 return;
             }
 

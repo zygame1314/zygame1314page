@@ -22,7 +22,7 @@ class AdminSystem {
     async checkAuth() {
         const token = localStorage.getItem('authToken');
         if (!token) {
-            window.location.href = '/admin/login.html';
+            window.location.href = '/admin/login';
             return;
         }
         try {
@@ -39,7 +39,7 @@ class AdminSystem {
             console.log('Authentication successful for user:', result.user);
         } catch (error) {
             localStorage.removeItem('authToken');
-            window.location.href = '/admin/login.html';
+            window.location.href = '/admin/login';
         }
     }
     setupEventListeners() {
@@ -96,7 +96,7 @@ class AdminSystem {
                 '确定要退出管理系统吗？',
                 () => {
                     localStorage.removeItem('authToken');
-                    window.location.href = '/admin/login.html';
+                    window.location.href = '/admin/login';
                 }
             );
         });
