@@ -1,8 +1,24 @@
 import { init } from '/js/lib/waline.js';
 import { API_BASE } from './config.js';
 import { showNotification } from './showNotification.js';
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core';
 import 'highlight.js/styles/atom-one-dark.css';
+import javascript from 'highlight.js/lib/languages/javascript';
+import dos from 'highlight.js/lib/languages/dos';
+import bash from 'highlight.js/lib/languages/bash';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+import yaml from 'highlight.js/lib/languages/yaml';
+import glsl from 'highlight.js/lib/languages/glsl';
+import json from 'highlight.js/lib/languages/json';
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('js', javascript);
+hljs.registerLanguage('dos', dos);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('plaintext', plaintext);
+hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('glsl', glsl);
+hljs.registerLanguage('json', json);
 
 if (!document.querySelector('link[href*="@waline"]')) {
     document.head.insertAdjacentHTML('beforeend',
@@ -614,22 +630,11 @@ class ArticlesManager {
     }
 
     async loadLanguage(language) {
-        if (!hljs.getLanguage(language)) {
-            try {
-                const languages = import.meta.glob('/node_modules/highlight.js/es/languages/*.js');
-                const langPath = `/node_modules/highlight.js/es/languages/${language}.js`;
-                if (languages[langPath]) {
-                    const langModule = await languages[langPath]();
-                    hljs.registerLanguage(language, langModule.default);
-                    return true;
-                }
-                return false;
-            } catch (error) {
-                console.warn(`语言包 ${language} 加载失败:`, error);
-                return false;
-            }
+        if (hljs.getLanguage(language)) {
+            return true;
         }
-        return true;
+        console.warn(`语言包 ${language} 未预先加载。`);
+        return false;
     }
 
     setupImageZoom(container) {
