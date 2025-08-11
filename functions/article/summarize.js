@@ -1,16 +1,5 @@
 export async function onRequest(context) {
-    if (context.request.method === "OPTIONS") {
-        return new Response(null, {
-            status: 200,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Authorization, x-last-request-time",
-                "Access-Control-Max-Age": "86400"
-            }
-        });
-    }
-    else if (context.request.method === "POST") {
+    if (context.request.method === "POST") {
         return await handlePost(context);
     }
 
@@ -46,7 +35,6 @@ async function handlePost(context) {
                 'Content-Type': 'text/event-stream',
                 'Cache-Control': 'no-cache',
                 'Connection': 'keep-alive',
-                'Access-Control-Allow-Origin': '*'
             }
         });
 
@@ -148,7 +136,6 @@ async function handlePost(context) {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
             }
         });
     }

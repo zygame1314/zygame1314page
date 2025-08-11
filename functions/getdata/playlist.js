@@ -26,7 +26,6 @@ export async function onRequestGet(context) {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=1800'
             }
         });
@@ -37,8 +36,7 @@ export async function onRequestGet(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -64,8 +62,7 @@ export async function onRequestPost(context) {
         }), {
             status: 201,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -75,8 +72,7 @@ export async function onRequestPost(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -92,7 +88,7 @@ export async function onRequestPut(context) {
         if (!id) {
             return new Response(JSON.stringify({ error: 'ID is required for updating' }), { 
                 status: 400,
-                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+                headers: { 'Content-Type': 'application/json' }
             });
         }
 
@@ -105,18 +101,18 @@ export async function onRequestPut(context) {
         if (meta.changes === 0) {
             return new Response(JSON.stringify({ error: 'Song not found or no changes made' }), { 
                 status: 404,
-                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+                headers: { 'Content-Type': 'application/json' }
             });
         }
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), { 
             status: 500,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     }
 }
@@ -148,8 +144,7 @@ export async function onRequestDelete(context) {
         }), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -159,8 +154,7 @@ export async function onRequestDelete(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }

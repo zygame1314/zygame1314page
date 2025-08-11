@@ -1,8 +1,19 @@
 export async function onRequest(context) {
   const { request, next, env } = context;
-  const rawUserAgent = request.headers.get('User-Agent') || '无User-Agent';
   const url = new URL(request.url);
   const pathname = url.pathname;
+
+  if (request.method === 'OPTIONS' && pathname.startsWith('/functions/')) {
+    return new Response(null, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
+  }
+  
+  const rawUserAgent = request.headers.get('User-Agent') || '无User-Agent';
 
   console.log(`[中间件开始] 请求路径: ${pathname}, User-Agent: ${rawUserAgent}, 完整URL: ${request.url}`);
 
@@ -83,5 +94,18 @@ export async function onRequest(context) {
   }
 
   console.log(`[中间件结束] 针对路径 ${pathname} 调用 next()。`);
-  return next();
+  const response = await next();
+
+  if (pathname.startsWith('/functions/')) {
+    const headers = new Headers(response.headers);
+    headers.set('Access-Control-Allow-Origin', '*');
+    headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  return response;
 }

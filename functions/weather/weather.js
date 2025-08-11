@@ -1,14 +1,4 @@
 export async function onRequest(context) {
-    if (context.request.method === 'OPTIONS') {
-        return new Response(null, {
-            status: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            }
-        });
-    }
     try {
         const url = new URL(context.request.url);
         const lat = url.searchParams.get('lat');
@@ -20,8 +10,7 @@ export async function onRequest(context) {
             }), {
                 status: 400,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             });
         }
@@ -47,8 +36,7 @@ export async function onRequest(context) {
         };
         return new Response(JSON.stringify(responseData), {
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     } catch (error) {
@@ -59,8 +47,7 @@ export async function onRequest(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }

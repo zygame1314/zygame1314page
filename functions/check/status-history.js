@@ -52,7 +52,6 @@ export async function onRequest(context) {
             return new Response(JSON.stringify(allData), {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
                     'Cache-Control': 'no-cache'
                 }
             });
@@ -69,7 +68,6 @@ export async function onRequest(context) {
             return new Response(JSON.stringify([]), {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
                     'Cache-Control': 'no-cache'
                 }
             });
@@ -78,7 +76,6 @@ export async function onRequest(context) {
         return new Response(JSON.stringify(allData), {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache'
             }
         });
@@ -93,7 +90,6 @@ export async function onRequest(context) {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache'
             }
         });

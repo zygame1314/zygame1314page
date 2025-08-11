@@ -37,7 +37,7 @@ export async function onRequestGet(context) {
             
             return new Response(JSON.stringify({ notices }), {
                 status: 200,
-                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+                headers: { 'Content-Type': 'application/json' }
             });
         } else {
             const { results } = await env.DB.prepare(`
@@ -54,7 +54,7 @@ export async function onRequestGet(context) {
             if (results.length === 0) {
                 return new Response(JSON.stringify({ active: false, notices: [] }), {
                     status: 200,
-                    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=60' }
+                    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' }
                 });
             }
 
@@ -96,13 +96,13 @@ export async function onRequestGet(context) {
 
             return new Response(JSON.stringify({ active: notices.length > 0, notices: notices }), {
                 status: 200,
-                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=60' }
+                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' }
             });
         }
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     }
 }
@@ -149,8 +149,7 @@ export async function onRequestPut(context) {
         }), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -160,8 +159,7 @@ export async function onRequestPut(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -177,7 +175,7 @@ export async function onRequestDelete(context) {
     if (!id) {
         return new Response(JSON.stringify({ error: '缺少ID' }), {
             status: 400,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     }
 
@@ -185,12 +183,12 @@ export async function onRequestDelete(context) {
         await env.DB.prepare('DELETE FROM important_notices WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            headers: { 'Content-Type': 'application/json' }
         });
     }
 }

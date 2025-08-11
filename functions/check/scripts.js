@@ -1,12 +1,3 @@
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-  'Access-Control-Allow-Headers': '*',
-};
-
-export async function onRequestOptions(context) {
-  return new Response(null, { status: 204, headers: corsHeaders });
-}
 
 export async function onRequestGet(context) {
   const { env } = context;
@@ -28,7 +19,6 @@ export async function onRequestGet(context) {
     const headers = new Headers({
       'Content-Type': 'application/json;charset=UTF-8',
       'Cache-Control': 'public, max-age=300',
-      ...corsHeaders
     });
 
     return new Response(responseBody, { status: 200, headers });
@@ -39,7 +29,6 @@ export async function onRequestGet(context) {
     const errorBody = JSON.stringify({ error: "Failed to retrieve script list." });
     const headers = new Headers({
       'Content-Type': 'application/json;charset=UTF-8',
-      ...corsHeaders
     });
     
     return new Response(errorBody, { status: 500, headers });

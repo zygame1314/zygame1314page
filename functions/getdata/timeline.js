@@ -39,7 +39,6 @@ export async function onRequestGet(context) {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=1800'
             }
         });
@@ -50,8 +49,7 @@ export async function onRequestGet(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -77,8 +75,7 @@ export async function onRequestPost(context) {
         }), {
             status: 201,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -88,8 +85,7 @@ export async function onRequestPost(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -115,8 +111,7 @@ export async function onRequestPut(context) {
         }), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -126,8 +121,7 @@ export async function onRequestPut(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }
@@ -156,8 +150,7 @@ export async function onRequestDelete(context) {
         }), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -167,8 +160,7 @@ export async function onRequestDelete(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         });
     }

@@ -52,7 +52,6 @@ export async function onRequestPost(context) {
         });
 
         const audioUrl = `https://bucket.zygame1314.site/${r2ObjectKey}`;
-        const audioPath = `/${r2ObjectKey}`;
 
         return new Response(
             JSON.stringify({
@@ -62,8 +61,7 @@ export async function onRequestPost(context) {
             }),
             {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
         );
@@ -78,21 +76,9 @@ export async function onRequestPost(context) {
             {
                 status: error.message === '未提供授权令牌' || error.message === '无效或过期的令牌' ? 401 : 400,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
         );
     }
-}
-
-export async function onRequestOptions() {
-    return new Response(null, {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            'Access-Control-Max-Age': '86400'
-        }
-    });
 }

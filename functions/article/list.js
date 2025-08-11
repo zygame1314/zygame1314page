@@ -1,20 +1,6 @@
-
 export async function onRequest(context) {
     const { request, env } = context;
 
-    const corsHeaders = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Max-Age': '86400',
-    };
-
-    if (request.method === 'OPTIONS') {
-        return new Response(null, {
-            status: 204,
-            headers: corsHeaders,
-        });
-    }
 
     if (request.method === 'GET') {
         try {
@@ -22,7 +8,6 @@ export async function onRequest(context) {
                 return new Response('D1 数据库绑定 (DB) 未找到。请检查 Pages 项目设置。', {
                     status: 500,
                     headers: {
-                        ...corsHeaders,
                         'Content-Type': 'text/plain',
                     }
                 });
@@ -86,14 +71,12 @@ export async function onRequest(context) {
 
                 return new Response(JSON.stringify(articles), {
                     headers: {
-                        ...corsHeaders,
                         'Content-Type': 'application/json',
                     },
                 });
             } else {
                 return new Response(JSON.stringify([]), {
                     headers: {
-                        ...corsHeaders,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -103,7 +86,6 @@ export async function onRequest(context) {
             return new Response(`获取文章时出错: ${e.message}`, {
                 status: 500,
                 headers: {
-                    ...corsHeaders,
                     'Content-Type': 'text/plain',
                 }
             });
@@ -114,7 +96,6 @@ export async function onRequest(context) {
         return new Response(null, {
             status: 200,
             headers: {
-                ...corsHeaders,
                 'Content-Type': 'application/json',
             }
         });
@@ -123,7 +104,6 @@ export async function onRequest(context) {
     return new Response('方法不允许 (Method Not Allowed)', {
         status: 405,
         headers: {
-            ...corsHeaders,
             'Content-Type': 'text/plain',
             'Allow': 'GET, HEAD, OPTIONS',
         },

@@ -1,14 +1,4 @@
 export async function onRequest(context) {
-    if (context.request.method === 'OPTIONS') {
-        return new Response(null, {
-            status: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            },
-        });
-    }
     let response;
     const steamFriendCode = context.env.STEAM_ID_32;
     if (!steamFriendCode) {
@@ -19,8 +9,7 @@ export async function onRequest(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
         });
     }
@@ -164,8 +153,7 @@ export async function onRequest(context) {
         replaceCdnUrl(responseData);
         response = new Response(JSON.stringify(responseData), {
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
         });
     } catch (error) {
@@ -177,8 +165,7 @@ export async function onRequest(context) {
         }), {
             status: 500,
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
         });
     }

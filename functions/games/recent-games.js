@@ -1,14 +1,4 @@
 export async function onRequest(context) {
-    if (context.request.method === 'OPTIONS') {
-        return new Response(null, {
-            status: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            }
-        });
-    }
 
     const cache = caches.default;
     let response = await cache.match(context.request);
@@ -72,7 +62,6 @@ export async function onRequest(context) {
         response = new Response(JSON.stringify(recentGamesData), {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=300',
             }
         });
@@ -86,7 +75,6 @@ export async function onRequest(context) {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'public, max-age=60',
             }
         });
