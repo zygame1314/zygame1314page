@@ -259,7 +259,7 @@ class SiteStatus {
                 return '主站';
             case 'https://api.zygame1314-666.top':
                 return '源站';
-            case 'https://shell.cdn1.vip':
+            case 'https://cdn.jsdmirror.com/npm/lodash@4.17.21/lodash.min.js':
                 return 'CDN';
             default:
                 return '未知站点';
