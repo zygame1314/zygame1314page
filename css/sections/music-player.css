@@ -110,7 +110,7 @@
 .time-info {
     display: flex;
     justify-content: space-between;
-    font-family: 'zpix', monospace;
+    font-family: 'zpix';
     font-size: 12px;
     color: var(--primary-color);
     margin-top: 10px;

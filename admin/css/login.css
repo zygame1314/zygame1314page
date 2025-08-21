@@ -70,7 +70,7 @@ body {
     border-radius: var(--border-radius);
     background: var(--bg-color);
     color: var(--text-primary);
-    font-family: 'zpix', sans-serif;
+    font-family: 'zpix';
     font-size: 1rem;
     transition: var(--transition);
     box-sizing: border-box;
