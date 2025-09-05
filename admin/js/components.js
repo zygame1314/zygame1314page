@@ -546,9 +546,9 @@ class Components {
                         input = Utils.domUtils.createElement('textarea', {
                             name: field.name,
                             id: field.name,
-                            placeholder: field.placeholder || '',
-                            value: field.value || ''
+                            placeholder: field.placeholder || ''
                         });
+                        input.value = field.value || '';
                         if (field.rows) input.rows = field.rows;
                         break;
                     case 'select':

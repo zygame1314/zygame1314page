@@ -447,13 +447,6 @@ class AdminSystem {
                 }
             }
         });
-
-        if (isEdit && donation?.message) {
-            const messageTextarea = document.querySelector('#modal textarea[name="message"]');
-            if (messageTextarea) {
-                messageTextarea.value = donation.message;
-            }
-        }
     }
     editDonation(id) {
         const cachedData = this.cache.get('donations-current');
@@ -704,21 +697,6 @@ class AdminSystem {
                 }
             }
         });
-
-        if (isEdit) {
-            if (song.comment) {
-                const commentTextarea = document.querySelector('#modal textarea[name="comment"]');
-                if (commentTextarea) {
-                    commentTextarea.value = song.comment;
-                }
-            }
-            if (song.expression) {
-                const expressionSelect = document.querySelector('#modal select[name="expression"]');
-                if (expressionSelect) {
-                    expressionSelect.value = song.expression;
-                }
-            }
-        }
     }
     deleteMusic(id) {
         Components.modal.confirm(
@@ -962,13 +940,6 @@ class AdminSystem {
                 }
             }
         });
-
-        if (isEdit && project?.description) {
-            const descriptionTextarea = document.querySelector('#modal textarea[name="description"]');
-            if (descriptionTextarea) {
-                descriptionTextarea.value = project.description;
-            }
-        }
     }
     deleteProject(id) {
         Components.modal.confirm(
@@ -1153,12 +1124,6 @@ class AdminSystem {
                 }
             }
         });
-        if (isEdit && notice?.content) {
-            const contentTextarea = document.querySelector('#modal textarea[name="content"]');
-            if (contentTextarea) {
-                contentTextarea.value = JSON.stringify(notice.content, null, 2);
-            }
-        }
     }
     deleteNotice(id) {
         Components.modal.confirm(
@@ -1313,12 +1278,6 @@ class AdminSystem {
                 }
             }
         });
-        if (isEdit && milestone?.description) {
-            const descriptionTextarea = document.querySelector('#modal textarea[name="description"]');
-            if (descriptionTextarea) {
-                descriptionTextarea.value = milestone.description;
-            }
-        }
     }
     deleteTimeline(id) {
         Components.modal.confirm(
@@ -1608,16 +1567,6 @@ class AdminSystem {
                     }
                 }
             });
-
-            if (isEdit) {
-                const contentTextarea = document.querySelector('#modal textarea[name="content"]');
-                if (contentTextarea && notice.content) contentTextarea.value = notice.content;
-                
-                const pollOptionsTextarea = document.querySelector('#modal textarea[name="pollOptions"]');
-                if (pollOptionsTextarea && notice.poll?.options) {
-                    pollOptionsTextarea.value = notice.poll.options.map(o => o.text).join('\n');
-                }
-            }
 
             document.querySelectorAll('#modal .form-group-toggle').forEach(group => {
                 const checkbox = group.querySelector('input[type="checkbox"]');
