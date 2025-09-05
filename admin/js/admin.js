@@ -1380,6 +1380,13 @@ class AdminSystem {
             const articleCard = Utils.domUtils.createElement('div', {
                 className: 'article-card'
             });
+            const tagsHtml = (article.tags && article.tags.length > 0)
+                ? `<span><i class="fas fa-tags"></i> ${article.tags.join(', ')}</span>`
+                : '';
+            const aiHtml = (article.aiAssistants && article.aiAssistants.length > 0)
+                ? `<span><i class="fas fa-robot"></i> ${article.aiAssistants.join(', ')}</span>`
+                : '';
+
             articleCard.innerHTML = `
                 ${article.thumbnail ? `<div class="article-thumbnail" style="background-image: url('${article.thumbnail}')"></div>` : ''}
                 <div class="article-content">
@@ -1387,7 +1394,8 @@ class AdminSystem {
                     <div class="article-excerpt">${article.excerpt || '暂无摘要'}</div>
                     <div class="article-meta">
                         <span><i class="fas fa-calendar-alt"></i> ${Utils.formatDate(article.date)}</span>
-                        ${article.tags ? `<span><i class="fas fa-tags"></i> ${article.tags}</span>` : ''}
+                        ${tagsHtml}
+                        ${aiHtml}
                     </div>
                     <div class="article-actions">
                         <button class="btn btn-sm edit-article" data-id="${article.id}">
@@ -1667,8 +1675,8 @@ class AdminSystem {
             { name: 'contentUrl', label: '内容文件URL', type: 'text', required: true, value: article?.contentUrl || '', placeholder: '/articles/my-first-article.md', help: '指向Markdown文件的路径。' },
             { name: 'excerpt', label: '摘要', type: 'textarea', value: article?.excerpt || '', rows: 3 },
             { name: 'thumbnail', label: '缩略图', type: 'image-upload', value: article?.thumbnail || '', uploadContext: 'articles' },
-            { name: 'tags', label: '标签', type: 'text', value: article?.tags || '', help: '用逗号分隔' },
-            { name: 'aiAssistants', label: 'AI助手', type: 'text', value: article?.aiAssistants || '', placeholder: 'e.g., ChatGPT, Copilot', help: '用逗号分隔使用了的AI助手' }
+            { name: 'tags', label: '标签', type: 'textarea', value: article?.tags?.join('\n') || '', help: '每行一个标签', rows: 3 },
+            { name: 'aiAssistants', label: 'AI助手', type: 'textarea', value: article?.aiAssistants?.join('\n') || '', placeholder: 'e.g., ChatGPT\nCopilot', help: '每行一个AI助手', rows: 3 }
         ];
         const form = Components.formBuilder.create(fields);
         Components.modal.show(title, form.outerHTML, {
@@ -1685,8 +1693,8 @@ class AdminSystem {
                 if (result.isValid) {
                     try {
                         const articleData = { ...result.data };
-                        articleData.tags = articleData.tags.split(',').map(t => t.trim()).join(',');
-                        articleData.aiAssistants = articleData.aiAssistants.split(',').map(t => t.trim()).join(',');
+                        articleData.tags = articleData.tags.split('\n').map(t => t.trim()).filter(Boolean);
+                        articleData.aiAssistants = articleData.aiAssistants.split('\n').map(t => t.trim()).filter(Boolean);
 
                         if (isEdit) {
                             await api.articles.update(articleData);
@@ -1703,10 +1711,6 @@ class AdminSystem {
             }
         });
         
-        if (article?.excerpt) {
-            const excerptTextarea = document.querySelector('#modal textarea[name="excerpt"]');
-            if (excerptTextarea) excerptTextarea.value = article.excerpt;
-        }
     }
     async editArticle(id) {
         const cachedArticles = this.cache.get('articles');
