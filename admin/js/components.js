@@ -172,7 +172,7 @@ class Components {
                             formData.append('context', uploadContext);
                         }
 
-                        const response = await fetch('https://api.zygame1314.site/upload-image', {
+                        const response = await fetch('https://api.zygame1314.site/admin/upload-image', {
                             method: 'POST',
                             body: formData,
                             headers: {
@@ -222,7 +222,7 @@ class Components {
                         const formData = new FormData();
                         formData.append('file', file);
 
-                        const response = await fetch('https://api.zygame1314.site/upload-audio', {
+                        const response = await fetch('https://api.zygame1314.site/admin/upload-audio', {
                             method: 'POST',
                             body: formData,
                             headers: {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="/admin/css/admin.css">
     <link rel="stylesheet" href="/css/animations.css">
 </head>
+
 <body>
     <div class="pixel-stars"></div>
     <div class="admin-container">
@@ -19,7 +21,7 @@
                     <h2>管理系统</h2>
                 </div>
             </div>
-            
+
             <div class="sidebar-menu">
                 <ul class="nav-links">
                     <li class="nav-item active">
@@ -68,6 +70,12 @@
                         <a href="#articles" class="nav-link" data-section="articles">
                             <i class="fas fa-book"></i>
                             <span>文章管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#d1-manager" class="nav-link" data-section="d1-manager">
+                            <i class="fas fa-key"></i>
+                            <span>激活码管理</span>
                         </a>
                     </li>
                 </ul>
@@ -324,6 +332,51 @@
                     </div>
                 </section>
 
+                <section id="d1-manager-section" class="content-section">
+                    <div class="section-header">
+                        <h1>激活码管理</h1>
+                        <button class="btn btn-primary" id="generateCodeBtn">
+                            <i class="fas fa-plus"></i> 生成激活码
+                        </button>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="search-bar">
+                                <input type="text" placeholder="搜索激活码、用户..." id="d1SearchInput">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" id="batchCopyBtn"><i class="fas fa-copy"></i>
+                                    批量复制</button>
+                                <button class="btn btn-danger" id="batchDeleteBtn"><i class="fas fa-trash"></i>
+                                    批量删除</button>
+                                <button class="btn btn-danger" id="batchBanBtn"><i class="fas fa-user-slash"></i>
+                                    批量封禁</button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="d1CodesTable">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllCheckbox"></th>
+                                        <th>状态</th>
+                                        <th>激活码</th>
+                                        <th>备注</th>
+                                        <th>使用者ID</th>
+                                        <th>姓名</th>
+                                        <th>到期日</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="d1CodesTableBody">
+                                    <!-- 数据将由JS动态填充 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </main>
     </div>
@@ -365,4 +418,5 @@
     <script type="module" src="/admin/js/components.js"></script>
     <script type="module" src="/admin/js/admin.js"></script>
 </body>
+
 </html>

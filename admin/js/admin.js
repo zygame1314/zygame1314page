@@ -10,6 +10,8 @@ class AdminSystem {
         this.noticesCache = [];
         this.timelineCache = [];
         this.init();
+        this.d1ManagerActionsInitialized = false;
+        this.d1SelectedItems = new Set();
     }
     async init() {
         await this.checkAuth();
@@ -47,17 +49,14 @@ class AdminSystem {
         const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.querySelector('.sidebar-overlay');
-
         sidebarToggle?.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
             document.querySelector('.main-content').classList.toggle('collapsed');
         });
-
         mobileSidebarToggle?.addEventListener('click', () => {
             sidebar.classList.toggle('show');
             overlay.classList.toggle('show');
         });
-
         overlay?.addEventListener('click', () => {
             sidebar.classList.remove('show');
             overlay.classList.remove('show');
@@ -193,6 +192,9 @@ class AdminSystem {
             case 'important-notices':
                 await this.loadImportantNotices();
                 break;
+            case 'd1-manager':
+                await this.loadD1Manager();
+                break;
         }
     }
     refreshCurrentSection() {
@@ -242,12 +244,10 @@ class AdminSystem {
     async loadDonations(platform = null) {
         const currentPage = parseInt(Utils.getUrlParam('donation_page')) || 1;
         const currentPlatform = platform === null ? (Utils.getUrlParam('platform') || '') : platform;
-
         try {
             Components.loading.show('donationsTableBody', '加载捐献数据...');
             const data = await api.donations.getList(currentPage, 10, currentPlatform || null);
             this.renderDonationsTable(data.data || []);
-            
             if (data.pagination) {
                 Components.pagination.create(
                     'donationsPagination',
@@ -728,15 +728,12 @@ class AdminSystem {
             audioPlayer = new Audio();
             window.audioPlayer = audioPlayer;
         }
-
         const allPlayButtons = document.querySelectorAll('.play-btn');
         const isCurrentlyPlaying = button.classList.contains('playing');
-
         allPlayButtons.forEach(btn => {
             btn.classList.remove('playing');
             btn.querySelector('.play-icon').classList.remove('paused');
         });
-
         if (isCurrentlyPlaying) {
             audioPlayer.pause();
         } else {
@@ -744,7 +741,6 @@ class AdminSystem {
             audioPlayer.play();
             button.classList.add('playing');
             button.querySelector('.play-icon').classList.add('paused');
-
             audioPlayer.onended = () => {
                 button.classList.remove('playing');
                 button.querySelector('.play-icon').classList.remove('paused');
@@ -925,7 +921,6 @@ class AdminSystem {
                         } else {
                             projectData.actions = [];
                         }
-
                         if (isEdit) {
                             await api.projects.update(projectData);
                         } else {
@@ -1003,12 +998,11 @@ class AdminSystem {
                     </div>
                 </div>
                 <div class="notice-content">
-                    ${
-                        Array.isArray(notice.content)
-                        ? notice.content.map(item => {
-                            const description = item.description ? `<p class="notice-description">${item.description}</p>` : '';
-                            const highlightClass = item.highlight ? 'highlight' : '';
-                            return `
+                    ${Array.isArray(notice.content)
+                    ? notice.content.map(item => {
+                        const description = item.description ? `<p class="notice-description">${item.description}</p>` : '';
+                        const highlightClass = item.highlight ? 'highlight' : '';
+                        return `
                                 <div class="notice-detail-item ${item.type || 'info'} ${highlightClass}">
                                     ${item.icon ? `<i class="notice-detail-icon ${item.icon}"></i>` : ''}
                                     <div class="notice-detail-text">
@@ -1017,9 +1011,9 @@ class AdminSystem {
                                     </div>
                                 </div>
                             `;
-                        }).join('')
-                        : notice.content
-                    }
+                    }).join('')
+                    : notice.content
+                }
                 </div>
             `;
             container.appendChild(noticeItem);
@@ -1345,7 +1339,6 @@ class AdminSystem {
             const aiHtml = (article.aiAssistants && article.aiAssistants.length > 0)
                 ? `<span><i class="fas fa-robot"></i> ${article.aiAssistants.join(', ')}</span>`
                 : '';
-
             articleCard.innerHTML = `
                 ${article.thumbnail ? `<div class="article-thumbnail" style="background-image: url('${article.thumbnail}')"></div>` : ''}
                 <div class="article-content">
@@ -1369,51 +1362,49 @@ class AdminSystem {
             container.appendChild(articleCard);
         });
     }
-        async loadImportantNotices() {
-            try {
-                Components.loading.show('importantNoticesList', '加载重要公告...');
-                const data = await api.importantNotices.getList();
-                const notices = data.notices || [];
-                this.cache.set('important-notices', notices);
-                this.renderImportantNotices(notices);
-                this.setupImportantNoticeActions();
-            } catch (error) {
-                Components.notification.error('加载重要公告失败: ' + error.message);
-            }
+    async loadImportantNotices() {
+        try {
+            Components.loading.show('importantNoticesList', '加载重要公告...');
+            const data = await api.importantNotices.getList();
+            const notices = data.notices || [];
+            this.cache.set('important-notices', notices);
+            this.renderImportantNotices(notices);
+            this.setupImportantNoticeActions();
+        } catch (error) {
+            Components.notification.error('加载重要公告失败: ' + error.message);
         }
-        renderImportantNotices(notices) {
-            const container = document.getElementById('importantNoticesList');
-            if (!container) return;
-            if (notices.length === 0) {
-                Components.emptyState.show('importantNoticesList', {
-                    icon: 'fas fa-exclamation-triangle',
-                    title: '无重要公告',
-                    message: '当前没有正在生效的重要公告。',
-                    action: {
-                        text: '添加公告',
-                        onClick: () => this.showImportantNoticeForm()
-                    }
-                });
-                return;
-            }
-            container.innerHTML = '';
-            notices.forEach(notice => {
-                const noticeEl = Utils.domUtils.createElement('div', { className: 'notice-item' });
-                const statusClass = notice.active ? 'online' : 'offline';
-                const statusText = notice.active ? '生效中' : '已禁用';
-
-                let imageHtml = '';
-                if (notice.image && notice.image.url) {
-                    imageHtml = `
+    }
+    renderImportantNotices(notices) {
+        const container = document.getElementById('importantNoticesList');
+        if (!container) return;
+        if (notices.length === 0) {
+            Components.emptyState.show('importantNoticesList', {
+                icon: 'fas fa-exclamation-triangle',
+                title: '无重要公告',
+                message: '当前没有正在生效的重要公告。',
+                action: {
+                    text: '添加公告',
+                    onClick: () => this.showImportantNoticeForm()
+                }
+            });
+            return;
+        }
+        container.innerHTML = '';
+        notices.forEach(notice => {
+            const noticeEl = Utils.domUtils.createElement('div', { className: 'notice-item' });
+            const statusClass = notice.active ? 'online' : 'offline';
+            const statusText = notice.active ? '生效中' : '已禁用';
+            let imageHtml = '';
+            if (notice.image && notice.image.url) {
+                imageHtml = `
                         <div class="notice-image-container">
                             <img src="${notice.image.url}" alt="${notice.image.alt || '公告图片'}" style="max-width: 100%; height: auto; margin-top: 1rem;">
                         </div>
                     `;
-                }
-
-                let pollHtml = '';
-                if (notice.poll && notice.poll.active) {
-                    pollHtml = `
+            }
+            let pollHtml = '';
+            if (notice.poll && notice.poll.active) {
+                pollHtml = `
                         <div class="notice-poll-container" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
                             <strong>投票: ${notice.poll.question}</strong>
                             <ul>
@@ -1421,9 +1412,8 @@ class AdminSystem {
                             </ul>
                         </div>
                     `;
-                }
-
-                noticeEl.innerHTML = `
+            }
+            noticeEl.innerHTML = `
                     <div class="notice-header">
                         <div class="notice-title">${notice.title}</div>
                         <div class="notice-actions">
@@ -1439,164 +1429,148 @@ class AdminSystem {
                         <small style="display: block; margin-top: 1rem; opacity: 0.7;">过期时间: ${notice.expiryDate ? Utils.formatDate(notice.expiryDate) : '无'}</small>
                     </div>
                 `;
-                container.appendChild(noticeEl);
-            });
-        }
-        setupImportantNoticeActions() {
-            document.getElementById('addImportantNoticeBtn')?.addEventListener('click', () => {
-                this.showImportantNoticeForm();
-            });
-            document.querySelectorAll('.edit-important-notice').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.currentTarget.dataset.id;
-                    const cachedNotices = this.cache.get('important-notices');
-                    if (cachedNotices) {
-                        const notice = cachedNotices.find(n => n.id == id);
-                        if (notice) {
-                            this.showImportantNoticeForm(notice);
-                        } else {
-                            Components.notification.error('在缓存中找不到该公告，数据可能已过期。');
-                        }
+            container.appendChild(noticeEl);
+        });
+    }
+    setupImportantNoticeActions() {
+        document.getElementById('addImportantNoticeBtn')?.addEventListener('click', () => {
+            this.showImportantNoticeForm();
+        });
+        document.querySelectorAll('.edit-important-notice').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                const cachedNotices = this.cache.get('important-notices');
+                if (cachedNotices) {
+                    const notice = cachedNotices.find(n => n.id == id);
+                    if (notice) {
+                        this.showImportantNoticeForm(notice);
                     } else {
-                        Components.notification.error('公告缓存未找到，请尝试刷新页面。');
+                        Components.notification.error('在缓存中找不到该公告，数据可能已过期。');
                     }
-                });
-            });
-
-            document.querySelectorAll('.delete-important-notice').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.currentTarget.dataset.id;
-                    this.deleteImportantNotice(id);
-                });
-            });
-        }
-        showImportantNoticeForm(notice = null) {
-            const isEdit = !!notice;
-            const title = isEdit ? '编辑重要公告' : '添加重要公告';
-
-            const fields = [
-                { type: 'divider', label: '基础信息' },
-                { name: 'id', label: 'ID', type: 'text', value: notice?.id || `notice_${Date.now()}`, required: true, help: '唯一标识符，创建后不建议修改', readonly: isEdit },
-                { name: 'active', label: '是否激活', type: 'checkbox', checked: notice ? notice.active : true, className: 'form-group-toggle' },
-                { name: 'title', label: '标题', type: 'text', value: notice?.title || '', required: true },
-                { name: 'content', label: '内容', type: 'textarea', value: notice?.content || '', required: true, rows: 4 },
-                { name: 'expiryDate', label: '过期时间', type: 'datetime-local', value: notice?.expiryDate ? Utils.formatDate(notice.expiryDate, 'YYYY-MM-DD HH:mm').replace(' ', 'T') : '' },
-                
-                { type: 'divider', label: '图片设置' },
-                { name: 'imageUrl', label: '图片', type: 'image-upload', value: notice?.image?.url || '', uploadContext: 'notices' },
-                { name: 'imageAlt', label: '图片描述', type: 'text', value: notice?.image?.alt || '' },
-                { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'top', options: [{value: 'top', label: '上'}, {value: 'bottom', label: '下'}, {value: 'left', label: '左'}, {value: 'right', label: '右'}] },
-                { name: 'imageWidth', label: '图片宽度', type: 'text', value: notice?.image?.width || '', placeholder: '例如: 100px 或 50%' },
-                { name: 'imageHeight', label: '图片高度', type: 'text', value: notice?.image?.height || '', placeholder: '例如: 100px 或 auto' },
-
-                { type: 'divider', label: '投票设置' },
-                { name: 'pollActive', label: '开启投票', type: 'checkbox', checked: notice?.poll?.active || false, className: 'form-group-toggle' },
-                { name: 'pollQuestion', label: '投票问题', type: 'text', value: notice?.poll?.question || '' },
-                { name: 'pollOptions', label: '投票选项', type: 'textarea', value: notice?.poll?.options ? notice.poll.options.map(o => o.text).join('\n') : '', help: '每行一个选项', rows: 4 },
-            ];
-
-            const form = Components.formBuilder.create(fields);
-            Components.modal.show(title, form.outerHTML, {
-                saveText: isEdit ? '更新' : '添加',
-                onSave: async () => {
-                    const modalForm = document.querySelector('#modal form');
-                    const result = Components.formBuilder.validate(modalForm, { title: [], content: [] });
-                    
-                    if (result.isValid) {
-                        try {
-                            const data = result.data;
-                            data.active = modalForm.querySelector('[name="active"]').checked;
-                            
-                            if (data.imageUrl) {
-                                data.image = {
-                                    url: data.imageUrl,
-                                    alt: data.imageAlt,
-                                    position: data.imagePosition,
-                                    width: data.imageWidth,
-                                    height: data.imageHeight,
-                                };
-                            } else {
-                                data.image = null;
-                            }
-                            delete data.imageUrl;
-                            delete data.imageAlt;
-                            delete data.imagePosition;
-                            delete data.imageWidth;
-                            delete data.imageHeight;
-
-                            const pollActive = modalForm.querySelector('[name="pollActive"]').checked;
-                            const pollQuestion = data.pollQuestion.trim();
-                            const pollOptionsText = data.pollOptions.trim();
-                            const newPollOptions = pollOptionsText.split('\n').map(o => o.trim()).filter(Boolean);
-
-                            if (pollActive && (!pollQuestion || newPollOptions.length === 0)) {
-                                Components.notification.error('开启投票后，必须填写投票问题和至少一个选项。');
-                                return;
-                            }
-
-                            if (pollQuestion && newPollOptions.length > 0) {
-                                const existingPoll = notice?.poll || {};
-                                const existingOptionsMap = new Map((existingPoll.options || []).map(opt => [opt.text, opt]));
-
-                                data.poll = {
-                                    active: pollActive,
-                                    question: pollQuestion,
-                                    options: newPollOptions.map((text, index) => {
-                                        const existingOption = existingOptionsMap.get(text);
-                                        return {
-                                            id: existingOption?.id || index,
-                                            text: text,
-                                            votes: existingOption?.votes || 0
-                                        };
-                                    })
-                                };
-                            } else {
-                                data.poll = null;
-                            }
-
-                            delete data.pollQuestion;
-                            delete data.pollOptions;
-                            
-                            await api.importantNotices.update(data);
-                            Components.modal.hide();
-                            Components.notification.success('重要公告已保存');
-                            this.loadImportantNotices();
-                        } catch (error) {
-                            Components.notification.error('保存失败: ' + error.message);
-                        }
-                    }
+                } else {
+                    Components.notification.error('公告缓存未找到，请尝试刷新页面。');
                 }
             });
-
-            document.querySelectorAll('#modal .form-group-toggle').forEach(group => {
-                const checkbox = group.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    const toggleSwitch = document.createElement('label');
-                    toggleSwitch.setAttribute('for', checkbox.id);
-                    toggleSwitch.className = 'toggle-switch';
-                    
-                    if (!group.querySelector('.toggle-switch')) {
-                        checkbox.insertAdjacentElement('afterend', toggleSwitch);
-                    }
-                }
+        });
+        document.querySelectorAll('.delete-important-notice').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                this.deleteImportantNotice(id);
             });
-        }
-
-        deleteImportantNotice(id) {
-            Components.modal.confirm(
-                '确认删除',
-                '确定要删除这条重要公告吗？此操作不可撤销。',
-                async () => {
+        });
+    }
+    showImportantNoticeForm(notice = null) {
+        const isEdit = !!notice;
+        const title = isEdit ? '编辑重要公告' : '添加重要公告';
+        const fields = [
+            { type: 'divider', label: '基础信息' },
+            { name: 'id', label: 'ID', type: 'text', value: notice?.id || `notice_${Date.now()}`, required: true, help: '唯一标识符，创建后不建议修改', readonly: isEdit },
+            { name: 'active', label: '是否激活', type: 'checkbox', checked: notice ? notice.active : true, className: 'form-group-toggle' },
+            { name: 'title', label: '标题', type: 'text', value: notice?.title || '', required: true },
+            { name: 'content', label: '内容', type: 'textarea', value: notice?.content || '', required: true, rows: 4 },
+            { name: 'expiryDate', label: '过期时间', type: 'datetime-local', value: notice?.expiryDate ? Utils.formatDate(notice.expiryDate, 'YYYY-MM-DD HH:mm').replace(' ', 'T') : '' },
+            { type: 'divider', label: '图片设置' },
+            { name: 'imageUrl', label: '图片', type: 'image-upload', value: notice?.image?.url || '', uploadContext: 'notices' },
+            { name: 'imageAlt', label: '图片描述', type: 'text', value: notice?.image?.alt || '' },
+            { name: 'imagePosition', label: '图片位置', type: 'select', value: notice?.image?.position || 'top', options: [{ value: 'top', label: '上' }, { value: 'bottom', label: '下' }, { value: 'left', label: '左' }, { value: 'right', label: '右' }] },
+            { name: 'imageWidth', label: '图片宽度', type: 'text', value: notice?.image?.width || '', placeholder: '例如: 100px 或 50%' },
+            { name: 'imageHeight', label: '图片高度', type: 'text', value: notice?.image?.height || '', placeholder: '例如: 100px 或 auto' },
+            { type: 'divider', label: '投票设置' },
+            { name: 'pollActive', label: '开启投票', type: 'checkbox', checked: notice?.poll?.active || false, className: 'form-group-toggle' },
+            { name: 'pollQuestion', label: '投票问题', type: 'text', value: notice?.poll?.question || '' },
+            { name: 'pollOptions', label: '投票选项', type: 'textarea', value: notice?.poll?.options ? notice.poll.options.map(o => o.text).join('\n') : '', help: '每行一个选项', rows: 4 },
+        ];
+        const form = Components.formBuilder.create(fields);
+        Components.modal.show(title, form.outerHTML, {
+            saveText: isEdit ? '更新' : '添加',
+            onSave: async () => {
+                const modalForm = document.querySelector('#modal form');
+                const result = Components.formBuilder.validate(modalForm, { title: [], content: [] });
+                if (result.isValid) {
                     try {
-                        await api.importantNotices.delete(id);
-                        Components.notification.success('重要公告已删除');
-                        await this.loadImportantNotices();
+                        const data = result.data;
+                        data.active = modalForm.querySelector('[name="active"]').checked;
+                        if (data.imageUrl) {
+                            data.image = {
+                                url: data.imageUrl,
+                                alt: data.imageAlt,
+                                position: data.imagePosition,
+                                width: data.imageWidth,
+                                height: data.imageHeight,
+                            };
+                        } else {
+                            data.image = null;
+                        }
+                        delete data.imageUrl;
+                        delete data.imageAlt;
+                        delete data.imagePosition;
+                        delete data.imageWidth;
+                        delete data.imageHeight;
+                        const pollActive = modalForm.querySelector('[name="pollActive"]').checked;
+                        const pollQuestion = data.pollQuestion.trim();
+                        const pollOptionsText = data.pollOptions.trim();
+                        const newPollOptions = pollOptionsText.split('\n').map(o => o.trim()).filter(Boolean);
+                        if (pollActive && (!pollQuestion || newPollOptions.length === 0)) {
+                            Components.notification.error('开启投票后，必须填写投票问题和至少一个选项。');
+                            return;
+                        }
+                        if (pollQuestion && newPollOptions.length > 0) {
+                            const existingPoll = notice?.poll || {};
+                            const existingOptionsMap = new Map((existingPoll.options || []).map(opt => [opt.text, opt]));
+                            data.poll = {
+                                active: pollActive,
+                                question: pollQuestion,
+                                options: newPollOptions.map((text, index) => {
+                                    const existingOption = existingOptionsMap.get(text);
+                                    return {
+                                        id: existingOption?.id || index,
+                                        text: text,
+                                        votes: existingOption?.votes || 0
+                                    };
+                                })
+                            };
+                        } else {
+                            data.poll = null;
+                        }
+                        delete data.pollQuestion;
+                        delete data.pollOptions;
+                        await api.importantNotices.update(data);
+                        Components.modal.hide();
+                        Components.notification.success('重要公告已保存');
+                        this.loadImportantNotices();
                     } catch (error) {
-                        Components.notification.error('删除失败：' + error.message);
+                        Components.notification.error('保存失败: ' + error.message);
                     }
                 }
-            );
-        }
+            }
+        });
+        document.querySelectorAll('#modal .form-group-toggle').forEach(group => {
+            const checkbox = group.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                const toggleSwitch = document.createElement('label');
+                toggleSwitch.setAttribute('for', checkbox.id);
+                toggleSwitch.className = 'toggle-switch';
+                if (!group.querySelector('.toggle-switch')) {
+                    checkbox.insertAdjacentElement('afterend', toggleSwitch);
+                }
+            }
+        });
+    }
+    deleteImportantNotice(id) {
+        Components.modal.confirm(
+            '确认删除',
+            '确定要删除这条重要公告吗？此操作不可撤销。',
+            async () => {
+                try {
+                    await api.importantNotices.delete(id);
+                    Components.notification.success('重要公告已删除');
+                    await this.loadImportantNotices();
+                } catch (error) {
+                    Components.notification.error('删除失败：' + error.message);
+                }
+            }
+        );
+    }
     setupArticleActions() {
         document.getElementById('addArticleBtn')?.addEventListener('click', () => {
             this.showArticleForm();
@@ -1644,7 +1618,6 @@ class AdminSystem {
                         const articleData = { ...result.data };
                         articleData.tags = articleData.tags.split('\n').map(t => t.trim()).filter(Boolean);
                         articleData.aiAssistants = articleData.aiAssistants.split('\n').map(t => t.trim()).filter(Boolean);
-
                         if (isEdit) {
                             await api.articles.update(articleData);
                         } else {
@@ -1659,7 +1632,6 @@ class AdminSystem {
                 }
             }
         });
-        
     }
     async editArticle(id) {
         const cachedArticles = this.cache.get('articles');
@@ -1670,7 +1642,6 @@ class AdminSystem {
                 return;
             }
         }
-
         try {
             Components.notification.info('正在从服务器获取完整的文章数据...');
             const article = await api.articles.getById(id);
@@ -1694,6 +1665,261 @@ class AdminSystem {
                     await this.loadArticles();
                 } catch (error) {
                     Components.notification.error('删除失败: ' + error.message);
+                }
+            }
+        );
+    }
+    async loadD1Manager() {
+        try {
+            Components.loading.show('d1CodesTableBody', '正在从D1数据库加载激活码...');
+            const result = await api.d1Manager.getRecords(null, 60);
+            this.cache.set('d1-codes', result.data);
+            this.renderD1Table(result.data);
+            this.setupD1ManagerActions();
+        } catch (error) {
+            Components.notification.error('加载激活码失败: ' + error.message);
+            const tbody = document.getElementById('d1CodesTableBody');
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="8" class="loading">加载失败，请检查网络或联系管理员。</td></tr>`;
+            }
+        }
+    }
+    renderD1Table(codes) {
+        const tbody = document.getElementById('d1CodesTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        if (!codes || codes.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 2rem;">未找到任何记录</td></tr>`;
+            return;
+        }
+        codes.forEach(code => {
+            const tr = document.createElement('tr');
+            tr.dataset.code = code.code;
+            const status = code.is_banned
+                ? `<span class="status-value danger">已封禁</span>`
+                : code.is_used
+                    ? `<span class="status-value success">已使用</span>`
+                    : `<span class="status-value warning">未使用</span>`;
+            let banButton = '';
+            if (code.is_used && !code.is_banned) {
+                banButton = `<button class="action-btn ban" title="封禁用户" data-user-id="${code.used_by_user_id}"><i class="fas fa-user-slash"></i></button>`;
+            }
+            tr.innerHTML = `
+                <td><input type="checkbox" class="row-checkbox"></td>
+                <td>${status}</td>
+                <td><code class="code-block">${Utils.escapeHtml(code.code)}</code></td>
+                <td title="${Utils.escapeHtml(code.note || '')}">${Utils.truncateText(code.note || '', 30)}</td>
+                <td>${code.used_by_user_id || 'N/A'}</td>
+                <td>${code.realname || 'N/A'}</td>
+                <td>${code.expires_at ? Utils.formatDate(code.expires_at, 'YYYY-MM-DD') : 'N/A'}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn copy" title="复制激活码" data-code="${Utils.escapeHtml(code.code)}"><i class="fas fa-copy"></i></button>
+                        ${banButton}
+                        <button class="action-btn delete" title="删除激活码"><i class="fas fa-trash"></i></button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        this.updateD1Selection();
+    }
+    setupD1ManagerActions() {
+        if (this.d1ManagerActionsInitialized) return;
+        const searchInput = document.getElementById('d1SearchInput');
+        const generateBtn = document.getElementById('generateCodeBtn');
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const tableBody = document.getElementById('d1CodesTableBody');
+        const batchCopyBtn = document.getElementById('batchCopyBtn');
+        const batchDeleteBtn = document.getElementById('batchDeleteBtn');
+        const batchBanBtn = document.getElementById('batchBanBtn');
+        searchInput.addEventListener('input', Utils.debounce(async (e) => {
+            const term = e.target.value.trim();
+            Components.loading.show('d1CodesTableBody', `正在搜索 "${term}"...`);
+            const result = await api.d1Manager.getRecords(term.length >= 2 ? term : null, term.length < 2 ? 60 : null);
+            this.cache.set('d1-codes', result.data);
+            this.renderD1Table(result.data);
+        }, 500));
+        generateBtn.addEventListener('click', () => this.showGenerateCodeForm());
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            tableBody.querySelectorAll('.row-checkbox').forEach(checkbox => checkbox.checked = isChecked);
+            this.d1SelectedItems.clear();
+            if (isChecked) {
+                const currentData = this.cache.get('d1-codes') || [];
+                currentData.forEach(item => this.d1SelectedItems.add(item));
+            }
+            this.updateD1Selection();
+        });
+        batchCopyBtn.addEventListener('click', () => this.handleBatchCopy());
+        batchDeleteBtn.addEventListener('click', () => this.handleBatchDelete());
+        batchBanBtn.addEventListener('click', () => this.handleBatchBan());
+        tableBody.addEventListener('click', (e) => {
+            const target = e.target;
+            const row = target.closest('tr');
+            if (!row) return;
+            const codeId = row.dataset.code;
+            const currentData = this.cache.get('d1-codes') || [];
+            const rowData = currentData.find(c => c.code === codeId);
+            if (target.matches('.row-checkbox')) {
+                if (target.checked) {
+                    this.d1SelectedItems.add(rowData);
+                } else {
+                    this.d1SelectedItems.delete(rowData);
+                }
+                this.updateD1Selection();
+            } else if (target.closest('.copy')) {
+                Utils.copyToClipboard(rowData.code);
+                Components.notification.success(`已复制: ${rowData.code}`);
+            } else if (target.closest('.delete')) {
+                this.handleDeleteCode(rowData);
+            } else if (target.closest('.ban')) {
+                this.handleBanUser(rowData);
+            }
+        });
+        this.d1ManagerActionsInitialized = true;
+    }
+    updateD1Selection() {
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const totalRows = (this.cache.get('d1-codes') || []).length;
+        const selectedCount = this.d1SelectedItems.size;
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = selectedCount === totalRows && totalRows > 0;
+            selectAllCheckbox.indeterminate = selectedCount > 0 && selectedCount < totalRows;
+        }
+        const countDisplay = document.getElementById('d1SelectionCount');
+        if (countDisplay) {
+            countDisplay.textContent = `已选 ${selectedCount} / ${totalRows} 条`;
+        }
+    }
+    showGenerateCodeForm() {
+        const fields = [
+            { name: 'num_codes', label: '数量', type: 'number', required: true, value: '10' },
+            { name: 'duration_days', label: '有效期(天)', type: 'number', required: true, value: '30' },
+            { name: 'prefix', label: '前缀 (可选)', type: 'text', value: 'WEB-', placeholder: '例如 GEN-' },
+            { name: 'note', label: '备注', type: 'text', required: true, value: 'Web后台生成' },
+        ];
+        const formHtml = Components.formBuilder.create(fields).outerHTML;
+        Components.modal.show('生成激活码', formHtml, {
+            saveText: '生成',
+            onSave: async () => {
+                const modalForm = document.querySelector('#modal form');
+                const result = Components.formBuilder.validate(modalForm, {
+                    num_codes: [Utils.validation.rules.required, Utils.validation.rules.positiveNumber],
+                    duration_days: [Utils.validation.rules.required, Utils.validation.rules.positiveNumber],
+                    note: [Utils.validation.rules.required]
+                });
+                if (!result.isValid) return;
+                const { num_codes, duration_days, prefix, note } = result.data;
+                const codesToInsert = [];
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                for (let i = 0; i < num_codes; i++) {
+                    let randPart = '';
+                    for (let j = 0; j < 12; j++) {
+                        randPart += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    }
+                    const formattedCode = `${randPart.slice(0, 4)}-${randPart.slice(4, 8)}-${randPart.slice(8, 12)}`;
+                    codesToInsert.push({
+                        code: (prefix || '') + formattedCode,
+                        note: note,
+                        days: parseInt(duration_days, 10)
+                    });
+                }
+                try {
+                    await api.d1Manager.insertCodes(codesToInsert);
+                    Components.modal.hide();
+                    Components.notification.success(`${num_codes}个激活码已成功生成！`);
+                    this.loadD1Manager();
+                } catch (error) {
+                    Components.notification.error('生成失败: ' + error.message);
+                }
+            }
+        });
+    }
+    handleDeleteCode(rowData) {
+        Components.modal.confirm(
+            '确认删除',
+            `确定要删除激活码 "${rowData.code}" 吗？`,
+            async () => {
+                try {
+                    await api.d1Manager.deleteCodes([rowData.code]);
+                    Components.notification.success('激活码已删除');
+                    this.loadD1Manager();
+                } catch (error) {
+                    Components.notification.error('删除失败: ' + error.message);
+                }
+            }
+        );
+    }
+    handleBanUser(rowData) {
+        Components.modal.confirm(
+            '确认封禁',
+            `确定要封禁用户 "${rowData.used_by_user_id}" 吗？这将使其无法再次激活。`,
+            async () => {
+                try {
+                    await api.d1Manager.banUser(rowData.used_by_user_id, 'Admin Ban from Web Panel');
+                    Components.notification.success('用户已封禁');
+                    this.loadD1Manager();
+                } catch (error) {
+                    Components.notification.error('封禁失败: ' + error.message);
+                }
+            }
+        );
+    }
+    handleBatchCopy() {
+        if (this.d1SelectedItems.size === 0) {
+            Components.notification.warning('请先选择要复制的激活码。');
+            return;
+        }
+        const codes = Array.from(this.d1SelectedItems).map(item => item.code).join('\n');
+        Utils.copyToClipboard(codes);
+        Components.notification.success(`已复制 ${this.d1SelectedItems.size} 个激活码。`);
+    }
+    handleBatchDelete() {
+        if (this.d1SelectedItems.size === 0) {
+            Components.notification.warning('请先选择要删除的激活码。');
+            return;
+        }
+        Components.modal.confirm(
+            '确认批量删除',
+            `确定要删除选中的 ${this.d1SelectedItems.size} 个激活码吗？此操作无法撤销。`,
+            async () => {
+                try {
+                    const codesToDelete = Array.from(this.d1SelectedItems).map(item => item.code);
+                    await api.d1Manager.deleteCodes(codesToDelete);
+                    Components.notification.success('选中的激活码已全部删除');
+                    this.d1SelectedItems.clear();
+                    this.loadD1Manager();
+                } catch (error) {
+                    Components.notification.error('批量删除失败: ' + error.message);
+                }
+            }
+        );
+    }
+    handleBatchBan() {
+        if (this.d1SelectedItems.size === 0) {
+            Components.notification.warning('请先选择要封禁用户的行。');
+            return;
+        }
+        const usersToBan = Array.from(this.d1SelectedItems).filter(item => item.is_used && !item.is_banned);
+        if (usersToBan.length === 0) {
+            Components.notification.info('选中的行中没有可封禁的用户（可能未使用或已封禁）。');
+            return;
+        }
+        Components.modal.confirm(
+            '确认批量封禁',
+            `确定要封禁选中的 ${usersToBan.length} 个用户吗？`,
+            async () => {
+                try {
+                    const banPromises = usersToBan.map(item =>
+                        api.d1Manager.banUser(item.used_by_user_id, 'Admin Batch Ban from Web Panel')
+                    );
+                    await Promise.all(banPromises);
+                    Components.notification.success('选中的用户已全部封禁');
+                    this.d1SelectedItems.clear();
+                    this.loadD1Manager();
+                } catch (error) {
+                    Components.notification.error('批量封禁失败: ' + error.message);
                 }
             }
         );

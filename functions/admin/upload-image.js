@@ -1,4 +1,4 @@
-import { verifyToken } from './utils';
+import { verifyToken } from '../utils';
 export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
