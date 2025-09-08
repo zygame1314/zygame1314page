@@ -9,7 +9,7 @@ export async function onRequest(context) {
     }
     const { request, env } = context;
     const url = new URL(request.url);
-    const DB = env.DB;
+    const DB = env.CODE_MANAGER_DB;
     try {
         if (request.method === 'GET') {
             const searchTerm = url.searchParams.get('search_term');
