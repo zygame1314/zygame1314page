@@ -157,6 +157,7 @@ class AdminSystem {
             timeline: '时间线管理',
             'important-notices': '重要公告管理',
             articles: '文章管理',
+            'd1-manager': '激活码管理'
         };
         return titles[section] || section;
     }
@@ -335,17 +336,22 @@ class AdminSystem {
             this.showDonationForm();
         });
         const searchInput = document.getElementById('donationSearch');
-        if (searchInput && !this.searchHandlers.has('donation')) {
-            const searchHandler = Utils.debounce(async (e) => {
-                const query = e.target.value.trim();
+        const searchBtn = document.getElementById('donationSearchBtn');
+        if (searchInput && searchBtn && !this.searchHandlers.has('donation')) {
+            const performSearch = async () => {
+                const query = searchInput.value.trim();
                 if (query) {
                     await this.searchDonations(query);
                 } else {
                     await this.loadDonations();
                 }
-            }, 500);
-            searchInput.addEventListener('input', searchHandler);
-            this.searchHandlers.set('donation', searchHandler);
+            };
+            const keypressHandler = (e) => {
+                if (e.key === 'Enter') performSearch();
+            };
+            searchInput.addEventListener('keypress', keypressHandler);
+            searchBtn.addEventListener('click', performSearch);
+            this.searchHandlers.set('donation', { keypressHandler, performSearch });
         }
         const platformFilter = document.getElementById('platformFilter');
         if (platformFilter && !this.filterHandlers.has('donation_platform')) {
@@ -475,6 +481,7 @@ class AdminSystem {
         );
     }
     async searchDonations(query) {
+        Components.loading.show('donationsTableBody', `正在搜索 "${query}"...`);
         try {
             const results = await api.search(query, 'donations');
             this.renderDonationsTable(results.donations);
@@ -555,17 +562,22 @@ class AdminSystem {
             this.showMusicForm();
         });
         const searchInput = document.getElementById('musicSearch');
-        if (searchInput && !this.searchHandlers.has('music')) {
-            const searchHandler = Utils.debounce(async (e) => {
-                const query = e.target.value.trim();
+        const searchBtn = document.getElementById('musicSearchBtn');
+        if (searchInput && searchBtn && !this.searchHandlers.has('music')) {
+            const performSearch = async () => {
+                const query = searchInput.value.trim();
                 if (query) {
                     await this.searchMusic(query);
                 } else {
                     await this.loadMusic();
                 }
-            }, 500);
-            searchInput.addEventListener('input', searchHandler);
-            this.searchHandlers.set('music', searchHandler);
+            };
+            const keypressHandler = (e) => {
+                if (e.key === 'Enter') performSearch();
+            };
+            searchInput.addEventListener('keypress', keypressHandler);
+            searchBtn.addEventListener('click', performSearch);
+            this.searchHandlers.set('music', { keypressHandler, performSearch });
         }
         document.querySelectorAll('.play-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -681,10 +693,7 @@ class AdminSystem {
                 if (result.isValid) {
                     try {
                         if (isEdit) {
-                            await api.music.update({
-                                id: song.id,
-                                ...result.data
-                            });
+                            await api.music.update({ id: song.id, ...result.data });
                         } else {
                             await api.music.add(result.data);
                         }
@@ -697,6 +706,14 @@ class AdminSystem {
                 }
             }
         });
+        if (isEdit && song.expression) {
+            setTimeout(() => {
+                const expressionSelect = document.querySelector('#modal form select[name="expression"]');
+                if (expressionSelect) {
+                    expressionSelect.value = song.expression;
+                }
+            }, 0);
+        }
     }
     deleteMusic(id) {
         Components.modal.confirm(
@@ -714,6 +731,7 @@ class AdminSystem {
         );
     }
     async searchMusic(query) {
+        Components.loading.show('musicGrid', `正在搜索 "${query}"...`);
         try {
             const results = await api.search(query, 'music');
             this.renderMusicGrid(results.music);
@@ -1071,7 +1089,7 @@ class AdminSystem {
                 label: '公告内容',
                 type: 'textarea',
                 required: true,
-                value: '',
+                value: notice ? JSON.stringify(notice.content, null, 2) : '',
                 placeholder: '请输入公告内容，每行一段',
                 rows: 5,
                 help: '每行内容将作为一段显示'
@@ -1237,7 +1255,7 @@ class AdminSystem {
                 label: '描述',
                 type: 'textarea',
                 required: true,
-                value: '',
+                value: milestone?.description || '',
                 placeholder: '请输入详细描述',
                 rows: 3
             }
@@ -1727,19 +1745,26 @@ class AdminSystem {
     setupD1ManagerActions() {
         if (this.d1ManagerActionsInitialized) return;
         const searchInput = document.getElementById('d1SearchInput');
+        const searchBtn = document.getElementById('d1SearchBtn');
         const generateBtn = document.getElementById('generateCodeBtn');
         const selectAllCheckbox = document.getElementById('selectAllCheckbox');
         const tableBody = document.getElementById('d1CodesTableBody');
         const batchCopyBtn = document.getElementById('batchCopyBtn');
         const batchDeleteBtn = document.getElementById('batchDeleteBtn');
         const batchBanBtn = document.getElementById('batchBanBtn');
-        searchInput.addEventListener('input', Utils.debounce(async (e) => {
-            const term = e.target.value.trim();
-            Components.loading.show('d1CodesTableBody', `正在搜索 "${term}"...`);
-            const result = await api.d1Manager.getRecords(term.length >= 2 ? term : null, term.length < 2 ? 60 : null);
-            this.cache.set('d1-codes', result.data);
-            this.renderD1Table(result.data);
-        }, 500));
+        if (searchInput && searchBtn) {
+            const performD1Search = async () => {
+                const term = searchInput.value.trim();
+                Components.loading.show('d1CodesTableBody', `正在搜索 "${term}"...`);
+                const result = await api.d1Manager.getRecords(term.length >= 2 ? term : null, term.length < 2 ? 60 : null);
+                this.cache.set('d1-codes', result.data);
+                this.renderD1Table(result.data);
+            };
+            searchBtn.addEventListener('click', performD1Search);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performD1Search();
+            });
+        }
         generateBtn.addEventListener('click', () => this.showGenerateCodeForm());
         selectAllCheckbox.addEventListener('change', (e) => {
             const isChecked = e.target.checked;

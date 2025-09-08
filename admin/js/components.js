@@ -1,7 +1,6 @@
 class Components {
     static notification = {
         container: null,
-
         init() {
             this.container = document.getElementById('notifications');
             if (!this.container) {
@@ -11,21 +10,17 @@ class Components {
                 document.body.appendChild(this.container);
             }
         },
-
         show(message, type = 'info', duration = 5000, title = null) {
             if (!this.container) this.init();
-
             const notification = Utils.domUtils.createElement('div', {
                 className: `notification ${type}`
             });
-
             const iconClass = {
                 success: 'fas fa-check-circle',
                 error: 'fas fa-exclamation-circle',
                 warning: 'fas fa-exclamation-triangle',
                 info: 'fas fa-info-circle'
             }[type] || 'fas fa-info-circle';
-
             notification.innerHTML = `
                 <i class="notification-icon ${iconClass}"></i>
                 <div class="notification-content">
@@ -36,23 +31,18 @@ class Components {
                     <i class="fas fa-times"></i>
                 </button>
             `;
-
             const closeBtn = notification.querySelector('.notification-close');
             closeBtn.addEventListener('click', () => {
                 this.hide(notification);
             });
-
             this.container.appendChild(notification);
-
             if (duration > 0) {
                 setTimeout(() => {
                     this.hide(notification);
                 }, duration);
             }
-
             return notification;
         },
-
         hide(notification) {
             if (notification && notification.parentNode) {
                 notification.style.animation = 'slideOut 0.3s ease-in forwards';
@@ -63,64 +53,50 @@ class Components {
                 }, 300);
             }
         },
-
         success(message, title = '成功') {
             return this.show(message, 'success', 5000, title);
         },
-
         error(message, title = '错误') {
             return this.show(message, 'error', 7000, title);
         },
-
         warning(message, title = '警告') {
             return this.show(message, 'warning', 6000, title);
         },
-
         info(message, title = '提示') {
             return this.show(message, 'info', 5000, title);
         }
     };
-
     static modal = {
         current: null,
-
         show(title, content, options = {}) {
             const modal = document.getElementById('modal');
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
             const modalSave = document.getElementById('modalSave');
             const modalCancel = document.getElementById('modalCancel');
-
             modalTitle.textContent = title;
             modalBody.innerHTML = content;
-
             modalSave.textContent = options.saveText || '保存';
             modalCancel.textContent = options.cancelText || '取消';
-
             if (options.saveClass) {
                 modalSave.className = `btn ${options.saveClass}`;
             } else {
                 modalSave.className = 'btn btn-primary';
             }
-
             const newSave = modalSave.cloneNode(true);
             const newCancel = modalCancel.cloneNode(true);
             modalSave.parentNode.replaceChild(newSave, modalSave);
             modalCancel.parentNode.replaceChild(newCancel, modalCancel);
-
             if (options.onSave) {
                 newSave.addEventListener('click', options.onSave);
             }
-
             if (options.onCancel) {
                 newCancel.addEventListener('click', options.onCancel);
             } else {
                 newCancel.addEventListener('click', () => this.hide());
             }
-
             const newModalBody = modalBody.cloneNode(true);
             modalBody.parentNode.replaceChild(newModalBody, modalBody);
-            
             newModalBody.addEventListener('click', (e) => {
                 if (e.target && (e.target.matches('.image-uploader .btn') || e.target.matches('.audio-uploader .btn'))) {
                     const uploader = e.target.closest('.image-uploader, .audio-uploader');
@@ -131,14 +107,12 @@ class Components {
                         }
                     }
                 }
-
                 if (e.target && e.target.matches('.remove-key-value-item, .remove-key-value-item *')) {
                     const item = e.target.closest('.key-value-item');
                     if (item) {
                         item.remove();
                     }
                 }
-
                 if (e.target && e.target.matches('.add-key-value-item')) {
                     const editor = e.target.closest('.key-value-editor');
                     if (editor) {
@@ -148,30 +122,24 @@ class Components {
                     }
                 }
             });
-
             newModalBody.addEventListener('change', async (e) => {
                 if (e.target && e.target.matches('.image-uploader input[type="file"]')) {
                     const uploader = e.target.closest('.image-uploader');
                     const file = e.target.files[0];
                     if (!file || !uploader) return;
-
                     const uploadButton = uploader.querySelector('.btn');
                     const preview = uploader.querySelector('.image-preview');
                     const hiddenInput = uploader.querySelector('input[type="hidden"]');
-
                     uploadButton.textContent = '正在上传...';
                     uploadButton.disabled = true;
-
                     try {
                         const compressedFile = await Utils.imageUtils.compressAndConvertToWebP(file);
                         const formData = new FormData();
                         formData.append('file', compressedFile);
-                        
                         const uploadContext = uploader.dataset.context;
                         if (uploadContext) {
                             formData.append('context', uploadContext);
                         }
-
                         const response = await fetch('https://api.zygame1314.site/admin/upload-image', {
                             method: 'POST',
                             body: formData,
@@ -179,9 +147,7 @@ class Components {
                                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                             }
                         });
-
                         const result = await response.json();
-
                         if (response.ok && result.success) {
                             preview.src = result.url;
                             preview.classList.remove('no-image');
@@ -198,30 +164,24 @@ class Components {
                         uploadButton.disabled = false;
                     }
                 }
-
                 if (e.target && e.target.matches('.audio-uploader input[type="file"]')) {
                     const uploader = e.target.closest('.audio-uploader');
                     const file = e.target.files[0];
                     if (!file || !uploader) return;
-
                     const statusDiv = uploader.querySelector('.upload-status');
                     const hiddenInput = uploader.querySelector('input[type="hidden"]');
                     const uploadButton = uploader.querySelector('.btn');
-
                     if (file.type !== 'audio/webm' && !file.name.toLowerCase().endsWith('.webm')) {
                         Components.notification.error('文件格式无效', '请上传 WebM (.webm) 格式的音频文件。');
                         e.target.value = '';
                         return;
                     }
-
                     statusDiv.textContent = '正在上传...';
                     uploadButton.disabled = true;
                     uploadButton.textContent = '上传中...';
-
                     try {
                         const formData = new FormData();
                         formData.append('file', file);
-
                         const response = await fetch('https://api.zygame1314.site/admin/upload-audio', {
                             method: 'POST',
                             body: formData,
@@ -229,9 +189,7 @@ class Components {
                                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                             }
                         });
-
                         const result = await response.json();
-
                         if (response.ok && result.success) {
                             hiddenInput.value = result.path;
                             statusDiv.textContent = `上传成功: ${result.path}`;
@@ -248,10 +206,8 @@ class Components {
                     }
                 }
             });
-
             modal.classList.add('show');
             this.current = modal;
-
             const escHandler = (e) => {
                 if (e.key === 'Escape') {
                     this.hide();
@@ -259,58 +215,46 @@ class Components {
                 }
             };
             document.addEventListener('keydown', escHandler);
-
             return modal;
         },
-
         hide() {
             if (this.current) {
                 this.current.classList.remove('show');
                 this.current = null;
             }
         },
-
         confirm(title, message, onConfirm, onCancel = null) {
             const confirmModal = document.getElementById('confirmModal');
             const confirmTitle = document.getElementById('confirmTitle');
             const confirmMessage = document.getElementById('confirmMessage');
             const confirmOk = document.getElementById('confirmOk');
             const confirmCancel = document.getElementById('confirmCancel');
-
             confirmTitle.textContent = title;
             confirmMessage.textContent = message;
-
             const newOk = confirmOk.cloneNode(true);
             const newCancel = confirmCancel.cloneNode(true);
             confirmOk.parentNode.replaceChild(newOk, confirmOk);
             confirmCancel.parentNode.replaceChild(newCancel, confirmCancel);
-
             newOk.addEventListener('click', () => {
                 confirmModal.classList.remove('show');
                 if (onConfirm) onConfirm();
             });
-
             newCancel.addEventListener('click', () => {
                 confirmModal.classList.remove('show');
                 if (onCancel) onCancel();
             });
-
             confirmModal.classList.add('show');
         }
     };
-
     static table = {
         create(containerId, columns, data, options = {}) {
             const container = document.getElementById(containerId);
             if (!container) return null;
-
             const table = Utils.domUtils.createElement('table', {
                 className: 'data-table'
             });
-
             const thead = Utils.domUtils.createElement('thead');
             const headerRow = Utils.domUtils.createElement('tr');
-
             columns.forEach(column => {
                 const th = Utils.domUtils.createElement('th', {
                     textContent: column.title
@@ -320,12 +264,9 @@ class Components {
                 }
                 headerRow.appendChild(th);
             });
-
             thead.appendChild(headerRow);
             table.appendChild(thead);
-
             const tbody = Utils.domUtils.createElement('tbody');
-            
             if (data.length === 0) {
                 const emptyRow = Utils.domUtils.createElement('tr');
                 const emptyCell = Utils.domUtils.createElement('td', {
@@ -340,44 +281,33 @@ class Components {
             } else {
                 data.forEach(row => {
                     const tr = Utils.domUtils.createElement('tr');
-                    
                     columns.forEach(column => {
                         const td = Utils.domUtils.createElement('td');
-                        
                         if (column.render) {
                             td.innerHTML = column.render(row[column.key], row);
                         } else {
                             td.textContent = row[column.key] || '';
                         }
-                        
                         tr.appendChild(td);
                     });
-                    
                     tbody.appendChild(tr);
                 });
             }
-
             table.appendChild(tbody);
             container.innerHTML = '';
             container.appendChild(table);
-
             return table;
         }
     };
-
     static pagination = {
         create(containerId, currentPage, totalPages, onPageChange) {
             const container = document.getElementById(containerId);
             if (!container) return null;
-
             container.innerHTML = '';
-
             if (totalPages <= 1) return;
-
             const pagination = Utils.domUtils.createElement('div', {
                 className: 'pagination'
             });
-
             const prevBtn = Utils.domUtils.createElement('button', {
                 className: 'pagination-btn',
                 textContent: '上一页'
@@ -389,10 +319,8 @@ class Components {
                 }
             });
             pagination.appendChild(prevBtn);
-
             const startPage = Math.max(1, currentPage - 2);
             const endPage = Math.min(totalPages, currentPage + 2);
-
             if (startPage > 1) {
                 const firstBtn = Utils.domUtils.createElement('button', {
                     className: 'pagination-btn',
@@ -400,7 +328,6 @@ class Components {
                 });
                 firstBtn.addEventListener('click', () => onPageChange(1));
                 pagination.appendChild(firstBtn);
-
                 if (startPage > 2) {
                     const dots = Utils.domUtils.createElement('span', {
                         textContent: '...',
@@ -409,7 +336,6 @@ class Components {
                     pagination.appendChild(dots);
                 }
             }
-
             for (let i = startPage; i <= endPage; i++) {
                 const pageBtn = Utils.domUtils.createElement('button', {
                     className: `pagination-btn ${i === currentPage ? 'active' : ''}`,
@@ -418,7 +344,6 @@ class Components {
                 pageBtn.addEventListener('click', () => onPageChange(i));
                 pagination.appendChild(pageBtn);
             }
-
             if (endPage < totalPages) {
                 if (endPage < totalPages - 1) {
                     const dots = Utils.domUtils.createElement('span', {
@@ -427,7 +352,6 @@ class Components {
                     });
                     pagination.appendChild(dots);
                 }
-
                 const lastBtn = Utils.domUtils.createElement('button', {
                     className: 'pagination-btn',
                     textContent: totalPages.toString()
@@ -435,7 +359,6 @@ class Components {
                 lastBtn.addEventListener('click', () => onPageChange(totalPages));
                 pagination.appendChild(lastBtn);
             }
-
             const nextBtn = Utils.domUtils.createElement('button', {
                 className: 'pagination-btn',
                 textContent: '下一页'
@@ -447,69 +370,85 @@ class Components {
                 }
             });
             pagination.appendChild(nextBtn);
-
             container.appendChild(pagination);
             return pagination;
         }
     };
-
     static loading = {
         show(containerId, message = '加载中...') {
             const container = document.getElementById(containerId);
             if (!container) return null;
-
-            const loading = Utils.domUtils.createElement('div', {
-                className: 'loading',
-                textContent: message
-            });
-
             container.innerHTML = '';
-            container.appendChild(loading);
-            return loading;
+            if (container.tagName === 'TBODY') {
+                const table = container.closest('table');
+                let colspan = 1;
+                if (table) {
+                    const thead = table.querySelector('thead tr');
+                    if (thead) {
+                        colspan = thead.cells.length;
+                    }
+                }
+                const loadingRow = Utils.domUtils.createElement('tr');
+                const loadingCell = Utils.domUtils.createElement('td', {
+                    colspan: colspan.toString()
+                });
+                const loadingDiv = Utils.domUtils.createElement('div', {
+                    className: 'loading',
+                    textContent: message
+                });
+                loadingCell.appendChild(loadingDiv);
+                loadingRow.appendChild(loadingCell);
+                container.appendChild(loadingRow);
+                return loadingRow;
+            } else {
+                const loading = Utils.domUtils.createElement('div', {
+                    className: 'loading',
+                    textContent: message
+                });
+                container.appendChild(loading);
+                return loading;
+            }
         },
-
         hide(containerId) {
             const container = document.getElementById(containerId);
             if (container) {
                 const loading = container.querySelector('.loading');
                 if (loading) {
-                    loading.remove();
+                    if (container.tagName === 'TBODY') {
+                        const row = loading.closest('tr');
+                        if (row) row.remove();
+                    } else {
+                        loading.remove();
+                    }
                 }
             }
         }
     };
-
     static emptyState = {
         show(containerId, options = {}) {
             const container = document.getElementById(containerId);
             if (!container) return null;
-
             const emptyState = Utils.domUtils.createElement('div', {
                 className: 'empty-state'
             });
-
             emptyState.innerHTML = `
                 <i class="${options.icon || 'fas fa-inbox'}"></i>
                 <h3>${options.title || '暂无数据'}</h3>
                 <p>${options.message || '还没有任何内容'}</p>
                 ${options.action ? `<button class="btn btn-primary">${options.action.text}</button>` : ''}
             `;
-
             if (options.action && options.action.onClick) {
                 const actionBtn = emptyState.querySelector('button');
                 actionBtn.addEventListener('click', options.action.onClick);
             }
-
             container.innerHTML = '';
             container.appendChild(emptyState);
             return emptyState;
         }
     };
-
     static formBuilder = {
         create(fields) {
             const form = Utils.domUtils.createElement('form');
-
             fields.forEach(field => {
                if (field.type === 'divider') {
                    const divider = Utils.domUtils.createElement('div', {
@@ -524,11 +463,9 @@ class Components {
                    form.appendChild(divider);
                    return;
                }
-
                const formGroup = Utils.domUtils.createElement('div', {
                    className: `form-group ${field.className || ''}`.trim()
                });
-
                 if (field.label) {
                     const label = Utils.domUtils.createElement('label', {
                         textContent: field.label,
@@ -539,7 +476,6 @@ class Components {
                     }
                     formGroup.appendChild(label);
                 }
-
                 let input;
                 switch (field.type) {
                     case 'textarea':
@@ -556,7 +492,7 @@ class Components {
                             name: field.name,
                             id: field.name
                         });
-                        field.options.forEach(option => {
+                        (field.options || []).forEach(option => {
                             const optionEl = Utils.domUtils.createElement('option', {
                                 value: option.value,
                                 textContent: option.label
@@ -606,14 +542,12 @@ class Components {
                         });
                         break;
                 }
-
                 if (input) {
                     if (field.required) {
                         input.required = true;
                     }
                     formGroup.appendChild(input);
                 }
-
                 if (field.help) {
                     const help = Utils.domUtils.createElement('small', {
                         textContent: field.help,
@@ -625,17 +559,13 @@ class Components {
                     help.style.display = 'block';
                     formGroup.appendChild(help);
                 }
-
                 form.appendChild(formGroup);
             });
-
             return form;
         },
-
         createImageUploader(field) {
             const container = Utils.domUtils.createElement('div', { className: 'image-uploader' });
             const hasImage = !!field.value;
-
             const preview = Utils.domUtils.createElement('img', {
                 src: field.value || '',
                 alt: '图片预览',
@@ -644,27 +574,22 @@ class Components {
              if (!hasImage) {
                 preview.style.display = 'none';
             }
-
             const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'image/*', style: 'display: none;' });
             const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择图片', className: 'btn btn-secondary' });
             const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
-
             if (field.uploadContext) {
                 container.dataset.context = field.uploadContext;
             }
-
             container.appendChild(preview);
             container.appendChild(uploadButton);
             container.appendChild(fileInput);
             container.appendChild(hiddenInput);
             return container;
         },
-
         createKeyValueEditor(field) {
             const container = Utils.domUtils.createElement('div', { className: 'key-value-editor', 'data-name': field.name });
             const itemsContainer = Utils.domUtils.createElement('div', { className: 'key-value-items' });
             const addButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '添加操作', className: 'btn btn-secondary btn-sm add-key-value-item' });
-
             const createItem = (item = {}) => {
                 const itemElement = Utils.domUtils.createElement('div', { className: 'key-value-item' });
                 itemElement.innerHTML = `
@@ -683,20 +608,16 @@ class Components {
                 `;
                 return itemElement;
             };
-
             const initialValue = field.value ? (typeof field.value === 'string' ? JSON.parse(field.value) : field.value) : [];
             if (Array.isArray(initialValue) && initialValue.length > 0) {
                 initialValue.forEach(item => itemsContainer.appendChild(createItem(item)));
             } else {
                 itemsContainer.appendChild(createItem());
             }
-
             container.appendChild(itemsContainer);
             container.appendChild(addButton);
-
             return container;
         },
-
         createItem(item = {}) {
             const itemElement = Utils.domUtils.createElement('div', { className: 'key-value-item' });
             itemElement.innerHTML = `
@@ -715,42 +636,34 @@ class Components {
             `;
             return itemElement;
         },
-
         createAudioUploader(field) {
             const container = Utils.domUtils.createElement('div', { className: 'audio-uploader' });
             const fileInput = Utils.domUtils.createElement('input', { type: 'file', accept: 'audio/webm', style: 'display: none;' });
             const uploadButton = Utils.domUtils.createElement('button', { type: 'button', textContent: '选择文件', className: 'btn btn-secondary' });
-            
             const statusDiv = Utils.domUtils.createElement('div', { className: 'upload-status' });
             statusDiv.textContent = field.value ? `当前文件: ${field.value}` : '未选择文件';
             statusDiv.style.marginTop = '0.5rem';
             statusDiv.style.fontSize = '0.8rem';
             statusDiv.style.color = 'var(--text-muted)';
-            
             const hiddenInput = Utils.domUtils.createElement('input', { type: 'hidden', name: field.name, value: field.value || '' });
-
             container.appendChild(uploadButton);
             container.appendChild(fileInput);
             container.appendChild(statusDiv);
             container.appendChild(hiddenInput);
             return container;
         },
-
         getFormData(form) {
             const formData = new FormData(form);
             const data = {};
-            
             for (let [key, value] of formData.entries()) {
                 data[key] = value;
             }
-
             form.querySelectorAll('.image-uploader, .audio-uploader').forEach(uploader => {
                 const hiddenInput = uploader.querySelector('input[type="hidden"]');
                 if (hiddenInput) {
                     data[hiddenInput.name] = hiddenInput.value;
                 }
             });
-
             form.querySelectorAll('.key-value-editor').forEach(editor => {
                 const name = editor.dataset.name;
                 const items = [];
@@ -764,10 +677,8 @@ class Components {
                 });
                 data[name] = JSON.stringify(items);
             });
-            
             return data;
         },
-
         setFormData(form, data) {
             Object.keys(data).forEach(key => {
                 const field = form.querySelector(`[name="${key}"]`);
@@ -780,30 +691,23 @@ class Components {
                 }
             });
         },
-
         validate(form, rules) {
             const data = this.getFormData(form);
             const errors = {};
             let isValid = true;
-
             Object.keys(rules).forEach(fieldName => {
                 const field = form.querySelector(`[name="${fieldName}"]`);
                 const value = data[fieldName];
                 const fieldRules = rules[fieldName];
-
                 const result = Utils.validation.validateField(value, fieldRules);
-                
                 if (!result.isValid) {
                     errors[fieldName] = result.errors;
                     isValid = false;
-                    
                     field.style.borderColor = 'var(--danger-color)';
-                    
                     const existingError = field.parentNode.querySelector('.field-error');
                     if (existingError) {
                         existingError.remove();
                     }
-                    
                     const errorMsg = Utils.domUtils.createElement('div', {
                         className: 'field-error',
                         textContent: result.errors[0]
@@ -820,17 +724,14 @@ class Components {
                     }
                 }
             });
-
             return { isValid, errors, data };
         }
     };
-
     static card = {
         create(options = {}) {
             const card = Utils.domUtils.createElement('div', {
                 className: `card ${options.className || ''}`
             });
-
             if (options.header) {
                 const header = Utils.domUtils.createElement('div', {
                     className: 'card-header'
@@ -842,7 +743,6 @@ class Components {
                 }
                 card.appendChild(header);
             }
-
             if (options.body) {
                 const body = Utils.domUtils.createElement('div', {
                     className: 'card-body'
@@ -854,7 +754,6 @@ class Components {
                 }
                 card.appendChild(body);
             }
-
             if (options.footer) {
                 const footer = Utils.domUtils.createElement('div', {
                     className: 'card-footer'
@@ -866,16 +765,13 @@ class Components {
                 }
                 card.appendChild(footer);
             }
-
             return card;
         }
     };
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     Components.notification.init();
 });
-
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideOut {
@@ -888,34 +784,28 @@ style.textContent = `
             opacity: 0;
         }
     }
-    
     .pagination-dots {
         padding: 0.5rem 0.75rem;
         color: var(--text-muted);
     }
-    
     .field-error {
         animation: fadeIn 0.3s ease-out;
     }
-    
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
     }
-
     .key-value-item {
         display: flex;
         align-items: center;
         margin-bottom: 0.5rem;
         gap: 0.5rem;
     }
-
     .key-value-inputs {
         display: flex;
         flex-grow: 1;
         gap: 0.5rem;
     }
-
     .key-value-inputs .form-control {
         flex: 1;
     }
@@ -924,5 +814,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
 window.Components = Components;

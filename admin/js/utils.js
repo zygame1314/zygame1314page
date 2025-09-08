@@ -1,13 +1,21 @@
 class Utils {
     static formatDate(date, format = 'YYYY-MM-DD') {
-        const d = new Date(date);
+        let timestamp = date;
+        if (typeof timestamp === 'number' && timestamp < 3000000000) {
+            timestamp *= 1000;
+        } else if (typeof timestamp === 'string' && /^\d{10}$/.test(timestamp)) {
+            timestamp = parseInt(timestamp, 10) * 1000;
+        }
+        const d = new Date(timestamp);
+        if (isNaN(d.getTime())) {
+            return '无效日期';
+        }
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
         const day = String(d.getDate()).padStart(2, '0');
         const hour = String(d.getHours()).padStart(2, '0');
         const minute = String(d.getMinutes()).padStart(2, '0');
         const second = String(d.getSeconds()).padStart(2, '0');
-
         switch (format) {
             case 'YYYY-MM-DD':
                 return `${year}-${month}-${day}`;
@@ -23,14 +31,12 @@ class Utils {
                 return `${year}-${month}-${day}`;
         }
     }
-
     static formatMoney(amount) {
         if (typeof amount === 'string') {
             amount = parseFloat(amount);
         }
         return amount.toFixed(2);
     }
-
     static debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -42,7 +48,6 @@ class Utils {
             timeout = setTimeout(later, wait);
         };
     }
-
     static throttle(func, limit) {
         let inThrottle;
         return function () {
@@ -55,7 +60,6 @@ class Utils {
             }
         };
     }
-
     static deepClone(obj) {
         if (obj === null || typeof obj !== 'object') return obj;
         if (obj instanceof Date) return new Date(obj);
@@ -70,16 +74,13 @@ class Utils {
             return clonedObj;
         }
     }
-
     static generateId() {
         return Math.random().toString(36).substr(2, 9);
     }
-
     static validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
-
     static validateUrl(url) {
         try {
             new URL(url);
@@ -88,22 +89,18 @@ class Utils {
             return false;
         }
     }
-
     static truncateText(text, maxLength) {
         if (text.length <= maxLength) return text;
         return text.substr(0, maxLength) + '...';
     }
-
     static escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
-
     static getFileExtension(filename) {
         return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
     }
-
     static formatFileSize(bytes) {
         if (bytes === 0) return '0 B';
         const k = 1024;
@@ -111,24 +108,20 @@ class Utils {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-
     static getUrlParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
-
     static setUrlParam(name, value) {
         const url = new URL(window.location);
         url.searchParams.set(name, value);
         window.history.pushState({}, '', url);
     }
-
     static removeUrlParam(name) {
         const url = new URL(window.location);
         url.searchParams.delete(name);
         window.history.pushState({}, '', url);
     }
-
     static async copyToClipboard(text) {
         try {
             await navigator.clipboard.writeText(text);
@@ -143,11 +136,9 @@ class Utils {
             return success;
         }
     }
-
     static isMobile() {
         return window.innerWidth <= 768;
     }
-
     static scrollToElement(element, offset = 0) {
         const targetPosition = element.offsetTop - offset;
         window.scrollTo({
@@ -155,7 +146,6 @@ class Utils {
             behavior: 'smooth'
         });
     }
-
     static storage = {
         set(key, value) {
             try {
@@ -166,7 +156,6 @@ class Utils {
                 return false;
             }
         },
-
         get(key, defaultValue = null) {
             try {
                 const value = localStorage.getItem(key);
@@ -176,7 +165,6 @@ class Utils {
                 return defaultValue;
             }
         },
-
         remove(key) {
             try {
                 localStorage.removeItem(key);
@@ -186,7 +174,6 @@ class Utils {
                 return false;
             }
         },
-
         clear() {
             try {
                 localStorage.clear();
@@ -197,7 +184,6 @@ class Utils {
             }
         }
     };
-
     static sessionStorage = {
         set(key, value) {
             try {
@@ -208,7 +194,6 @@ class Utils {
                 return false;
             }
         },
-
         get(key, defaultValue = null) {
             try {
                 const value = sessionStorage.getItem(key);
@@ -218,7 +203,6 @@ class Utils {
                 return defaultValue;
             }
         },
-
         remove(key) {
             try {
                 sessionStorage.removeItem(key);
@@ -228,7 +212,6 @@ class Utils {
                 return false;
             }
         },
-
         clear() {
             try {
                 sessionStorage.clear();
@@ -239,7 +222,6 @@ class Utils {
             }
         }
     };
-
     static formatRelativeTime(date) {
         const now = new Date();
         const targetDate = new Date(date);
@@ -250,7 +232,6 @@ class Utils {
         const diffDays = Math.floor(diffHours / 24);
         const diffMonths = Math.floor(diffDays / 30);
         const diffYears = Math.floor(diffDays / 365);
-
         if (diffSeconds < 60) {
             return '刚刚';
         } else if (diffMinutes < 60) {
@@ -265,12 +246,10 @@ class Utils {
             return `${diffYears}年前`;
         }
     }
-
     static colorUtils = {
         random() {
             return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
         },
-
         hexToRgb(hex) {
             const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
@@ -279,25 +258,20 @@ class Utils {
                 b: parseInt(result[3], 16)
             } : null;
         },
-
         rgbToHex(r, g, b) {
             return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
         },
-
         getContrastColor(hex) {
             const rgb = this.hexToRgb(hex);
             if (!rgb) return '#000000';
-            
             const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
             return brightness > 128 ? '#000000' : '#ffffff';
         }
     };
-
     static arrayUtils = {
         unique(arr) {
             return [...new Set(arr)];
         },
-
         groupBy(arr, key) {
             return arr.reduce((groups, item) => {
                 const group = item[key];
@@ -308,12 +282,10 @@ class Utils {
                 return groups;
             }, {});
         },
-
         sortBy(arr, key, order = 'asc') {
             return arr.sort((a, b) => {
                 const aVal = a[key];
                 const bVal = b[key];
-                
                 if (order === 'asc') {
                     return aVal > bVal ? 1 : -1;
                 } else {
@@ -321,13 +293,11 @@ class Utils {
                 }
             });
         },
-
         paginate(arr, page, size) {
             const startIndex = (page - 1) * size;
             const endIndex = startIndex + size;
             return arr.slice(startIndex, endIndex);
         },
-
         search(arr, query, keys) {
             const lowercaseQuery = query.toLowerCase();
             return arr.filter(item => {
@@ -338,11 +308,9 @@ class Utils {
             });
         }
     };
-
     static domUtils = {
         createElement(tag, attributes = {}, children = []) {
             const element = document.createElement(tag);
-            
             Object.keys(attributes).forEach(key => {
                 if (key === 'className') {
                     element.className = attributes[key];
@@ -354,7 +322,6 @@ class Utils {
                     element.setAttribute(key, attributes[key]);
                 }
             });
-
             children.forEach(child => {
                 if (typeof child === 'string') {
                     element.appendChild(document.createTextNode(child));
@@ -362,26 +329,21 @@ class Utils {
                     element.appendChild(child);
                 }
             });
-
             return element;
         },
-
         addEventListeners(element, events) {
             Object.keys(events).forEach(event => {
                 element.addEventListener(event, events[event]);
             });
         },
-
         clearChildren(element) {
             while (element.firstChild) {
                 element.removeChild(element.firstChild);
             }
         },
-
         toggleClass(element, className) {
             element.classList.toggle(className);
         },
-
         getElementPosition(element) {
             const rect = element.getBoundingClientRect();
             return {
@@ -403,12 +365,9 @@ class Utils {
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-
                         canvas.width = img.width;
                         canvas.height = img.height;
-
                         ctx.drawImage(img, 0, 0);
-
                         canvas.toBlob(
                             (blob) => {
                                 if (blob) {
@@ -427,7 +386,6 @@ class Utils {
             });
         }
     };
-
     static validation = {
         rules: {
             required: (value) => value && value.trim() !== '',
@@ -438,10 +396,8 @@ class Utils {
             number: (value) => !isNaN(value),
             positiveNumber: (value) => !isNaN(value) && Number(value) > 0
         },
-
         validateField(value, rules) {
             const errors = [];
-            
             rules.forEach(rule => {
                 if (typeof rule === 'function') {
                     if (!rule(value)) {
@@ -453,28 +409,23 @@ class Utils {
                     }
                 }
             });
-
             return {
                 isValid: errors.length === 0,
                 errors
             };
         },
-
         validateForm(formData, schema) {
             const errors = {};
             let isValid = true;
-
             Object.keys(schema).forEach(field => {
                 const rules = schema[field];
                 const value = formData[field];
                 const result = this.validateField(value, rules);
-                
                 if (!result.isValid) {
                     errors[field] = result.errors;
                     isValid = false;
                 }
             });
-
             return {
                 isValid,
                 errors
@@ -482,5 +433,4 @@ class Utils {
         }
     };
 }
-
 window.Utils = Utils;
