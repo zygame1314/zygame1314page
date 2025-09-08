@@ -51,7 +51,7 @@ export async function onRequestGet(context) {
             const total = countResults[0].total;
 
             const { results } = await env.DB.prepare(`
-                SELECT id, title, date, excerpt, thumbnail, tags, aiAssistants
+                SELECT id, title, date, excerpt, thumbnail, contentUrl, tags, aiAssistants
                 FROM articles
                 ORDER BY date DESC
                 LIMIT ? OFFSET ?

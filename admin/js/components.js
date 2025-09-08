@@ -548,7 +548,7 @@ class Components {
                             id: field.name,
                             placeholder: field.placeholder || ''
                         });
-                        input.value = field.value || '';
+                        input.textContent = field.value || '';
                         if (field.rows) input.rows = field.rows;
                         break;
                     case 'select':
