@@ -205,6 +205,8 @@ class AdminSystem {
     }
     async loadDashboard() {
         try {
+            const stats = await api.getStatistics();
+            this.updateStatistics(stats);
             const donations = await api.donations.getList(1, 5);
             this.updateRecentDonations(donations.data || []);
         } catch (error) {

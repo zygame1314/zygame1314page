@@ -244,6 +244,93 @@ class API {
             return this.post('/admin/d1-manager', { action: 'UNBAN_USER', payload: { userId } });
         }
     };
+    async getStatistics() {
+        try {
+            const [donations, music, projects, notices] = await Promise.allSettled([
+                this.donations.getList(1, 1),
+                this.music.getPlaylist(),
+                this.projects.getList(1, 1),
+                this.notices.getList()
+            ]);
+            const stats = {
+                totalDonations: 0,
+                totalSongs: 0,
+                totalProjects: 0,
+                totalNotices: 0
+            };
+            if (donations.status === 'fulfilled' && donations.value.pagination) {
+                stats.totalDonations = donations.value.pagination.total;
+            }
+            if (music.status === 'fulfilled' && music.value.songs) {
+                stats.totalSongs = music.value.songs.length;
+            }
+            if (projects.status === 'fulfilled' && projects.value.pagination) {
+                stats.totalProjects = projects.value.pagination.total;
+            }
+            if (notices.status === 'fulfilled' && notices.value.notices) {
+                stats.totalNotices = notices.value.notices.length;
+            }
+            return stats;
+        } catch (error) {
+            console.error('Failed to get statistics:', error);
+            return {
+                totalDonations: 0,
+                totalSongs: 0,
+                totalProjects: 0,
+                totalNotices: 0
+            };
+        }
+    }
+    async search(query, type = 'all') {
+        const results = {
+            donations: [],
+            music: [],
+            projects: [],
+            notices: []
+        };
+        try {
+            if (type === 'all' || type === 'donations') {
+                const donationsData = await this.donations.getList(1, 100);
+                if (donationsData.data) {
+                    results.donations = donationsData.data.filter(item =>
+                        item.name?.toLowerCase().includes(query.toLowerCase()) ||
+                        item.message?.toLowerCase().includes(query.toLowerCase())
+                    );
+                }
+            }
+            if (type === 'all' || type === 'music') {
+                const musicData = await this.music.getPlaylist();
+                if (musicData.songs) {
+                    results.music = musicData.songs.filter(item =>
+                        item.title?.toLowerCase().includes(query.toLowerCase()) ||
+                        item.artist?.toLowerCase().includes(query.toLowerCase())
+                    );
+                }
+            }
+            if (type === 'all' || type === 'projects') {
+                const projectsData = await this.projects.getList(1, 100);
+                if (projectsData.projects) {
+                    results.projects = projectsData.projects.filter(item =>
+                        item.title?.toLowerCase().includes(query.toLowerCase()) ||
+                        item.description?.toLowerCase().includes(query.toLowerCase())
+                    );
+                }
+            }
+            if (type === 'all' || type === 'notices') {
+                const noticesData = await this.notices.getList();
+                if (noticesData.notices) {
+                    results.notices = noticesData.notices.filter(item =>
+                        item.title?.toLowerCase().includes(query.toLowerCase()) ||
+                        JSON.stringify(item.content)?.toLowerCase().includes(query.toLowerCase())
+                    );
+                }
+            }
+            return results;
+        } catch (error) {
+            console.error('Search failed:', error);
+            return results;
+        }
+    }
 }
 const api = new API();
 window.API = API;
