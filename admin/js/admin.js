@@ -335,24 +335,6 @@ class AdminSystem {
         document.getElementById('addDonationBtn')?.addEventListener('click', () => {
             this.showDonationForm();
         });
-        const searchInput = document.getElementById('donationSearch');
-        const searchBtn = document.getElementById('donationSearchBtn');
-        if (searchInput && searchBtn && !this.searchHandlers.has('donation')) {
-            const performSearch = async () => {
-                const query = searchInput.value.trim();
-                if (query) {
-                    await this.searchDonations(query);
-                } else {
-                    await this.loadDonations();
-                }
-            };
-            const keypressHandler = (e) => {
-                if (e.key === 'Enter') performSearch();
-            };
-            searchInput.addEventListener('keypress', keypressHandler);
-            searchBtn.addEventListener('click', performSearch);
-            this.searchHandlers.set('donation', { keypressHandler, performSearch });
-        }
         const platformFilter = document.getElementById('platformFilter');
         if (platformFilter && !this.filterHandlers.has('donation_platform')) {
             const filterHandler = async (e) => {
@@ -480,16 +462,6 @@ class AdminSystem {
             }
         );
     }
-    async searchDonations(query) {
-        Components.loading.show('donationsTableBody', `正在搜索 "${query}"...`);
-        try {
-            const results = await api.search(query, 'donations');
-            this.renderDonationsTable(results.donations);
-        } catch (error) {
-            Components.notification.error('搜索失败');
-            console.error('Search error:', error);
-        }
-    }
     async filterDonationsByPlatform(platform) {
         Utils.setUrlParam('donation_page', 1);
         if (platform) {
@@ -561,24 +533,6 @@ class AdminSystem {
         document.getElementById('addMusicBtn')?.addEventListener('click', () => {
             this.showMusicForm();
         });
-        const searchInput = document.getElementById('musicSearch');
-        const searchBtn = document.getElementById('musicSearchBtn');
-        if (searchInput && searchBtn && !this.searchHandlers.has('music')) {
-            const performSearch = async () => {
-                const query = searchInput.value.trim();
-                if (query) {
-                    await this.searchMusic(query);
-                } else {
-                    await this.loadMusic();
-                }
-            };
-            const keypressHandler = (e) => {
-                if (e.key === 'Enter') performSearch();
-            };
-            searchInput.addEventListener('keypress', keypressHandler);
-            searchBtn.addEventListener('click', performSearch);
-            this.searchHandlers.set('music', { keypressHandler, performSearch });
-        }
         document.querySelectorAll('.play-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const path = e.currentTarget.dataset.path;
@@ -729,16 +683,6 @@ class AdminSystem {
                 }
             }
         );
-    }
-    async searchMusic(query) {
-        Components.loading.show('musicGrid', `正在搜索 "${query}"...`);
-        try {
-            const results = await api.search(query, 'music');
-            this.renderMusicGrid(results.music);
-        } catch (error) {
-            Components.notification.error('搜索失败');
-            console.error('Search error:', error);
-        }
     }
     playMusic(path, button) {
         let audioPlayer = window.audioPlayer;

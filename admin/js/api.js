@@ -283,30 +283,10 @@ class API {
     }
     async search(query, type = 'all') {
         const results = {
-            donations: [],
-            music: [],
             projects: [],
             notices: []
         };
         try {
-            if (type === 'all' || type === 'donations') {
-                const donationsData = await this.donations.getList(1, 100);
-                if (donationsData.data) {
-                    results.donations = donationsData.data.filter(item =>
-                        item.name?.toLowerCase().includes(query.toLowerCase()) ||
-                        item.message?.toLowerCase().includes(query.toLowerCase())
-                    );
-                }
-            }
-            if (type === 'all' || type === 'music') {
-                const musicData = await this.music.getPlaylist();
-                if (musicData.songs) {
-                    results.music = musicData.songs.filter(item =>
-                        item.title?.toLowerCase().includes(query.toLowerCase()) ||
-                        item.artist?.toLowerCase().includes(query.toLowerCase())
-                    );
-                }
-            }
             if (type === 'all' || type === 'projects') {
                 const projectsData = await this.projects.getList(1, 100);
                 if (projectsData.projects) {
