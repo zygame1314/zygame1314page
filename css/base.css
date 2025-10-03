@@ -71,6 +71,22 @@
     --newyear-secondary: #f72585;
     --newyear-bg: #16213e;
 
+    --laba-primary: #d2b48c;
+    --laba-secondary: #8b4513;
+    --laba-bg: #3e2723;
+
+    --doubleNinth-primary: #ff7f50;
+    --doubleNinth-secondary: #ffb732;
+    --doubleNinth-bg: #4a2c2a;
+
+    --singlesDay-primary: #aaaaaa;
+    --singlesDay-secondary: #cccccc;
+    --singlesDay-bg: #333333;
+
+    --winterSolstice-primary: #87ceeb;
+    --winterSolstice-secondary: #ffffff;
+    --winterSolstice-bg: #1c3d52;
+
     --primary-color: var(--winter-primary);
     --secondary-color: var(--winter-secondary);
     --theme-bg: var(--winter-bg);
