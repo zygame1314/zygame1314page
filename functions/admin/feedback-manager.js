@@ -16,7 +16,7 @@ export async function onRequestGet(context) {
     }
     const { env } = context;
     try {
-        const stmt = env.DB.prepare(
+        const stmt = env.CODE_MANAGER_DB.prepare(
             `SELECT
                 id,
                 content_hash,
@@ -56,7 +56,7 @@ export async function onRequestDelete(context) {
         });
     }
     try {
-        const stmt = env.DB.prepare('DELETE FROM reports WHERE id = ?');
+        const stmt = env.CODE_MANAGER_DB.prepare('DELETE FROM reports WHERE id = ?');
         const result = await stmt.bind(id).run();
         if (result.success && result.meta.changes > 0) {
             return new Response(JSON.stringify({ success: true, message: '反馈已删除' }), {
