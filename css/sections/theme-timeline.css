@@ -3,7 +3,7 @@
 }
 
 .theme-timeline-container {
-    max-height: 300px;
+    max-height: 150px;
     overflow-y: auto;
     position: relative;
     padding-left: 20px;
