@@ -61,13 +61,22 @@ export async function getCurrentThemeKey() {
             theme = 'midAutumn';
         } else if (lunarMonth === 7 && lunarDay === 7) {
             theme = 'qixi';
+        } else if (lunarMonth === 9 && lunarDay === 9) {
+            theme = 'doubleNinth';
+        } else if (lunarMonth === 12 && lunarDay === 8) {
+            theme = 'laba';
         } else if ((month === 4 && (day === 4 || day === 5))) {
             theme = 'qingming';
         }
     }
 
     if (!theme) {
-        if (month === 12 && day >= 24 && day <= 26) {
+        const solarTerm = lunar.getJieQi();
+        if (solarTerm === '冬至') {
+            theme = 'winterSolstice';
+        } else if (month === 11 && day === 11) {
+            theme = 'singlesDay';
+        } else if (month === 12 && day >= 24 && day <= 26) {
             theme = 'christmas';
         } else if (month === 10 && day === 31) {
             theme = 'halloween';
