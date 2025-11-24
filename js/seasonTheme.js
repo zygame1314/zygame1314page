@@ -15,7 +15,7 @@ const GREETINGS = {
     nationalDay: "朋友圈摄影大赛2.0开启📷<br>7天假期体验卡已到账，请注意避开人从众模式",
     qingming: "青团：春天限定皮肤已更新🌸<br>踏青模式启动，小心柳絮偷袭！",
     labor: "劳动最光荣，搬砖也能成英雄🛠️<br>系统提示：成就值+10086，摸鱼技能冷却中⏰",
-    teacher: "三尺讲台变直播间，粉笔进化成电子笔🖋️<br>作业本批注比情书还长（老师辛苦了！🍎）",
+    teacher: "三尺讲台变直播间，粉笔进化成电子笔🖋️<br>老师辛苦了！🍎",
     children: "成年人请出示童年通行证🎈<br>今日限时返场：泡泡机模式/棒棒糖能量充满！",
     newyear: "新年副本已加载 99%🎆<br>Flag回收站清空中，新年计划正在生成...",
     laba: "腊八蒜腌上了吗？<br>没喝粥的今天都是“蒜”了...🥣",
@@ -46,8 +46,9 @@ export async function getCurrentThemeKey() {
     const day = date.getDate();
     let theme = null;
 
+    let lunar;
     if (typeof Lunar !== 'undefined') {
-        const lunar = Lunar.fromDate(date);
+        lunar = Lunar.fromDate(date);
         const lunarMonth = lunar.getMonth();
         const lunarDay = lunar.getDay();
 
@@ -70,7 +71,7 @@ export async function getCurrentThemeKey() {
         }
     }
 
-    if (!theme) {
+    if (!theme && lunar) {
         const solarTerm = lunar.getJieQi();
         if (solarTerm === '冬至') {
             theme = 'winterSolstice';
