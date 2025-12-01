@@ -1699,8 +1699,12 @@ class AdminSystem {
         if (searchInput && searchBtn) {
             const performD1Search = async () => {
                 const term = searchInput.value.trim();
-                Components.loading.show('d1CodesTableBody', `正在搜索 "${term}"...`);
-                const result = await api.d1Manager.getRecords(term.length >= 2 ? term : null, term.length < 2 ? 60 : null);
+                if (term && term.length < 3) {
+                    Components.notification.show('搜索关键词长度不能少于3个字符', 'warning');
+                    return;
+                }
+                Components.loading.show('d1CodesTableBody', term ? `正在搜索 "${term}"...` : '正在加载数据...');
+                const result = await api.d1Manager.getRecords(term || null, !term ? 60 : null);
                 this.cache.set('d1-codes', result.data);
                 this.renderD1Table(result.data);
             };

@@ -48,16 +48,20 @@ async function handleGetRecords(DB, searchTerm, limit) {
     `;
     const params = [];
     if (searchTerm) {
-        baseSql += ` WHERE 
-            lower(a.code) LIKE ? OR
-            lower(a.note) LIKE ? OR
-            lower(a.used_by_user_id) LIKE ? OR
-            lower(COALESCE(u.realname, '')) LIKE ? OR
-            lower(COALESCE(u.school_info, '')) LIKE ?`;
-        const likeTerm = `%${searchTerm.toLowerCase()}%`;
-        params.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
+        baseSql = `
+            SELECT a.code, a.duration_days, a.is_used, a.used_by_user_id, a.note, a.created_at, 
+                   u.total_queries, u.daily_queries, u.last_query_date, u.expires_at, u.realname, u.school_info,
+                   b.platform_user_id IS NOT NULL AS is_banned, b.reason AS ban_reason 
+            FROM activations_fts AS fts
+            JOIN activations AS a ON fts.code = a.code
+            LEFT JOIN users AS u ON a.used_by_user_id = u.platform_user_id 
+            LEFT JOIN blacklist AS b ON a.used_by_user_id = b.platform_user_id
+            WHERE fts MATCH ?
+        `;
+        params.push(`"${searchTerm}"`);
+    } else {
+        baseSql += " ORDER BY a.created_at DESC";
     }
-    baseSql += " ORDER BY a.created_at DESC";
     if (limit && !searchTerm) {
         baseSql += ` LIMIT ?`;
         params.push(parseInt(limit, 10));
