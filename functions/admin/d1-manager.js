@@ -52,11 +52,11 @@ async function handleGetRecords(DB, searchTerm, limit) {
             SELECT a.code, a.duration_days, a.is_used, a.used_by_user_id, a.note, a.created_at, 
                    u.total_queries, u.daily_queries, u.last_query_date, u.expires_at, u.realname, u.school_info,
                    b.platform_user_id IS NOT NULL AS is_banned, b.reason AS ban_reason 
-            FROM activations_fts AS fts
-            JOIN activations AS a ON fts.code = a.code
+            FROM activations_fts
+            JOIN activations AS a ON activations_fts.code = a.code
             LEFT JOIN users AS u ON a.used_by_user_id = u.platform_user_id 
             LEFT JOIN blacklist AS b ON a.used_by_user_id = b.platform_user_id
-            WHERE fts MATCH ?
+            WHERE activations_fts MATCH ?
         `;
         params.push(`"${searchTerm}"`);
     } else {
