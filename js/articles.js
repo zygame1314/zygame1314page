@@ -1,4 +1,4 @@
-import { init } from '/js/lib/waline.js';
+import { init } from '@waline/client';
 import { API_BASE } from './config.js';
 import { showNotification } from './showNotification.js';
 import hljs from 'highlight.js/lib/core';
