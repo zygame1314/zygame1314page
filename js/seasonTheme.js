@@ -1,4 +1,6 @@
 import { showNotification } from './showNotification.js';
+import './lib/lunar.min.js';
+
 const GREETINGS = {
     spring: "您的春日好运正在派件，请注意查收🌸<br>戳我查看春日限定皮肤→",
     summer: "空调WIFI冰西瓜，葛优同款沙发☀️<br>温馨提示：本季节容易触发『汗蒸模式』🫠",
@@ -24,23 +26,7 @@ const GREETINGS = {
     winterSolstice: "饺子汤圆请选择！<br>选择困难症的冬天太难了...🥟"
 };
 
-function loadLunarScript() {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = '/js/lib/lunar.min.js';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}
-
 export async function getCurrentThemeKey() {
-    try {
-        await loadLunarScript();
-    } catch (error) {
-        console.error('无法加载农历库:', error);
-    }
-
     const date = new Date();
     const month = date.getMonth() + 1;
     const day = date.getDate();
