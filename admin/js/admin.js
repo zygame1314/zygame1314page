@@ -1557,7 +1557,7 @@ class AdminSystem {
             { name: 'id', label: 'ID (Slug)', type: 'text', required: true, value: article?.id || '', placeholder: 'e.g., my-first-article', readonly: isEdit, help: '文章的唯一标识符，通常是URL的一部分。创建后不可修改。' },
             { name: 'title', label: '标题', type: 'text', required: true, value: article?.title || '' },
             { name: 'date', label: '发布日期', type: 'date', required: true, value: article ? Utils.formatDate(article.date, 'YYYY-MM-DD') : Utils.formatDate(new Date(), 'YYYY-MM-DD') },
-            { name: 'contentUrl', label: '内容文件URL', type: 'text', required: true, value: article?.contentUrl || '', placeholder: '/articles/my-first-article.md', help: '指向HTML文件的路径。' },
+            { name: 'contentUrl', label: '内容文件URL', type: 'text', required: true, value: article?.contentUrl || '', placeholder: '/articles/my-first-article.html', help: '指向HTML文件的路径。' },
             { name: 'excerpt', label: '摘要', type: 'textarea', value: article?.excerpt || '', rows: 3 },
             { name: 'thumbnail', label: '缩略图', type: 'image-upload', value: article?.thumbnail || '', uploadContext: 'articles' },
             { name: 'tags', label: '标签', type: 'textarea', value: article?.tags?.join('\n') || '', help: '每行一个标签', rows: 3 },
