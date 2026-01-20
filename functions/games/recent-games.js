@@ -28,22 +28,29 @@ export async function onRequestGet(context) {
         let games = recentGamesData.response.games || [];
         const BLOCKED_APP_IDS = [];
         games = games.filter(game => !BLOCKED_APP_IDS.includes(game.appid));
-        const appIds = games.map(g => g.appid).join(',');
-        let detailsMap = {};
-        if (appIds) {
+        const detailsPromises = games.map(async (game) => {
             const appDetailsParams = new URLSearchParams({
-                appids: appIds,
+                appids: game.appid,
                 l: 'schinese'
             }).toString();
             try {
-                const detailsResponse = await fetch(
+                const response = await fetch(
                     `https://store.steampowered.com/api/appdetails?${appDetailsParams}`
                 );
-                if (detailsResponse.ok) {
-                    detailsMap = await detailsResponse.json();
+                if (response.ok) {
+                    const data = await response.json();
+                    return { appid: game.appid, details: data[game.appid] };
                 }
             } catch (error) {
-                console.error('Failed to batch fetch game details:', error);
+                console.error(`Failed to fetch details for game ${game.appid}:`, error);
+            }
+            return { appid: game.appid, details: null };
+        });
+        const detailsResults = await Promise.all(detailsPromises);
+        let detailsMap = {};
+        for (const result of detailsResults) {
+            if (result.details) {
+                detailsMap[result.appid] = result.details;
             }
         }
         const validGames = [];
