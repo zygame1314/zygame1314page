@@ -1,5 +1,5 @@
 export function onRequestOptions() {
-  return new Response(null, { status: 204 });
+    return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
     const cache = caches.default;
@@ -15,7 +15,7 @@ export async function onRequestGet(context) {
         key: steamAPIKey,
         steamid: steamID,
         format: 'json',
-        count: 4
+        count: 10
     }).toString();
     try {
         const recentGamesResponse = await fetch(
@@ -25,30 +25,81 @@ export async function onRequestGet(context) {
             throw new Error(`Steam API Error: ${recentGamesResponse.status}`);
         }
         const recentGamesData = await recentGamesResponse.json();
-        const games = recentGamesData.response.games || [];
-        const gamesWithDetails = await Promise.all(games.map(async game => {
+        let games = recentGamesData.response.games || [];
+        const BLOCKED_APP_IDS = [];
+        games = games.filter(game => !BLOCKED_APP_IDS.includes(game.appid));
+        const appIds = games.map(g => g.appid).join(',');
+        let detailsMap = {};
+        if (appIds) {
             const appDetailsParams = new URLSearchParams({
-                appids: game.appid,
+                appids: appIds,
                 l: 'schinese'
             }).toString();
             try {
                 const detailsResponse = await fetch(
                     `https://store.steampowered.com/api/appdetails?${appDetailsParams}`
                 );
-                const detailsData = await detailsResponse.json();
-                if (detailsData[game.appid].success) {
-                    return {
-                        ...game,
-                        name: detailsData[game.appid].data.name,
-                        chinese_name: detailsData[game.appid].data.name
-                    };
+                if (detailsResponse.ok) {
+                    detailsMap = await detailsResponse.json();
                 }
             } catch (error) {
-                console.error(`Failed to fetch details for game ${game.appid}:`, error);
+                console.error('Failed to batch fetch game details:', error);
             }
-            return game;
-        }));
-        recentGamesData.response.games = gamesWithDetails;
+        }
+        const validGames = [];
+        for (const game of games) {
+            const details = detailsMap[game.appid];
+            if (!details || !details.success) {
+                continue;
+            }
+            const data = details.data;
+            let isRestricted = false;
+            if (data.required_age >= 18) {
+                isRestricted = true;
+            }
+            if (!isRestricted && data.content_descriptors && data.content_descriptors.ids) {
+                const blockedDescriptors = [1, 5];
+                const hasExplicitContent = data.content_descriptors.ids.some(id =>
+                    blockedDescriptors.includes(id)
+                );
+                if (hasExplicitContent) isRestricted = true;
+            }
+            if (!isRestricted) {
+                const BLOCKED_PUBLISHERS = [
+                    'Kagura Games',
+                    'SakuraGame',
+                    'Paradise Project',
+                    'Alice Soft',
+                    'Shiravune',
+                    'MangaGamer'
+                ];
+                const publishers = data.publishers || [];
+                const developers = data.developers || [];
+                const combined = [...publishers, ...developers];
+                const hasBlockedSource = combined.some(name =>
+                    BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase()))
+                );
+                if (hasBlockedSource) isRestricted = true;
+            }
+            if (isRestricted) {
+                let isExempt = false;
+                if (data.metacritic) {
+                    isExempt = true;
+                }
+                else if (data.recommendations && data.recommendations.total > 15000) {
+                    isExempt = true;
+                }
+                if (!isExempt) {
+                    continue;
+                }
+            }
+            validGames.push({
+                ...game,
+                name: data.name || game.name,
+                chinese_name: data.name || game.name
+            });
+        }
+        recentGamesData.response.games = validGames.slice(0, 4);
         response = new Response(JSON.stringify(recentGamesData), {
             headers: {
                 'Content-Type': 'application/json'
