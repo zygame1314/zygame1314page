@@ -10,6 +10,7 @@ import plaintext from 'highlight.js/lib/languages/plaintext';
 import yaml from 'highlight.js/lib/languages/yaml';
 import glsl from 'highlight.js/lib/languages/glsl';
 import json from 'highlight.js/lib/languages/json';
+import sql from 'highlight.js/lib/languages/sql';
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('js', javascript);
@@ -19,6 +20,7 @@ hljs.registerLanguage('plaintext', plaintext);
 hljs.registerLanguage('yaml', yaml);
 hljs.registerLanguage('glsl', glsl);
 hljs.registerLanguage('json', json);
+hljs.registerLanguage('sql', sql);
 
 if (!document.querySelector('link[href*="@waline"]')) {
     document.head.insertAdjacentHTML('beforeend',
