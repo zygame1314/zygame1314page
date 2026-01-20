@@ -79,8 +79,21 @@ export async function onRequestGet(context) {
                 'Alice Soft',
                 'Shiravune',
                 'MangaGamer',
-                'Oneone1',
-                'Dojin Otome'
+                'Oneone1'
+            ];
+            const SAFE_PUBLISHERS = [
+                'Square Enix',
+                'Capcom',
+                'Bandai Namco',
+                'SEGA',
+                'PlayStation',
+                'Xbox Game Studios',
+                'Electronic Arts',
+                'Ubisoft',
+                'Konami',
+                'FromSoftware',
+                'CD PROJEKT RED',
+                'Rockstar Games'
             ];
             const publishers = data.publishers || [];
             const developers = data.developers || [];
@@ -89,16 +102,24 @@ export async function onRequestGet(context) {
                 isRestricted = true;
                 isSensitivePublisher = true;
             }
+            let isTrustedPublisher = false;
+            if (combined.some(name => SAFE_PUBLISHERS.some(safe => name.toLowerCase().includes(safe.toLowerCase())))) {
+                isTrustedPublisher = true;
+            }
             if (isRestricted) {
-                let isExempt = false;
-                if (data.metacritic) {
-                    isExempt = true;
+                if (isTrustedPublisher) {
                 }
-                else if (!isSensitivePublisher && data.recommendations && data.recommendations.total > 15000) {
-                    isExempt = true;
-                }
-                if (!isExempt) {
-                    continue;
+                else {
+                    let isExempt = false;
+                    if (data.metacritic) {
+                        isExempt = true;
+                    }
+                    else if (!isSensitivePublisher && data.recommendations && data.recommendations.total > 15000) {
+                        isExempt = true;
+                    }
+                    if (!isExempt) {
+                        continue;
+                    }
                 }
             }
             validGames.push({

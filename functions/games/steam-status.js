@@ -1,5 +1,5 @@
 export function onRequestOptions() {
-  return new Response(null, { status: 204 });
+    return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
     let response;
@@ -92,36 +92,103 @@ export async function onRequestGet(context) {
         const gameSectionMatch = html.includes('miniprofile_gamesection');
         if (gameSectionMatch) {
             const gameLogoMatch = html.match(/<img class="game_logo" src="[^"]*\/apps\/(\d+)\/[^"]*">/);
+            let currentGameAppId = null;
             if (gameLogoMatch && gameLogoMatch[1]) {
-                const appId = gameLogoMatch[1];
-                player.appId = appId;
-                const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header_schinese.jpg`;
-                const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`;
-
+                currentGameAppId = gameLogoMatch[1];
+                let isSafeToDisplay = true;
                 try {
-                    const headResponse = await fetch(chineseHeaderUrl, { method: 'HEAD' });
-                    if (headResponse.ok) {
-                        player.game_logo = chineseHeaderUrl;
-                    } else {
-                        player.game_logo = defaultHeaderUrl;
+                    const appDetailsParams = new URLSearchParams({
+                        appids: currentGameAppId,
+                        l: 'schinese'
+                    }).toString();
+                    const detailsResponse = await fetch(`https://store.steampowered.com/api/appdetails?${appDetailsParams}`);
+                    if (detailsResponse.ok) {
+                        const detailsJson = await detailsResponse.json();
+                        const details = detailsJson[currentGameAppId];
+                        if (details && details.success) {
+                            const data = details.data;
+                            let isRestricted = false;
+                            let isSensitivePublisher = false;
+                            const BLOCKED_PUBLISHERS = [
+                                'Kagura Games', 'SakuraGame', 'Paradise Project',
+                                'Alice Soft', 'Shiravune', 'MangaGamer', 'Oneone1', 'Dojin Otome'
+                            ];
+                            const publishers = [...(data.publishers || []), ...(data.developers || [])];
+                            if (publishers.some(name => BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
+                                isSensitivePublisher = true;
+                                isRestricted = true;
+                            }
+                            const SAFE_PUBLISHERS = [
+                                'Square Enix', 'Capcom', 'Bandai Namco', 'SEGA', 'PlayStation',
+                                'Xbox Game Studios', 'Electronic Arts', 'Ubisoft', 'Konami',
+                                'FromSoftware', 'CD PROJEKT RED', 'Rockstar Games'
+                            ];
+                            let isTrustedPublisher = false;
+                            if (publishers.some(name => SAFE_PUBLISHERS.some(safe => name.toLowerCase().includes(safe.toLowerCase())))) {
+                                isTrustedPublisher = true;
+                            }
+                            if (!isRestricted && !isTrustedPublisher) {
+                                if (data.required_age >= 18) isRestricted = true;
+                                if (data.content_descriptors && data.content_descriptors.ids) {
+                                    if (data.content_descriptors.ids.some(id => [1, 5].includes(id))) {
+                                        isRestricted = true;
+                                    }
+                                }
+                            }
+                            if (isRestricted) {
+                                if (isTrustedPublisher) {
+                                    isSafeToDisplay = true;
+                                } else {
+                                    let isExempt = false;
+                                    if (data.metacritic) isExempt = true;
+                                    else if (!isSensitivePublisher && data.recommendations && data.recommendations.total > 15000) {
+                                        isExempt = true;
+                                    }
+                                    if (!isExempt) isSafeToDisplay = false;
+                                }
+                            }
+                        }
                     }
                 } catch (e) {
-                    player.game_logo = defaultHeaderUrl;
+                    console.error("Failed to verify game safety", e);
+                }
+                if (!isSafeToDisplay) {
+                    console.log(`Hiding sensitive game activity: ${currentGameAppId}`);
+                    player.personastate_css_class = 'online';
+                    player.game_state = null;
+                    player.game_name = null;
+                    player.rich_presence = null;
+                    player.appId = null;
+                    player.game_logo = null;
+                } else {
+                    player.appId = currentGameAppId;
+                    const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header_schinese.jpg`;
+                    const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header.jpg`;
+                    try {
+                        const headResponse = await fetch(chineseHeaderUrl, { method: 'HEAD' });
+                        if (headResponse.ok) {
+                            player.game_logo = chineseHeaderUrl;
+                        } else {
+                            player.game_logo = defaultHeaderUrl;
+                        }
+                    } catch (e) {
+                        player.game_logo = defaultHeaderUrl;
+                    }
+                    const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
+                    if (gameStateMatch && gameStateMatch[1]) {
+                        player.game_state = gameStateMatch[1].trim();
+                    }
+                    const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
+                    if (gameNameMatch && gameNameMatch[1]) {
+                        player.game_name = gameNameMatch[1].trim();
+                    }
+                    const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
+                    if (richPresenceMatch && richPresenceMatch[1]) {
+                        player.rich_presence = richPresenceMatch[1].trim();
+                    }
+                    player.personastate_css_class = 'in-game';
                 }
             }
-            const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
-            if (gameStateMatch && gameStateMatch[1]) {
-                player.game_state = gameStateMatch[1].trim();
-            }
-            const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
-            if (gameNameMatch && gameNameMatch[1]) {
-                player.game_name = gameNameMatch[1].trim();
-            }
-            const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
-            if (richPresenceMatch && richPresenceMatch[1]) {
-                player.rich_presence = richPresenceMatch[1].trim();
-            }
-            player.personastate_css_class = 'in-game';
         } else {
         }
         const videoWebmMatch = html.match(/<source src="([^"]+\.webm)" type="video\/webm">/);
@@ -147,7 +214,7 @@ export async function onRequestGet(context) {
             for (const key in obj) {
                 if (typeof obj[key] === 'string') {
                     obj[key] = obj[key].replace(/https:\/\/cdn\.cloudflare\.steamstatic\.com/g, 'https://cdn.akamai.steamstatic.com')
-                                       .replace(/https:\/\/shared\.cloudflare\.steamstatic\.com/g, 'https://shared.akamai.steamstatic.com');
+                        .replace(/https:\/\/shared\.cloudflare\.steamstatic\.com/g, 'https://shared.akamai.steamstatic.com');
                 } else if (typeof obj[key] === 'object' && obj[key] !== null) {
                     replaceCdnUrl(obj[key]);
                 }
