@@ -64,29 +64,30 @@ export async function onRequestGet(context) {
                 );
                 if (hasExplicitContent) isRestricted = true;
             }
-            if (!isRestricted) {
-                const BLOCKED_PUBLISHERS = [
-                    'Kagura Games',
-                    'SakuraGame',
-                    'Paradise Project',
-                    'Alice Soft',
-                    'Shiravune',
-                    'MangaGamer'
-                ];
-                const publishers = data.publishers || [];
-                const developers = data.developers || [];
-                const combined = [...publishers, ...developers];
-                const hasBlockedSource = combined.some(name =>
-                    BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase()))
-                );
-                if (hasBlockedSource) isRestricted = true;
+            let isSensitivePublisher = false;
+            const BLOCKED_PUBLISHERS = [
+                'Kagura Games',
+                'SakuraGame',
+                'Paradise Project',
+                'Alice Soft',
+                'Shiravune',
+                'MangaGamer',
+                'Oneone1',
+                'Dojin Otome'
+            ];
+            const publishers = data.publishers || [];
+            const developers = data.developers || [];
+            const combined = [...publishers, ...developers];
+            if (combined.some(name => BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
+                isRestricted = true;
+                isSensitivePublisher = true;
             }
             if (isRestricted) {
                 let isExempt = false;
                 if (data.metacritic) {
                     isExempt = true;
                 }
-                else if (data.recommendations && data.recommendations.total > 15000) {
+                else if (!isSensitivePublisher && data.recommendations && data.recommendations.total > 15000) {
                     isExempt = true;
                 }
                 if (!isExempt) {
