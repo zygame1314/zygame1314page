@@ -111,17 +111,29 @@ export async function onRequestGet(context) {
                             let isSensitivePublisher = false;
                             const BLOCKED_PUBLISHERS = [
                                 'Kagura Games', 'SakuraGame', 'Paradise Project',
-                                'Alice Soft', 'Shiravune', 'MangaGamer', 'Oneone1', 'Dojin Otome'
+                                'Alice Soft', 'Shiravune', 'MangaGamer', 'Oneone1', 'Dojin Otome',
+                                'Kagami Works', 'Pink Peach', 'DSGame', 'Dharker Studio', 'Neko Works',
+                                'illusion', '072 Project', 'Mango Party', 'qureate', 'WAKU WAKU'
                             ];
+                            const SENSITIVE_KEYWORDS = [
+                                'Hentai', 'Nude', 'Nudity', 'Sex', 'Erotic', 'Porn',
+                                'Succubus', 'Bishoujo', 'Waifu', 'Incubus', 'Futanari', 'Netorare'
+                            ];
+                            const gameName = (data.name || "").toLowerCase();
+                            if (SENSITIVE_KEYWORDS.some(kw => gameName.includes(kw.toLowerCase()))) {
+                                isRestricted = true;
+                            }
                             const publishers = [...(data.publishers || []), ...(data.developers || [])];
                             if (publishers.some(name => BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
                                 isSensitivePublisher = true;
                                 isRestricted = true;
                             }
+                            // 2. Check Whitelist Publishers
                             const SAFE_PUBLISHERS = [
                                 'Square Enix', 'Capcom', 'Bandai Namco', 'SEGA', 'PlayStation',
                                 'Xbox Game Studios', 'Electronic Arts', 'Ubisoft', 'Konami',
-                                'FromSoftware', 'CD PROJEKT RED', 'Rockstar Games'
+                                'FromSoftware', 'CD PROJEKT RED', 'Rockstar Games', 'Valve', 'NVIDIA', 'Atlus',
+                                'KOEI TECMO GAMES CO., LTD.', 'Bethesda Softworks', '2K', 'Activision', 'Blizzard Entertainment'
                             ];
                             let isTrustedPublisher = false;
                             if (publishers.some(name => SAFE_PUBLISHERS.some(safe => name.toLowerCase().includes(safe.toLowerCase())))) {
