@@ -34,7 +34,7 @@ nav ul li a {
     font-size: 18px;
     padding: 10px 15px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 nav ul li a::after {
@@ -118,7 +118,7 @@ footer::after {
     text-align: center;
     padding: 5px;
     border: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 .footer-section:hover {
@@ -136,7 +136,7 @@ footer::after {
 .social-icon {
     font-size: 24px;
     color: var(--text-color);
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
     text-shadow:
         2px 2px 0 var(--background-color),
         -2px -2px 0 var(--background-color);
@@ -161,7 +161,7 @@ footer::after {
 .beian a {
     margin: 0 5px;
     color: var(--text-color);
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     padding: 5px 10px;
     border: 2px solid transparent;
 }

@@ -86,13 +86,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
-        setTimeout(() => {
+        const currentNotice = notices[currentIndex];
+
+        requestAnimationFrame(() => {
             modal.classList.add('show');
-        }, 100);
+        });
+
         if (notices.length > 1) {
             initNoticeNavigation(modal, notices);
         }
-        initModalEvents(modal, notices[currentIndex]);
+        initModalEvents(modal, currentNotice);
         if (notices[currentIndex].poll && notices[currentIndex].poll.active) {
             initPollFunctionality(notices[currentIndex].id, notices[currentIndex].poll);
         }
@@ -199,12 +202,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (currentCloseBtn) {
                 currentCloseBtn.onclick = () => {
                     modal.classList.add('closing');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                        setTimeout(() => {
+                    const onClosingEnd = (e) => {
+                        if (e.propertyName === 'opacity' || e.animationName === 'pixelate-out') {
+                            modal.removeEventListener('transitionend', onClosingEnd);
+                            modal.removeEventListener('animationend', onClosingEnd);
                             modal.remove();
-                        }, 300);
-                    }, 500);
+                        }
+                    };
+                    modal.addEventListener('transitionend', onClosingEnd);
+                    modal.addEventListener('animationend', onClosingEnd);
+                    setTimeout(() => { if (modal.parentElement) modal.remove(); }, 600);
                 };
             }
         }
@@ -227,12 +234,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const doNotShowAgainCheck = modal.querySelector('#doNotShowAgain');
         function closeModal(modalElement = modal) {
             modalElement.classList.add('closing');
-            setTimeout(() => {
-                modalElement.classList.remove('show');
-                setTimeout(() => {
+            const onClosingEnd = (e) => {
+                if (e.propertyName === 'opacity' || e.animationName === 'pixelate-out') {
                     modalElement.remove();
-                }, 300);
-            }, 500);
+                }
+            };
+            modalElement.addEventListener('transitionend', onClosingEnd);
+            modalElement.addEventListener('animationend', onClosingEnd);
+            setTimeout(() => { if (modalElement.parentElement) modalElement.remove(); }, 600);
         }
         const closeButtons = modal.querySelectorAll('.important-close-button');
         closeButtons.forEach(btn => {
@@ -347,12 +356,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const doNotShowAgainCheck = modal.querySelector('#doNotShowAgain');
         function closeModal() {
             modal.classList.add('closing');
-            setTimeout(() => {
-                modal.classList.remove('show');
-                setTimeout(() => {
+            const onClosingEnd = (e) => {
+                if (e.propertyName === 'opacity' || e.animationName === 'pixelate-out') {
                     modal.remove();
-                }, 300);
-            }, 500);
+                }
+            };
+            modal.addEventListener('transitionend', onClosingEnd);
+            modal.addEventListener('animationend', onClosingEnd);
+            setTimeout(() => { if (modal.parentElement) modal.remove(); }, 600);
         }
         closeBtn.addEventListener('click', closeModal);
         noticeCloseBtn.addEventListener('click', closeModal);

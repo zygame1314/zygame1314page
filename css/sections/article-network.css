@@ -23,7 +23,7 @@
         -2px -2px 0 0 var(--primary-color),
         2px 2px 0 0 var(--secondary-color),
         0 0 5px rgba(var(--primary-rgb), 0.3);
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: background-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), letter-spacing 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -44,7 +44,7 @@
     opacity: 0;
     transform: scale(0.9);
     filter: blur(8px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .network-start-btn::after {
@@ -59,7 +59,7 @@
             rgba(255, 255, 255, 0.2),
             transparent);
     transform: skewX(-15deg);
-    transition: all 0.7s ease;
+    transition: left 0.7s ease;
     z-index: 1;
 }
 
@@ -82,7 +82,7 @@
 
 .network-start-btn:hover::after {
     left: 120%;
-    transition: all 0.7s ease;
+    transition: left 0.7s ease;
 }
 
 .network-start-btn:active {
@@ -101,7 +101,7 @@
     text-align: center;
     text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.7);
     position: relative;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .network-overlay-text::after {
@@ -155,7 +155,7 @@
     text-align: center;
     opacity: 0.8;
     transform: translateY(5px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .network-container:hover .network-overlay-text::after {
@@ -198,7 +198,7 @@
         -2px -2px 0 0 var(--primary-color),
         2px 2px 0 0 var(--secondary-color);
 
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .network-fullscreen-btn i {
@@ -273,7 +273,7 @@
         inset 2px 2px 0 0 #333,
         -2px -2px 0 0 var(--primary-color),
         2px 2px 0 0 var(--secondary-color);
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .network-modal.closing {
@@ -294,7 +294,7 @@
     top: 50%;
     left: 50%;
     transform-origin: center;
-    transition: all 0.2s ease;
+    transition: width 0.2s ease, background-color 0.2s ease;
 }
 
 .network-modal-close::before {

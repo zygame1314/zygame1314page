@@ -124,7 +124,7 @@
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Tobi Handwriting.cur'), auto;
     opacity: 0;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -180,7 +180,7 @@
     font-size: 0.8rem;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -347,7 +347,7 @@
 .secure-table {
     position: relative;
     filter: blur(4px);
-    transition: all 0.3s ease;
+    transition: filter 0.3s ease;
     user-select: none;
 }
 
@@ -361,7 +361,7 @@
 
 .secure-table td,
 .secure-table th {
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .article-content code.secure-code {
@@ -372,7 +372,7 @@
     filter: blur(4px);
     background: rgba(42, 42, 42, 0.9);
     position: relative;
-    transition: all 0.3s ease;
+    transition: filter 0.3s ease;
     padding: 0.2em 0.4em 0.2em 2em;
     border-radius: 4px;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/jag help select.cur'), auto;
@@ -485,7 +485,7 @@
     color: var(--primary-color);
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rathian\ and\ Rathalos\ Alternate\ select.cur'), auto;
     opacity: 0.6;
-    transition: all 0.3s;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .pin-btn:hover {
@@ -580,7 +580,7 @@
 .article-toc a {
     color: #ffffff;
     text-decoration: none;
-    transition: all 0.3s;
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     display: block;
     padding: 0.3rem 0.5rem;
     border-radius: 4px;
@@ -690,7 +690,7 @@
     height: 6px;
     border-radius: 2px;
     position: relative;
-    transition: all 0.3s;
+    transition: filter 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(255, 0, 0, 0.1);
 }
 
@@ -741,7 +741,7 @@
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     z-index: 1003;
 }
 
@@ -917,7 +917,7 @@
     color: #00c8ff;
     text-decoration: none;
     border-bottom: 1px dashed rgba(0, 200, 255, 0.3);
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, border-bottom-color 0.3s ease, text-shadow 0.3s ease;
     text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
 }
 
@@ -964,7 +964,7 @@
     border: 2px solid #7c4dff;
     padding: 6px 12px;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     font-size: 0.9rem;
     font-family: 'zpix';
     clip-path: polygon(0 3px, 3px 0, calc(100% - 3px) 0, 100% 3px,
@@ -1049,7 +1049,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: border-color 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .summary-spinner.success::before {
@@ -1065,7 +1065,7 @@
 
 .summary-loader-text.success {
     color: #28a745;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .summary-error {
@@ -1091,7 +1091,7 @@
     padding: 12px 16px;
     background-color: rgba(0, 0, 0, 0.02);
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: padding 0.3s ease, background-color 0.3s ease;
 }
 
 .summary-streaming::after {

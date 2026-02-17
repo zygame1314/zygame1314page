@@ -10,12 +10,15 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+    visibility: hidden;
+    will-change: opacity;
 }
 
 .important-notice-modal.show {
     display: flex;
     opacity: 1;
+    visibility: visible;
 }
 
 .important-notice-content {
@@ -29,16 +32,17 @@
     box-shadow: 0 0 15px var(--primary-color);
     border-radius: 0;
     padding: 20px;
-    animation: pixelate-in 0.5s ease-out;
+    animation: pixelate-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     background-image: linear-gradient(45deg,
-            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.03) 25%,
             transparent 25%,
             transparent 50%,
-            rgba(255, 255, 255, 0.05) 50%,
-            rgba(255, 255, 255, 0.05) 75%,
+            rgba(255, 255, 255, 0.03) 50%,
+            rgba(255, 255, 255, 0.03) 75%,
             transparent 75%,
             transparent);
-    background-size: 4px 4px;
+    background-size: 8px 8px;
+    will-change: transform, opacity;
 }
 
 .important-notice-modal.closing .important-notice-content {
@@ -120,7 +124,7 @@
     align-items: center;
     justify-content: center;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -153,6 +157,43 @@
     transform: scale(1);
 }
 
+@media (max-width: 768px) {
+    .important-notice-content {
+        width: 90%;
+        margin: 10px;
+        background-size: 16px 16px;
+        animation: fadeIn 0.4s ease-out both;
+    }
+
+    .important-notice-title h2 {
+        animation: none !important;
+    }
+
+    .important-notice-title .notice-icon {
+        animation: none !important;
+    }
+
+    .important-notice-title::after {
+        animation: none !important;
+    }
+
+    .important-notice-body::before {
+        animation: none !important;
+    }
+
+    .notice-btn:hover {
+        animation: none !important;
+    }
+
+    .do-not-show-again input:checked~.checkmark::before {
+        animation: none !important;
+    }
+
+    .navbar {
+        z-index: 1001;
+    }
+}
+
 .notice-actions {
     display: flex;
     gap: 10px;
@@ -167,7 +208,7 @@
     border-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) 1;
     border-radius: 0;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -235,7 +276,7 @@
     background-color: transparent;
     margin-right: 8px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .do-not-show-again .checkmark::before {
@@ -248,7 +289,7 @@
     background-color: var(--primary-color);
     transform: translate(-50%, -50%) scale(0);
     border-radius: 0;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease;
     box-shadow:
         -6px -6px 0 -4px var(--background-color),
         -6px -6px 0 -2px var(--primary-color),
@@ -274,7 +315,7 @@
     left: 0;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .do-not-show-again input:checked~.checkmark::after {
@@ -306,7 +347,7 @@
 
 .do-not-show-again span {
     position: relative;
-    transition: all 0.3s;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .do-not-show-again input:checked~span {
@@ -434,7 +475,7 @@
 
 .notice-poll-option {
     position: relative;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .notice-poll-option input[type="radio"],
@@ -451,7 +492,7 @@
     border: 2px solid var(--secondary-color);
     background-color: rgba(0, 0, 0, 0.1);
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
 }
@@ -464,7 +505,7 @@
     margin-right: 10px;
     border: 2px solid var(--primary-color);
     background-color: transparent;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
 .notice-poll-option input[type="radio"]+label::before {
@@ -501,6 +542,7 @@
             transparent,
             rgba(var(--primary-color-rgb), 0.1),
             transparent);
+    will-change: left;
     animation: shine 2s infinite;
 }
 
@@ -620,7 +662,7 @@
     align-items: center;
     justify-content: center;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     font-size: 1rem;
     position: relative;
     overflow: hidden;

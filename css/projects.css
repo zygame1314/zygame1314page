@@ -6,7 +6,7 @@
     text-decoration: none;
     font-size: 16px;
     border: 3px solid #000000;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 
@@ -20,7 +20,7 @@
     background: rgba(0, 0, 0, 0.85);
     padding: 1.5rem;
     border: 3px solid var(--primary-color);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     margin-bottom: 1.5rem;
     overflow: hidden;
 }
@@ -51,7 +51,7 @@
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     padding: 0.5rem;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: 4px;
 }
 
@@ -258,7 +258,7 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     backface-visibility: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
@@ -328,7 +328,7 @@
     font-family: zpix;
     border: 3px solid #000000;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pagination-button:hover {
@@ -486,13 +486,11 @@
     left: 0;
     width: calc(100% + 40px);
     height: 100%;
-    background: repeating-linear-gradient(
-        30deg,
-        var(--primary-color),
-        var(--primary-color) 10px,
-        var(--secondary-color) 10px,
-        var(--secondary-color) 20px
-    );
+    background: repeating-linear-gradient(30deg,
+            var(--primary-color),
+            var(--primary-color) 10px,
+            var(--secondary-color) 10px,
+            var(--secondary-color) 20px);
     animation: moveStripes 2s linear infinite;
 }
 

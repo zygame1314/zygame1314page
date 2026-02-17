@@ -126,7 +126,7 @@
     font-family: 'zpix';
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .milestone:hover .milestone-description {
@@ -177,7 +177,7 @@
     font-family: 'zpix';
     font-size: 14px;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;
     z-index: 1;

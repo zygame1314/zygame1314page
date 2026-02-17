@@ -129,7 +129,7 @@ body {
 a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
 }
 

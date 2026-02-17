@@ -14,7 +14,7 @@
         6px 6px 0 #000,
         inset 1px 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
     display: inline-block;
@@ -32,7 +32,7 @@
     background-color: var(--primary-color);
     width: 4px;
     height: 4px;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 #visit-count::before {
@@ -102,7 +102,7 @@
     color: #ff6b6b;
     text-decoration: none;
     font-weight: bold;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-radius 0.2s ease;
     display: block;
     padding: 6px;
 }
@@ -130,7 +130,7 @@
     border-radius: 3px;
     position: relative;
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow:
         inset -2px -2px 0 rgba(0, 0, 0, 0.2),
         inset 2px 2px 0 rgba(255, 255, 255, 0.1),
@@ -227,7 +227,7 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     overflow: hidden;
-    transition: all 0.3s;
+    transition: transform 0.3s ease, text-shadow 0.3s ease, box-shadow 0.3s ease;
     box-shadow:
         0 0 10px var(--primary-color),
         inset 0 0 20px rgba(0, 0, 0, 0.8);
@@ -312,7 +312,7 @@
     transform-origin: top right;
     animation: swing 3s ease-in-out infinite;
     z-index: 999;
-    transition: all 0.3s ease;
+    transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .visit-counter-widget::before {
@@ -439,7 +439,7 @@
     font-family: 'zpix';
     font-size: 12px;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     z-index: 998;
 }
 
@@ -472,7 +472,7 @@
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(2px);
 }
 
@@ -538,7 +538,7 @@
             rgba(84, 168, 255, 0.2) 0%,
             rgba(0, 123, 255, 0.15) 100%);
     border-radius: 18px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     border: 1px solid rgba(84, 168, 255, 0.3);
     position: relative;
     display: inline-flex;
@@ -631,7 +631,7 @@
             rgba(0, 212, 255, 0.15) 0%,
             rgba(0, 150, 255, 0.1) 100%);
     border-radius: 12px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     border: 1px solid rgba(0, 212, 255, 0.3);
     position: relative;
     display: inline-flex;
@@ -685,7 +685,7 @@
             rgba(255, 193, 7, 0.2) 0%,
             rgba(255, 152, 0, 0.15) 100%);
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     border: 1px solid rgba(255, 193, 7, 0.4);
     position: relative;
     display: inline-flex;
