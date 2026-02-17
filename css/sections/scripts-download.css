@@ -20,7 +20,7 @@
     background-color: rgba(255, 255, 255, 0.05);
     border: 2px solid var(--primary-color);
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .script-item:hover {
@@ -69,7 +69,7 @@
     padding: 0.5rem;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     text-decoration: none;
     color: var(--primary-color);
 }
@@ -92,7 +92,7 @@
     color: var(--primary-color);
     font-size: 0.9rem;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
     margin-left: 0.5rem;
 }
 

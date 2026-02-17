@@ -126,7 +126,7 @@
             calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
-    transition: all 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .tag:hover {
@@ -151,7 +151,7 @@
             calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
-    transition: all 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .ai-assistant-tag:hover {
@@ -590,7 +590,7 @@
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     font-family: zpix;
     box-shadow: 4px 4px 0 var(--primary-color);
-    transition: all 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
     clip-path: polygon(0 4px, 4px 0,
             calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,

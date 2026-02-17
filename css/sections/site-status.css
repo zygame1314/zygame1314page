@@ -4,7 +4,7 @@
     padding: 1.2rem;
     border-radius: 8px;
     backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .site-status-widget:hover {
@@ -19,7 +19,7 @@
     padding: 1rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     border-left: 4px solid transparent;
 }
 
@@ -61,7 +61,7 @@
     height: 12px;
     border-radius: 50%;
     margin-right: 12px;
-    transition: all 0.5s ease;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
     position: relative;
 }
 
@@ -183,7 +183,7 @@
 }
 
 .uptime-chart svg circle {
-    transition: all 0.3s ease;
+    transition: r 0.3s ease;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/jag help select.cur'), auto;
     r: 3;
 }

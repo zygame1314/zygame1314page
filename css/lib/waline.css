@@ -265,7 +265,7 @@
     line-height: 0;
     cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
     transform: scale(1);
-    transition: all 0.25s ease;
+    transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .wl-logout-btn:hover {
@@ -282,7 +282,7 @@
     border: var(--waline-border);
     border-radius: var(--waline-avatar-radius);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .wl-avatar:hover {
@@ -322,7 +322,7 @@
     background: var(--waline-bg-color);
     border: 1px solid var(--waline-border-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .wl-header {
@@ -414,7 +414,7 @@
     border: none;
     color: var(--waline-color);
     outline: none;
-    transition: all .25s ease
+    transition: background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
 
 .wl-editor:focus,
@@ -749,7 +749,10 @@ z .wl-cards .wl-user .verified-icon {
 .wl-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+}
+
+.wl-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wl-card:first-child {
@@ -841,7 +844,7 @@ z .wl-cards .wl-user .verified-icon {
     color: var(--waline-info-color);
     font-size: var(--waline-info-font-size);
     line-height: 1.5;
-    transition: all 0.25s ease;
+    transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -1091,7 +1094,7 @@ z .wl-cards .wl-user .verified-icon {
 .wl-reaction img {
     width: 100%;
     height: 100%;
-    transition: all 250ms ease-in-out
+    transition: transform 250ms ease-in-out;
 }
 
 .wl-reaction-title {
@@ -1413,7 +1416,7 @@ z .wl-cards .wl-user .verified-icon {
     z-index: 10;
     opacity: 0;
     pointer-events: none;
-    transition: all .18s ease-out .18s;
+    transition: opacity .18s ease-out .18s, transform .18s ease-out .18s, visibility .18s ease-out .18s;
     transform: translate(-50%, 4px);
     transform-origin: top
 }

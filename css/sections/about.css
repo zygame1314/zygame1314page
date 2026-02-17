@@ -185,7 +185,7 @@
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid var(--primary-color);
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     position: relative;
 }
 
@@ -229,7 +229,7 @@
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
     transform: rotate(var(--random-rotate));
     position: relative;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     text-align: center;
     border: none;
 }
@@ -280,7 +280,7 @@
     padding: 20px;
     border-radius: 8px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -327,7 +327,7 @@
             transparent,
             rgba(255, 255, 255, 0.1),
             transparent);
-    transition: 0.5s;
+    transition: left 0.5s ease;
 }
 
 .plan-card:hover::before {

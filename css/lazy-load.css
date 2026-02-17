@@ -1,6 +1,6 @@
 img[data-src] {
     opacity: 0.2;
-    transition: all 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
 }
 
 img.lazy-loaded {
@@ -21,7 +21,7 @@ img.lazy-loaded {
     display: inline-block;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
+    transition: filter 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
 }
 
 .lazy-placeholder:hover {

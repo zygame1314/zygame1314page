@@ -427,7 +427,7 @@
         border-radius: 50%;
         cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .sidebar-toggle i {

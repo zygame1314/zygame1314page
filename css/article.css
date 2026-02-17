@@ -796,7 +796,7 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3),
         inset 0 0 0 1px rgba(124, 77, 255, 0.2),
         0 0 20px rgba(124, 77, 255, 0.15);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px,
             100% calc(100% - 4px), calc(100% - 4px) 100%,
             4px 100%, 0 calc(100% - 4px));
