@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@waline/client": "^3.8.0",
-    "highlight.js": "^11.11.1"
+    "highlight.js": "^11.11.1",
+    "lunar-javascript": "^1.7.7"
   }
 }

@@ -1,29 +1,29 @@
 import { showNotification } from './showNotification.js';
-import './lib/lunar.min.js';
+import { Lunar } from 'lunar-javascript';
 
 const GREETINGS = {
-    spring: "您的春日好运正在派件，请注意查收🌸<br>戳我查看春日限定皮肤→",
-    summer: "空调WIFI冰西瓜，葛优同款沙发☀️<br>温馨提示：本季节容易触发『汗蒸模式』🫠",
-    autumn: "朋友圈摄影大赛开赛！<br>金秋皮肤已更新🍁<br>晒秋装/奶茶/银杏可获点赞暴击",
-    winter: "南方人瑟瑟发抖，北方人暖气续命❄️<br>取暖基本靠抖的同学请扣1",
-    chineseNewYear: "恭喜发财红包拿来 🧧<br>（年终奖/压岁钱到账了吗？没到的话先收下这句祝福）",
-    midAutumn: "五仁月饼申请出战！🌕<br>月亮不睡我不睡，我是人间小美味",
-    dragonBoat: "甜咸粽子别打架了，我全都要🐉<br>划水冠军已上线",
-    lanternFestival: "汤圆：麻薯的东方表亲🏮<br>吃黑芝麻馅的自动组队",
-    christmas: "对象还没找到？先和圣诞老人许个愿吧🎅<br>姜饼人正在赶来的路上",
-    halloween: "社恐人cos幽灵最合适了👻<br>今晚不给糖就发老板表情包！",
-    valentines: "单身狗保护协会提醒：<br>本日宜关闭朋友圈💘<br>恋爱脑请走VIP通道",
-    qixi: "单身汪注意！今晚银河将上演大型狗粮投放现场🌌<br>星星代写情书服务限时开放（5星好评返现）💌",
-    nationalDay: "朋友圈摄影大赛2.0开启📷<br>7天假期体验卡已到账，请注意避开人从众模式",
-    qingming: "青团：春天限定皮肤已更新🌸<br>踏青模式启动，小心柳絮偷袭！",
-    labor: "劳动最光荣，搬砖也能成英雄🛠️<br>系统提示：成就值+10086，摸鱼技能冷却中⏰",
-    teacher: "三尺讲台变直播间，粉笔进化成电子笔🖋️<br>老师辛苦了！🍎",
-    children: "成年人请出示童年通行证🎈<br>今日限时返场：泡泡机模式/棒棒糖能量充满！",
-    newyear: "新年副本已加载 99%🎆<br>Flag回收站清空中，新年计划正在生成...",
-    laba: "腊八蒜腌上了吗？<br>没喝粥的今天都是“蒜”了...🥣",
-    doubleNinth: "遍插茱萸少一人？<br>不，是少一个对象...⛰️",
-    singlesDay: "购物车已加满，钱包准备“渡劫”<br>今天我就是自己的“唯一”💔",
-    winterSolstice: "饺子汤圆请选择！<br>选择困难症的冬天太难了...🥟"
+    spring: "借绿意寄深情，万物生长不负春光。🌸",
+    summer: "蝉鸣与晚风，是属于这个季节最温柔的相遇。☀️",
+    autumn: "林间红叶随风起，愿你所得皆所期。🍁",
+    winter: "凛冬散尽，星河长明。凡是过往，皆为序章。❄️",
+    chineseNewYear: "旧岁已展千重锦，新年再进百尺竿。🧧<br>恭祝你：万事顺意，阖家安康。",
+    midAutumn: "月圆满，意深重。祝你岁岁年年，共赏清晖。🌕",
+    dragonBoat: "蒲月安康，粽香情长。愿你百病不侵，岁岁常欢愉。🐉",
+    lanternFestival: "长灯如昼，愿所求皆如愿，所行皆坦途。🏮",
+    christmas: "在这个寒冷的季节，愿你的世界始终温暖如初。🎄",
+    halloween: "夜色朦胧，星光微漾。与其等待奇迹，不如亲手点亮灯盏。👻",
+    valentines: "爱意随风起，风止意难平。在这个浪漫的日子里，祝你爱人亦爱己。💖",
+    qixi: "银河辽阔，愿所有的相遇都是久别重逢。🌌",
+    nationalDay: "锦绣中华，山河浩瀚。愿祖国繁荣昌盛，也愿你在这个假期找回属于自己的惬意。🪭",
+    qingming: "清明雨落，思念成河。愿逝者安息，生者珍惜。🌸",
+    labor: "致敬每一个平凡而伟大的奋斗者。愿你的付出，终将熠熠生辉。🛠️",
+    teacher: "一支粉笔，两袖微尘，三尺讲台，四季耕耘。致敬灵魂的工程师！🍎",
+    children: "愿你历经千帆，归来仍是少年。愿那份童心永远是你对抗生活的一道光。🎈",
+    newyear: "朝暮更迭，始而复周。新年副本已开启，愿所有遗憾都在春暖花开时弥补。🎆",
+    laba: "一碗粥，一份情。愿你在冬日里，胃里有暖，心里有爱。🥣",
+    doubleNinth: "登高望远，遍插茱萸。愿时光慢行，愿故人常健。⛰️",
+    singlesDay: "一个人也可以活得灿烂璀璨。愿你无需依附，也足够精彩。✨",
+    winterSolstice: "冬至大如年，人间小团圆。愿寒冷的冬夜里，总有一盏明灯为你而亮。🥟"
 };
 
 export async function getCurrentThemeKey() {
@@ -31,29 +31,33 @@ export async function getCurrentThemeKey() {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     let theme = null;
-
     let lunar;
-    if (typeof Lunar !== 'undefined') {
-        lunar = Lunar.fromDate(date);
-        const lunarMonth = lunar.getMonth();
-        const lunarDay = lunar.getDay();
 
-        if ((lunarMonth === 1 && lunarDay <= 14) || (lunarMonth === 12 && lunarDay >= 23)) {
-            theme = 'chineseNewYear';
-        } else if (lunarMonth === 1 && lunarDay === 15) {
-            theme = 'lanternFestival';
-        } else if (lunarMonth === 5 && lunarDay === 5) {
-            theme = 'dragonBoat';
-        } else if (lunarMonth === 8 && lunarDay === 15) {
-            theme = 'midAutumn';
-        } else if (lunarMonth === 7 && lunarDay === 7) {
-            theme = 'qixi';
-        } else if (lunarMonth === 9 && lunarDay === 9) {
-            theme = 'doubleNinth';
-        } else if (lunarMonth === 12 && lunarDay === 8) {
-            theme = 'laba';
-        } else if ((month === 4 && (day === 4 || day === 5))) {
-            theme = 'qingming';
+    if (typeof Lunar !== 'undefined' || Lunar) {
+        try {
+            lunar = Lunar.fromDate(date);
+            const lunarMonth = lunar.getMonth();
+            const lunarDay = lunar.getDay();
+
+            if ((lunarMonth === 1 && lunarDay <= 14) || (lunarMonth === 12 && lunarDay >= 23)) {
+                theme = 'chineseNewYear';
+            } else if (lunarMonth === 1 && lunarDay === 15) {
+                theme = 'lanternFestival';
+            } else if (lunarMonth === 5 && lunarDay === 5) {
+                theme = 'dragonBoat';
+            } else if (lunarMonth === 8 && lunarDay === 15) {
+                theme = 'midAutumn';
+            } else if (lunarMonth === 7 && lunarDay === 7) {
+                theme = 'qixi';
+            } else if (lunarMonth === 9 && lunarDay === 9) {
+                theme = 'doubleNinth';
+            } else if (lunarMonth === 12 && lunarDay === 8) {
+                theme = 'laba';
+            } else if ((month === 4 && (day === 4 || day === 5))) {
+                theme = 'qingming';
+            }
+        } catch (e) {
+            console.error("Lunar date calculation failed:", e);
         }
     }
 

@@ -3,16 +3,27 @@ function initSteamStatus() {
     let updateInterval = null;
     let userLastActive = Date.now();
     const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+    let lastFailTime = 0;
+    const FAIL_COOLDOWN = 30000;
     const UPDATE_INTERVAL = 1 * 60 * 1000;
+    let throttleTimer = null;
+
     function isUserActive() {
         return Date.now() - userLastActive < INACTIVITY_TIMEOUT;
     }
+
     function updateUserActivity() {
         userLastActive = Date.now();
-        if (!updateInterval && !document.hidden) {
-            startUpdates();
-        }
+
+        if (throttleTimer) return;
+        throttleTimer = setTimeout(() => {
+            throttleTimer = null;
+            if (!updateInterval && !document.hidden) {
+                startUpdates();
+            }
+        }, 1000);
     }
+
     function handleVisibilityChange() {
         if (document.hidden) {
             stopUpdates();
@@ -21,19 +32,25 @@ function initSteamStatus() {
             updateUserActivity();
         }
     }
+
     function startUpdates() {
-        if (!updateInterval) {
-            updateSteamStatus();
-            updateInterval = setInterval(() => {
-                if (!document.hidden && isUserActive()) {
-                    updateSteamStatus();
-                } else {
-                    stopUpdates();
-                    console.log("用户不活跃或页面不可见，暂停 Steam 状态更新");
-                }
-            }, UPDATE_INTERVAL);
-            console.log(`Steam 状态更新已启动，更新间隔为 ${UPDATE_INTERVAL / 1000} 秒`);
+        if (updateInterval) return;
+
+        const now = Date.now();
+        if (now - lastFailTime < FAIL_COOLDOWN) {
+            return;
         }
+
+        updateSteamStatus();
+        updateInterval = setInterval(() => {
+            if (!document.hidden && isUserActive()) {
+                updateSteamStatus();
+            } else {
+                stopUpdates();
+                console.log("用户不活跃或页面不可见，暂停 Steam 状态更新");
+            }
+        }, UPDATE_INTERVAL);
+        console.log(`Steam 状态更新已启动，更新间隔为 ${UPDATE_INTERVAL / 1000} 秒`);
     }
     function stopUpdates() {
         if (updateInterval) {
@@ -176,7 +193,7 @@ function initSteamStatus() {
                     userDetails.prepend(usernameLevelContainer);
                 }
             }
-            
+
             if (levelContainer && levelContainer.parentNode !== usernameLevelContainer) {
                 usernameLevelContainer.appendChild(levelContainer);
             }
@@ -335,6 +352,7 @@ function initSteamStatus() {
             statusWidget.__steamMouseEnterListener = mouseEnterListener;
         } catch (error) {
             console.error('Steam 状态更新失败:', error);
+            lastFailTime = Date.now();
             const statusWidget = document.querySelector('.steam-status-widget');
             if (statusWidget) {
                 const status = statusWidget.querySelector('.steam-status');
