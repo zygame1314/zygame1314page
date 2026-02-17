@@ -80,12 +80,24 @@
     --doubleNinth-bg: #2c3e50;
 
     --singlesDay-primary: #6c757d;
-    --secondary: #adb5bd;
+    --singlesDay-secondary: #adb5bd;
     --singlesDay-bg: #121212;
 
     --winterSolstice-primary: #ebf8ff;
     --winterSolstice-secondary: #90cdf4;
     --winterSolstice-bg: #1a365d;
+
+    --womensDay-primary: #ff758c;
+    --womensDay-secondary: #ff7eb3;
+    --womensDay-bg: #2d1b22;
+
+    --programmerDay-primary: #00ff41;
+    --programmerDay-secondary: #008f11;
+    --programmerDay-bg: #000500;
+
+    --youthDay-primary: #4361ee;
+    --youthDay-secondary: #4cc9f0;
+    --youthDay-bg: #1b263b;
 
     --primary-color: var(--winter-primary);
     --secondary-color: var(--winter-secondary);

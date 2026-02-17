@@ -23,7 +23,10 @@ const GREETINGS = {
     laba: "一碗粥，一份情。愿你在冬日里，胃里有暖，心里有爱。🥣",
     doubleNinth: "登高望远，遍插茱萸。愿时光慢行，愿故人常健。⛰️",
     singlesDay: "一个人也可以活得灿烂璀璨。愿你无需依附，也足够精彩。✨",
-    winterSolstice: "冬至大如年，人间小团圆。愿寒冷的冬夜里，总有一盏明灯为你而亮。🥟"
+    winterSolstice: "冬至大如年，人间小团圆。愿寒冷的冬夜里，总有一盏明灯为你而亮。饺子还是汤圆？🥟",
+    womensDay: "春风十里，不如笑靥如花的你。愿你眼里有光，心中有爱，活成自己喜欢的模样。💐",
+    programmerDay: "Hello World! 愿你的代码永无 Bug，梦想终成现实。01101000 01101001 💻",
+    youthDay: "不负青春，不负韶华。愿你历经千帆，心中仍是那个追风少年。⚡"
 };
 
 export async function getCurrentThemeKey() {
@@ -83,6 +86,12 @@ export async function getCurrentThemeKey() {
             theme = 'children';
         } else if (month === 1 && day === 1) {
             theme = 'newyear';
+        } else if (month === 3 && day === 8) {
+            theme = 'womensDay';
+        } else if (month === 5 && day === 4) {
+            theme = 'youthDay';
+        } else if (month === 10 && day === 24) {
+            theme = 'programmerDay';
         }
     }
 
