@@ -128,7 +128,6 @@ export async function onRequestGet(context) {
                                 isSensitivePublisher = true;
                                 isRestricted = true;
                             }
-                            // 2. Check Whitelist Publishers
                             const SAFE_PUBLISHERS = [
                                 'Square Enix', 'Capcom', 'Bandai Namco', 'SEGA', 'PlayStation',
                                 'Xbox Game Studios', 'Electronic Arts', 'Ubisoft', 'Konami',
