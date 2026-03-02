@@ -28,11 +28,11 @@ export default defineConfig({
         },
         {
           src: 'js/lib',
-          dest: 'js/lib'
+          dest: 'js'
         },
         {
           src: 'css/lib',
-          dest: 'css/lib'
+          dest: 'css'
         },
         {
           src: 'articles',
