@@ -2,13 +2,6 @@ export function onRequestOptions() {
     return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
-    const cache = caches.default;
-    let response = await cache.match(context.request);
-    if (response) {
-        console.log('Cache hit for recent games');
-        return response;
-    }
-    console.log('Cache miss for recent games');
     const steamAPIKey = context.env.STEAM_API_KEY;
     const steamID = context.env.STEAM_ID;
     const params = new URLSearchParams({
@@ -176,6 +169,5 @@ export async function onRequestGet(context) {
             }
         });
     }
-    context.waitUntil(cache.put(context.request, response.clone()));
     return response;
 }
