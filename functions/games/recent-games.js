@@ -75,6 +75,7 @@ export async function onRequestGet(context) {
             }
             const data = details.data;
             let isRestricted = false;
+            let isSensitivePublisher = false;
             if (data.required_age >= 18) {
                 isRestricted = true;
             }
