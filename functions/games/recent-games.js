@@ -2,6 +2,7 @@ export function onRequestOptions() {
     return new Response(null, { status: 204 });
 }
 export async function onRequestGet(context) {
+    let response;
     const steamAPIKey = context.env.STEAM_API_KEY;
     const steamID = context.env.STEAM_ID;
     const params = new URLSearchParams({
