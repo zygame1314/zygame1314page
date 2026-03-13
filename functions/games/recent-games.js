@@ -53,6 +53,27 @@ export async function onRequestGet(context) {
                 detailsMap[result.appid] = result.details;
             }
         }
+        let storeAssetsMap = {};
+        try {
+            const appIdsParams = games.map(g => ({ appid: g.appid }));
+            const getItemsUrl = `https://api.steampowered.com/IStoreBrowseService/GetItems/v1/?input_json=${encodeURIComponent(JSON.stringify({
+                ids: appIdsParams,
+                context: { country_code: 'CN' },
+                data_request: { include_assets: true }
+            }))}`;
+            const storeResponse = await fetch(getItemsUrl);
+            if (storeResponse.ok) {
+                const storeData = await storeResponse.json();
+                const items = storeData.response.store_items || [];
+                items.forEach(item => {
+                    if (item.assets) {
+                        storeAssetsMap[item.appid] = item.assets;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Failed to fetch store assets:', error);
+        }
         const validGames = [];
         for (const game of games) {
             const details = detailsMap[game.appid];
@@ -72,7 +93,7 @@ export async function onRequestGet(context) {
                 if (hasExplicitContent) isRestricted = true;
             }
             let isSensitivePublisher = false;
-            const BLOCKED_PUBLISHERS = [
+            const BLOCKED_PUBLISHISHERS = [
                 'Kagura Games', 'SakuraGame', 'Paradise Project',
                 'Alice Soft', 'Shiravune', 'MangaGamer', 'Oneone1', 'Dojin Otome',
                 'Kagami Works', 'Pink Peach', 'DSGame', 'Dharker Studio', 'Neko Works',
@@ -87,30 +108,15 @@ export async function onRequestGet(context) {
                 isRestricted = true;
             }
             const SAFE_PUBLISHERS = [
-                'Square Enix',
-                'Capcom',
-                'Bandai Namco',
-                'SEGA',
-                'PlayStation',
-                'Xbox Game Studios',
-                'Electronic Arts',
-                'Ubisoft',
-                'Konami',
-                'FromSoftware',
-                'Rockstar Games',
-                'Valve',
-                'NVIDIA',
-                'Atlus',
-                'KOEI TECMO GAMES CO., LTD.',
-                'Bethesda Softworks',
-                '2K',
-                'Activision',
-                'Blizzard Entertainment'
+                'Square Enix', 'Capcom', 'Bandai Namco', 'SEGA', 'PlayStation',
+                'Xbox Game Studios', 'Electronic Arts', 'Ubisoft', 'Konami',
+                'FromSoftware', 'Rockstar Games', 'Valve', 'NVIDIA', 'Atlus',
+                'KOEI TECMO GAMES CO., LTD.', 'Bethesda Softworks', '2K', 'Activision', 'Blizzard Entertainment'
             ];
             const publishers = data.publishers || [];
             const developers = data.developers || [];
             const combined = [...publishers, ...developers];
-            if (combined.some(name => BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
+            if (combined.some(name => BLOCKED_PUBLISHISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
                 isRestricted = true;
                 isSensitivePublisher = true;
             }
@@ -135,21 +141,14 @@ export async function onRequestGet(context) {
                 }
             }
             let bestImage = data.header_image;
-            const appid = game.appid;
-            const candidates = [
-                `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900_schinese.jpg`,
-                `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900.jpg`
-            ];
-            try {
-                const checks = await Promise.all(candidates.map(url =>
-                    fetch(url, { method: 'HEAD' }).then(res => res.ok ? url : null).catch(() => null)
-                ));
-                const validCover = checks.find(url => url !== null);
-                if (validCover) {
-                    bestImage = validCover;
+            const assets = storeAssetsMap[game.appid];
+            if (assets) {
+                const libraryCapsule = assets.library_capsule || assets.library_600x900;
+                if (libraryCapsule) {
+                    bestImage = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/${libraryCapsule}`;
+                } else if (assets.header) {
+                    bestImage = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/${assets.header}`;
                 }
-            } catch (e) {
-                console.error(`Failed to pre-check images for ${appid}`, e);
             }
             validGames.push({
                 ...game,

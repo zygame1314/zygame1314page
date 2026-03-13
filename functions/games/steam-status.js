@@ -165,6 +165,21 @@ export async function onRequestGet(context) {
                 } catch (e) {
                     console.error("Failed to verify game safety", e);
                 }
+                let storeAssets = null;
+                try {
+                    const getItemsUrl = `https://api.steampowered.com/IStoreBrowseService/GetItems/v1/?input_json=${encodeURIComponent(JSON.stringify({
+                        ids: [{ appid: currentGameAppId }],
+                        context: { country_code: 'CN' },
+                        data_request: { include_assets: true }
+                    }))}`;
+                    const storeResponse = await fetch(getItemsUrl);
+                    if (storeResponse.ok) {
+                        const storeData = await storeResponse.json();
+                        storeAssets = storeData.response.store_items?.[0]?.assets;
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch store assets", e);
+                }
                 if (!isSafeToDisplay) {
                     console.log(`Hiding sensitive game activity: ${currentGameAppId}`);
                     player.personastate_css_class = 'online';
@@ -176,20 +191,12 @@ export async function onRequestGet(context) {
                 } else {
                     player.appId = currentGameAppId;
                     let bestImage = apiHeaderImage;
-                    const candidates = [
-                        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header_schinese.jpg`,
-                        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header.jpg`
-                    ];
-                    try {
-                        const checks = await Promise.all(candidates.map(url =>
-                            fetch(url, { method: 'HEAD' }).then(res => res.ok ? url : null).catch(() => null)
-                        ));
-                        const validHeader = checks.find(url => url !== null);
-                        if (validHeader) {
-                            bestImage = validHeader;
+                    if (storeAssets) {
+                        if (storeAssets.header) {
+                            bestImage = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/${storeAssets.header}`;
+                        } else if (storeAssets.library_capsule) {
+                            bestImage = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/${storeAssets.library_capsule}`;
                         }
-                    } catch (e) {
-                        console.error("Image pre-check failed", e);
                     }
                     player.game_logo = bestImage;
                 }
