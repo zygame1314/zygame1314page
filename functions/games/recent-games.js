@@ -134,10 +134,28 @@ export async function onRequestGet(context) {
                     }
                 }
             }
+            let bestImage = data.header_image;
+            const appid = game.appid;
+            const candidates = [
+                `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900_schinese.jpg`,
+                `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900.jpg`
+            ];
+            try {
+                const checks = await Promise.all(candidates.map(url =>
+                    fetch(url, { method: 'HEAD' }).then(res => res.ok ? url : null).catch(() => null)
+                ));
+                const validCover = checks.find(url => url !== null);
+                if (validCover) {
+                    bestImage = validCover;
+                }
+            } catch (e) {
+                console.error(`Failed to pre-check images for ${appid}`, e);
+            }
             validGames.push({
                 ...game,
                 name: data.name || game.name,
-                chinese_name: data.name || game.name
+                chinese_name: data.name || game.name,
+                cover_image: bestImage
             });
         }
         recentGamesData.response.games = validGames.slice(0, 4);

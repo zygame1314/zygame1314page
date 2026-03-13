@@ -96,6 +96,7 @@ export async function onRequestGet(context) {
             if (gameLogoMatch && gameLogoMatch[1]) {
                 currentGameAppId = gameLogoMatch[1];
                 let isSafeToDisplay = true;
+                let apiHeaderImage = null;
                 try {
                     const appDetailsParams = new URLSearchParams({
                         appids: currentGameAppId,
@@ -107,6 +108,7 @@ export async function onRequestGet(context) {
                         const details = detailsJson[currentGameAppId];
                         if (details && details.success) {
                             const data = details.data;
+                            apiHeaderImage = data.header_image;
                             let isRestricted = false;
                             let isSensitivePublisher = false;
                             const BLOCKED_PUBLISHERS = [
@@ -173,32 +175,37 @@ export async function onRequestGet(context) {
                     player.game_logo = null;
                 } else {
                     player.appId = currentGameAppId;
-                    const chineseHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header_schinese.jpg`;
-                    const defaultHeaderUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header.jpg`;
+                    let bestImage = apiHeaderImage;
+                    const candidates = [
+                        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header_schinese.jpg`,
+                        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${currentGameAppId}/header.jpg`
+                    ];
                     try {
-                        const headResponse = await fetch(chineseHeaderUrl, { method: 'HEAD' });
-                        if (headResponse.ok) {
-                            player.game_logo = chineseHeaderUrl;
-                        } else {
-                            player.game_logo = defaultHeaderUrl;
+                        const checks = await Promise.all(candidates.map(url =>
+                            fetch(url, { method: 'HEAD' }).then(res => res.ok ? url : null).catch(() => null)
+                        ));
+                        const validHeader = checks.find(url => url !== null);
+                        if (validHeader) {
+                            bestImage = validHeader;
                         }
                     } catch (e) {
-                        player.game_logo = defaultHeaderUrl;
+                        console.error("Image pre-check failed", e);
                     }
-                    const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
-                    if (gameStateMatch && gameStateMatch[1]) {
-                        player.game_state = gameStateMatch[1].trim();
-                    }
-                    const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
-                    if (gameNameMatch && gameNameMatch[1]) {
-                        player.game_name = gameNameMatch[1].trim();
-                    }
-                    const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
-                    if (richPresenceMatch && richPresenceMatch[1]) {
-                        player.rich_presence = richPresenceMatch[1].trim();
-                    }
-                    player.personastate_css_class = 'in-game';
+                    player.game_logo = bestImage;
                 }
+                const gameStateMatch = html.match(/<span class="game_state">([^<]+)<\/span>/);
+                if (gameStateMatch && gameStateMatch[1]) {
+                    player.game_state = gameStateMatch[1].trim();
+                }
+                const gameNameMatch = html.match(/<span class="miniprofile_game_name">([^<]+)<\/span>/);
+                if (gameNameMatch && gameNameMatch[1]) {
+                    player.game_name = gameNameMatch[1].trim();
+                }
+                const richPresenceMatch = html.match(/<span class="rich_presence">([^<]+)<\/span>/);
+                if (richPresenceMatch && richPresenceMatch[1]) {
+                    player.rich_presence = richPresenceMatch[1].trim();
+                }
+                player.personastate_css_class = 'in-game';
             }
         } else {
         }
