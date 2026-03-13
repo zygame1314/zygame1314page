@@ -92,8 +92,7 @@ export async function onRequestGet(context) {
                 );
                 if (hasExplicitContent) isRestricted = true;
             }
-            let isSensitivePublisher = false;
-            const BLOCKED_PUBLISHISHERS = [
+            const BLOCKED_PUBLISHERS = [
                 'Kagura Games', 'SakuraGame', 'Paradise Project',
                 'Alice Soft', 'Shiravune', 'MangaGamer', 'Oneone1', 'Dojin Otome',
                 'Kagami Works', 'Pink Peach', 'DSGame', 'Dharker Studio', 'Neko Works',
@@ -116,7 +115,7 @@ export async function onRequestGet(context) {
             const publishers = data.publishers || [];
             const developers = data.developers || [];
             const combined = [...publishers, ...developers];
-            if (combined.some(name => BLOCKED_PUBLISHISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
+            if (combined.some(name => BLOCKED_PUBLISHERS.some(blocked => name.toLowerCase().includes(blocked.toLowerCase())))) {
                 isRestricted = true;
                 isSensitivePublisher = true;
             }
@@ -151,9 +150,11 @@ export async function onRequestGet(context) {
                 }
             }
             validGames.push({
-                ...game,
+                appid: game.appid,
                 name: data.name || game.name,
                 chinese_name: data.name || game.name,
+                playtime_2weeks: game.playtime_2weeks,
+                playtime_forever: game.playtime_forever,
                 cover_image: bestImage
             });
         }
