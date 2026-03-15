@@ -65,41 +65,41 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCardHeight();
         }
     });
-const visitCounterWidget = document.querySelector('.visit-counter-widget');
-if (visitCounterWidget) {
-    visitCounterWidget.addEventListener('click', function(event) {
-        const scriptLink = event.target.closest('a.scroll-to-scripts');
-        if (scriptLink) {
-            event.preventDefault();
-            event.stopPropagation();
-            const sidebarContent = document.querySelector('.sidebar-content');
-            const targetElement = document.querySelector('#scripts-download');
-            if (sidebarContent && targetElement) {
-                const sidebar = document.querySelector('.sidebar');
-                if (sidebar && !sidebar.classList.contains('active') && window.innerWidth <= 768) {
-                    const toggleBtn = document.getElementById('sidebar-toggle');
-                    if (toggleBtn) toggleBtn.click();
-                    setTimeout(() => {
+    const visitCounterWidget = document.querySelector('.visit-counter-widget');
+    if (visitCounterWidget) {
+        visitCounterWidget.addEventListener('click', function (event) {
+            const scriptLink = event.target.closest('a.scroll-to-scripts');
+            if (scriptLink) {
+                event.preventDefault();
+                event.stopPropagation();
+                const sidebarContent = document.querySelector('.sidebar-content');
+                const targetElement = document.querySelector('#scripts-download');
+                if (sidebarContent && targetElement) {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar && !sidebar.classList.contains('active') && window.innerWidth <= 768) {
+                        const toggleBtn = document.getElementById('sidebar-toggle');
+                        if (toggleBtn) toggleBtn.click();
+                        setTimeout(() => {
+                            sidebarContent.scrollTo({ top: targetElement.offsetTop - 10, behavior: 'smooth' });
+                        }, 300);
+                    } else {
                         sidebarContent.scrollTo({ top: targetElement.offsetTop - 10, behavior: 'smooth' });
-                    }, 300);
-                } else {
-                    sidebarContent.scrollTo({ top: targetElement.offsetTop - 10, behavior: 'smooth' });
+                    }
                 }
+                return;
             }
-            return;
-        }
-        const contactLink = event.target.closest('a.scroll-to-contact');
-        if (contactLink) {
-            event.preventDefault();
-            event.stopPropagation();
-            const targetElement2 = document.querySelector('#contact');
-            if (targetElement2) {
-                targetElement2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const contactLink = event.target.closest('a.scroll-to-contact');
+            if (contactLink) {
+                event.preventDefault();
+                event.stopPropagation();
+                const targetElement2 = document.querySelector('#contact');
+                if (targetElement2) {
+                    targetElement2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                return;
             }
-            return;
-        }
-    });
-}
+        });
+    }
 });
 function updateCardHeight() {
     const frontContent = document.querySelector('.card-front');
@@ -145,7 +145,7 @@ function restoreOriginalCardContent() {
         <div class="activation-info">
             <h4 class="activation-title">激活码获取流程</h4>
             <ol class="activation-steps">
-                <li>前往 <a href="https://afdian.com/a/zygame1314" target="_blank"
+                <li>前往 <a href="https://ifdian.net/a/zygame1314" target="_blank"
                         rel="noopener noreferrer">爱发电</a> 购买所需服务。</li>
                 <li>购买后，使用你的爱发电<span class="highlight-action">订单号</span>前往<a
                         href="https://xiaoya-get.zygame1314.site" target="_blank"
