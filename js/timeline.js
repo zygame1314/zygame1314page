@@ -1,7 +1,7 @@
 import { API_BASE } from './config.js';
 let allMilestones = [];
 let currentPage = 1;
-let totalPages = 1;
+let hasMorePages = false;
 let isLoading = false;
 const pageSize = 10;
 
@@ -24,7 +24,7 @@ async function loadTimeline() {
         }
 
         currentPage = data.pagination.page;
-        totalPages = data.pagination.totalPages;
+        hasMorePages = data.pagination.hasNext;
 
         renderMilestones(data.milestones, false);
 
@@ -39,7 +39,7 @@ async function loadTimeline() {
 }
 
 async function loadMoreTimeline() {
-    if (isLoading || currentPage >= totalPages) return;
+    if (isLoading || !hasMorePages) return;
 
     isLoading = true;
     const nextPage = currentPage + 1;
@@ -58,7 +58,7 @@ async function loadMoreTimeline() {
 
         if (data.milestones && data.milestones.length > 0) {
             currentPage = data.pagination.page;
-            totalPages = data.pagination.totalPages;
+            hasMorePages = data.pagination.hasNext;
 
             renderMilestones(data.milestones, true);
         }
@@ -119,7 +119,7 @@ function renderMilestones(milestones, isLoadMore = false) {
     `;
     timelineContainer.insertAdjacentHTML('beforeend', futureMilestoneHTML);
 
-    if (currentPage < totalPages) {
+    if (hasMorePages) {
         const loadMoreHTML = `
             <div class="load-more-container">
                 <button id="load-more-btn" class="load-more-btn" ${isLoading ? 'disabled' : ''}>

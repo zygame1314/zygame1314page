@@ -10,12 +10,43 @@ export async function onRequestGet(context) {
         const limit = parseInt(url.searchParams.get('limit')) || 10;
         const offset = (page - 1) * limit;
         const platformFilter = url.searchParams.get('platform');
+        const useCursor = url.searchParams.get('cursor') === 'true';
         let whereClause = '';
         const params = [];
         if (platformFilter) {
             whereClause = 'WHERE platform = ?';
             params.push(platformFilter);
         }
+
+        if (useCursor) {
+            const fetchLimit = limit + 1;
+            const dataParams = [...params, fetchLimit, offset];
+            const { results } = await env.DB.prepare(`
+                SELECT id, name, amount, date, platform, message
+                FROM donations
+                ${whereClause}
+                ORDER BY date DESC
+                LIMIT ? OFFSET ?
+            `).bind(...dataParams).all();
+            const hasNext = results.length > limit;
+            const data = hasNext ? results.slice(0, limit) : results;
+            const hasPrev = page > 1;
+            return new Response(JSON.stringify({
+                data,
+                pagination: {
+                    page,
+                    limit,
+                    hasNext,
+                    hasPrev
+                }
+            }), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
         const countQuery = `SELECT COUNT(*) as total FROM donations ${whereClause}`;
         const { results: countResults } = await env.DB.prepare(countQuery).bind(...params).all();
         const total = countResults[0].total;

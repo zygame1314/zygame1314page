@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var closeButton = document.querySelector('.donate-close-button');
     let allDonations = [];
     let currentPage = 1;
-    let totalPages = 1;
+    let hasMorePages = false;
     let isLoading = false;
     const pageSize = 10;
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
             existingLoadMore.remove();
         }
 
-        if (currentPage < totalPages) {
+        if (hasMorePages) {
             const loadMoreContainer = document.createElement('div');
             loadMoreContainer.className = 'load-more-container';
 
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
         isLoading = true;
         donationList.innerHTML = '<div class="donation-loading">加载赞助名单中...</div>';
 
-        fetch(`${API_BASE}/getdata/donations?page=1&limit=${pageSize}`)
+        fetch(`${API_BASE}/getdata/donations?page=1&limit=${pageSize}&cursor=true`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('无法加载捐赠记录');
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 currentPage = result.pagination.page;
-                totalPages = result.pagination.totalPages;
+                hasMorePages = result.pagination.hasNext;
 
                 renderDonations(result.data, false);
             })
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadMoreDonations() {
-        if (isLoading || currentPage >= totalPages) return;
+        if (isLoading || !hasMorePages) return;
 
         isLoading = true;
         const nextPage = currentPage + 1;
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 加载中...';
         }
 
-        fetch(`${API_BASE}/getdata/donations?page=${nextPage}&limit=${pageSize}`)
+        fetch(`${API_BASE}/getdata/donations?page=${nextPage}&limit=${pageSize}&cursor=true`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('无法加载更多捐赠记录');
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (result.data && result.data.length > 0) {
                     currentPage = result.pagination.page;
-                    totalPages = result.pagination.totalPages;
+                    hasMorePages = result.pagination.hasNext;
 
                     renderDonations(result.data, true);
                 }

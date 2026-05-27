@@ -9,26 +9,21 @@ export async function onRequestGet(context) {
         const page = parseInt(url.searchParams.get('page')) || 1;
         const limit = parseInt(url.searchParams.get('limit')) || 10;
         const offset = (page - 1) * limit;
-        const { results: countResults } = await env.DB.prepare(`
-            SELECT COUNT(*) as total FROM timeline
-        `).all();
-        const total = countResults[0].total;
+        const fetchLimit = limit + 1;
         const { results } = await env.DB.prepare(`
             SELECT id, date, title, description
             FROM timeline
             ORDER BY date DESC
             LIMIT ? OFFSET ?
-        `).bind(limit, offset).all();
-        const totalPages = Math.ceil(total / limit);
-        const hasNext = page < totalPages;
+        `).bind(fetchLimit, offset).all();
+        const hasNext = results.length > limit;
+        const milestones = hasNext ? results.slice(0, limit) : results;
         const hasPrev = page > 1;
         return new Response(JSON.stringify({
-            milestones: results,
+            milestones,
             pagination: {
                 page,
                 limit,
-                total,
-                totalPages,
                 hasNext,
                 hasPrev
             }
