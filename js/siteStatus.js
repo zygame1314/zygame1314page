@@ -257,7 +257,7 @@ class SiteStatus {
         switch (url) {
             case 'https://blog.zygame1314.site':
                 return '主站';
-            case 'https://api.zygame1314-666.top':
+            case 'https://zygame1314page.pages.dev':
                 return '源站';
             case 'https://cdn.jsdmirror.com/npm/lodash@4.17.21/lodash.min.js':
                 return 'CDN';
@@ -375,6 +375,8 @@ class SiteStatus {
                 const siteName = this.getSiteName(status.url);
                 const y = sitePositions[siteName];
 
+                if (y === undefined) return;
+
                 if (!sitePaths.has(siteName)) {
                     sitePaths.set(siteName, `M ${x} ${y}`);
                 } else {
@@ -386,9 +388,10 @@ class SiteStatus {
                 circle.setAttribute('cy', y);
                 circle.setAttribute('r', '3');
 
+                const siteColor = siteColors[siteName];
                 const color = status.status === 'online'
-                    ? siteColors[siteName].online
-                    : siteColors[siteName].offline;
+                    ? (siteColor ? siteColor.online : '#2ecc71')
+                    : (siteColor ? siteColor.offline : '#e74c3c');
                 circle.setAttribute('fill', color);
                 circle.setAttribute('filter', 'url(#glow)');
                 circle.setAttribute('class', `status-point ${siteName}`);
