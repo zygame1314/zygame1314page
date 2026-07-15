@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = loginForm.password.value;
 
         try {
-            const response = await fetch('https://api.zygame1314.site/auth', {
+            const response = await fetch('https://blog.zygame1314.site/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })

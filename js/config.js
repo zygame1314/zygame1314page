@@ -1,1 +1,1 @@
-export const API_BASE = 'https://api.zygame1314.site';
+export const API_BASE = 'https://blog.zygame1314.site';

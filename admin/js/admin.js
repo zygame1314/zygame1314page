@@ -28,7 +28,7 @@ class AdminSystem {
             return;
         }
         try {
-            const response = await fetch('https://api.zygame1314.site/auth', {
+            const response = await fetch('https://blog.zygame1314.site/auth', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!response.ok) {

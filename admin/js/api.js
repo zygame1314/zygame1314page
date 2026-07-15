@@ -1,6 +1,6 @@
 class API {
     constructor() {
-        this.baseURL = 'https://api.zygame1314.site';
+        this.baseURL = 'https://blog.zygame1314.site';
         this.defaultHeaders = {
             'Content-Type': 'application/json',
         };
