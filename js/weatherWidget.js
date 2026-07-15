@@ -4,76 +4,19 @@ import { WeatherEffects } from './weather-effects.js';
 export function initWeatherWidget() {
     const temperatureElem = document.querySelector('.temperature');
     const weatherIconElem = document.querySelector('.weather-icon img');
+    const DEFAULT_LOCATION = { city: '天际省' };
     const DEFAULT_ICON_URL = 'https://openweathermap.org/img/wn/01d@2x.png';
     if (weatherIconElem) {
         weatherIconElem.src = DEFAULT_ICON_URL;
     }
-    function getCurrentPosition() {
-        return new Promise(async (resolve, reject) => {
-            const cachedPosition = localStorage.getItem('lastKnownPosition');
-            const cacheTime = localStorage.getItem('positionTimestamp');
-            const CACHE_DURATION = 30 * 60 * 1000;
-            if (cachedPosition && cacheTime) {
-                const age = Date.now() - parseInt(cacheTime);
-                if (age < CACHE_DURATION) {
-                    return resolve(JSON.parse(cachedPosition));
-                }
-            }
-            if (navigator.geolocation) {
-                const options = {
-                    enableHighAccuracy: true,
-                    maximumAge: 0,
-                    timeout: 5000
-                };
-                const savePosition = (position) => {
-                    localStorage.setItem('lastKnownPosition', JSON.stringify(position));
-                    localStorage.setItem('positionTimestamp', Date.now().toString());
-                    resolve(position);
-                };
-                try {
-                    navigator.geolocation.getCurrentPosition(
-                        savePosition,
-                        (error) => {
-                            console.warn('浏览器定位失败:', error);
-                            reject(error);
-                        },
-                        options
-                    );
-                } catch (error) {
-                    reject(error);
-                }
-            } else {
-                const error = new Error('浏览器不支持定位API');
-                console.warn(error.message);
-                reject(error);
-            }
-        });
-    }
     async function getWeatherData() {
-        let lat, lon;
-        const DEFAULT_LOCATION = { lat: 60.1695, lon: 24.9354, city: '天际省' };
         try {
-            const position = await getCurrentPosition();
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
-        } catch (error) {
-            console.warn('无法获取当前位置，将使用默认位置:', error.message);
-            showNotification('📍 定位失败，显示默认天气', 4, 'warning');
-            lat = DEFAULT_LOCATION.lat;
-            lon = DEFAULT_LOCATION.lon;
-        }
-        try {
-            const url = `${API_BASE}/weather/weather?lat=${lat}&lon=${lon}`;
-            const response = await fetch(url);
+            const response = await fetch(`${API_BASE}/weather/weather`);
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.message || '天气 API 错误');
             }
-            const data = await response.json();
-            if (lat === DEFAULT_LOCATION.lat && lon === DEFAULT_LOCATION.lon) {
-                data.location.city = DEFAULT_LOCATION.city;
-            }
-            return data;
+            return await response.json();
         } catch (error) {
             console.error('获取天气数据失败:', error);
             return {
@@ -97,18 +40,6 @@ export function initWeatherWidget() {
         const sunsetElem = document.querySelector('.sunset');
         const weatherData = data.weather;
         const locationData = data.location;
-        const cachedPosition = localStorage.getItem('lastKnownPosition');
-        if (!cachedPosition && weatherData.coord) {
-            const position = {
-                coords: {
-                    latitude: weatherData.coord.lat,
-                    longitude: weatherData.coord.lon
-                }
-            };
-            localStorage.setItem('lastKnownPosition', JSON.stringify(position));
-            localStorage.setItem('positionTimestamp', Date.now().toString());
-            console.log('已保存IP定位的位置信息到本地存储');
-        }
         const temp = Math.round(weatherData.main.temp);
         const feelsLike = Math.round(weatherData.main.feels_like);
         const description = weatherData.weather[0].description;
@@ -163,6 +94,9 @@ export function initWeatherWidget() {
                 }
                 document.querySelector('.weather-widget')?.classList.add('weather-error');
             } else {
+                if (data.isDefault) {
+                    showNotification('📍 无法定位，显示默认天气', 4, 'warning');
+                }
                 updateWeatherWidget(data);
             }
         });

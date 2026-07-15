@@ -1,25 +1,25 @@
+const DEFAULT_LOCATION = { lat: 60.1695, lon: 24.9354, city: '天际省' };
+
 export function onRequestOptions() {
   return new Response(null, { status: 204 });
 }
+
 export async function onRequestGet(context) {
     try {
-        const url = new URL(context.request.url);
-        const lat = url.searchParams.get('lat');
-        const lon = url.searchParams.get('lon');
-        if (!lat || !lon) {
-            return new Response(JSON.stringify({
-                error: 'MISSING_COORDS',
-                message: '缺少经纬度参数'
-            }), {
-                status: 400,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+        const cf = context.request.cf || {};
+        let lat = cf.latitude;
+        let lon = cf.longitude;
+        const city = cf.city;
+        const isDefault = !lat || !lon;
+
+        if (isDefault) {
+            lat = DEFAULT_LOCATION.lat;
+            lon = DEFAULT_LOCATION.lon;
         }
+
         const params = new URLSearchParams({
-            lat,
-            lon,
+            lat: lat.toString(),
+            lon: lon.toString(),
             appid: context.env.WEATHER_API_KEY,
             units: 'metric',
             lang: 'zh_cn'
@@ -34,8 +34,9 @@ export async function onRequestGet(context) {
         const responseData = {
             weather: weatherData,
             location: {
-                city: weatherData.name
-            }
+                city: isDefault ? DEFAULT_LOCATION.city : (city || weatherData.name)
+            },
+            isDefault
         };
         return new Response(JSON.stringify(responseData), {
             headers: {
