@@ -28,17 +28,17 @@ export function initGamesFetch() {
                 gameImage.setAttribute('data-src', game.background_image);
                 gameImage.classList.add('fixed-ratio');
             } else {
-                gameImage.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-game-cover.webp');
+                gameImage.setAttribute('data-src', '/static/images/default-game-cover.webp');
                 gameImage.classList.add('default-cover');
             }
             gameImage.alt = game.name || '未知游戏';
             gameImage.onerror = function () {
-                if (this.getAttribute('data-src') === 'https://bucket.zygame1314.site/static/images/default-game-cover.webp') {
+                if (this.getAttribute('data-src') === '/static/images/default-game-cover.webp') {
                     this.classList.add('default-cover');
                     return;
                 }
                 console.log(`图片加载失败，切换到默认封面: ${this.getAttribute('data-src')}`);
-                this.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-game-cover.webp');
+                this.setAttribute('data-src', '/static/images/default-game-cover.webp');
                 this.classList.add('default-cover');
                 const newSrc = this.getAttribute('data-src');
                 const tempImg = new Image();
@@ -162,13 +162,13 @@ export function initGamesFetch() {
             const gameItem = document.createElement('div');
             gameItem.classList.add('game-item');
             const gameImage = document.createElement('img');
-            gameImage.setAttribute('data-src', game.cover_image || 'https://bucket.zygame1314.site/static/images/default-game-cover.webp');
+            gameImage.setAttribute('data-src', game.cover_image || '/static/images/default-game-cover.webp');
             gameImage.alt = game.name || '未知游戏';
             gameImage.dataset.width = 600;
             gameImage.dataset.height = 900;
             gameImage.dataset.appid = game.appid;
             const customErrorHandler = function () {
-                const defaultSrc = 'https://bucket.zygame1314.site/static/images/default-game-cover.webp';
+                const defaultSrc = '/static/images/default-game-cover.webp';
                 if (this.getAttribute('data-src') !== defaultSrc) {
                     this.setAttribute('data-src', defaultSrc);
                     this.classList.add('default-cover');

@@ -176,7 +176,7 @@
     padding: 8px 15px;
     font-family: 'zpix';
     font-size: 14px;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;

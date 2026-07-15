@@ -139,11 +139,29 @@
 │  ├─ typingEffect.js
 │  ├─ weather-effects.js
 │  └─ weatherWidget.js
+├─ cursors
+│  └─ (MHW 光标文件 .cur/.ani)
+├─ emoji
+│  └─ bilibili_tv
+│     ├─ info.json
+│     └─ tv_*.gif
+├─ font
+│  └─ zpix.woff2
+├─ static
+│  └─ images
+│     ├─ alipay-qr-code.webp
+│     ├─ avatar.webp
+│     ├─ cloud-image1.webp
+│     ├─ cloud-image2.webp
+│     ├─ cloud-image3.webp
+│     ├─ default-game-cover.webp
+│     ├─ header-bg.webp
+│     ├─ web-icon.ico
+│     └─ wechat-qr-code.webp
 ├─ package-lock.json
 ├─ package.json
 ├─ robots.txt
 ├─ sitemap.xml
-├─ vite.config.js
-└─ zpix.woff2
+└─ vite.config.js
 
 ```

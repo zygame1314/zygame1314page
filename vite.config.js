@@ -19,7 +19,7 @@ export default defineConfig({
       }
     },
   },
-  plugins: [
+    plugins: [
     viteStaticCopy({
       targets: [
         {
@@ -36,6 +36,18 @@ export default defineConfig({
         },
         {
           src: 'articles',
+          dest: ''
+        },
+        {
+          src: 'static/images',
+          dest: 'static'
+        },
+        {
+          src: 'emoji',
+          dest: ''
+        },
+        {
+          src: 'font',
           dest: ''
         }
       ]

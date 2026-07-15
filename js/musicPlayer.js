@@ -233,7 +233,7 @@ class MusicPlayer {
             this.coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
             this.coverImg.style.display = 'block';
         } else {
-            this.coverImg.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-album-cover.webp');
+            this.coverImg.removeAttribute('data-src');
             this.coverImg.classList.remove('lazy-initialized', 'lazy-loaded', 'lazy-error');
             this.coverImg.classList.add('lazy-placeholder');
             this.coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
@@ -241,16 +241,15 @@ class MusicPlayer {
 
         this.coverImg.onerror = () => {
             console.error(`封面图片加载失败: ${this.coverImg.getAttribute('data-src')}`);
-            this.coverImg.setAttribute('data-src', 'https://bucket.zygame1314.site/static/images/default-album-cover.webp');
             this.coverImg.classList.add('default-cover');
 
             const defaultImg = new Image();
             defaultImg.onload = () => {
-                this.coverImg.src = 'https://bucket.zygame1314.site/static/images/default-album-cover.webp';
+                this.coverImg.src = this.coverImg.getAttribute('data-src') || '';
                 this.coverImg.classList.remove('lazy-placeholder');
                 this.coverImg.classList.add('lazy-loaded');
             };
-            defaultImg.src = 'https://bucket.zygame1314.site/static/images/default-album-cover.webp';
+            defaultImg.src = this.coverImg.getAttribute('data-src') || '';
         };
 
         if (window.reinitializeLazyLoad) {

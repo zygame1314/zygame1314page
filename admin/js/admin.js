@@ -505,7 +505,7 @@ class AdminSystem {
                 className: 'music-card'
             });
             musicCard.innerHTML = `
-                <div class="music-cover" style="background-image: url('${song.cover || 'https://bucket.zygame1314.site/static/images/default-music.jpg'}')">
+                <div class="music-cover" style="background-image: url('${song.cover || ''}')">
                     <div class="music-overlay">
                         <button class="play-btn" title="播放" data-path="${song.path}">
                             <span class="play-icon"></span>
@@ -743,7 +743,7 @@ class AdminSystem {
                 className: 'project-card'
             });
             projectCard.innerHTML = `
-                <div class="project-image" style="background-image: url('${project.imageUrl || 'https://bucket.zygame1314.site/static/images/default-project.jpg'}')"></div>
+                <div class="project-image" style="background-image: url('${project.imageUrl || ''}')"></div>
                 <div class="project-content">
                     <div class="project-title">${project.title}</div>
                     <div class="project-description">${project.description || '暂无描述'}</div>

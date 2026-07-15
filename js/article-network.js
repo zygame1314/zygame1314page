@@ -752,10 +752,10 @@ class ArticleNetwork {
         }
         this.draw();
         const cursor = this.hoveredNode
-            ? `url('${encodeURI('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur')}'), pointer`
+            ? `url('${encodeURI('/cursors/Rath Link.cur')}'), pointer`
             : this.isDraggingCanvas
-                ? `url('${encodeURI('https://bucket.zygame1314.site/static/images/cursors/RTON move.cur')}'), grabbing`
-                : `url('${encodeURI('https://bucket.zygame1314.site/static/images/cursors/RTON move.cur')}'), grab`;
+                ? `url('${encodeURI('/cursors/RTON move.cur')}'), grabbing`
+                : `url('${encodeURI('/cursors/RTON move.cur')}'), grab`;
         this.activeCanvas.style.cursor = cursor;
     }
     handleMouseUp(event) {

@@ -123,7 +123,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -207,7 +207,7 @@
     border: 2px solid transparent;
     border-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) 1;
     border-radius: 0;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -254,7 +254,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     position: relative;
     padding: 5px;
 }
@@ -262,7 +262,7 @@
 .do-not-show-again input {
     position: absolute;
     opacity: 0;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     height: 0;
     width: 0;
 }
@@ -482,7 +482,7 @@
 .notice-poll-option input[type="checkbox"] {
     position: absolute;
     opacity: 0;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
 }
 
 .notice-poll-option label {
@@ -491,7 +491,7 @@
     padding: 10px 15px;
     border: 2px solid var(--secondary-color);
     background-color: rgba(0, 0, 0, 0.1);
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
@@ -661,7 +661,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: url('https://bucket.zygame1314.site/static/images/cursors/Rath Link.cur'), auto;
+    cursor: url('/cursors/Rath Link.cur'), auto;
     transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     font-size: 1rem;
     position: relative;
