@@ -130,11 +130,11 @@
     transform: translateY(-2px);
 }
 
-.cover-img {
+.music-cover .cover-img {
     width: 100%;
     min-height: 100px;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease-in-out;
 }
 
 .music-cover:hover .cover-img {
