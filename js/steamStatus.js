@@ -4,6 +4,7 @@ function initSteamStatus() {
     let userLastActive = Date.now();
     const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
     let lastFailTime = 0;
+    let lastSuccessTime = 0;
     const FAIL_COOLDOWN = 30000;
     const UPDATE_INTERVAL = 1 * 60 * 1000;
     let throttleTimer = null;
@@ -41,7 +42,12 @@ function initSteamStatus() {
             return;
         }
 
-        updateSteamStatus();
+        const fresh = lastSuccessTime > 0 && (now - lastSuccessTime < UPDATE_INTERVAL);
+        if (!fresh) {
+            updateSteamStatus();
+        } else {
+            console.log("Steam 状态数据仍在保鲜期内，跳过立即抓取");
+        }
         updateInterval = setInterval(() => {
             if (!document.hidden && isUserActive()) {
                 updateSteamStatus();
@@ -350,6 +356,7 @@ function initSteamStatus() {
             };
             statusWidget.addEventListener("mouseenter", mouseEnterListener);
             statusWidget.__steamMouseEnterListener = mouseEnterListener;
+            lastSuccessTime = Date.now();
         } catch (error) {
             console.error('Steam 状态更新失败:', error);
             lastFailTime = Date.now();

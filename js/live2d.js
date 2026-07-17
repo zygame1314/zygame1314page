@@ -1,6 +1,9 @@
 import { showNotification } from './showNotification.js';
 let app;
 let currentModel;
+let live2dInitialized = false;
+let live2dDisabled = false;
+const MOBILE_THRESHOLD = 1200;
 const modelBasePath = 'https://bucket.zygame1314.site/static/live2d/';
 const modelName = 'Doro';
 const modelJsonPath = `${modelBasePath}${modelName}/${modelName}.model3.json`;
@@ -53,13 +56,19 @@ async function loadLive2dLibraries() {
     }
 }
 async function initializeLive2D() {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < MOBILE_THRESHOLD) {
         console.log("Live2D 在移动设备上已禁用。");
+        live2dDisabled = true;
         if (canvasContainer) {
             canvasContainer.style.display = 'none';
         }
         return;
     }
+    if (live2dInitialized) {
+        console.log("Live2D 已初始化，跳过重复初始化。");
+        return;
+    }
+    live2dDisabled = false;
     if (!canvasContainer) {
         console.error("未找到 L2dCanvas 容器元素！");
         return;
@@ -99,6 +108,7 @@ async function initializeLive2D() {
         }
         console.log("模型加载成功:", currentModel);
         app.stage.addChild(currentModel);
+        live2dInitialized = true;
         handleResize();
 
         setTimeout(() => {
@@ -200,4 +210,46 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLive2D);
 } else {
     initializeLive2D();
+}
+
+let resizeCheckTimer = null;
+window.addEventListener('resize', () => {
+    if (resizeCheckTimer) clearTimeout(resizeCheckTimer);
+    resizeCheckTimer = setTimeout(() => {
+        const isMobile = window.innerWidth < MOBILE_THRESHOLD;
+        if (live2dInitialized && isMobile) {
+            console.log("切换到小屏，销毁 Live2D。");
+            destroyLive2D();
+        } else if (!live2dInitialized && !isMobile && live2dDisabled) {
+            console.log("切换到大屏，重新初始化 Live2D。");
+            if (canvasContainer) {
+                canvasContainer.style.display = '';
+            }
+            initializeLive2D();
+        }
+    }, 300);
+});
+
+function destroyLive2D() {
+    try {
+        if (currentModel) {
+            app.stage.removeChild(currentModel);
+            currentModel.destroy({ children: true, texture: true, baseTexture: true });
+            currentModel = null;
+        }
+        if (app) {
+            app.destroy(true, { children: true, texture: true, baseTexture: true });
+            app = null;
+        }
+        if (canvasContainer) {
+            canvasContainer.innerHTML = '';
+            canvasContainer.style.display = 'none';
+        }
+        window.live2dApp = null;
+        window.live2dModel = null;
+    } catch (e) {
+        console.error("销毁 Live2D 时出错:", e);
+    }
+    live2dInitialized = false;
+    live2dDisabled = true;
 }

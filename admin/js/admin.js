@@ -1,3 +1,4 @@
+import { API_BASE } from '../../js/config.js';
 class AdminSystem {
     constructor() {
         this.currentSection = 'dashboard';
@@ -28,7 +29,7 @@ class AdminSystem {
             return;
         }
         try {
-            const response = await fetch('https://blog.zygame1314.site/auth', {
+            const response = await fetch(`${API_BASE}/auth`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!response.ok) {

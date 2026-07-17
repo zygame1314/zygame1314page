@@ -1,3 +1,4 @@
+import { API_BASE } from '../../js/config.js';
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('error-message');
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = loginForm.password.value;
 
         try {
-            const response = await fetch('https://blog.zygame1314.site/auth', {
+            const response = await fetch(`${API_BASE}/auth`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })

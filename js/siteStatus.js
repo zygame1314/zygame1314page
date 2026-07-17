@@ -255,7 +255,7 @@ class SiteStatus {
 
     getSiteName(url) {
         switch (url) {
-            case 'https://blog.zygame1314.site':
+            case API_BASE:
                 return '主站';
             case 'https://zygame1314page.pages.dev':
                 return '源站';

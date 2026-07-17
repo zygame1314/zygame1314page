@@ -1,3 +1,4 @@
+import { API_BASE } from '../../js/config.js';
 class Components {
     static notification = {
         container: null,
@@ -140,7 +141,7 @@ class Components {
                         if (uploadContext) {
                             formData.append('context', uploadContext);
                         }
-                        const response = await fetch('https://blog.zygame1314.site/admin/upload-image', {
+                        const response = await fetch(`${API_BASE}/admin/upload-image`, {
                             method: 'POST',
                             body: formData,
                             headers: {
@@ -182,7 +183,7 @@ class Components {
                     try {
                         const formData = new FormData();
                         formData.append('file', file);
-                        const response = await fetch('https://blog.zygame1314.site/admin/upload-audio', {
+                        const response = await fetch(`${API_BASE}/admin/upload-audio`, {
                             method: 'POST',
                             body: formData,
                             headers: {

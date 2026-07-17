@@ -27,7 +27,11 @@ class NoticeManager {
         try {
             const response = await fetch(`${API_BASE}/getdata/notices`);
             const data = await response.json();
-            this.notices = data.notices;
+            const notices = Array.isArray(data?.notices) ? data.notices.filter(Boolean) : [];
+            this.notices = notices;
+            if (this.currentIndex >= this.notices.length) {
+                this.currentIndex = 0;
+            }
             this.updateDisplay();
             this.updatePageCount();
         } catch (error) {
@@ -93,6 +97,12 @@ class NoticeManager {
 
         const animation = async () => {
             const notice = this.notices[this.currentIndex];
+
+            if (!notice) {
+                console.warn('notice 为空，跳过本次动画', { currentIndex: this.currentIndex, length: this.notices.length });
+                return;
+            }
+
             const oldContent = this.contentWrapper.querySelector('.notice-content');
 
             const content = document.createElement('div');
@@ -145,10 +155,8 @@ class NoticeManager {
     startAutoplay() {
         if (!this.autoplayTimer && !this.isPaused) {
             this.autoplayTimer = setInterval(() => {
-                if (this.currentIndex >= this.notices.length - 1) {
-                    this.currentIndex = -1;
-                }
-                this.nextNotice();
+                this.currentIndex = (this.currentIndex + 1) % this.notices.length;
+                this.updateDisplay('next');
             }, this.autoplayInterval);
         }
     }

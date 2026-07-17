@@ -1,6 +1,7 @@
+import { API_BASE } from '../../js/config.js';
 class API {
     constructor() {
-        this.baseURL = 'https://blog.zygame1314.site';
+        this.baseURL = API_BASE;
         this.defaultHeaders = {
             'Content-Type': 'application/json',
         };
