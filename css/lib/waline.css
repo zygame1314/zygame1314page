@@ -68,7 +68,8 @@
 
 [data-waline] * {
     box-sizing: content-box;
-    line-height: 1.75
+    line-height: 1.75;
+    cursor: url('/cursors/Rath pointer.cur'), auto;
 }
 
 [data-waline] p {
