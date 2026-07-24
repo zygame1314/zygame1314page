@@ -49,6 +49,10 @@ export default defineConfig({
         {
           src: 'font',
           dest: ''
+        },
+        {
+          src: 'cursors',
+          dest: ''
         }
       ]
     })

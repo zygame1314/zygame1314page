@@ -117,10 +117,12 @@ function updateCardHeight() {
 document.getElementById('flip-card').addEventListener('click', function () {
     const widget = document.querySelector('.visit-counter-widget');
     widget.classList.add('flipped');
+    updateCardHeight();
 });
 document.getElementById('flip-back').addEventListener('click', function () {
     const widget = document.querySelector('.visit-counter-widget');
     widget.classList.remove('flipped');
+    updateCardHeight();
 });
 function updateCardContentForArticle() {
     const widget = document.querySelector('.visit-counter-widget');
@@ -191,10 +193,12 @@ function restoreOriginalCardContent() {
     document.getElementById('flip-card').addEventListener('click', function () {
         const widget = document.querySelector('.visit-counter-widget');
         widget.classList.add('flipped');
+        updateCardHeight();
     });
     document.getElementById('flip-back').addEventListener('click', function () {
         const widget = document.querySelector('.visit-counter-widget');
         widget.classList.remove('flipped');
+        updateCardHeight();
     });
     document.getElementById('visit-count').addEventListener('click', function () {
         showNotification('经验 + 3 ♪(´▽｀)', 3, 'success');
