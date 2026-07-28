@@ -79,30 +79,31 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const existingCards = projectList.querySelectorAll('.project-card.visible');
+        const existingCards = projectList.querySelectorAll('.project-card');
         existingCards.forEach(card => {
             card.classList.remove('visible');
             card.classList.add('exiting');
         });
 
-        setTimeout(async () => {
-            projectList.innerHTML = '';
+        const fadeOut = new Promise(resolve => setTimeout(resolve, 300));
+        const fetchProjects = loadProjects(page);
 
-            const projects = await loadProjects(page);
-            projects.forEach(project => {
-                const card = renderProjectCard(project);
-                projectList.appendChild(card);
-                card.style.display = 'none';
+        const [, projects] = await Promise.all([fadeOut, fetchProjects]);
+
+        projectList.innerHTML = '';
+        projects.forEach(project => {
+            const card = renderProjectCard(project);
+            projectList.appendChild(card);
+            card.style.display = 'none';
+            requestAnimationFrame(() => {
+                card.style.display = 'block';
                 requestAnimationFrame(() => {
-                    card.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        card.classList.add('visible');
-                    });
+                    card.classList.add('visible');
                 });
             });
+        });
 
-            updatePaginationUI();
-        }, 300);
+        updatePaginationUI();
     }
 
     function updatePaginationUI() {

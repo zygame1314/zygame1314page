@@ -306,85 +306,113 @@ class MusicPlayer {
         const visualizer = document.createElement('div');
         visualizer.className = `audio-visualizer ${side}`;
 
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, 'svg');
-        svg.setAttribute('class', 'spectrum-svg');
+        const columnCount = 7;
+        const columns = [];
+        for (let i = 0; i < columnCount; i++) {
+            const column = document.createElement('div');
+            column.className = 'visualizer-column';
+            visualizer.appendChild(column);
+            columns.push(column);
+        }
 
-        const path = document.createElementNS(svgNS, 'path');
-        path.setAttribute('class', 'spectrum-path');
-        svg.appendChild(path);
-
-        visualizer.appendChild(svg);
         document.body.appendChild(visualizer);
 
         this[`${side}Visualizer`] = visualizer;
-        this[`${side}Path`] = path;
+        this[`${side}Columns`] = columns;
     }
 
-    frequencyToColor(i, total, energy) {
-        const hue = (i / total) * 360;
-        const saturation = 90;
-        const lightness = Math.min(40 + (energy / 255) * 40, 80);
-        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    getBarCount() {
+        const visualizer = this.leftVisualizer || this.rightVisualizer;
+        const columnHeight = visualizer ? visualizer.clientHeight : window.innerHeight;
+        return Math.max(6, Math.floor(columnHeight / 10));
+    }
+
+    ensureColumnBars(column, count) {
+        const current = column.querySelectorAll('.pixel-bar');
+        if (current.length === count) return;
+
+        if (current.length < count) {
+            for (let i = current.length; i < count; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'pixel-bar';
+                bar.style.height = '4px';
+                bar.style.opacity = '0';
+                column.appendChild(bar);
+            }
+        } else {
+            for (let i = current.length - 1; i >= count; i--) {
+                current[i].remove();
+            }
+        }
+
+        const bars = column.querySelectorAll('.pixel-bar');
+        bars.forEach((bar, idx) => {
+            const intensity = (idx + 1) / bars.length;
+            bar.style.opacity = intensity.toFixed(2);
+        });
     }
 
     animateRhythm() {
         const update = () => {
             if (this.isPlaying && !this.isMobileDevice()) {
                 this.analyser.getByteFrequencyData(this.dataArray);
-                this.updateSpectrum('left', this.leftPath);
-                this.updateSpectrum('right', this.rightPath);
+                this.updateSpectrum('left', this.leftColumns);
+                this.updateSpectrum('right', this.rightColumns);
             } else {
-                if (this.leftPath) this.resetSpectrum('left', this.leftPath);
-                if (this.rightPath) this.resetSpectrum('right', this.rightPath);
+                if (this.leftColumns) this.resetSpectrum(this.leftColumns);
+                if (this.rightColumns) this.resetSpectrum(this.rightColumns);
             }
             requestAnimationFrame(update);
         };
         update();
     }
 
-    updateSpectrum(side, path) {
-        if (!path) return;
-        const visualizer = this[`${side}Visualizer`];
-        if (!visualizer) return;
+    updateSpectrum(side, columns) {
+        if (!columns || !columns.length) return;
 
-        const { width, height } = visualizer.getBoundingClientRect();
-        const bufferLength = this.analyser.frequencyBinCount;
+        const barCount = this.getBarCount();
+        columns.forEach(column => this.ensureColumnBars(column, barCount));
 
-        let d = '';
-        if (side === 'left') {
-            d = `M 0,${height}`;
-            for (let i = 0; i < bufferLength; i++) {
-                const y = (i / bufferLength) * height;
-                const x = (this.dataArray[i] / 255) * width;
-                d += ` L ${x},${height - y}`;
+        const columnCount = columns.length;
+        const binCount = this.analyser.frequencyBinCount;
+
+        columns.forEach((column, colIndex) => {
+            const bars = column.querySelectorAll('.pixel-bar');
+            const mirrorIndex = side === 'right' ? (columnCount - 1 - colIndex) : colIndex;
+            const startBin = Math.floor((mirrorIndex / columnCount) * binCount * 0.6);
+            const endBin = Math.floor(((mirrorIndex + 1) / columnCount) * binCount * 0.6);
+            let energy = 0;
+            let count = 0;
+            for (let i = startBin; i < endBin && i < binCount; i++) {
+                energy += this.dataArray[i];
+                count++;
             }
-            d += ` L 0,0 Z`;
-        } else {
-            d = `M ${width},${height}`;
-            for (let i = 0; i < bufferLength; i++) {
-                const y = (i / bufferLength) * height;
-                const x = (this.dataArray[i] / 255) * width;
-                d += ` L ${width - x},${height - y}`;
-            }
-            d += ` L ${width},0 Z`;
-        }
-        path.setAttribute('d', d);
+            const average = count ? energy / count : 0;
+            const activeBars = Math.max(0, Math.floor((average / 255) * barCount));
+
+            bars.forEach((bar, idx) => {
+                if (idx < activeBars) {
+                    bar.style.opacity = ((idx + 1) / barCount).toFixed(2);
+                    bar.style.transform = 'scale(1)';
+                } else {
+                    bar.style.opacity = '0';
+                    bar.style.transform = 'scale(0.6)';
+                }
+            });
+        });
     }
 
-    resetSpectrum(side, path) {
-        if (!path) return;
-        const visualizer = this[`${side}Visualizer`];
-        if (!visualizer) return;
-        const { width, height } = visualizer.getBoundingClientRect();
-
-        let d = '';
-        if (side === 'left') {
-            d = `M 0,${height} L 0,0 Z`;
-        } else {
-            d = `M ${width},${height} L ${width},0 Z`;
-        }
-        path.setAttribute('d', d);
+    resetSpectrum(columns) {
+        if (!columns || !columns.length) return;
+        const barCount = this.getBarCount();
+        columns.forEach(column => {
+            this.ensureColumnBars(column, barCount);
+            const bars = column.querySelectorAll('.pixel-bar');
+            bars.forEach((bar, idx) => {
+                bar.style.opacity = (idx === 0 ? '0.3' : '0');
+                bar.style.transform = 'scale(0.6)';
+            });
+        });
     }
 
     async playSong() {
