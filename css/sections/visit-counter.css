@@ -461,55 +461,23 @@
     color: var(--text-color);
     margin: 15px 0;
     padding: 0;
-    background: linear-gradient(135deg,
-            rgba(84, 168, 255, 0.1) 0%,
-            rgba(0, 123, 255, 0.08) 50%,
-            rgba(0, 86, 179, 0.1) 100%);
-    border: 2px solid transparent;
-    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px dashed var(--primary-color);
+    border-radius: 8px;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden;
-    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    backdrop-filter: blur(2px);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.script-update-prompt-style::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.15),
-            transparent);
-    transition: left 0.5s ease;
-    z-index: 1;
-}
-
-.script-update-prompt-style:hover::before {
-    left: 100%;
-}
-
-.script-update-prompt-style::after {
-    content: '🎉';
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 14px;
-    opacity: 0.7;
-    animation: gentlePulse 2.5s ease-in-out infinite;
-    z-index: 2;
+.script-update-prompt-style:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: var(--secondary-color);
 }
 
 .script-update-prompt-style .prompt-content {
-    position: relative;
-    z-index: 3;
-    padding: 15px;
+    padding: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -518,78 +486,27 @@
 }
 
 .script-update-prompt-style .prompt-icon {
-    font-size: 18px;
-    color: #54a8ff;
-    filter: drop-shadow(0 0 4px rgba(84, 168, 255, 0.6));
-    animation: glow-pulse 2.5s ease-in-out infinite alternate;
+    font-size: 16px;
+    opacity: 0.85;
 }
 
 .script-update-prompt-style .prompt-text {
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .script-update-prompt-style a.scroll-to-scripts {
-    color: #54a8ff;
+    color: var(--primary-color);
     font-weight: bold;
     text-decoration: none;
-    padding: 5px 10px;
-    background: linear-gradient(45deg,
-            rgba(84, 168, 255, 0.2) 0%,
-            rgba(0, 123, 255, 0.15) 100%);
-    border-radius: 18px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 1px solid rgba(84, 168, 255, 0.3);
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    backdrop-filter: blur(4px);
-    box-shadow:
-        0 2px 8px rgba(84, 168, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.script-update-prompt-style a.scroll-to-scripts::before {
-    content: '🚀';
-    font-size: 13px;
-    animation: float 2.2s ease-in-out infinite;
+    padding: 0 2px;
+    border-bottom: 1px dashed var(--primary-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: url('/cursors/Rath Link.cur'), auto;
 }
 
 .script-update-prompt-style a.scroll-to-scripts:hover {
-    background: linear-gradient(45deg,
-            #54a8ff 0%,
-            #2a8dff 50%,
-            #007bff 100%);
-    color: white;
-    text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 0 8px rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px) scale(1.05);
-    box-shadow:
-        0 6px 20px rgba(84, 168, 255, 0.4),
-        0 0 15px rgba(0, 123, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.script-update-prompt-style a.scroll-to-scripts:active {
-    transform: translateY(-1px) scale(1.02);
-    box-shadow:
-        0 3px 10px rgba(84, 168, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.script-update-prompt-style:hover {
-    background: linear-gradient(135deg,
-            rgba(84, 168, 255, 0.15) 0%,
-            rgba(0, 123, 255, 0.12) 50%,
-            rgba(0, 86, 179, 0.15) 100%);
-    border-color: rgba(84, 168, 255, 0.4);
-    transform: translateY(-1px);
-    box-shadow:
-        0 4px 12px rgba(84, 168, 255, 0.2),
-        0 0 20px rgba(0, 123, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.08);
+    border-bottom-style: solid;
 }
 
 .activation-info {
@@ -622,110 +539,31 @@
     line-height: 1.5;
 }
 
-.activation-steps a {
-    color: #00d4ff;
-    text-decoration: none;
+.activation-info a {
+    color: var(--primary-color);
     font-weight: bold;
-    padding: 3px 8px;
-    background: linear-gradient(45deg,
-            rgba(0, 212, 255, 0.15) 0%,
-            rgba(0, 150, 255, 0.1) 100%);
-    border-radius: 12px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    backdrop-filter: blur(2px);
-    box-shadow:
-        0 1px 4px rgba(0, 212, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    padding: 0 2px;
+    border-bottom: 1px dashed var(--primary-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
     cursor: url('/cursors/Rath Link.cur'), auto;
-    font-size: 13px;
 }
 
-.activation-steps a::before {
-    content: '🔗';
-    font-size: 11px;
-    opacity: 0.8;
-    animation: float 2s ease-in-out infinite;
-}
-
-.activation-steps a:hover {
-    background: linear-gradient(45deg,
-            #00d4ff 0%,
-            #0099ff 50%,
-            #0066ff 100%);
-    color: white;
-    text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 0 6px rgba(255, 255, 255, 0.5);
-    transform: translateY(-1px) scale(1.03);
-    box-shadow:
-        0 4px 12px rgba(0, 212, 255, 0.4),
-        0 0 12px rgba(0, 150, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.activation-steps a:active {
-    transform: translateY(0) scale(1.01);
-    box-shadow:
-        0 2px 6px rgba(0, 212, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+.activation-info a:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-bottom-style: solid;
 }
 
 .warning-message .scroll-to-contact {
     color: #ffc107;
     text-decoration: none;
     font-weight: bold;
-    padding: 2px 6px;
-    background: linear-gradient(45deg,
-            rgba(255, 193, 7, 0.2) 0%,
-            rgba(255, 152, 0, 0.15) 100%);
-    border-radius: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 1px solid rgba(255, 193, 7, 0.4);
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    backdrop-filter: blur(2px);
-    box-shadow:
-        0 1px 3px rgba(255, 193, 7, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-bottom: 1px dashed rgba(255, 193, 7, 0.6);
+    transition: background-color 0.2s ease, border-bottom-style 0.2s ease;
     cursor: url('/cursors/Rath Link.cur'), auto;
-    font-size: 13px;
-}
-
-.warning-message .scroll-to-contact::before {
-    content: '📞';
-    font-size: 10px;
-    opacity: 0.9;
-    animation: gentlePulse 2s ease-in-out infinite;
 }
 
 .warning-message .scroll-to-contact:hover {
-    background: linear-gradient(45deg,
-            #ffc107 0%,
-            #ff9800 50%,
-            #ff6f00 100%);
-    color: white;
-    text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 0 6px rgba(255, 255, 255, 0.5);
-    transform: translateY(-1px) scale(1.03);
-    box-shadow:
-        0 4px 10px rgba(255, 193, 7, 0.4),
-        0 0 10px rgba(255, 152, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.6);
-}
-
-.warning-message .scroll-to-contact:active {
-    transform: translateY(0) scale(1.01);
-    box-shadow:
-        0 2px 5px rgba(255, 193, 7, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 193, 7, 0.12);
+    border-bottom-style: solid;
 }

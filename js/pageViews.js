@@ -145,29 +145,21 @@ function restoreOriginalCardContent() {
     const backContent = document.querySelector('.card-back');
     frontContent.innerHTML = `
         <div class="activation-info">
-            <h4 class="activation-title">激活码获取流程</h4>
+            <h4 class="activation-title">购买与提货入口</h4>
             <ol class="activation-steps">
-                <li>前往 <a href="https://ifdian.net/a/zygame1314" target="_blank"
-                        rel="noopener noreferrer">爱发电</a> 购买所需服务。</li>
-                <li>购买后，使用你的爱发电<span class="highlight-action">订单号</span>前往<a
-                        href="https://xiaoya-get.zygame1314.site" target="_blank"
-                        rel="noopener noreferrer">提货页面</a> 提取激活码。</li>
-                <li>获取激活码后，按照脚本提示激活使用。</li>
+                <li>前往<a href="https://ifdian.net/a/zygame1314" target="_blank"
+                        rel="noopener noreferrer">爱发电</a>下单：小雅答答答激活码（需 2.2.1+）、清华社英语平台服务，详情见商品页。</li>
+                <li>买完带上<span class="highlight-action">订单号</span>去<a href="https://xiaoya-get.zygame1314.site" target="_blank"
+                        rel="noopener noreferrer">提货页面</a>领取（通用）。</li>
+                <li>打不开就试<a href="https://xiaoya-get.zygame1314-666.top" target="_blank"
+                        rel="noopener noreferrer">备用提货地址</a>。</li>
             </ol>
             <div class="friendly-reminder"
                 style="font-size: 0.9em; margin-top: 10px; padding: 10px; background-color: var(--theme-bg); border-radius: 5px;">
                 <i class="fas fa-lightbulb"
-                    style="color: #17a2b8; margin-right: 5px;"></i><strong>友情提示：</strong>
-                建议先点开上面的“提货页面”试试看。如果那个页面都打不开，那后面的步骤就别折腾咯，大概率是你的网络问题。换个网络环境，或者施展一下“魔法”也许能解决哦！(ง •̀_•́)ง
-            </div>
-            <div class="warning-message">
-                <div class="warning-header"><i class="fas fa-exclamation-triangle"></i> 重要提示</div>
-                <div class="warning-content">
-                    目前我的创作者认证已通过，<span class="highlight-action">下单后会自动回复提货流程</span>，但我本人依然基本不看爱发电私信。
-                    <br>
-                    如有任何疑问或需要帮助，请<span class="highlight-action">不要</span>通过爱发电私信，直接添加我的 <a href="#contact"
-                        class="scroll-to-contact">联系方式</a> 沟通。
-                </div>
+                    style="color: #17a2b8; margin-right: 5px;"></i><strong>提示：</strong>
+                下单后自动发货，售出不退；有问题直接<a href="#contact"
+                    class="scroll-to-contact">联系我</a>，别发爱发电私信。
             </div>
         </div>
         <div class="script-update-prompt-style">
