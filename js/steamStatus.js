@@ -94,10 +94,6 @@ function initSteamStatus() {
             const username = statusWidget.querySelector('.steam-username');
             const status = statusWidget.querySelector('.steam-status');
             const levelElement = statusWidget.querySelector('.steam-level-num');
-            const badgeElement = statusWidget.querySelector('.steam-featured-badge');
-            const badgeIcon = statusWidget.querySelector('.steam-badge-icon');
-            const badgeName = statusWidget.querySelector('.steam-badge-name');
-            const badgeXp = statusWidget.querySelector('.steam-badge-xp');
             const backgroundVideo = statusWidget.querySelector('.steam-background-video');
             if (avatar && userInfo) {
                 const avatarLink = userInfo.querySelector('a[href*="steamcommunity.com/profiles"]');
@@ -279,23 +275,6 @@ function initSteamStatus() {
                 levelContainer.style.display = 'none';
             }
 
-
-            if (badgeElement && player.featured_badge_icon && player.featured_badge_name) {
-                if (badgeIcon && badgeIcon.getAttribute('data-src') !== player.featured_badge_icon) {
-                    badgeIcon.setAttribute('data-src', player.featured_badge_icon);
-                    badgeIcon.classList.remove('lazy-initialized', 'lazy-loaded', 'lazy-error');
-                    badgeIcon.classList.add('lazy-placeholder');
-                    badgeIcon.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
-                    if (window.reinitializeLazyLoad) {
-                        window.reinitializeLazyLoad([badgeIcon]);
-                    }
-                }
-                if (badgeName) badgeName.textContent = player.featured_badge_name;
-                if (badgeXp) badgeXp.textContent = player.featured_badge_xp || '';
-                badgeElement.style.display = 'flex';
-            } else if (badgeElement) {
-                badgeElement.style.display = 'none';
-            }
             if (backgroundVideo && (player.background_video_webm || player.background_video_mp4)) {
                 const webmSource = backgroundVideo.querySelector('source[type="video/webm"]');
                 const mp4Source = backgroundVideo.querySelector('source[type="video/mp4"]');

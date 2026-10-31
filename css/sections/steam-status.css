@@ -150,19 +150,6 @@
     box-shadow: 0 0 5px #90ba3c;
 }
 
-.steam-details-section {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 10px;
-    position: relative;
-    z-index: 1;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
 .steam-game-info {
     font-size: 0.75em;
     color: #acdbf5;
@@ -363,40 +350,4 @@
 
 .steam-level.level-color-14 {
     border-color: #f5d142;
-}
-
-
-.steam-featured-badge {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid #2a475e;
-    border-radius: 4px;
-    flex: 1;
-    max-width: 200px;
-}
-
-.steam-badge-icon {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    border: none;
-}
-
-.steam-badge-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font-size: 0.7em;
-}
-
-.steam-badge-name {
-    font-weight: bold;
-    color: #c7d5e0;
-}
-
-.steam-badge-xp {
-    color: #8f98a0;
 }
