@@ -1,3 +1,87 @@
+const FRESH_TTL_SECONDS = 60;
+const STALE_TTL_SECONDS = 30 * 60;
+const STEAM_RETRYABLE_STATUS = new Set([403, 408, 425, 429, 500, 502, 503, 504]);
+
+function jsonResponse(data, status = 200, extraHeaders = {}) {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store',
+            ...extraHeaders,
+        },
+    });
+}
+
+function getEdgeCache() {
+    try {
+        return typeof caches !== 'undefined' && caches.default ? caches.default : null;
+    } catch {
+        return null;
+    }
+}
+
+async function readCache(cache, key) {
+    if (!cache) return null;
+    try {
+        const cached = await cache.match(key);
+        return cached ? await cached.json() : null;
+    } catch (error) {
+        console.error('Steam status cache read failed:', error);
+        return null;
+    }
+}
+
+async function writeCache(cache, key, data, ttlSeconds) {
+    if (!cache) return;
+    try {
+        await cache.put(key, new Response(JSON.stringify(data), {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Cache-Control': `public, max-age=${ttlSeconds}`,
+            },
+        }));
+    } catch (error) {
+        console.error('Steam status cache write failed:', error);
+    }
+}
+
+async function fetchMiniprofileHtml(steamFriendCode) {
+    const url = `https://steamcommunity.com/miniprofile/${steamFriendCode}?_=${Date.now()}`;
+    let lastError = new Error('Steam MiniProfile request failed');
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+            const steamResponse = await fetch(url, {
+                headers: {
+                    "accept": "*/*",
+                    "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+                    "x-requested-with": "XMLHttpRequest",
+                    "Referer": `https://steamcommunity.com/profiles/${steamFriendCode}/friends/`,
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache"
+                },
+                method: "GET",
+                redirect: "follow"
+            });
+            if (steamResponse.ok) {
+                return await steamResponse.text();
+            }
+            const errorText = (await steamResponse.text()).slice(0, 300);
+            console.error(`Steam MiniProfile API Error (attempt ${attempt}): ${steamResponse.status} ${steamResponse.statusText}`, errorText);
+            lastError = new Error(`Steam MiniProfile API Error: ${steamResponse.status} ${steamResponse.statusText}`);
+            if (!STEAM_RETRYABLE_STATUS.has(steamResponse.status)) break;
+        } catch (error) {
+            console.error(`Steam MiniProfile request failed (attempt ${attempt}):`, error);
+            lastError = error;
+        }
+        if (attempt < 2) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+    }
+    throw lastError;
+}
+
 export function onRequestOptions() {
     return new Response(null, { status: 204 });
 }
@@ -5,38 +89,24 @@ export async function onRequestGet(context) {
     let response;
     const steamFriendCode = context.env.STEAM_ID_32;
     if (!steamFriendCode) {
-        return new Response(JSON.stringify({
+        return jsonResponse({
             success: false,
             error: 'Configuration Error',
             message: 'STEAM_ID_32 environment variable is not set.',
-        }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
+        }, 500);
     }
-    const timestamp = Date.now();
-    const miniprofileUrl = `https://steamcommunity.com/miniprofile/${steamFriendCode}?_=${timestamp}`;
+    const cache = getEdgeCache();
+    const cacheBase = new URL(context.request.url);
+    cacheBase.search = '';
+    const freshCacheKey = new Request(`${cacheBase.toString()}?tier=fresh`);
+    const staleCacheKey = new Request(`${cacheBase.toString()}?tier=stale`);
+
+    const freshData = await readCache(cache, freshCacheKey);
+    if (freshData) {
+        return jsonResponse(freshData, 200, { 'X-Steam-Cache': 'HIT' });
+    }
     try {
-        const steamResponse = await fetch(miniprofileUrl, {
-            headers: {
-                "accept": "*/*",
-                "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                "x-requested-with": "XMLHttpRequest",
-                "Referer": `https://steamcommunity.com/profiles/${steamFriendCode}/friends/`,
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                "Cache-Control": "no-cache, no-store, must-revalidate",
-                "Pragma": "no-cache"
-            },
-            method: "GET"
-        });
-        if (!steamResponse.ok) {
-            const errorText = await steamResponse.text();
-            console.error(`Steam MiniProfile API Error: ${steamResponse.status} ${steamResponse.statusText}`, errorText);
-            throw new Error(`Steam MiniProfile API Error: ${steamResponse.status} ${steamResponse.statusText}`);
-        }
-        const html = await steamResponse.text();
+        const html = await fetchMiniprofileHtml(steamFriendCode);
         const player = {
             avatarfull: null,
             avatar_frame_url: null,
@@ -246,23 +316,22 @@ export async function onRequestGet(context) {
             }
         }
         replaceCdnUrl(responseData);
-        response = new Response(JSON.stringify(responseData), {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
+        await writeCache(cache, freshCacheKey, responseData, FRESH_TTL_SECONDS);
+        await writeCache(cache, staleCacheKey, responseData, STALE_TTL_SECONDS);
+        response = jsonResponse(responseData);
     } catch (error) {
         console.error('Steam MiniProfile Fetch/Parse Error:', error);
-        response = new Response(JSON.stringify({
-            success: false,
-            error: 'Failed to fetch or parse Steam miniprofile data',
-            message: error.message,
-        }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
+        const staleData = await readCache(cache, staleCacheKey);
+        if (staleData) {
+            console.warn('Serving stale Steam status because Steam rejected the request');
+            response = jsonResponse({ ...staleData, stale: true }, 200, { 'X-Steam-Cache': 'STALE' });
+        } else {
+            response = jsonResponse({
+                success: false,
+                error: 'Failed to fetch or parse Steam miniprofile data',
+                message: error.message,
+            }, 503, { 'Retry-After': '60' });
+        }
     }
     return response;
 }

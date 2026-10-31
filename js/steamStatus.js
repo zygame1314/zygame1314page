@@ -8,6 +8,7 @@ function initSteamStatus() {
     const FAIL_COOLDOWN = 30000;
     const UPDATE_INTERVAL = 1 * 60 * 1000;
     let throttleTimer = null;
+    let retryTimer = null;
 
     function isUserActive() {
         return Date.now() - userLastActive < INACTIVITY_TIMEOUT;
@@ -36,6 +37,10 @@ function initSteamStatus() {
 
     function startUpdates() {
         if (updateInterval) return;
+        if (retryTimer) {
+            clearTimeout(retryTimer);
+            retryTimer = null;
+        }
 
         const now = Date.now();
         if (now - lastFailTime < FAIL_COOLDOWN) {
@@ -374,6 +379,12 @@ function initSteamStatus() {
                 showLive2dNotification(`Steam状态更新失败了...`, null, L2D_EXPRESSIONS.ANNOYED);
             }
             stopUpdates();
+            if (!retryTimer && !document.hidden) {
+                retryTimer = setTimeout(() => {
+                    retryTimer = null;
+                    if (!document.hidden) startUpdates();
+                }, FAIL_COOLDOWN);
+            }
         }
     }
     document.addEventListener('visibilitychange', handleVisibilityChange);
