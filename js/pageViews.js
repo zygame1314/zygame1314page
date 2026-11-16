@@ -147,19 +147,17 @@ function restoreOriginalCardContent() {
         <div class="activation-info">
             <h4 class="activation-title">购买与提货入口</h4>
             <ol class="activation-steps">
-                <li>前往<a href="https://ifdian.net/a/zygame1314" target="_blank"
-                        rel="noopener noreferrer">爱发电</a>下单：小雅答答答激活码（需 2.2.1+）、清华社英语平台服务，详情见商品页。</li>
-                <li>买完带上<span class="highlight-action">订单号</span>去<a href="https://xiaoya-get.zygame1314.site" target="_blank"
-                        rel="noopener noreferrer">提货页面</a>领取（通用）。</li>
+                <li>下单、提货都在<a href="https://xiaoya-get.zygame1314.site" target="_blank"
+                        rel="noopener noreferrer">小雅提货站</a>完成：小雅答答答激活码（需 2.2.1+）、清华社英语平台服务，详情见页面说明。</li>
                 <li>打不开就试<a href="https://xiaoya-get.zygame1314-666.top" target="_blank"
-                        rel="noopener noreferrer">备用提货地址</a>。</li>
+                        rel="noopener noreferrer">备用地址</a>。</li>
             </ol>
             <div class="friendly-reminder"
                 style="font-size: 0.9em; margin-top: 10px; padding: 10px; background-color: var(--theme-bg); border-radius: 5px;">
                 <i class="fas fa-lightbulb"
                     style="color: #17a2b8; margin-right: 5px;"></i><strong>提示：</strong>
                 下单后自动发货，售出不退；有问题直接<a href="#contact"
-                    class="scroll-to-contact">联系我</a>，别发爱发电私信。
+                    class="scroll-to-contact">联系我</a>。
             </div>
         </div>
         <div class="script-update-prompt-style">
